@@ -44,7 +44,3 @@ set mark-directories on
 set colored-completion-prefix On
 # Color the common prefix in menu-complete
 set menu-complete-display-prefix On
-
-# Experimental
-#
-# "\C-xq": "\eb\"\ef\""
