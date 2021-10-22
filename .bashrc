@@ -21,13 +21,13 @@ bind -m vi-command ".":yank-last-arg # or insert-last-argument
 ###
 # bash options
 ###
+set -o noclobber
 shopt -s histverify
 shopt -s checkwinsize
 shopt -s cmdhist
 # shopt -s complete_fullquote
-shopt -u lithhist
+shopt -u lithist
 shopt -s interactive_comments
-shopt -s noclobber
 shopt -s globstar
 shopt -s nocaseglob
 shopt -s autocd 2>/dev/null
@@ -61,7 +61,7 @@ export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\
 if command -v nvim >/dev/null 2>&1
 then
     export EDITOR='/usr/bin/nvim'
-elsif command -v vim >/dev/null 2>&1
+elif command -v vim >/dev/null 2>&1
 then
     export EDITOR='/usr/bin/vim'
  else
