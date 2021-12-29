@@ -1,0 +1,1 @@
+sudo apt-get install tmux git hexyl pv socat gpg curl wget lsof p7zip htop rsync w3m tcpdump parted unzip zip bc strace ipcalc dnsutils ethtool httping vim bash-completion nano mlocate golang rclone ranger
