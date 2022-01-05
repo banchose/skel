@@ -1,37 +1,12 @@
 # This line carries over site-wide readline configuration to the user configuration. Usually /etc/inputrc includes some goodies.
 $include /etc/inputrc
 
-set bell-style none
-
-"\C-p":history-search-backward
-"\C-n":history-search-forward
-# Cycle through ambiguous completions instead of list
-# "\C-i": menu-complete
-
-set editing-mode vi
-$if mode=vi
-    set keymap vi-command
-    "G": end-of-history
-    set keymap vi-insert
-    "jj": vi-movement-mode
-    "\C-o": operate-and-get-next
-    set show-mode-in-prompt on
-    $if term=linux
-	set vi-ins-mode-string \1\e[?0c\2
-	set vi-cmd-mode-string \1\e[?8c\2
-    $else
-	set vi-ins-mode-string \1\e[6 q\2
-	set vi-cmd-mode-string \1\e[2 q\2
-    $endif
-$endif
-
+set bell-style visible
 # list completions immediately instead of bell
 set show-all-if-ambiguous on
 # but no partial
 set show-all-if-unmodified on
 set completion-ignore-case on
-
-
 # Color files by types
 set colored-stats On
 # Append char to indicate type
@@ -44,3 +19,35 @@ set mark-directories on
 set colored-completion-prefix On
 # Color the common prefix in menu-complete
 set menu-complete-display-prefix On
+# file name completion works with . files
+set match-hidden-files on
+# Modified lines history ???
+set mark-modified-lines on
+set page-completions on
+
+
+"\C-p":history-search-backward
+"\C-n":history-search-forward
+# Cycle through ambiguous completions instead of list
+# "\C-i": menu-complete
+
+set editing-mode vi
+$if mode=vi
+    set show-mode-in-prompt on
+    set keymap vi-command
+    "G": end-of-history
+    ".":yank-last-arg
+    set keymap vi-insert
+    "jj": vi-movement-mode
+    "\C-o": operate-and-get-next
+    $if term=linux
+	    set vi-ins-mode-string \1\e[?0c\2
+	    set vi-cmd-mode-string \1\e[?8c\2
+    $else
+	    set vi-ins-mode-string \1\e[6 q\2
+	    set vi-cmd-mode-string \1\e[2 q\2
+    $endif
+$endif
+# Experimental
+#
+# "\C-xq": "\eb\"\ef\""
