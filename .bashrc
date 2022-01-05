@@ -206,3 +206,18 @@ alias loada='cat /proc/loadavg | cut -c 1-4 | echo "scale=2; ($(</dev/stdin)/`np
 ## Get server cpu info ##
 alias cpuinfo='lscpu'
 alias xlsblk='lsblk -o name,mountpoint,fstype,size,fsused,pttype,model,vendor,serial,uuid,partuuid'
+
+######################################
+# For ps
+######################################
+alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,netns,mntns,pidns,ipcns,utsns,cmd'
+alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
+alias nps='ps -N --ppid 2 -o pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
+
+# For inputrc Readline
+set -o vi
+bind "set show-mode-in-prompt on"
+bind "set vi-ins-mode-string (ins)"
+bind "set vi-cmd-mode-string (cmd)"
+bind -m vi-command ".":yank-last-arg # or insert-last-argument
+bind '"jj":vi-movement-mode'
