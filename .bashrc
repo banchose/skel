@@ -16,8 +16,33 @@ then
 fi
 
 
-# export EDITOR="nvim"
-export EDITOR="vim"
+######################################
+# Set the editor and editor alias
+######################################
+command_exists () {
+    command -v "$1" 1>&2 >/dev/null
+}
+
+if command_exists nvim 1>&2 >/dev/null
+then
+    export EDITOR=nvim
+    alias v='nvim'
+elif command_exists vim
+then
+    export EDITOR=vim
+    alias v='vim'
+elif command_exists vi
+then
+    export EDITOR=vi
+    alias v='vi'
+elif command_exists nano
+then
+    export EDITOR=nano
+    alias v='nano'
+else
+    echo "NO EDITOR FOUND"
+fi
+
 export BC_ENV_ARGS=~/.bcrc
 export LESS="-iMFXRj4Q"
 
@@ -29,15 +54,6 @@ bind '"jj":vi-movement-mode'
 export IGNOREEOF=4
 export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\v]\$ \[$(tput sgr0)\]"
 # Make info friendly
-
-includeme()
-{
-   # if [[ -f ~/.bashrc
-   echo "hello"
-   [[ -f ~/.bashrc.orig ]] || cp ~/.bashrc{,.orig}
-   echo "source ~/.bashrc.includeme" >> ~/.bashrc
-}
-
 minfo() { info "$1" --subnodes -o - 2> /dev/null | "$PAGER"; }
 
 # Functions
@@ -51,9 +67,9 @@ tcolors () {
 }
 
 
-sleep1 () while :; do "$@"; sleep 1; done
-sleep5 () while :; do "$@"; sleep 5; done
-sleep10 () while :; do "$@"; sleep 10; done
+sleep1 () { while :; do "$@"; sleep 1; done; }
+sleep5 () { while :; do "$@"; sleep 5; done; }
+sleep10 () { while :; do "$@"; sleep 10; done; }
 
 
 function xgetx { printf "%d args:" $#; printf "<%s>" "$@"; echo; }
@@ -64,23 +80,6 @@ ff () {
 
 flf () {
     find ./ -mount -iname "*$1*" -type f 2>/dev/null
-}
-
-# Function to generate a bash script template
-mksh()
-{
-
-    EDR="${EDITOR:-vim}"
-    RANNAME="$(cat /dev/urandom | tr -dc "[:alpha:]" | head -c 4)"
-
-    SCRIPTNAME="${1:-$RANNAME-mksh.sh}"
-
-    touch "$SCRIPTNAME" &&
-        chmod --preserve-root +x "$SCRIPTNAME" &&
-        echo '#!/usr/bin/env bash' >> "$SCRIPTNAME" &&
-        echo '' >> "$SCRIPTNAME" &&
-        echo 'set -euo pipefail' >> "$SCRIPTNAME" &&
-        "$EDR" "$SCRIPTNAME"
 }
 
 
@@ -114,49 +113,38 @@ export HISTTIMEFORMAT='%F %T '
 CDPATH=".:~:"
 
 
-######################################
-#
-# alias
-#
-#####################################
-
-######################################
-# Safety
-######################################
-
-######################################
-# For ps
-######################################
 alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,pidns,utsns,ipcns,mntns,netns,cmd'
 alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
 alias nps='ps -N --ppid 2 -o pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
 
 
-
-# alias vim="nvim"
-[[ -x $(command -v nvim) ]] && alias v="$(command -v nvim)"
+# Existing
+alias chown='chown --preserve-root'
+alias iptables='iptables -v'
+alias wget='wget -c'
+alias bc='bc -l'
+alias dmesg='dmesg --color=always'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
+alias cp='cp -i -v'
+alias grep='grep -i --color=auto'
+alias mv='mv -i -v'
+alias rm='rm -v -I --preserve-root'
+alias df='df -H'
+alias du='du -ch'
 alias ls='ls -F -h --color=always --time-style=long-iso'
+#
+#
+#
 alias l='ls -l -aF'
 alias ll='ls -AFlSrh --color=auto --group-directories-first'
 alias ltr='ls -AFltrh --color=auto'
 alias lt='ls -AFlth --color=auto'
-alias g='grep -i --color=auto'
-alias grep='grep -i --color=auto'
-alias cp='cp -i -v'
-alias mv='mv -i -v'
-alias rm='rm -v -I --preserve-root'
-alias chown='chown --preserve-root'
-alias chmod='chmod --preserve-root'
-alias chgrp='chgrp --preserve-root'
+alias g='grep'
 alias pg="pcre2grep -i"
 alias path='echo -e ${PATH//:/\\n}'
-alias dmesg='dmesg --color=always'
-alias df='df -H'
-alias du='du -ch'
 alias now='date +"%T"'
 alias j='jobs -l'
-alias bc='bc -l'
-alias wget='wget -c'
 alias acurl='curl -s -A "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0"'
 ## shortcut  for iptables and pass it via sudo#
 alias ipt='sudo /sbin/iptables'
