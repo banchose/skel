@@ -112,6 +112,8 @@ export HISTTIMEFORMAT='%F %T '
 
 CDPATH=".:~:"
 
+# Allows aliases to work with sudo
+# alias sudo='sudo '
 
 alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,pidns,utsns,ipcns,mntns,netns,cmd'
 alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
