@@ -8,39 +8,32 @@ echo "${BASH_SOURCE[0]}"
 
 umask 022
 
-
 # Unique Bash version check
-if ((BASH_VERSINFO[0] < 4))
-then
-  echo "You may be running an older version of Bash: ${BASH_VERSINFO[0]}."
+if ((BASH_VERSINFO[0] < 4)); then
+	echo "You may be running an older version of Bash: ${BASH_VERSINFO[0]}."
 fi
-
 
 ######################################
 # Set the editor and editor alias
 ######################################
-command_exists () {
-    command -v "$1" 1>&2 >/dev/null
+command_exists() {
+	command -v "$1" 1>&2 >/dev/null
 }
 
-if command_exists nvim 1>&2 >/dev/null
-then
-    export EDITOR=nvim
-    alias v='nvim'
-elif command_exists vim
-then
-    export EDITOR=vim
-    alias v='vim'
-elif command_exists vi
-then
-    export EDITOR=vi
-    alias v='vi'
-elif command_exists nano
-then
-    export EDITOR=nano
-    alias v='nano'
+if command_exists nvim 1>&2 >/dev/null; then
+	export EDITOR=nvim
+	alias v='nvim'
+elif command_exists vim; then
+	export EDITOR=vim
+	alias v='vim'
+elif command_exists vi; then
+	export EDITOR=vi
+	alias v='vi'
+elif command_exists nano; then
+	export EDITOR=nano
+	alias v='nano'
 else
-    echo "NO EDITOR FOUND"
+	echo "NO EDITOR FOUND"
 fi
 
 export BC_ENV_ARGS=~/.bcrc
@@ -54,53 +47,70 @@ bind '"jj":vi-movement-mode'
 export IGNOREEOF=4
 export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\v]\$ \[$(tput sgr0)\]"
 # Make info friendly
-minfo() { info "$1" --subnodes -o - 2> /dev/null | "$PAGER"; }
+minfo() { info "$1" --subnodes -o - 2>/dev/null | "$PAGER"; }
 
 # Functions
-psnk () {
-    ps --ppid 2 -p 2 --deselect
+psnk() {
+	ps --ppid 2 -p 2 --deselect
 }
 
-tcolors () {
+tcolors() {
 
-    for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done
+	for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done
 }
 
-
-sleep1 () { while :; do "$@"; sleep 1; done; }
-sleep5 () { while :; do "$@"; sleep 5; done; }
-sleep10 () { while :; do "$@"; sleep 10; done; }
-
-
-function xgetx { printf "%d args:" $#; printf "<%s>" "$@"; echo; }
-
-ff () {
-    find / -mount -iname "*$1*" -type f 2>/dev/null
+checkip() {
+	exec 3<>/dev/tcp/checkip.amazonaws.com/80
+	printf "GET / HTTP/1.1\r\nHost: checkip.amazonaws.com\r\nConnection: close\r\n\r\n" >&3
+	tail -n1 <&3
 }
 
-flf () {
-    find ./ -mount -iname "*$1*" -type f 2>/dev/null
+sleep1() { while :; do
+	"$@"
+	sleep 1
+done; }
+
+sleep5() { while :; do
+	"$@"
+	sleep 5
+done; }
+
+sleep10() { while :; do
+	"$@"
+	sleep 10
+done; }
+
+function xgetx {
+	printf "%d args:" $#
+	printf "<%s>" "$@"
+	echo
 }
 
+ff() {
+	find / -mount -iname "*$1*" -type f 2>/dev/null
+}
 
-function vr () { nvim -R "${@}"; }
+flf() {
+	find ./ -mount -iname "*$1*" -type f 2>/dev/null
+}
+
+function vr() { nvim -R "${@}"; }
 
 ## GENERAL OPTIONS ##
 
 set -o noclobber
 
-
 PROMPT_DIRTRIM=10
 
-shopt -s globstar 2> /dev/null
+shopt -s globstar 2>/dev/null
 shopt -s checkwinsize
-shopt -s nocaseglob;
+shopt -s nocaseglob
 shopt -s histverify
 shopt -s histappend
 shopt -s cmdhist
-shopt -s autocd 2> /dev/null
-shopt -s dirspell 2> /dev/null
-shopt -s cdspell 2> /dev/null
+shopt -s autocd 2>/dev/null
+shopt -s dirspell 2>/dev/null
+shopt -s cdspell 2>/dev/null
 shopt -s cdable_vars
 PROMPT_COMMAND='history -a'
 export HISTSIZE=50000
@@ -108,7 +118,6 @@ export HISTFILESIZE=10000
 export HISTCONTROL="ignorespace:erasedups"
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 export HISTTIMEFORMAT='%F %T '
-
 
 CDPATH=".:~:"
 
@@ -118,7 +127,6 @@ CDPATH=".:~:"
 alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,pidns,utsns,ipcns,mntns,netns,cmd'
 alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
 alias nps='ps -N --ppid 2 -o pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
-
 
 # Existing
 alias chown='chown --preserve-root'
@@ -135,6 +143,7 @@ alias rm='rm -v -I --preserve-root'
 alias df='df -H'
 alias du='du -ch'
 alias ls='ls -F -h --color=always --time-style=long-iso'
+alias ag='ag --hidden --ignore gitdir'
 #
 #
 #
@@ -176,3 +185,14 @@ alias jlb='journalctl --list-boots'
 alias loada='cat /proc/loadavg | cut -c 1-4 | echo "scale=2; ($(</dev/stdin)/`nproc`)*100" | bc -l'
 alias cpuinfo='lscpu'
 alias xlsblk='lsblk -o name,mountpoint,fstype,size,fsused,pttype,model,vendor,serial,uuid,partuuid'
+
+###### A directory of bash init files
+
+# if [[ -d ${home_bashrc_directory} ]]; then
+# 	echo "Running ${home_bashrc_directory} scripts"
+# 	for profile in "${home_bashrc_directory:-/dev/null}/"*.sh; do
+# 		echo "PROFILE-LOOP: $profile"
+# 		[[ -r "$profile" ]] && . "$profile"
+# 	done
+# 	unset profile
+# fi
