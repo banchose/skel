@@ -193,6 +193,7 @@ fi
 # sudo pacman -S imv --needed # wayland image viewer
 ## HW Accel
 # sudo pacman -S libva-mesa-driver --needed
+# sudo pacman -S libva-utils  --needed
 
 # Applications
 # sudo pacman -S zathura --needed # super cust pdf,epub reader
