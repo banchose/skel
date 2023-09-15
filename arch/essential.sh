@@ -96,6 +96,7 @@ sudo pacman -S iotop --needed --noconfirm
 sudo pacman -S ncftp --needed --noconfirm
 sudo pacman -S httpie --needed --noconfirm
 sudo pacman -S dos2unix --needed --noconfirm
+sudo pacman -S python-pynvim --needed --noconfirm
 # New arch are missing these
 sudo pacman -S gcc --needed --noconfirm
 sudo pacman -S binutils --needed --noconfirm
@@ -184,6 +185,13 @@ sudo pacman -S words --needed --noconfirm
 # sudo pacman -S neofetch  --needed --noconfirm
 # sudo pacman -S firejail --needed --noconfirm
 # sudo pacman -S ldns    --needed --noconfirm
+#
+# Arch Linux but where else would I be running it?
+if grep -q 'archlinux' /proc/version; then
+	sudo pacman -S arch-wiki-lite --needed --noconfirm
+	sudo pacman -S reflector --needed --noconfirm
+fi
+#
 # if (sudo dmidecode | grep -iq "Manufacturer: QEMU"); then
 #   sudo pacman -S qemu-guest-agent --needed --noconfirm
 #   sudo pacman -S spice-vdagent --needed --noconfirm
@@ -202,6 +210,9 @@ sudo pacman -S words --needed --noconfirm
 # sudo pacman -S alacritty --needed
 # sudo pacman -S waybar --needed
 # sudo pacman -S imv --needed # wayland image viewer
+## HW Accel
+# sudo pacman -S libva-mesa-driver --needed
+# sudo pacman -S libva-utils  --needed
 
 # Applications
 # sudo pacman -S zathura --needed # super cust pdf,epub reader
