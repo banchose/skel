@@ -139,6 +139,8 @@ sudo pacman -S rust --needed --noconfirm
 sudo pacman -S neovim --needed --noconfirm
 sudo pacman -S tree-sitter-cli --needed --noconfirm
 sudo pacman -S python-pynvim --needed --noconfirm
+sudo pacman -S i2c-tools --needed --noconfirm
+sudo pacman -S acpica --needed --noconfirm
 
 # Arch Linux hrd cor
 if grep -q 'archlinux' /proc/version; then
@@ -206,22 +208,22 @@ fi
 # Graphical
 ##############################################
 # Wayland
-# sudo pacman -S wl-clipboard --needed
-# sudo pacman -S alacritty --needed
-# sudo pacman -S waybar --needed
-# sudo pacman -S imv --needed # wayland image viewer
+# sudo pacman -S wl-clipboard --needed --noconfirm
+# sudo pacman -S alacritty --needed --noconfirm
+# sudo pacman -S waybar --needed --noconfirm
+# sudo pacman -S imv --needed --noconfirm # wayland image viewer
 ## HW Accel
-# sudo pacman -S libva-mesa-driver --needed
-# sudo pacman -S libva-utils  --needed
+# sudo pacman -S libva-mesa-driver --needed --noconfirm
+# sudo pacman -S libva-utils  --needed --noconfirm
 
 # Applications
-# sudo pacman -S zathura --needed # super cust pdf,epub reader
-# sudo pacman -S zathura-pdf-mupdf --needed
+# sudo pacman -S zathura --needed --noconfirm # super cust pdf,epub reader
+# sudo pacman -S zathura-pdf-mupdf --needed --noconfirm
 
 # Fonts
 
-# sudo pacman -S noto-fonts --needed
-# sudo pacman -S ttf-dejavu  --needed
-# sudo pacman -S ttf-liberation --needed
-# sudo pacman -S noto-fonts-cjk  --needed
-# sudo pacman -S ttf-nerd-fonts-symbols  --needed
+# sudo pacman -S noto-fonts --needed --noconfirm
+# sudo pacman -S ttf-dejavu  --needed --noconfirm
+# sudo pacman -S ttf-liberation --needed --noconfirm
+# sudo pacman -S noto-fonts-cjk  --needed --noconfirm
+# sudo pacman -S ttf-nerd-fonts-symbols  --needed --noconfirm
