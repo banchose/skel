@@ -215,6 +215,8 @@ fi
 ## HW Accel
 # sudo pacman -S libva-mesa-driver --needed --noconfirm
 # sudo pacman -S libva-utils  --needed --noconfirm
+# sudo pacman -S grim  --needed --noconfirm
+# sudo pacman -S slurp  --needed --noconfirm
 
 # Applications
 # sudo pacman -S zathura --needed --noconfirm # super cust pdf,epub reader
