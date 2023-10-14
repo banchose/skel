@@ -28,6 +28,7 @@ sudo timedatectl set-ntp true
 sudo pacman -S base --needed -noconfirm
 sudo pacman -S base-devel --needed -noconfirm
 sudo pacman -S openssh --needed --noconfirm
+sudo pacman -S openssl --needed --noconfirm
 sudo pacman -S iputils --needed --noconfirm # has ping
 sudo pacman -S iproute2 --needed --noconfirm
 sudo pacman -S lvm2 --needed --noconfirm
@@ -141,6 +142,14 @@ sudo pacman -S tree-sitter-cli --needed --noconfirm
 sudo pacman -S python-pynvim --needed --noconfirm
 sudo pacman -S i2c-tools --needed --noconfirm
 sudo pacman -S acpica --needed --noconfirm
+sudo pacman -S syncthing --needed --noconfirm
+sudo pacman -S reflector --needed --noconfirm
+sudo pacman hexyl --needed --noconfirm
+sudo pacman -S bat --needed --noconfirm
+sudo pacman -S ranger --needed --noconfirm
+# sudo pacman -S yt-dlp --needed --noconfirm
+# sudo pacman -S aws-cli --needed --noconfirm
+# sudo pacman -S neofetch  --needed --noconfirm
 
 # Arch Linux hrd cor
 if grep -q 'archlinux' /proc/version; then
@@ -155,12 +164,12 @@ fi
 # makepkg -si
 
 # Pipewire
-# sudo pacman wireplumber --needed
-## sudo pacman -S pipewire-alsa --needed
-# sudo pacman -S pipewire-pulse --needed
+# sudo pacman wireplumber --needed --noconfirm
+## sudo pacman -S pipewire-alsa --needed --noconfirm
+# sudo pacman -S pipewire-pulse --needed --noconfirm
 
 # BCC - drags in LLVM
-# pacman -S linux-headers --needed
+# pacman -S linux-headers --needed --noconfirm
 # yay -S bcc --needed       # /usr/share/bcc/{examples,introspection}
 # yay -S bcc-tools --needed # /usr/share/bcc/{tools,man}
 # yay -S python-bcc --needed
@@ -168,39 +177,23 @@ fi
 
 # Spelling
 
+sudo pacman -S words --needed --noconfirm
 sudo pacman -S hunspell --needed --noconfirm
 sudo pacman -S hunspell-en_US --needed --noconfirm
 
-# Wireless
-# sudo pacman -S dialog --needed --noconfirm
-# sudo pacman -S wifi-menu --needed --noconfirm
-# sudo pacman -S wpa_supplicant --needed --noconfirm
+#LEGACY#### Wireless ####LEGACY#
+#### sudo pacman -S dialog --needed --noconfirm
+#### sudo pacman -S wifi-menu --needed --noconfirm
+#### sudo pacman -S wpa_supplicant --needed --noconfirm
 
-# Extra no X
-sudo pacman hexyl --needed --noconfirm
-sudo pacman -S bat --needed --noconfirm
-sudo pacman -S ranger --needed --noconfirm
-# sudo pacman -S yt-dlp --needed --noconfirm
-
-# Very extra no X
-sudo pacman -S words --needed --noconfirm
-# sudo pacman -S neofetch  --needed --noconfirm
-# sudo pacman -S firejail --needed --noconfirm
-# sudo pacman -S ldns    --needed --noconfirm
 #
-# Arch Linux but where else would I be running it?
-if grep -q 'archlinux' /proc/version; then
-	sudo pacman -S arch-wiki-lite --needed --noconfirm
-	sudo pacman -S reflector --needed --noconfirm
-fi
-#
-# if (sudo dmidecode | grep -iq "Manufacturer: QEMU"); then
-#   sudo pacman -S qemu-guest-agent --needed --noconfirm
-#   sudo pacman -S spice-vdagent --needed --noconfirm
-#   # gpg --recv-keys --keyserver hkp://pgp.mit.edu A9D8C21429AC6C82
-#   sudo pacman -S xf86-video-qxl --needed --noconfirm
-#   sudo systemctl --now enable qemu-ga
-#   sudo systemctl --now enable spice-vdagentd
+if (sudo dmidecode | grep -iq "Manufacturer: QEMU"); then
+   sudo pacman -S qemu-guest-agent --needed --noconfirm
+   # sudo pacman -S spice-vdagent --needed --noconfirm
+   # gpg --recv-keys --keyserver hkp://pgp.mit.edu A9D8C21429AC6C82
+  # sudo pacman -S xf86-video-qxl --needed --noconfirm
+  sudo systemctl --now enable qemu-ga
+  # sudo systemctl --now enable spice-vdagentd
 #   # # # xrandr --output Virtual-0 --mode 1920x1080
 # fi
 
