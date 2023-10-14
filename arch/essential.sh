@@ -144,12 +144,14 @@ sudo pacman -S i2c-tools --needed --noconfirm
 sudo pacman -S acpica --needed --noconfirm
 sudo pacman -S syncthing --needed --noconfirm
 sudo pacman -S reflector --needed --noconfirm
-sudo pacman hexyl --needed --noconfirm
+sudo pacman -S hexyl --needed --noconfirm
 sudo pacman -S bat --needed --noconfirm
 sudo pacman -S ranger --needed --noconfirm
+sudo pacman -S shellcheck --needed --noconfirm
 # sudo pacman -S yt-dlp --needed --noconfirm
 # sudo pacman -S aws-cli --needed --noconfirm
 # sudo pacman -S neofetch  --needed --noconfirm
+# sudo pacman -S parallel parallel-docs --needed --noconfirm
 
 # Arch Linux hrd cor
 if grep -q 'archlinux' /proc/version; then
@@ -181,21 +183,20 @@ sudo pacman -S words --needed --noconfirm
 sudo pacman -S hunspell --needed --noconfirm
 sudo pacman -S hunspell-en_US --needed --noconfirm
 
-#LEGACY#### Wireless ####LEGACY#
+#### ###LEGACY#### Wireless ####LEGACY#
 #### sudo pacman -S dialog --needed --noconfirm
 #### sudo pacman -S wifi-menu --needed --noconfirm
 #### sudo pacman -S wpa_supplicant --needed --noconfirm
 
 #
 if (sudo dmidecode | grep -iq "Manufacturer: QEMU"); then
-   sudo pacman -S qemu-guest-agent --needed --noconfirm
-   # sudo pacman -S spice-vdagent --needed --noconfirm
-   # gpg --recv-keys --keyserver hkp://pgp.mit.edu A9D8C21429AC6C82
-  # sudo pacman -S xf86-video-qxl --needed --noconfirm
-  sudo systemctl --now enable qemu-ga
-  # sudo systemctl --now enable spice-vdagentd
+	sudo pacman -S qemu-guest-agent --needed --noconfirm
+	sudo systemctl --now enable qemu-ga --needed --noconfirm
+	# sudo pacman -S spice-vdagent --needed --noconfirm
+	# sudo pacman -S xf86-video-qxl --needed --noconfirm
+	# sudo systemctl --now enable spice-vdagentd
 #   # # # xrandr --output Virtual-0 --mode 1920x1080
-# fi
+fi
 
 ##############################################
 # Graphical
@@ -222,3 +223,4 @@ if (sudo dmidecode | grep -iq "Manufacturer: QEMU"); then
 # sudo pacman -S ttf-liberation --needed --noconfirm
 # sudo pacman -S noto-fonts-cjk  --needed --noconfirm
 # sudo pacman -S ttf-nerd-fonts-symbols  --needed --noconfirm
+sudo pacman -S ttf-bitstream-vera --needed --noconfirm
