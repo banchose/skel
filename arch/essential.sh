@@ -29,6 +29,7 @@ sudo pacman -S base --needed -noconfirm
 sudo pacman -S base-devel --needed -noconfirm
 sudo pacman -S openssh --needed --noconfirm
 sudo pacman -S openssl --needed --noconfirm
+sudo pacman -S lvm2 --needed --noconfirm
 sudo pacman -S iputils --needed --noconfirm # has ping
 sudo pacman -S iproute2 --needed --noconfirm
 sudo pacman -S man --needed --noconfirm
@@ -125,7 +126,6 @@ sudo pacman -S curl --needed --noconfirm
 sudo pacman -S arch-wiki-lite --needed --noconfirm
 sudo pacman -S arch-wiki-docs --needed --noconfirm
 # No VM
-sudo pacman -S lvm2 --needed --noconfirm
 sudo pacman -S nvme-cli --needed --noconfirm
 sudo pacman -S lsscsi --needed --noconfirm
 sudo pacman -S wol --needed --noconfirm
