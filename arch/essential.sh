@@ -31,8 +31,6 @@ sudo pacman -S openssh --needed --noconfirm
 sudo pacman -S openssl --needed --noconfirm
 sudo pacman -S iputils --needed --noconfirm # has ping
 sudo pacman -S iproute2 --needed --noconfirm
-sudo pacman -S lvm2 --needed --noconfirm
-sudo pacman -S nvme-cli --needed --noconfirm
 sudo pacman -S man --needed --noconfirm
 sudo pacman -S man-db --needed --noconfirm
 sudo pacman -S binutils --needed --noconfirm
@@ -77,13 +75,10 @@ sudo pacman -S openvpn --needed --noconfirm
 sudo pacman -S iostat --needed --noconfirm
 sudo pacman -S bind-tools --needed --noconfirm
 sudo pacman -S ethtool --needed --noconfirm
-sudo pacman -S wol --needed --noconfirm
 sudo pacman -S wireshark-cli --needed --noconfirm
 sudo pacman -S pwgen --needed --noconfirm
 sudo pacman -S nethogs --needed --noconfirm
 sudo pacman -S httping --needed --noconfirm
-sudo pacman -S lsscsi --needed --noconfirm
-sudo pacman -S hdparm --needed --noconfirm
 sudo pacman -S minicom --needed --noconfirm
 sudo pacman -S pigz --needed --noconfirm
 sudo pacman -S wireguard-tools --needed --noconfirm
@@ -114,7 +109,6 @@ sudo pacman -S inetutils --needed --noconfirm
 # gcc make which fakeroot and needed for makepkg
 sudo pacman -S go --needed --noconfirm
 sudo pacman -S exfat-utils --needed --noconfirm
-sudo pacman -S libsecret --needed --noconfirm
 sudo pacman -S rsync --needed --noconfirm
 sudo pacman -S rclone --needed --noconfirm
 # Find damn you
@@ -127,23 +121,32 @@ sudo pacman -S step-cli --needed --noconfirm
 sudo pacman -S wget --needed --noconfirm
 sudo pacman -S aria2 --needed --noconfirm
 sudo pacman -S curl --needed --noconfirm
+# Arch
 sudo pacman -S arch-wiki-lite --needed --noconfirm
 sudo pacman -S arch-wiki-docs --needed --noconfirm
+# No VM
+sudo pacman -S lvm2 --needed --noconfirm
+sudo pacman -S nvme-cli --needed --noconfirm
+sudo pacman -S lsscsi --needed --noconfirm
+sudo pacman -S wol --needed --noconfirm
+sudo pacman -S hdparm --needed --noconfirm
+sudo pacman -S libsecret --needed --noconfirm
+
 # Experimental
 sudo pacman -S tidy --needed --noconfirm
 sudo pacman -S httrack --needed --noconfirm
-sudo pacman -S lm_sensors --needed --noconfirm
-sudo pacman -S reflector --needed --noconfirm
+# sudo pacman -S lm_sensors --needed --noconfirm
+# sudo pacman -S reflector --needed --noconfirm
 
 sudo pacman -S udiskie --needed --noconfirm
 sudo pacman -S rust --needed --noconfirm
 sudo pacman -S neovim --needed --noconfirm
 sudo pacman -S tree-sitter-cli --needed --noconfirm
 sudo pacman -S python-pynvim --needed --noconfirm
-sudo pacman -S i2c-tools --needed --noconfirm
+# sudo pacman -S i2c-tools --needed --noconfirm
 sudo pacman -S acpica --needed --noconfirm
 sudo pacman -S syncthing --needed --noconfirm
-sudo pacman -S reflector --needed --noconfirm
+# sudo pacman -S reflector --needed --noconfirm
 sudo pacman -S hexyl --needed --noconfirm
 sudo pacman -S bat --needed --noconfirm
 sudo pacman -S ranger --needed --noconfirm
@@ -152,12 +155,6 @@ sudo pacman -S shellcheck --needed --noconfirm
 # sudo pacman -S aws-cli --needed --noconfirm
 # sudo pacman -S neofetch  --needed --noconfirm
 # sudo pacman -S parallel parallel-docs --needed --noconfirm
-
-# Arch Linux hrd cor
-if grep -q 'archlinux' /proc/version; then
-	sudo pacman -S arch-wiki-lite --needed --noconfirm
-	sudo pacman -S arch-wiki-docs --needed --noconfirm
-fi
 
 # yay
 # sudo pacman -S base-devel --needed --noconfirm # req for makepkg
@@ -223,4 +220,4 @@ fi
 # sudo pacman -S ttf-liberation --needed --noconfirm
 # sudo pacman -S noto-fonts-cjk  --needed --noconfirm
 # sudo pacman -S ttf-nerd-fonts-symbols  --needed --noconfirm
-sudo pacman -S ttf-bitstream-vera --needed --noconfirm
+# sudo pacman -S ttf-bitstream-vera --needed --noconfirm
