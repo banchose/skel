@@ -87,6 +87,7 @@ sudo pacman -S iw --needed --noconfirm
 sudo pacman -S iwd --needed --noconfirm
 # sudo pacman -S ntfs-3g --needed --noconfirm
 sudo pacman -S mlocate --needed --noconfirm
+sudo pacman -S micro --needed --noconfirm
 sudo pacman -S iperf3 --needed --noconfirm
 sudo pacman -S sysstat --needed --noconfirm # iostat, mpstat,pidstat,sar,...
 sudo pacman -S iotop --needed --noconfirm
