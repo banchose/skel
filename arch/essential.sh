@@ -124,6 +124,7 @@ sudo pacman -S wget --needed --noconfirm
 sudo pacman -S aria2 --needed --noconfirm
 sudo pacman -S curl --needed --noconfirm
 # No VM
+sudo pacman -S veracrypt --needed --noconfirm
 sudo pacman -S nvme-cli --needed --noconfirm
 sudo pacman -S lsscsi --needed --noconfirm
 sudo pacman -S wol --needed --noconfirm
@@ -132,6 +133,7 @@ sudo pacman -S libsecret --needed --noconfirm
 
 # Docs
 # sudo pacman -S linux-docs --needed --noconfirm
+sudo pacman -S hping --needed --noconfirm
 sudo pacman -S arch-wiki-lite --needed --noconfirm
 sudo pacman -S arch-wiki-docs --needed --noconfirm
 
