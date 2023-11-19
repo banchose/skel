@@ -94,7 +94,10 @@ sudo pacman -S iotop --needed --noconfirm
 sudo pacman -S ncftp --needed --noconfirm
 sudo pacman -S httpie --needed --noconfirm
 sudo pacman -S dos2unix --needed --noconfirm
+sudo pacman -S python --needed --noconfirm
+sudo pacman -S python-pip --needed --noconfirm
 sudo pacman -S python-pynvim --needed --noconfirm
+sudo pacman -S python-pdftotext --needed --noconfirm
 # New arch are missing these
 sudo pacman -S gcc --needed --noconfirm
 sudo pacman -S binutils --needed --noconfirm
