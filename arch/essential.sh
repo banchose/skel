@@ -212,6 +212,7 @@ fi
 # Wayland
 # sudo pacman -S wl-clipboard --needed --noconfirm
 # sudo pacman -S alacritty --needed --noconfirm
+# sudo pacman -S wev --needed --noconfirm
 # sudo pacman -S waybar --needed --noconfirm
 # sudo pacman -S imv --needed --noconfirm # wayland image viewer
 ## HW Accel
