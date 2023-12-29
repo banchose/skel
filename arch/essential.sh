@@ -23,6 +23,12 @@
 
 sudo timedatectl set-ntp true
 
+# Qemu
+
+# sudo pacman -S qemu  # or desktop
+# sudo pacman -S qemu-docs
+# sudo pacman -S qemu-tools
+
 # Essential Packages
 
 sudo pacman -S base --needed -noconfirm
@@ -180,10 +186,10 @@ sudo pacman -S shellcheck --needed --noconfirm
 
 # BCC - drags in LLVM
 # pacman -S linux-headers --needed --noconfirm
-# yay -S bcc --needed       # /usr/share/bcc/{examples,introspection}
-# yay -S bcc-tools --needed # /usr/share/bcc/{tools,man}
-# yay -S python-bcc --needed
-# yay -S bpftrace --needed
+# yay -S bcc --needed  --noconfirm     # /usr/share/bcc/{examples,introspection}
+# yay -S bcc-tools --needed --noconfirm # /usr/share/bcc/{tools,man}
+# yay -S python-bcc --needed --noconfirm
+# yay -S bpftrace --needed --noconfirm
 
 # Spelling
 
@@ -208,8 +214,8 @@ fi
 
 ##############################################
 # Graphical
-##############################################
 # Wayland
+##############################################
 # sudo pacman -S wl-clipboard --needed --noconfirm
 # sudo pacman -S alacritty --needed --noconfirm
 # sudo pacman -S wev --needed --noconfirm
