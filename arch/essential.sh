@@ -29,6 +29,10 @@ sudo timedatectl set-ntp true
 # sudo pacman -S qemu-docs
 # sudo pacman -S qemu-tools
 
+# Arch Install
+#
+# sudo pacamn -S archinstall --needed --noconfirm
+
 # Essential Packages
 
 sudo pacman -S base --needed -noconfirm
