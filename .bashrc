@@ -13,6 +13,26 @@ if ((BASH_VERSINFO[0] < 4)); then
 	echo "You may be running an older version of Bash: ${BASH_VERSINFO[0]}."
 fi
 
+###
+# SSH Agent
+###
+
+loadAgent2() {
+
+	# This is already defined in ~/.bashrc_zen.d/ssh.sh as loadAgent
+	# But good to have
+
+	if ! pgrep -u "$USER" ssh-agent >/dev/null; then
+		ssh-agent -t 1h >"$XDG_RUNTIME_DIR/ssh-agent.env"
+	fi
+	if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+		source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
+	fi
+}
+
+# Then call it
+# loadAgent2
+
 ######################################
 # Set the editor and editor alias
 ######################################
