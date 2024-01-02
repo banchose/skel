@@ -55,6 +55,13 @@ sudo pacman -S vi --needed --noconfirm
 sudo pacman -S bash-completion --needed --noconfirm
 sudo pacman -S nano --needed --noconfirm
 sudo pacman -S lshw --needed --noconfirm
+sudo pacman -S inxi --needed --noconfirm
+sudo pacman -S vulkan-tools --needed --noconfirm
+sudo pacman -S mesa-utils --needed --noconfirm
+sudo pacman -S ipmitool --needed --noconfirm
+sudo pacman -S hddtemp --needed --noconfirm
+sudo pacman -S smartmontools --needed --noconfirm
+sudo pacman -S freeipmi --needed --noconfirm
 sudo pacman -S lsof --needed --noconfirm
 sudo pacman -S socat --needed --noconfirm
 sudo pacman -S tmux --needed --noconfirm
