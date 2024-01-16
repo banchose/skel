@@ -29,6 +29,14 @@ sudo timedatectl set-ntp true
 # sudo pacman -S qemu-docs
 # sudo pacman -S qemu-tools
 
+# Docker
+sudo pacman -S docker --needed -noconfirm
+sudo pacman -S docker-compose --needed -noconfirm
+
+# LXD
+
+sudo pacman -S lxd --needed -noconfirm
+
 # Arch Install
 #
 # sudo pacamn -S archinstall --needed --noconfirm
@@ -184,6 +192,12 @@ sudo pacman -S shellcheck --needed --noconfirm
 # sudo pacman -S aws-cli --needed --noconfirm
 # sudo pacman -S neofetch  --needed --noconfirm
 # sudo pacman -S parallel parallel-docs --needed --noconfirm
+
+sudo pacman -S fzf --needed --noconfirm
+sudo pacman -S bolt --needed --noconfirm
+sudo pacman -S mpv --needed --noconfirm
+sudo pacman -S imagemagik --needed --noconfirm
+
 
 # yay
 # sudo pacman -S base-devel --needed --noconfirm # req for makepkg
