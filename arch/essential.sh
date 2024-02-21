@@ -30,21 +30,24 @@ sudo timedatectl set-ntp true
 # sudo pacman -S qemu-tools
 
 # Docker
-sudo pacman -S docker --needed -noconfirm
-sudo pacman -S docker-compose --needed -noconfirm
+sudo pacman -S docker --needed --noconfirm
+sudo pacman -S docker-compose --needed --noconfirm
 
 # LXD
 
-sudo pacman -S lxd --needed -noconfirm
+sudo pacman -S lxd --needed --noconfirm
 
 # Arch Install
 #
 # sudo pacamn -S archinstall --needed --noconfirm
 
-# Essential Packages
+# Bluetooth
+sudo pacman -S bluez bluez-utils --needed --noconfirm
 
-sudo pacman -S base --needed -noconfirm
-sudo pacman -S base-devel --needed -noconfirm
+## LOOK UP
+
+sudo pacman -S base --needed --noconfirm
+sudo pacman -S base-devel --needed --noconfirm
 sudo pacman -S openssh --needed --noconfirm
 sudo pacman -S openssl --needed --noconfirm
 sudo pacman -S lvm2 --needed --noconfirm
@@ -159,6 +162,7 @@ sudo pacman -S lsscsi --needed --noconfirm
 sudo pacman -S wol --needed --noconfirm
 sudo pacman -S hdparm --needed --noconfirm
 sudo pacman -S libsecret --needed --noconfirm
+
 
 # Docs
 # sudo pacman -S linux-docs --needed --noconfirm
