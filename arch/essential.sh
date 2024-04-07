@@ -44,13 +44,33 @@ sudo pacman -S lxd --needed --noconfirm
 # Bluetooth
 sudo pacman -S bluez bluez-utils --needed --noconfirm
 
-## LOOK UP
+# what
+sudo pacman -S usbutils --needed --noconfirm
+sudo pacman -S lvm2 --needed --noconfirm
+sudo pacman -S dmidecode --needed --noconfirm
+sudo pacman -S lshw --needed --noconfirm
+sudo pacman -S inxi --needed --noconfirm
+sudo pacman -S hddtemp --needed --noconfirm
+sudo pacman -S smartmontools --needed --noconfirm
+sudo pacman -S freeipmi --needed --noconfirm
+sudo pacman -S ipmitool --needed --noconfirm
+sudo pacman -S iostat --needed --noconfirm
+sudo pacman -S wireguard-tools --needed --noconfirm
+sudo pacman -S iw --needed --noconfirm
+sudo pacman -S iwd --needed --noconfirm
+sudo pacman -S sysstat --needed --noconfirm # iostat, mpstat,pidstat,sar,...
+sudo pacman -S iotop --needed --noconfirm
+sudo pacman -S nvme-cli --needed --noconfirm
+sudo pacman -S lsscsi --needed --noconfirm
+sudo pacman -S wol --needed --noconfirm
+sudo pacman -S hdparm --needed --noconfirm
+sudo pacman -S lm_sensors --needed --noconfirm
 
 sudo pacman -S base --needed --noconfirm
 sudo pacman -S base-devel --needed --noconfirm
+## LOOK UP
 sudo pacman -S openssh --needed --noconfirm
 sudo pacman -S openssl --needed --noconfirm
-sudo pacman -S lvm2 --needed --noconfirm
 sudo pacman -S iputils --needed --noconfirm # has ping
 sudo pacman -S iproute2 --needed --noconfirm
 sudo pacman -S man --needed --noconfirm
@@ -58,21 +78,13 @@ sudo pacman -S man-db --needed --noconfirm
 sudo pacman -S binutils --needed --noconfirm
 sudo pacman -S man-pages --needed --noconfirm
 sudo pacman -S texinfo --needed --noconfirm
-sudo pacman -S usbutils --needed --noconfirm
 sudo pacman -S less --needed --noconfirm
-sudo pacman -S dmidecode --needed --noconfirm
 sudo pacman -S vim --needed --noconfirm
 sudo pacman -S vi --needed --noconfirm
 sudo pacman -S bash-completion --needed --noconfirm
 sudo pacman -S nano --needed --noconfirm
-sudo pacman -S lshw --needed --noconfirm
-sudo pacman -S inxi --needed --noconfirm
 sudo pacman -S vulkan-tools --needed --noconfirm
 sudo pacman -S mesa-utils --needed --noconfirm
-sudo pacman -S ipmitool --needed --noconfirm
-sudo pacman -S hddtemp --needed --noconfirm
-sudo pacman -S smartmontools --needed --noconfirm
-sudo pacman -S freeipmi --needed --noconfirm
 sudo pacman -S lsof --needed --noconfirm
 sudo pacman -S socat --needed --noconfirm
 sudo pacman -S tmux --needed --noconfirm
@@ -101,7 +113,6 @@ sudo pacman -S tree --needed --noconfirm
 sudo pacman -S ufw --needed --noconfirm
 sudo pacman -S ngrep --needed --noconfirm
 sudo pacman -S openvpn --needed --noconfirm
-sudo pacman -S iostat --needed --noconfirm
 sudo pacman -S bind-tools --needed --noconfirm
 sudo pacman -S ethtool --needed --noconfirm
 sudo pacman -S wireshark-cli --needed --noconfirm
@@ -110,15 +121,10 @@ sudo pacman -S nethogs --needed --noconfirm
 sudo pacman -S httping --needed --noconfirm
 sudo pacman -S minicom --needed --noconfirm
 sudo pacman -S pigz --needed --noconfirm
-sudo pacman -S wireguard-tools --needed --noconfirm
-sudo pacman -S iw --needed --noconfirm
-sudo pacman -S iwd --needed --noconfirm
 # sudo pacman -S ntfs-3g --needed --noconfirm
 sudo pacman -S mlocate --needed --noconfirm
 sudo pacman -S micro --needed --noconfirm
 sudo pacman -S iperf3 --needed --noconfirm
-sudo pacman -S sysstat --needed --noconfirm # iostat, mpstat,pidstat,sar,...
-sudo pacman -S iotop --needed --noconfirm
 sudo pacman -S ncftp --needed --noconfirm
 sudo pacman -S httpie --needed --noconfirm
 sudo pacman -S dos2unix --needed --noconfirm
@@ -157,12 +163,7 @@ sudo pacman -S aria2 --needed --noconfirm
 sudo pacman -S curl --needed --noconfirm
 # No VM
 sudo pacman -S veracrypt --needed --noconfirm
-sudo pacman -S nvme-cli --needed --noconfirm
-sudo pacman -S lsscsi --needed --noconfirm
-sudo pacman -S wol --needed --noconfirm
-sudo pacman -S hdparm --needed --noconfirm
 sudo pacman -S libsecret --needed --noconfirm
-
 
 # Docs
 # sudo pacman -S linux-docs --needed --noconfirm
@@ -175,7 +176,6 @@ sudo pacman -S devtools --needed --noconfirm
 # Experimental
 sudo pacman -S tidy --needed --noconfirm
 sudo pacman -S httrack --needed --noconfirm
-# sudo pacman -S lm_sensors --needed --noconfirm
 # sudo pacman -S reflector --needed --noconfirm
 
 sudo pacman -S udiskie --needed --noconfirm
@@ -198,16 +198,16 @@ sudo pacman -S shellcheck --needed --noconfirm
 # sudo pacman -S parallel parallel-docs --needed --noconfirm
 
 sudo pacman -S fzf --needed --noconfirm
-sudo pacman -S bolt --needed --noconfirm
-sudo pacman -S mpv --needed --noconfirm
-sudo pacman -S imagemagik --needed --noconfirm
-
+# sudo pacman -S bolt --needed --noconfirm
+# sudo pacman -S mpv --needed --noconfirm
+# sudo pacman -S imagemagik --needed --noconfirm
 
 # yay
-# sudo pacman -S base-devel --needed --noconfirm # req for makepkg
-# cd ~/temp;git clone https://aur.archlinux.org/yay.git
-# cd yay
-# makepkg -si
+sudo pacman -S base-devel --needed --noconfirm # req for makepkg
+cd ~/temp
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
 
 # Pipewire
 # sudo pacman wireplumber --needed --noconfirm
@@ -215,11 +215,11 @@ sudo pacman -S imagemagik --needed --noconfirm
 # sudo pacman -S pipewire-pulse --needed --noconfirm
 
 # BCC - drags in LLVM
-# pacman -S linux-headers --needed --noconfirm
-# yay -S bcc --needed  --noconfirm     # /usr/share/bcc/{examples,introspection}
-# yay -S bcc-tools --needed --noconfirm # /usr/share/bcc/{tools,man}
-# yay -S python-bcc --needed --noconfirm
-# yay -S bpftrace --needed --noconfirm
+pacman -S linux-headers --needed --noconfirm
+yay -S bcc --needed --noconfirm       # /usr/share/bcc/{examples,introspection}
+yay -S bcc-tools --needed --noconfirm # /usr/share/bcc/{tools,man}
+yay -S python-bcc --needed --noconfirm
+yay -S bpftrace --needed --noconfirm
 
 # Spelling
 
