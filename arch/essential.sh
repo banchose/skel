@@ -30,24 +30,21 @@ sudo timedatectl set-ntp true
 # sudo pacman -S qemu-tools
 
 # Docker
-sudo pacman -S docker --needed --noconfirm
-sudo pacman -S docker-compose --needed --noconfirm
+# sudo pacman -S docker --needed --noconfirm
+# sudo pacman -S docker-compose --needed --noconfirm
 
 # LXD
 
-sudo pacman -S lxd --needed --noconfirm
+# sudo pacman -S lxd --needed --noconfirm
 
 # Arch Install
 #
 # sudo pacamn -S archinstall --needed --noconfirm
 
-# Bluetooth
-sudo pacman -S bluez bluez-utils --needed --noconfirm
-
-# what
+# hardware
 sudo pacman -S usbutils --needed --noconfirm
+sudo pacman -S bluez bluez-utils --needed --noconfirm
 sudo pacman -S lvm2 --needed --noconfirm
-sudo pacman -S dmidecode --needed --noconfirm
 sudo pacman -S lshw --needed --noconfirm
 sudo pacman -S inxi --needed --noconfirm
 sudo pacman -S hddtemp --needed --noconfirm
@@ -66,11 +63,16 @@ sudo pacman -S wol --needed --noconfirm
 sudo pacman -S hdparm --needed --noconfirm
 sudo pacman -S lm_sensors --needed --noconfirm
 
+# Extra
+sudo pacman -S emacs-nox --needed --noconfirm
+
+## The Bases
 sudo pacman -S base --needed --noconfirm
 sudo pacman -S base-devel --needed --noconfirm
 ## LOOK UP
 sudo pacman -S openssh --needed --noconfirm
 sudo pacman -S openssl --needed --noconfirm
+sudo pacman -S dmidecode --needed --noconfirm
 sudo pacman -S iputils --needed --noconfirm # has ping
 sudo pacman -S iproute2 --needed --noconfirm
 sudo pacman -S man --needed --noconfirm
@@ -83,8 +85,6 @@ sudo pacman -S vim --needed --noconfirm
 sudo pacman -S vi --needed --noconfirm
 sudo pacman -S bash-completion --needed --noconfirm
 sudo pacman -S nano --needed --noconfirm
-sudo pacman -S vulkan-tools --needed --noconfirm
-sudo pacman -S mesa-utils --needed --noconfirm
 sudo pacman -S lsof --needed --noconfirm
 sudo pacman -S socat --needed --noconfirm
 sudo pacman -S tmux --needed --noconfirm
@@ -136,7 +136,6 @@ sudo pacman -S libqalculate --needed --noconfirm
 # New arch are missing these
 sudo pacman -S gcc --needed --noconfirm
 sudo pacman -S binutils --needed --noconfirm
-sudo pacman -S ltrace --needed --noconfirm
 sudo pacman -S make --needed --noconfirm
 sudo pacman -S cmake --needed --noconfirm
 sudo pacman -S linux-firmware --needed --noconfirm
@@ -248,14 +247,18 @@ fi
 ##############################################
 # sudo pacman -S wl-clipboard --needed --noconfirm
 # sudo pacman -S alacritty --needed --noconfirm
+# sudo pacman -S foot --needed --noconfirm
 # sudo pacman -S wev --needed --noconfirm
 # sudo pacman -S waybar --needed --noconfirm
 # sudo pacman -S imv --needed --noconfirm # wayland image viewer
+# sudo pacman -S rofi-lbonn-wayland --needed --noconfirm # wayland launcher
 ## HW Accel
 # sudo pacman -S libva-mesa-driver --needed --noconfirm
 # sudo pacman -S libva-utils  --needed --noconfirm
 # sudo pacman -S grim  --needed --noconfirm
 # sudo pacman -S slurp  --needed --noconfirm
+# sudo pacman -S vulkan-tools --needed --noconfirm
+# sudo pacman -S mesa-utils --needed --noconfirm
 
 # Applications
 # sudo pacman -S zathura --needed --noconfirm # super cust pdf,epub reader
