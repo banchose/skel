@@ -8,7 +8,7 @@ tell() {
 	fi
 
 	# Replace 'abc' with your actual authorization token
-	AUTH_TOKEN=""
+	AUTH_TOKEN="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"
 	MODEL="sonar-medium-online"
 	QUESTION="$1"
 	LOG=~/temp/perplexity_ai.log
@@ -33,7 +33,7 @@ tell() {
 		--header "accept: application/json" \
 		--header "authorization: Bearer $AUTH_TOKEN" \
 		--header "content-type: application/json" \
-		--data "$DATA" | jq '.choices[0].message.content' | sed -e 's/\"//g' -e 's/\\n/\n/g' | tee --append "$LOG" | fmt
+		--data "$DATA" | jq '.choices[0].message.content' | sed -e 's/\"//g' -e 's/\\n/\n/g' | fmt
 	{
 		echo 'Previous answer: '
 		date '+%D %H:%M:%S'
@@ -41,3 +41,5 @@ tell() {
 		echo '#'
 	} >>"$LOG"
 }
+
+# --data "$DATA" | jq '.choices[0].message.content' | sed -e 's/\"//g' -e 's/\\n/\n/g' | tee --append "$LOG" | fmt

@@ -1,0 +1,172 @@
+#!/usr/bin/env bash
+#
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+	echo "This file is not intended to be executed directly."
+else
+	echo "This file should not be sourced."
+	return 0
+fi
+
+get-essentials() {
+
+	local packages=(
+		arch-install-scripts
+		arch-wiki-docs
+		arch-wiki-lite
+		archinstall
+		archlinux-keyring
+		aria2
+		aws-cli
+		bash-completion
+		bat
+		bc
+		bcc
+		bcc-tools
+		binutils
+		bolt
+		bpftrace
+		bridge-utils
+		btop
+		btrfs-progs
+		bzip2
+		cryptsetup
+		curl
+		dmidecode
+		dos2unix
+		edk2-ovmf
+		edk2-shell
+		efibootmgr
+		efivar
+		emacs-nox
+		ethtool
+		exfatprogs
+		exiv2
+		fd
+		findutils
+		fzf
+		gawk
+		gcc
+		gdb
+		git
+		gnupg
+		go
+		grep
+		gzip
+		hddtemp
+		hdparm
+		hexyl
+		hping
+		htop
+		httpie
+		httping
+		httrack
+		hunspell
+		hunspell-en_us
+		hwdata
+		hwinfo
+		i2c-tools
+		iana-etc
+		iftop
+		incus
+		inetutils
+		intel-ucode
+		iotop
+		ipcalc
+		iperf3
+		ipmitool
+		iproute2
+		iptables-nft
+		iputils
+		iso-codes
+		iw
+		iwd
+		jq
+		ldns
+		less
+		linux-api-headers
+		linux-docs
+		lshw
+		lsof
+		lsscsi
+		lua
+		lua52
+		luajit
+		lxd
+		make
+		man-db
+		man-pages
+		minicom
+		mlocate
+		mtr
+		nano
+		nasm
+		ncftp
+		neofetch
+		neovim
+		nethogs
+		nftables
+		ngrep
+		nmap
+		nodejs
+		npm
+		nvme-cli
+		openssh
+		openssl
+		openvpn
+		p7zip
+		parallel
+		parallel-docs
+		parted
+		patch
+		pciutils
+		pcre
+		pcre2
+		perl
+		pigz
+		psmisc
+		pv
+		pwgen
+		python
+		ranger
+		rclone
+		reflector
+		ripgrep
+		rsync
+		rust
+		sed
+		socat
+		syncthing
+		tar
+		tcpdump
+		texinfo
+		the_silver_searcher
+		tidy
+		tmux
+		tree
+		unzip
+		usbutils
+		veracrypt
+		vi
+		vim
+		vim-runtime
+		w3m
+		wget
+		wireguard-tools
+		wireplumber
+		wireshark-cli
+		wol
+		xz
+		yq
+		yt-dlp
+		zip
+	)
+
+	for package in "${packages[@]}"; do
+		{
+			echo "====================> Start install:  ${package}"
+			pacman -S -p "${package}" --needed --noconfirm
+			echo "====================> End install:  ${package}"
+		} | tee -a /tmp/install.log
+	done
+}
