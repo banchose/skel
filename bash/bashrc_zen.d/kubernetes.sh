@@ -29,8 +29,6 @@ alias kp='kubectl get pods'
 source <(kubectl completion bash)
 complete -F __start_kubectl k
 
-[[ -d $HOME/.krew/bin ]] && export PATH="$PATH:$HOME/.krew/bin"
-
 getyn() {
 	local yn='n'
 	while true; do
