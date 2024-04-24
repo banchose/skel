@@ -1,7 +1,7 @@
 # Just a personal .bashrc that maybe renamed and then included in the real ~/.bashrc
 # in ~/.bashrc: [[ -f ~/.bashrc.includeme ]] && source ~/.bashrc.includeme
 
-echo "${BASH_SOURCE[0]}"
+# echo "${BASH_SOURCE[0]}"
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -216,3 +216,20 @@ alias xlsblk='lsblk -o name,mountpoint,fstype,size,fsused,pttype,model,vendor,se
 # 	done
 # 	unset profile
 # fi
+
+# Ensure the directory variable is not empty
+home_bashrc_directory=~/.bashrc_zen.d
+
+if [[ -d "${home_bashrc_directory}" ]]; then
+	echo "Running scripts in ${home_bashrc_directory}"
+	for profile in "${home_bashrc_directory}/"*.sh; do
+		if [[ -r "$profile" ]]; then
+			echo "Sourcing: $profile"
+			. "$profile"
+		else
+			echo "Cannot read $profile, skipping..."
+		fi
+	done
+else
+	echo "Directory ${home_bashrc_directory} does not exist."
+fi
