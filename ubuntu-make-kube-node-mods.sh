@@ -31,6 +31,8 @@ set -x
 # and that ends up in the file /etc/apt/sources.list.d/kubernetes.list
 # and the repo is what that determines what version of 'kubernetes' packages you install
 # echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+#
+# both the curl and the deb command have the version embeded
 
 # version=1.29.4-00
 
