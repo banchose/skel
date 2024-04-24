@@ -20,8 +20,19 @@ set -x
 # scp installscript to new kuberntes node
 #
 # Set the version
+
+#####
 #
-version=1.27.3-00
+# READ
+#
+#####
+
+# It looks like you get apt key for the kubernetes repo.  Then you add that repo
+# and that ends up in the file /etc/apt/sources.list.d/kubernetes.list
+# and the repo is what that determines what version of 'kubernetes' packages you install
+# echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+# version=1.29.4-00
 
 # remove machine-id and ssh host keys
 sudo rm /etc/ssh/ssh_host_*
@@ -46,7 +57,8 @@ sudo apt-get -y dist-upgrade
 sudo apt-get install -y apt-transport-https ca-certificates curl ripgrep fd-find fzf
 sudo apt-get install -y containerd
 sudo apt-get install -y bat curl silversearcher-ag git bash-completion jq fzf bc wget qalc ripgrep pigz fd-find tmux socat
-sudo apt-get install -y kubelet="${version}" kubeadm="${version}" kubectl="${version}" kubernetes-cni
+# sudo apt-get install -y kubelet="${version}" kubeadm="${version}" kubectl="${version}" kubernetes-cni
+sudo apt-get install -y kubelet kubeadm kubectl kubernetes-cni
 sudo apt-mark hold kubelet kubeadm kubectl
 sudo apt-get -y autoremove
 
