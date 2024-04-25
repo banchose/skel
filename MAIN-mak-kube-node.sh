@@ -57,7 +57,7 @@ sudo systemctl enable containerd
 # Remove and regenerate machine-id and ssh host keys
 sudo rm -f /etc/machine-id /etc/ssh/ssh_host_*
 sudo dpkg-reconfigure openssh-server
-sudo systemctl restart sshd
+sudo systemctl restart ssh
 sudo dbus-uuidgen --ensure=/etc/machine-id
 sudo ssh-keygen -A
 
