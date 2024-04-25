@@ -12,11 +12,10 @@ echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 # sudo install -o root -g root -m 644 ./kubernetes-archive-keyring.gpg /usr/share/keyrings/kubernetes-archive-keyring.gpg
 
-
 # Update APT and install Kubernetes components
 sudo apt update
 sudo apt-get install -y curl software-properties-common apt-transport-https ca-certificates git jq
-sudo apt-get install -y kubelet="${version}" kubeadm="${version}" kubectl="${version}" containerd
+sudo apt-get install -y kubelet kubeadm kubectl containerd
 sudo apt-mark hold kubelet kubeadm kubectl
 
 # Remove unnecessary packages
