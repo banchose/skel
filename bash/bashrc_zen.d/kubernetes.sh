@@ -77,3 +77,7 @@ kscale() {
 kpodr() {
 	kubectl get pods --sort-by='.status.containerStatuses[0].restartCount'
 }
+
+ket-ca() {
+	kubectl config view --raw | awk '/certificate-authority-data:/ { print $2 }' | base64 -d | openssl x509 -text -noout
+}
