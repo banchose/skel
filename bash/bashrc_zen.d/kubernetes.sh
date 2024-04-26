@@ -81,3 +81,6 @@ kpodr() {
 ket-ca() {
 	kubectl config view --raw | awk '/certificate-authority-data:/ { print $2 }' | base64 -d | openssl x509 -text -noout
 }
+ket-cca() {
+	kubectl config view --raw | awk '/client-certificate-data:/ { print $2 }' | base64 -d | openssl x509 -text -noout
+}
