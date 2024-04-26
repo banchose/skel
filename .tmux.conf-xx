@@ -45,7 +45,7 @@ bind-key M split-window -h "nvim ~/.tmux.conf"
 # Ensure that Ctrl-a get passed through to apps hit twice
 # Makes ssh and starting a new tmux on top of hosts easier to navigate
 bind C-a send-prefix
-# splitting windows with | and -
+# splitting windows witn | and -
 bind | split-window -h
 bind - split-window -v
 # Vi mode
@@ -68,6 +68,8 @@ set -g display-time 2500
 set -sg escape-time 10 
 set-option -g focus-events on
 
+set -g bell-action none
+# Set bell action just in case
 set -g bell-action none
 
 bind = setw -g synchronize-panes
@@ -94,8 +96,8 @@ setw -g monitor-activity on
 # Trying out
 #
 ###########################################################################
-setw -g window-status-current-format '#{?pane_synchronized,#[bg=red],}#I:#W'
-setw -g window-status-format         '#{?pane_synchronized,#[bg=red],}#I:#W'
+# setw -g window-status-current-format '#{?pane_synchronized,#[bg=red],}#I:#W#F'
+# setw -g window-status-format         '#{?pane_synchronized,#[bg=red],}#I:#W#F'
 
 
 ###########################################################################
