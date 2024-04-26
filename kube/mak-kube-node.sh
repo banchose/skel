@@ -27,7 +27,7 @@ sudo apt-get autoremove -y
 
 # Disable unnecessary services
 sudo systemctl disable --now ModemManager.service multipathd.service
-sudo systemctl stop apparmor && sudo systemctl disable apparmor
+# sudo systemctl stop apparmor && sudo systemctl disable apparmor
 
 # Disable swap - required by Kubernetes
 sudo swapoff -a
