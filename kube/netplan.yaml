@@ -5,7 +5,7 @@ network:
     enp1s0:
       dhcp4: no
       addresses:
-      - 192.168.122.10/24
+      - 192.168.122.200/24
       routes:
       - to: default
         via: 192.168.122.1
