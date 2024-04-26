@@ -70,3 +70,7 @@ sudo systemctl disable --now ModemManager.service multipathd.service
 
 # Additional cleanup and configurations as required
 sudo systemctl enable kubelet
+
+### END
+#
+echo "You may want to run: sudo kubeadm init --pod-network-cidr=10.244.0.0/16"
