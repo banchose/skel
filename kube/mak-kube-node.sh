@@ -31,7 +31,7 @@ sudo systemctl stop apparmor && sudo systemctl disable apparmor
 
 # Disable swap - required by Kubernetes
 sudo swapoff -a
-sudo sed -i '/ swap / s/^/#/' /etc/fstab
+sudo sed -i '/swap/ s/^/#/' /etc/fstab
 
 # Load required kernel modules
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
