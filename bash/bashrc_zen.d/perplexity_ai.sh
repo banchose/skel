@@ -8,7 +8,7 @@ tell() {
 	fi
 
 	# Replace 'abc' with your actual authorization token
-	AUTH_TOKEN="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"
+	AUTH_TOKEN=""
 	MODEL="sonar-medium-online"
 	QUESTION="$1"
 	LOG=~/temp/perplexity_ai.log
