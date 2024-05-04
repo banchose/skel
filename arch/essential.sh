@@ -70,6 +70,7 @@ sudo pacman -S emacs-nox --needed --noconfirm
 sudo pacman -S base --needed --noconfirm
 sudo pacman -S base-devel --needed --noconfirm
 ## LOOK UP
+sudo pacman -S linux-headers --needed --noconfirm
 sudo pacman -S openssh --needed --noconfirm
 sudo pacman -S openssl --needed --noconfirm
 sudo pacman -S dmidecode --needed --noconfirm
