@@ -1,15 +1,14 @@
-startvirt() {
-	sudo systemctl start libvirtd && sudo virsh start cp
-	sudo virsh start wrk1
-	sudo virsh start wrk2
-	echo hello
-}
+# clusterVMs=(
+# 	"192.168.122.120"
+# 	"192.168.122.121"
+# 	"192.168.122.122"
+# 	"192.168.122.123"
+# )
 
 clusterVMs=(
-	"192.168.122.120"
-	"192.168.122.121"
-	"192.168.122.122"
-	"192.168.122.123"
+	"kc1"
+	"kw1"
+	"kw2"
 )
 
 pacclust() {
@@ -32,16 +31,18 @@ upclust() {
 	}
 	sleep 3
 	if systemctl is-active libvirtd; then
-		sudo virsh start cp
-		sudo virsh start wrk1
-		sudo virsh start wrk2
-		sudo virsh start wrk3
+		for node in "${clusterVMs[@]}"; do
+			echo "Starting ${clusterVM[@]}..."
+			sudo virsh start "${node}"
+		done
 	fi
 }
 
 downclust() {
-	sudo virsh destroy cp
-	sudo virsh destroy wrk1
-	sudo virsh destroy wrk2
-	sudo virsh destroy wrk3
+	if systemctl is-active libvirtd; then
+		for node in "${clusterVMs[@]}"; do
+			echo "Destroying ${clusterVM[@]}..."
+			sudo virsh destroy "${node}"
+		done
+	fi
 }

@@ -17,7 +17,8 @@ get-astro() {
 	[[ -d $configdir ]] && rm -rfv -- "$configdir"
 	[[ -d $sharedir ]] && rm -rfv -- "$sharedir"
 
-	git clone --depth 1 "https://github.com/${configdir##*/}/${configdir##*/}" "$configdir"
+	git clone --depth 1 -- "https://github.com/${configdir##*/}/template" "$configdir" && rm -rf -- ~/"${configdir}/${name}".git
+
 }
 
 get-nvchad() {
@@ -29,7 +30,7 @@ get-nvchad() {
 	[[ -d $configdir ]] && rm -rfv -- "$configdir"
 	[[ -d $sharedir ]] && rm -rfv -- "$sharedir"
 
-	git clone --depth 1 "https://github.com/${configdir##*/}/${configdir##*/}" "$configdir"
+	git clone --depth 1 -- "https://github.com/${configdir##*/}/${configdir##*/}" "$configdir" && rm -rf -- ~/"${configdir}/${name}".git
 }
 
 get-lazy() {
@@ -41,7 +42,7 @@ get-lazy() {
 	[[ -d $configdir ]] && rm -rfv -- "$configdir"
 	[[ -d $sharedir ]] && rm -rfv -- "$sharedir"
 
-	git clone --depth 1 "https://github.com/lazyvim/starter" "$configdir"
+	git clone --depth 1 -- "https://github.com/lazyvim/starter" "$configdir" && rm -rf -- ~/"${configdir}/${name}".git
 }
 
 get-space() {
@@ -53,7 +54,7 @@ get-space() {
 	[[ -d $configdir ]] && rm -rfv -- "$configdir"
 	[[ -d $sharedir ]] && rm -rfv -- "$sharedir"
 
-	git clone --depth 1 "https://gitlab.com/${configdir##*/}/${configdir##*/}" "${configdir,,}"
+	git clone --depth 1 -- "https://gitlab.com/${configdir##*/}/${configdir##*/}" "${configdir,,}" && rm -rf -- ~/"${configdir}/${name}".git
 }
 
 get-default() {
@@ -65,7 +66,20 @@ get-default() {
 	[[ -d $configdir ]] && rm -rfv -- "$configdir"
 	[[ -d $sharedir ]] && rm -rfv -- "$sharedir"
 
-	git clone --depth 1 "https://github.com/lazyvim/starter" "$configdir"
+	git clone --depth 1 -- "https://github.com/lazyvim/starter" "$configdir"
+}
+
+get-kickstart() {
+	# Hard coded git
+	local name=kickstart
+	local configdir=~/.config/"${name}"
+	local sharedir=~/.local/share/"${name}"
+
+	[[ -d $configdir ]] && rm -rfv -- "$configdir"
+	[[ -d $sharedir ]] && rm -rfv -- "$sharedir"
+
+	git clone --depth 1 -- "https://github.com/nvim-lua/kickstart.nvim" "$configdir"
+
 }
 
 nvims() {
