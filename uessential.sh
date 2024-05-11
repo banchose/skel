@@ -62,20 +62,18 @@ sudo apt-get -y install shellcheck
 sudo apt-get -y install python-pip
 # sudo pip install csvkit
 sudo apt-get -y install bvi hexedit hexdump
-sudo apt-get -y install jq # JSON
+sudo apt-get -y install jq  # JSON
+sudo apt-get -y install yq  # yaml
+sudo apt-get -y install bat # JSON
+sudo mv -v -- /usr/bin/batcat /usr/bin/bat
 # sudo apt-get -y install pandoc
 # Emacs 28 for doom
 ##  sudo snap remove emacs
 ## flatpak uninstall --delete-data org.gnu.emacs
 ## flatpak uninstall --unused
 sudo apt remove --autoremove emacs emacs-common
-sudo apt install software-properties-common -y &&
-	sudo apt-add-repository ppa:kelleyk/emacs &&
-	sudo apt update &&
-	sudo apt install emacs29-nox -y &&
-	[[ ! -d ~/.emacs.d ]] && git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
+sudo apt install software-properties-common -y
+sudo snap install emacs --classic
+[ ! -d ~/.config/.emacs.d ]] && git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
 # ~/.emacs.d/bin/doom install
-
-sudo add-apt-repository ppa:neovim-ppa/stable &&
-	sudo apt update &&
-	sudo apt-get -y install neovim &&
+sudo snap install neovim --classic
