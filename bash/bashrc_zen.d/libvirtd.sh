@@ -24,7 +24,7 @@ pacclust() {
 	fi
 }
 
-upclust() {
+kup() {
 	systemctl is-active libvirtd >/dev/null || {
 		echo starting libvirtd...
 		sudo systemctl start libvirtd
@@ -38,7 +38,7 @@ upclust() {
 	fi
 }
 
-downclust() {
+kdown() {
 	if systemctl is-active libvirtd; then
 		for node in "${clusterVMs[@]}"; do
 			echo "Destroying ${clusterVM[@]}..."
