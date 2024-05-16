@@ -132,6 +132,7 @@ sudo pacman -S httpie --needed --noconfirm
 sudo pacman -S dos2unix --needed --noconfirm
 sudo pacman -S python --needed --noconfirm
 sudo pacman -S python-pip --needed --noconfirm
+sudo pacman -S python-pipx --needed --noconfirm
 sudo pacman -S python-pynvim --needed --noconfirm
 sudo pacman -S python-pdftotext --needed --noconfirm
 sudo pacman -S libqalculate --needed --noconfirm
