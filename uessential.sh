@@ -8,6 +8,7 @@ sudo apt-get -y install lshw
 sudo apt-get -y install lsof
 sudo apt-get -y install socat
 sudo apt-get -y install tmux
+sudo apt-get -y install screen
 sudo apt-get -y install ipcalc
 sudo apt-get -y install p7zip
 sudo apt-get -y install strace

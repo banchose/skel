@@ -5,5 +5,6 @@ function wood-sync() {
 
 	rsync -rvptgle ssh /home/una/y/youtube-down star.example.net:/sync/$HOSTNAME
 	rsync --del -rvptgle ssh /home/una/gitdir star.example.net:/sync/$HOSTNAME
+	rsync --del -rvptgle ssh /home/una/Dropbox star.example.net:/sync/$HOSTNAME
 
 }

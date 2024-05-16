@@ -89,6 +89,7 @@ sudo pacman -S nano --needed --noconfirm
 sudo pacman -S lsof --needed --noconfirm
 sudo pacman -S socat --needed --noconfirm
 sudo pacman -S tmux --needed --noconfirm
+sudo pacman -S screen --needed --noconfirm
 sudo pacman -S ipcalc --needed --noconfirm
 sudo pacman -S perf --needed --noconfirm
 sudo pacman -S p7zip --needed --noconfirm
