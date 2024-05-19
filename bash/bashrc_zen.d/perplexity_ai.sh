@@ -1,8 +1,8 @@
 #!/bin/bash
 
 KeyFile=~/sec/perplexity_key.env
-# MODEL="llama-3-sonar-large-32k-online"
-MODEL="llama-3-sonar-small-32k-online"
+MODEL="llama-3-sonar-large-32k-online"
+# MODEL="llama-3-sonar-small-32k-online"
 
 tell() {
 	# Ensure the first argument is provided

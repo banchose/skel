@@ -43,8 +43,8 @@ sudo timedatectl set-ntp true
 
 # hardware
 sudo pacman -S usbutils --needed --noconfirm
-sudo pacman -S bluez bluez-utils --needed --noconfirm
 sudo pacman -S lvm2 --needed --noconfirm
+sudo pacman -S dmidecode --needed --noconfirm
 sudo pacman -S lshw --needed --noconfirm
 sudo pacman -S inxi --needed --noconfirm
 sudo pacman -S hddtemp --needed --noconfirm
