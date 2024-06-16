@@ -9,9 +9,10 @@
 # Can copy packages from elsewhere to /var/cache/pacman/pkg
 # dmesg --color=always | less -R
 #
-# git clone https://aur.archlinux.org/yay.git
-# cd yay
-# makepkg -si
+# git clone https://aur.archlinux.org/yay.git && \
+# cd yay && \
+# makepkg -si && \
+# yay -S units --needed --noconfirm
 
 # In 10/2019 the base group was replaced by a base package.
 # This package is bare-bones and doesn't include a kernel
@@ -253,7 +254,10 @@ fi
 # sudo pacman -S foot --needed --noconfirm
 # sudo pacman -S wev --needed --noconfirm
 # sudo pacman -S waybar --needed --noconfirm
+# # Image viewers
 # sudo pacman -S imv --needed --noconfirm # wayland image viewer
+# sudo pacman -S feh --needed --noconfirm # wayland image viewer
+#
 # sudo pacman -S rofi-lbonn-wayland --needed --noconfirm # wayland launcher
 ## HW Accel
 # sudo pacman -S libva-mesa-driver --needed --noconfirm
@@ -275,3 +279,13 @@ fi
 # sudo pacman -S noto-fonts-cjk  --needed --noconfirm
 # sudo pacman -S ttf-nerd-fonts-symbols  --needed --noconfirm
 # sudo pacman -S ttf-bitstream-vera --needed --noconfirm
+
+# hyprland
+# mako
+# pipewire
+# wireplumber
+# xdg-desktop-portal-hyprland
+# slurp
+# kitty
+# foot
+# waybar
