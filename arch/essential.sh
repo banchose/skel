@@ -136,6 +136,8 @@ sudo pacman -S python-pip --needed --noconfirm
 sudo pacman -S python-pipx --needed --noconfirm
 sudo pacman -S python-pynvim --needed --noconfirm
 sudo pacman -S python-pdftotext --needed --noconfirm
+sudo pacman -S python-pyusb --needed --noconfirm
+sudo pacman -S argparse --needed --noconfirm
 sudo pacman -S libqalculate --needed --noconfirm
 # New arch are missing these
 sudo pacman -S gcc --needed --noconfirm
@@ -237,11 +239,11 @@ sudo pacman -S hunspell-en_US --needed --noconfirm
 
 #
 if (sudo dmidecode | grep -iq "Manufacturer: QEMU"); then
-	sudo pacman -S qemu-guest-agent --needed --noconfirm
-	sudo systemctl --now enable qemu-ga --needed --noconfirm
-	# sudo pacman -S spice-vdagent --needed --noconfirm
-	# sudo pacman -S xf86-video-qxl --needed --noconfirm
-	# sudo systemctl --now enable spice-vdagentd
+  sudo pacman -S qemu-guest-agent --needed --noconfirm
+  sudo systemctl --now enable qemu-ga --needed --noconfirm
+  # sudo pacman -S spice-vdagent --needed --noconfirm
+  # sudo pacman -S xf86-video-qxl --needed --noconfirm
+  # sudo systemctl --now enable spice-vdagentd
 #   # # # xrandr --output Virtual-0 --mode 1920x1080
 fi
 
