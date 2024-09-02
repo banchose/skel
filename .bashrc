@@ -10,7 +10,7 @@ umask 022
 
 # Unique Bash version check
 if ((BASH_VERSINFO[0] < 4)); then
-	echo "You may be running an older version of Bash: ${BASH_VERSINFO[0]}."
+  echo "You may be running an older version of Bash: ${BASH_VERSINFO[0]}."
 fi
 
 ###
@@ -19,15 +19,15 @@ fi
 
 loadAgent2() {
 
-	# This is already defined in ~/.bashrc_zen.d/ssh.sh as loadAgent
-	# But good to have
+  # This is already defined in ~/.bashrc_zen.d/ssh.sh as loadAgent
+  # But good to have
 
-	if ! pgrep -u "$USER" ssh-agent >/dev/null; then
-		ssh-agent -t 1h >"$XDG_RUNTIME_DIR/ssh-agent.env"
-	fi
-	if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-		source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
-	fi
+  if ! pgrep -u "$USER" ssh-agent >/dev/null; then
+    ssh-agent -t 1h >"$XDG_RUNTIME_DIR/ssh-agent.env"
+  fi
+  if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
+    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
+  fi
 }
 
 # Then call it
@@ -37,23 +37,23 @@ loadAgent2() {
 # Set the editor and editor alias
 ######################################
 command_exists() {
-	command -v "$1" 1>&2 >/dev/null
+  command -v "$1" 1>&2 >/dev/null
 }
 
 if command_exists nvim 1>&2 >/dev/null; then
-	export EDITOR=nvim
-	alias v='nvim'
+  export EDITOR=nvim
+  alias v='nvim'
 elif command_exists vim; then
-	export EDITOR=vim
-	alias v='vim'
+  export EDITOR=vim
+  alias v='vim'
 elif command_exists vi; then
-	export EDITOR=vi
-	alias v='vi'
+  export EDITOR=vi
+  alias v='vi'
 elif command_exists nano; then
-	export EDITOR=nano
-	alias v='nano'
+  export EDITOR=nano
+  alias v='nano'
 else
-	echo "NO EDITOR FOUND"
+  echo "NO EDITOR FOUND"
 fi
 
 export BC_ENV_ARGS=~/.bcrc
@@ -71,47 +71,47 @@ minfo() { info "$1" --subnodes -o - 2>/dev/null | "$PAGER"; }
 
 # Functions
 psnk() {
-	ps --ppid 2 -p 2 --deselect
+  ps --ppid 2 -p 2 --deselect
 }
 
 tcolors() {
 
-	for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done
+  for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done
 }
 
 checkip() {
-	exec 3<>/dev/tcp/checkip.amazonaws.com/80
-	printf "GET / HTTP/1.1\r\nHost: checkip.amazonaws.com\r\nConnection: close\r\n\r\n" >&3
-	tail -n1 <&3
+  exec 3<>/dev/tcp/checkip.amazonaws.com/80
+  printf "GET / HTTP/1.1\r\nHost: checkip.amazonaws.com\r\nConnection: close\r\n\r\n" >&3
+  tail -n1 <&3
 }
 
 sleep1() { while :; do
-	"$@"
-	sleep 1
+  "$@"
+  sleep 1
 done; }
 
 sleep5() { while :; do
-	"$@"
-	sleep 5
+  "$@"
+  sleep 5
 done; }
 
 sleep10() { while :; do
-	"$@"
-	sleep 10
+  "$@"
+  sleep 10
 done; }
 
 function xgetx {
-	printf "%d args:" $#
-	printf "<%s>" "$@"
-	echo
+  printf "%d args:" $#
+  printf "<%s>" "$@"
+  echo
 }
 
 ff() {
-	find / -mount -iname "*$1*" -type f 2>/dev/null
+  find / -mount -iname "*$1*" -type f 2>/dev/null
 }
 
 flf() {
-	find ./ -mount -iname "*$1*" -type f 2>/dev/null
+  find ./ -mount -iname "*$1*" -type f 2>/dev/null
 }
 
 function vr() { nvim -R "${@}"; }
@@ -217,19 +217,31 @@ alias xlsblk='lsblk -o name,mountpoint,fstype,size,fsused,pttype,model,vendor,se
 # 	unset profile
 # fi
 
+# Check if Bash is running interactively
+if [[ $- == *i* ]]; then
+  # Check if the session is already inside tmux
+  if [[ -z $TMUX ]] && command -v tmux &>/dev/null; then
+    # Check if Bash is running in a TTY or a pseudoterminal (e.g., /dev/pts/*)
+    if [[ "$(tty)" =~ ^/dev/(tty|pts)/ ]]; then
+      # Start a new tmux session or attach to an existing one
+      tmux new-session
+    fi
+  fi
+fi
+
 # Ensure the directory variable is not empty
 home_bashrc_directory=~/.bashrc_zen.d
 
 if [[ -d "${home_bashrc_directory}" ]]; then
-	echo "Running scripts in ${home_bashrc_directory}"
-	for profile in "${home_bashrc_directory}/"*.sh; do
-		if [[ -r "$profile" ]]; then
-			echo "Sourcing: $profile"
-			. "$profile"
-		else
-			echo "Cannot read $profile, skipping..."
-		fi
-	done
+  echo "Running scripts in ${home_bashrc_directory}"
+  for profile in "${home_bashrc_directory}/"*.sh; do
+    if [[ -r "$profile" ]]; then
+      echo "Sourcing: $profile"
+      . "$profile"
+    else
+      echo "Cannot read $profile, skipping..."
+    fi
+  done
 else
-	echo "Directory ${home_bashrc_directory} does not exist."
+  echo "Directory ${home_bashrc_directory} does not exist."
 fi
