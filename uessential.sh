@@ -4,11 +4,11 @@
 sudo apt-get -y update
 # sudo apt-get -y install  ldns
 sudo apt-get -y install vim
+sudo apt-get -y install mtr-tiny
 sudo apt-get -y install lshw
 sudo apt-get -y install lsof
 sudo apt-get -y install socat
 sudo apt-get -y install tmux
-sudo apt-get -y install screen
 sudo apt-get -y install ipcalc
 sudo apt-get -y install p7zip
 sudo apt-get -y install strace
@@ -32,6 +32,7 @@ sudo apt-get -y install ngrep
 sudo apt-get -y install dnsutils
 sudo apt-get -y install ethtool
 sudo apt-get -y install tshark
+# sudo apt-get -y install  neofetch
 sudo apt-get -y install httping
 sudo apt-get -y install pwgen
 sudo apt-get -y install dos2unix
@@ -68,14 +69,19 @@ sudo apt-get -y install jq  # JSON
 sudo apt-get -y install yq  # yaml
 sudo apt-get -y install bat # JSON
 sudo mv -v -- /usr/bin/batcat /usr/bin/bat
+
+## Get neovim
+curl -L -o ~/nvim.appimage https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+chmod u+x nvim.appimage
+
 # sudo apt-get -y install pandoc
 # Emacs 28 for doom
 ##  sudo snap remove emacs
 ## flatpak uninstall --delete-data org.gnu.emacs
 ## flatpak uninstall --unused
-sudo apt remove --autoremove emacs emacs-common
-sudo apt install software-properties-common -y
-sudo snap install emacs --classic
-[ ! -d ~/.config/.emacs.d ]] && git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
-# ~/.emacs.d/bin/doom install
-sudo snap install neovim --classic
+# sudo apt remove --autoremove emacs emacs-common
+# sudo apt install software-properties-common -y
+# sudo snap install emacs --classic
+# [ ! -d ~/.config/.emacs.d ]] && git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
+# # ~/.emacs.d/bin/doom install
+# sudo snap install neovim --classic
