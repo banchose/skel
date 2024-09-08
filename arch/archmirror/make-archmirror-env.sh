@@ -14,3 +14,6 @@ sudo chmod -R 755 "${ArchCacheDir}"
 sudo mkdir -p "${ArchNginxWebDir}"
 sudo chown -R www-data:www-data "${ArchNginxWebDir}"
 sudo chmod -R 755 "${ArchNginxWebDir}"
+
+[[ -e ./nginx.conf ]] && sudo cp /etc/nginx/nginx.conf{,.scriptcreatedbackup} &&
+  sudo cp ./nginx.conf /etc/nginx
