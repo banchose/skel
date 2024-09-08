@@ -222,7 +222,7 @@ if [[ $- == *i* ]]; then
   # Check if the session is already inside tmux
   if [[ -z $TMUX ]] && command -v tmux &>/dev/null; then
     # Check if Bash is running in a TTY or a pseudoterminal (e.g., /dev/pts/*)
-    if [[ "$(tty)" =~ ^/dev/(tty|pts)/ ]]; then
+    if [[ "$(tty)" == /dev/tty* || "$(tty)" == /dev/pts/* ]]; then
       # Start a new tmux session or attach to an existing one
       tmux new-session
     fi
