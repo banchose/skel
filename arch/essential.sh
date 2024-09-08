@@ -50,6 +50,7 @@ sudo pacman -S lshw --needed --noconfirm
 sudo pacman -S inxi --needed --noconfirm
 sudo pacman -S hddtemp --needed --noconfirm
 sudo pacman -S smartmontools --needed --noconfirm
+sudo pacman -S ndisc6 --needed --noconfirm
 sudo pacman -S freeipmi --needed --noconfirm
 sudo pacman -S ipmitool --needed --noconfirm
 sudo pacman -S iostat --needed --noconfirm
