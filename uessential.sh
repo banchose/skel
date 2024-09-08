@@ -32,7 +32,6 @@ sudo apt-get -y install ngrep
 sudo apt-get -y install dnsutils
 sudo apt-get -y install ethtool
 sudo apt-get -y install tshark
-# sudo apt-get -y install  neofetch
 sudo apt-get -y install httping
 sudo apt-get -y install pwgen
 sudo apt-get -y install dos2unix
