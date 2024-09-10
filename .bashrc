@@ -206,6 +206,8 @@ alias loada='cat /proc/loadavg | cut -c 1-4 | echo "scale=2; ($(</dev/stdin)/`np
 alias cpuinfo='lscpu'
 alias xlsblk='lsblk -o name,mountpoint,fstype,size,fsused,pttype,model,vendor,serial,uuid,partuuid'
 
+command -v waybar &>/dev/null && alias rway='pkill waybar ; nohup waybar &>/dev/null &'
+
 ###### A directory of bash init files
 
 # if [[ -d ${home_bashrc_directory} ]]; then
