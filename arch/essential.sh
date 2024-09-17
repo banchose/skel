@@ -277,6 +277,7 @@ fi
 # Fonts
 
 # sudo pacman -S noto-fonts --needed --noconfirm
+# sudo pacman -S ttf-noto-nerd --needed --noconfirm
 # sudo pacman -S ttf-dejavu  --needed --noconfirm
 # sudo pacman -S ttf-liberation --needed --noconfirm
 # sudo pacman -S noto-fonts-cjk  --needed --noconfirm
