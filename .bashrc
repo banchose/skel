@@ -118,6 +118,8 @@ function vr() { nvim -R "${@}"; }
 
 ## GENERAL OPTIONS ##
 
+export PATH=/home/una/.local/bin:$PATH
+
 set -o noclobber
 
 PROMPT_DIRTRIM=10
