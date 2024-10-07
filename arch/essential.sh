@@ -198,6 +198,8 @@ sudo pacman -S hexyl --needed --noconfirm
 sudo pacman -S bat --needed --noconfirm
 sudo pacman -S ranger --needed --noconfirm
 sudo pacman -S shellcheck --needed --noconfirm
+sudo pacman -S bash-language-server --needed --noconfirm
+
 # sudo pacman -S yt-dlp --needed --noconfirm
 # sudo pacman -S aws-cli --needed --noconfirm
 # sudo pacman -S neofetch  --needed --noconfirm
