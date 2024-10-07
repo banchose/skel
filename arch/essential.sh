@@ -188,8 +188,12 @@ sudo pacman -S udiskie --needed --noconfirm
 sudo pacman -S rust --needed --noconfirm
 sudo pacman -S rust-docs --needed --noconfirm
 sudo pacman -S neovim --needed --noconfirm
+sudo pacman -S luarocks --needed --noconfirm
 sudo pacman -S tree-sitter-cli --needed --noconfirm
 sudo pacman -S python-pynvim --needed --noconfirm
+sudo pacman -S prettier --needed --noconfirm
+sudo pacman -S markdownlint --needed --noconfirm
+
 # sudo pacman -S i2c-tools --needed --noconfirm
 sudo pacman -S acpica --needed --noconfirm
 sudo pacman -S syncthing --needed --noconfirm
