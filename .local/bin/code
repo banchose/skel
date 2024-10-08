@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+command -v flatpak &>/dev/null && /usr/bin/flatpak run com.vscodium.codium &>/dev/null &
+
