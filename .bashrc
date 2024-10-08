@@ -59,13 +59,19 @@ fi
 export BC_ENV_ARGS=~/.bcrc
 export LESS="-iMFXRj4Q"
 
+parse_git_branch() {
+  # command_exists git && git rev-parse --abbrev-ref HEAD 2>/dev/null
+  command_exists git && git rev-parse --abbrev-ref HEAD 2>/dev/null
+}
+
 # Since switching to set -o vi... Control D logs me out so now have to do 4 times
 set -o vi
 bind -m vi-command ".":yank-last-arg # or insert-last-argument
 bind '"jj":vi-movement-mode'
 
 export IGNOREEOF=4
-export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\v]\$ \[$(tput sgr0)\]"
+# export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\v]\$ \[$(tput sgr0)\]"
+export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][parse_git_branch][\v]\$ \[$(tput sgr0)\]"
 # Make info friendly
 minfo() { info "$1" --subnodes -o - 2>/dev/null | "$PAGER"; }
 
