@@ -193,6 +193,7 @@ sudo pacman -S tree-sitter-cli --needed --noconfirm
 sudo pacman -S python-pynvim --needed --noconfirm
 sudo pacman -S prettier --needed --noconfirm
 sudo pacman -S markdownlint --needed --noconfirm
+sudo pacman -S lazygit --needed --noconfirm
 
 # sudo pacman -S i2c-tools --needed --noconfirm
 sudo pacman -S acpica --needed --noconfirm
