@@ -300,3 +300,5 @@ fi
 # kitty
 # foot
 # waybar
+yay -S viu --needed
+yay -S chafa --needed
