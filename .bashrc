@@ -255,3 +255,10 @@ if [[ -d "${home_bashrc_directory}" ]]; then
 else
   echo "Directory ${home_bashrc_directory} does not exist."
 fi
+
+## AWS ###
+# export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+# export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+export AWS_PROFILE=lab
+export AWS_DEFAULT_OUTPUT=json
+export AWS_DEFAULT_REGION=us-east-1
