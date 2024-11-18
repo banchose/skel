@@ -2,8 +2,14 @@
 
 # Global settings
 
+export AWS_PROFILE=lab
 : "${AWS_DEFAULT_OUTPUT:=json}"
 : "${AWS_DEFAULT_REGION:=us-east-1}"
+
+echo "$AWS_PROFILE"
+echo "Region: $AWS_DEFAULT_REGION"
+echo "Output: $AWS_DEFAULT_OUTPUT"
+echo "Setting AWS_PROFILE to lab"
 
 # Ensure AWS CLI autocompletion is enabled
 # if command -v aws_completer &>/dev/null; then
@@ -160,4 +166,81 @@ alsip() {
     --profile "$AwsProfile" \
     --query 'InstanceProfiles[*].[InstanceProfileName, InstanceProfileId, Path]' \
     --output table
+}
+
+alsvpcs() {
+  local AwsProfile
+  AwsProfile=$(get_aws_context "$@") || {
+    echo "Can not find Profile"
+    return 1
+  }
+
+  echo "Listing all VPCs in region $AwsRegion for profile $AwsProfile:"
+
+  aws ec2 describe-vpcs \
+    --region "$AwsRegion" \
+    --profile "$AwsProfile" \
+    --query 'Vpcs[*].[VpcId, CidrBlock, Tags[?Key==`Name`].Value | [0]]' \
+    --output table
+}
+
+list_vpcs_with_subnets() {
+  # Declare function variables
+  local AwsProfile="${1:-default}"  # Default profile if not provided
+  local AwsRegion="${2:-us-east-1}" # Default region if not provided
+
+  # Fetch all VPCs
+  local vpcs
+  vpcs=$(aws ec2 describe-vpcs \
+    --profile "$AwsProfile" \
+    --region "$AwsRegion" \
+    --query 'Vpcs[*].{VpcId:VpcId, CidrBlock:CidrBlock, Name: Tags[?Key==`Name`].Value | [0]}' \
+    --output json) || {
+    echo "Error fetching VPCs"
+    return 1
+  }
+
+  # Check if VPCs exist
+  if [[ "$vpcs" == "[]" ]]; then
+    echo "No VPCs found in region $AwsRegion for profile $AwsProfile."
+    return
+  fi
+
+  # Process each VPC
+  echo "$vpcs" | jq -c '.[]' | while IFS= read -r vpc; do
+    local vpc_id cidr name
+    vpc_id=$(echo "$vpc" | jq -r '.VpcId')
+    cidr=$(echo "$vpc" | jq -r '.CidrBlock')
+    name=$(echo "$vpc" | jq -r '.Name // "No Name"')
+
+    echo "VPC: $vpc_id ($cidr) - $name"
+
+    # Fetch subnets for the current VPC
+    local subnets
+    subnets=$(aws ec2 describe-subnets \
+      --filters "Name=vpc-id,Values=$vpc_id" \
+      --profile "$AwsProfile" \
+      --region "$AwsRegion" \
+      --query 'Subnets[*].{SubnetId:SubnetId, CidrBlock:CidrBlock, Name: Tags[?Key==`Name`].Value | [0]}' \
+      --output json) || {
+      echo "  Error fetching subnets for VPC $vpc_id"
+      continue
+    }
+
+    # Check if subnets exist
+    if [[ "$subnets" == "[]" ]]; then
+      echo "  No subnets found for this VPC."
+    else
+      # Process each subnet
+      echo "$subnets" | jq -c '.[]' | while IFS= read -r subnet; do
+        local subnet_id subnet_cidr subnet_name
+        subnet_id=$(echo "$subnet" | jq -r '.SubnetId')
+        subnet_cidr=$(echo "$subnet" | jq -r '.CidrBlock')
+        subnet_name=$(echo "$subnet" | jq -r '.Name // "No Name"')
+
+        echo "  Subnet: $subnet_id ($subnet_cidr) - $subnet_name"
+      done
+    fi
+    echo "-------------------------------------"
+  done
 }
