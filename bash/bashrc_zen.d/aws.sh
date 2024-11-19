@@ -1,50 +1,79 @@
-# Otherwise, w3m opens if installed
-export BROWSER=echo
-# export AWS_PROFILE=lab
-export AWS_DEFAULT_OUTPUT=json
-export AWS_DEFAULT_REGION=us-east-1
+# Ensure BASH environment
 
-if command -v aws_completer &>/dev/null; then
-  complete -C "$(command -v aws_completer)" aws
-fi
-# AWS_ROLE_ARN
-# AWS_ACCESS_KEY_ID
-# AWS_CONFIG_FILE
-# AWS_SECRET_ACCESS_KEY
-# AWS_SESSION_TOKEN
-#!/usr/bin/env bash
+# Global settings
 
-# Function: Get AWS Profile and Region
+export AWS_PROFILE=lab
+: "${AWS_DEFAULT_OUTPUT:=json}"
+: "${AWS_DEFAULT_REGION:=us-east-1}"
+
+echo "$AWS_PROFILE"
+echo "Region: $AWS_DEFAULT_REGION"
+echo "Output: $AWS_DEFAULT_OUTPUT"
+echo "Setting AWS_PROFILE to lab"
+
+# Ensure AWS CLI autocompletion is enabled
+# if command -v aws_completer &>/dev/null; then
+#  complete -C "$(command -v aws_completer)" aws
+# fi
+
+# Function: Get AWS Profile
 get_aws_context() {
-  local func_aws_profile
-  if [ $# -ge 1 ]; then
-    func_aws_profile="$1"
-  elif [ -n "${AWS_PROFILE:-}" ]; then
-    func_aws_profile="$AWS_PROFILE"
-  else
-    echo "Error: AWS profile not specified. Set the AWS_PROFILE environment variable or pass it as the first argument."
+  local profile="$1"
+  if [[ -z "$profile" ]]; then
+    echo "Missing a profile name"
     return 1
   fi
-  echo "$func_aws_profile"
+
+  # Check if the provided profile exists
+  if aws configure list-profiles | grep -q "^${profile}$"; then
+    echo "$profile"
+    return 0
+  fi
+
+  # Error handling for invalid profiles
+  echo -e "\033[31mError: Cannot find profile '$profile'\033[0m"
+  return 1
 }
 
-AwsRegion="us-east-1"
+# Function: List CloudFormation stacks
+alssts() {
+  local AwsProfile AwsRegion="us-east-1"
+  AwsProfile=$(get_aws_context "$@")
 
-# Function: List EC2 Instances by VPC
-list_ec2_instances_by_vpc() {
-  local AwsProfile
-  AwsProfile=$(get_aws_context "$@") || return 1
+  aws cloudformation describe-stacks \
+    --region "$AwsRegion" \
+    --profile "$AwsProfile" \
+    --query 'Stacks[*].[StackName, StackStatus]' \
+    --output table
+}
 
-  vpcs=$(aws ec2 describe-vpcs --query 'Vpcs[].VpcId' --output text --region "$AwsRegion" --profile "$AwsProfile")
-  echo "Listing EC2 instances for each VPC in the region using profile: $AwsProfile"
+# Function: List EC2 instances by VPC
+alsec2() {
+  local AwsProfile AwsRegion="us-east-1"
+  AwsProfile=$(get_aws_context "$@")
 
+  local vpcs
+  vpcs=$(aws ec2 describe-vpcs \
+    --region "$AwsRegion" \
+    --profile "$AwsProfile" \
+    --query 'Vpcs[].VpcId' --output text)
+
+  if [[ -z "$vpcs" ]]; then
+    echo "No VPCs found in region $AwsRegion for profile $AwsProfile."
+    return 0
+  fi
+
+  echo "Listing EC2 instances for each VPC in region $AwsRegion using profile $AwsProfile:"
   for vpc_id in $vpcs; do
     echo "VPC: $vpc_id"
+    local instances
     instances=$(aws ec2 describe-instances \
       --filters "Name=vpc-id,Values=$vpc_id" \
+      --region "$AwsRegion" \
+      --profile "$AwsProfile" \
       --query 'Reservations[*].Instances[*].[InstanceId,State.Name,InstanceType,PrivateIpAddress]' \
-      --output table --region "$AwsRegion" --profile "$AwsProfile")
-    if [ -z "$instances" ]; then
+      --output table)
+    if [[ -z "$instances" ]]; then
       echo "  No EC2 instances found in this VPC."
     else
       echo "$instances"
@@ -54,29 +83,34 @@ list_ec2_instances_by_vpc() {
 }
 
 # Function: List Route Tables
-list_route_tables() {
-  local AwsProfile
-  AwsProfile=$(get_aws_context "$@") || return 1
+alsrt() {
+  local AwsProfile AwsRegion="us-east-1"
+  AwsProfile=$(get_aws_context "$@")
 
-  echo "Listing all route tables in region $AwsRegion for profile $AwsProfile:"
-  aws ec2 describe-route-tables --region "$AwsRegion" --profile "$AwsProfile" \
-    --query 'RouteTables[*].{RouteTableId:RouteTableId, VpcId:VpcId, Name:Tags[?Key==`Name`].Value | [0]}' \
+  aws ec2 describe-route-tables \
+    --region "$AwsRegion" \
+    --profile "$AwsProfile" \
+    --query 'RouteTables[*].[RouteTableId, VpcId, Tags[?Key==`Name`].Value | [0]]' \
     --output table
 }
 
-# Function: List Security Groups and Rules
-list_security_groups_and_rules() {
-  local AwsProfile
-  AwsProfile=$(get_aws_context "$@") || return 1
+# Function: List Security Groups
+alssg() {
+  local AwsProfile AwsRegion="us-east-1"
+  AwsProfile=$(get_aws_context "$@")
 
-  security_groups=$(aws ec2 describe-security-groups --region "$AwsRegion" --profile "$AwsProfile" \
-    --query 'SecurityGroups[*]' --output json)
-  if [ "$security_groups" == "[]" ]; then
+  local security_groups
+  security_groups=$(aws ec2 describe-security-groups \
+    --region "$AwsRegion" \
+    --profile "$AwsProfile" \
+    --query 'SecurityGroups[*]' \
+    --output json)
+
+  if [[ "$security_groups" == "[]" ]]; then
     echo "No security groups found in region $AwsRegion for profile $AwsProfile."
     return 0
   fi
 
-  echo "Listing all security groups and their rules in region $AwsRegion for profile $AwsProfile:"
   echo "$security_groups" | jq -r '
     .[] |
     "Security Group:\n  GroupId: \(.GroupId)\n  GroupName: \(.GroupName // "No Name")\n  Inbound Rules:" +
@@ -99,57 +133,65 @@ list_security_groups_and_rules() {
 }
 
 # Function: List Subnets
-list_subnets() {
-  local AwsProfile
-  AwsProfile=$(get_aws_context "$@") || return 1
+alssn() {
+  local AwsProfile AwsRegion="us-east-1"
+  AwsProfile=$(get_aws_context "$@")
 
-  echo "Listing all subnets in region $AwsRegion for profile $AwsProfile:"
-  aws ec2 describe-subnets --region "$AwsRegion" --profile "$AwsProfile" \
-    --query 'Subnets[*].{SubnetId:SubnetId, CidrBlock:CidrBlock, VpcId:VpcId, AvailabilityZone:AvailabilityZone, Name:Tags[?Key==`Name`].Value | [0]}' \
+  aws ec2 describe-subnets \
+    --region "$AwsRegion" \
+    --profile "$AwsProfile" \
+    --query 'Subnets[*].[SubnetId, CidrBlock, VpcId, AvailabilityZone, Tags[?Key==`Name`].Value | [0]]' \
     --output table
 }
 
-# Function: List Transit Gateways and Attachments
-list_transit_gateways_and_attachments() {
+alsid() {
+  # jq -s (slurp the whole thing) reads in both objects and puts each into an array
+  # Then, `.|add` combines the two JSON objects into one by merging their key-value pairs.
+  # so one oject that combines the 'interesting' information
+  {
+    aws sts get-caller-identity &
+    aws iam list-account-aliases
+  } | jq -s ".|add"
+
+}
+# Function: List Launch Templates
+alslt() {
+  local AwsProfile AwsRegion="us-east-1"
+  AwsProfile=$(get_aws_context "$@")
+
+  aws ec2 describe-launch-templates \
+    --region "$AwsRegion" \
+    --profile "$AwsProfile" \
+    --query 'LaunchTemplates[*].[LaunchTemplateId, LaunchTemplateName, LatestVersionNumber]' \
+    --output table
+}
+
+# Function: List Instance Profiles
+alsip() {
+  local AwsProfile AwsRegion="us-east-1"
+  AwsProfile=$(get_aws_context "$@")
+
+  aws iam list-instance-profiles \
+    --region "$AwsRegion" \
+    --profile "$AwsProfile" \
+    --query 'InstanceProfiles[*].[InstanceProfileName, InstanceProfileId, Path]' \
+    --output table
+}
+
+alsvpcs() {
   local AwsProfile
-  AwsProfile=$(get_aws_context "$@") || return 1
+  AwsProfile=$(get_aws_context "$@") || {
+    echo "Can not find Profile"
+    return 1
+  }
 
-  transit_gateways=$(aws ec2 describe-transit-gateways --query 'TransitGateways[].TransitGatewayId' --output text --region "$AwsRegion" --profile "$AwsProfile")
-  if [ -z "$transit_gateways" ]; then
-    echo "No Transit Gateways found in region $AwsRegion for profile $AwsProfile."
-    return 0
-  fi
+  echo "Listing all VPCs in region $AwsRegion for profile $AwsProfile:"
 
-  for tgw_id in $transit_gateways; do
-    echo "Transit Gateway: $tgw_id"
-
-    route_tables=$(aws ec2 describe-transit-gateway-route-tables --region "$AwsRegion" --profile "$AwsProfile" \
-      --filters "Name=transit-gateway-id,Values=$tgw_id" \
-      --query 'TransitGatewayRouteTables[].TransitGatewayRouteTableId' \
-      --output text)
-
-    if [ -n "$route_tables" ]; then
-      echo "  Route Tables:"
-      for rt_id in $route_tables; do
-        echo "    - $rt_id"
-      done
-    else
-      echo "  - No Route Tables found"
-    fi
-
-    attachments=$(aws ec2 describe-transit-gateway-attachments --region "$AwsRegion" --profile "$AwsProfile" \
-      --filters "Name=transit-gateway-id,Values=$tgw_id" \
-      --query 'TransitGatewayAttachments[*].[TransitGatewayAttachmentId,ResourceType,ResourceId,State]' \
-      --output table)
-
-    if [ -n "$attachments" ]; then
-      echo "  Attachments:"
-      echo "$attachments"
-    else
-      echo "  - No Attachments found"
-    fi
-    echo "-------------------------------------"
-  done
+  aws ec2 describe-vpcs \
+    --region "$AwsRegion" \
+    --profile "$AwsProfile" \
+    --query 'Vpcs[*].[VpcId, CidrBlock, Tags[?Key==`Name`].Value | [0]]' \
+    --output table
 }
 
 list_vpcs_with_subnets() {
@@ -211,4 +253,28 @@ list_vpcs_with_subnets() {
     fi
     echo "-------------------------------------"
   done
+}
+
+alsltx() {
+
+  aws ec2 describe-launch-templates --query "LaunchTemplates[*].{TemplateName:LaunchTemplateName,TemplateID:LaunchTemplateId,Version:LatestVersionNumber}" --output table --profile lab
+}
+
+alslt() {
+
+  aws ec2 describe-launch-template-versions --versions \$Latest --output yaml
+
+}
+
+alsdlt() {
+  aws ec2 describe-launch-template-versions --versions \$Latest --query 'LaunchTemplateVersions[*].{Name:LaunchTemplateName,UserData:LaunchTemplateData.UserData}' --output json | jq -r
+}
+
+alsdltud() {
+  aws ec2 describe-launch-template-versions --versions \$Latest --query 'LaunchTemplateVersions[*].{Name:LaunchTemplateName,UserData:LaunchTemplateData.UserData}' --output json |
+    jq -r '
+        .[] |
+        select(.UserData != null) |
+        "\(.Name):\nDecoded UserData:\n" + (.UserData | @base64d) + "\n-----------------------------"
+    '
 }
