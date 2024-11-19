@@ -49,7 +49,6 @@ alssts() {
 
 # Function: List EC2 instances by VPC
 alsec2() {
-  local AwsProfile AwsRegion="us-east-1"
   AwsProfile=$(get_aws_context "$@")
 
   local vpcs
@@ -84,7 +83,6 @@ alsec2() {
 
 # Function: List Route Tables
 alsrt() {
-  local AwsProfile AwsRegion="us-east-1"
   AwsProfile=$(get_aws_context "$@")
 
   aws ec2 describe-route-tables \
@@ -96,7 +94,6 @@ alsrt() {
 
 # Function: List Security Groups
 alssg() {
-  local AwsProfile AwsRegion="us-east-1"
   AwsProfile=$(get_aws_context "$@")
 
   local security_groups
@@ -134,7 +131,6 @@ alssg() {
 
 # Function: List Subnets
 alssn() {
-  local AwsProfile AwsRegion="us-east-1"
   AwsProfile=$(get_aws_context "$@")
 
   aws ec2 describe-subnets \
@@ -154,21 +150,8 @@ alsid() {
   } | jq -s ".|add"
 
 }
-# Function: List Launch Templates
-alslt() {
-  local AwsProfile AwsRegion="us-east-1"
-  AwsProfile=$(get_aws_context "$@")
-
-  aws ec2 describe-launch-templates \
-    --region "$AwsRegion" \
-    --profile "$AwsProfile" \
-    --query 'LaunchTemplates[*].[LaunchTemplateId, LaunchTemplateName, LatestVersionNumber]' \
-    --output table
-}
-
 # Function: List Instance Profiles
 alsip() {
-  local AwsProfile AwsRegion="us-east-1"
   AwsProfile=$(get_aws_context "$@")
 
   aws iam list-instance-profiles \
@@ -179,11 +162,7 @@ alsip() {
 }
 
 alsvpcs() {
-  local AwsProfile
-  AwsProfile=$(get_aws_context "$@") || {
-    echo "Can not find Profile"
-    return 1
-  }
+  AwsProfile=$(get_aws_context "$@")
 
   echo "Listing all VPCs in region $AwsRegion for profile $AwsProfile:"
 
@@ -195,9 +174,8 @@ alsvpcs() {
 }
 
 list_vpcs_with_subnets() {
-  # Declare function variables
-  local AwsProfile="${1:-default}"  # Default profile if not provided
-  local AwsRegion="${2:-us-east-1}" # Default region if not provided
+
+  AwsProfile=$(get_aws_context "$@")
 
   # Fetch all VPCs
   local vpcs
@@ -256,25 +234,39 @@ list_vpcs_with_subnets() {
 }
 
 alsltx() {
+  AwsProfile=$(get_aws_context "$@")
 
-  aws ec2 describe-launch-templates --query "LaunchTemplates[*].{TemplateName:LaunchTemplateName,TemplateID:LaunchTemplateId,Version:LatestVersionNumber}" --output table --profile lab
+  aws ec2 describe-launch-templates --query "LaunchTemplates[*].{TemplateName:LaunchTemplateName,TemplateID:LaunchTemplateId,Version:LatestVersionNumber}" --output table --profile "${AwsProfile}"
 }
 
 alslt() {
+  AwsProfile=$(get_aws_context "$@")
 
-  aws ec2 describe-launch-template-versions --versions \$Latest --output yaml
+  aws ec2 describe-launch-template-versions --versions \$Latest --output yaml --profile "${AwsProfile}"
 
 }
 
 alsdlt() {
-  aws ec2 describe-launch-template-versions --versions \$Latest --query 'LaunchTemplateVersions[*].{Name:LaunchTemplateName,UserData:LaunchTemplateData.UserData}' --output json | jq -r
+  AwsProfile=$(get_aws_context "$@")
+  aws ec2 describe-launch-template-versions --versions \$Latest --query 'LaunchTemplateVersions[*].{Name:LaunchTemplateName,UserData:LaunchTemplateData.UserData}' --profile "${AwsProfile}" --output json | jq -r
 }
 
 alsdltud() {
-  aws ec2 describe-launch-template-versions --versions \$Latest --query 'LaunchTemplateVersions[*].{Name:LaunchTemplateName,UserData:LaunchTemplateData.UserData}' --output json |
+  AwsProfile=$(get_aws_context "$@")
+  aws ec2 describe-launch-template-versions --versions \$Latest --query 'LaunchTemplateVersions[*].{Name:LaunchTemplateName,UserData:LaunchTemplateData.UserData}' --profile "${AwsProfile}" --output json |
     jq -r '
         .[] |
         select(.UserData != null) |
         "\(.Name):\nDecoded UserData:\n" + (.UserData | @base64d) + "\n-----------------------------"
     '
+}
+# Function: List Launch Templates
+alslt2() {
+  AwsProfile=$(get_aws_context "$@")
+
+  aws ec2 describe-launch-templates \
+    --region "$AwsRegion" \
+    --profile "$AwsProfile" \
+    --query 'LaunchTemplates[*].[LaunchTemplateId, LaunchTemplateName, LatestVersionNumber]' \
+    --output table
 }
