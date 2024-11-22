@@ -17,22 +17,39 @@ echo "Setting AWS_PROFILE to lab"
 # fi
 
 # Function: Get AWS Profile
+#get_aws_context() {
+#  local profile="$1"
+#  if [[ -z "$profile" ]]; then
+#    echo "Missing a profile name"
+#    return 0
+#  fi
+
 get_aws_context() {
-  local profile="$1"
-  if [[ -z "$profile" ]]; then
-    echo "Missing a profile name"
+  local profile="$1" # Correct: Local variable declared and assigned
+
+  local valid_profiles                          # Correct: Variable declared
+  valid_profiles=$(aws configure list-profiles) # Correct: Command substitution is properly closed
+
+  if [[ $? -ne 0 ]]; then # Correct: `if` properly formed
+    echo "Error: Unable to fetch AWS profiles. Ensure the AWS CLI is installed and configured."
+    return 1 # Correct: Use `return` in a function
+  fi         # Correct: `if` block properly closed
+
+  if [[ -z "$profile" ]]; then # Correct: Checks for empty string
+    echo "Error: Missing profile name. Please provide a valid AWS profile."
+    echo "Available profiles:"
+    echo "$valid_profiles" # Correct: `echo` is fine here
     return 1
   fi
 
-  # Check if the provided profile exists
-  if aws configure list-profiles | grep -q "^${profile}$"; then
-    echo "$profile"
-    return 0
+  if ! echo "$valid_profiles" | grep -qw "$profile"; then # Correct: Negation and piping syntax are fine
+    echo "Error: Invalid profile '$profile'."             # Correct: Quotes around `$profile`
+    echo "Available profiles:"
+    echo "$valid_profiles"
+    return 1
   fi
 
-  # Error handling for invalid profiles
-  echo -e "\033[31mError: Cannot find profile '$profile'\033[0m"
-  return 1
+  echo "$profile" # Correct: Outputs the valid profile
 }
 
 # Function: List CloudFormation stacks
@@ -239,7 +256,7 @@ alsltx() {
   aws ec2 describe-launch-templates --query "LaunchTemplates[*].{TemplateName:LaunchTemplateName,TemplateID:LaunchTemplateId,Version:LatestVersionNumber}" --output table --profile "${AwsProfile}"
 }
 
-alslt() {
+alsltd() {
   AwsProfile=$(get_aws_context "$@")
 
   aws ec2 describe-launch-template-versions --versions \$Latest --output yaml --profile "${AwsProfile}"
@@ -261,7 +278,7 @@ alsdltud() {
     '
 }
 # Function: List Launch Templates
-alslt2() {
+alslt() {
   AwsProfile=$(get_aws_context "$@")
 
   aws ec2 describe-launch-templates \
