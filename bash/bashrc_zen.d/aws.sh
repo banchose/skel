@@ -387,3 +387,9 @@ get_aws_context() {
 
   echo "$profile"
 }
+
+alsrs() {
+  AwsProfile=$(get_aws_context "$@")
+
+  aws cloudformation describe-stack-resources --stack-name my-vpc-stack --region us-east-1 --profile lab3 --query "StackResources[*].[LogicalResourceId, PhysicalResourceId, ResourceType]" --output table
+}
