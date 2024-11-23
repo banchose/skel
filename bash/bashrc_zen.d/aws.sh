@@ -3,8 +3,8 @@
 # Global settings
 
 export AWS_PROFILE=lab
-: "${AWS_DEFAULT_OUTPUT:=json}"
-: "${AWS_DEFAULT_REGION:=us-east-1}"
+export AWS_DEFAULT_REGION=us-east-1
+export AwsRegion=us-east-1
 
 echo "$AWS_PROFILE"
 echo "Region: $AWS_DEFAULT_REGION"
@@ -268,7 +268,7 @@ alsdlt() {
   aws ec2 describe-launch-template-versions --versions \$Latest --query 'LaunchTemplateVersions[*].{Name:LaunchTemplateName,UserData:LaunchTemplateData.UserData}' --profile "${AwsProfile}" --output json | jq -r
 }
 
-alsdltud() {
+alsltud() {
   AwsProfile=$(get_aws_context "$@")
   aws ec2 describe-launch-template-versions --versions \$Latest --query 'LaunchTemplateVersions[*].{Name:LaunchTemplateName,UserData:LaunchTemplateData.UserData}' --profile "${AwsProfile}" --output json |
     jq -r '
@@ -286,4 +286,104 @@ alslt() {
     --profile "$AwsProfile" \
     --query 'LaunchTemplates[*].[LaunchTemplateId, LaunchTemplateName, LatestVersionNumber]' \
     --output table
+}
+
+alstg() {
+  # Ensure AWS CLI is installed
+  if ! command -v aws >/dev/null 2>&1; then
+    echo "Error: AWS CLI is not installed. Please install it to use this function."
+    return 1
+  fi
+
+  # Determine AWS profile using get_aws_context
+  AwsProfile=$(get_aws_context "$@")
+  if [[ $? -ne 0 || -z "${AwsProfile}" ]]; then
+    echo "Failed to retrieve a valid AWS profile."
+    return 1
+  fi
+
+  echo "Using AWS profile: ${AwsProfile}"
+
+  # Fetch all Transit Gateways
+  echo "Fetching Transit Gateways..."
+  TransitGateways=$(aws ec2 describe-transit-gateways \
+    --query "TransitGateways[].TransitGatewayId" \
+    --output text \
+    --profile "${AwsProfile}" 2>/dev/null)
+
+  if [ -z "${TransitGateways}" ]; then
+    echo "No Transit Gateways found for profile ${AwsProfile}."
+    return 1
+  fi
+
+  # Loop through each Transit Gateway
+  for TgwId in ${TransitGateways}; do
+    echo "=================================================="
+    echo "Transit Gateway: ${TgwId}"
+    echo "=================================================="
+
+    # Fetch Transit Gateway Attachments
+    echo "Transit Gateway Attachments:"
+    aws ec2 describe-transit-gateway-attachments \
+      --filters "Name=transit-gateway-id,Values=${TgwId}" \
+      --query "TransitGatewayAttachments[?ResourceType=='vpc'].{TransitGatewayId:TransitGatewayId, AttachmentId:TransitGatewayAttachmentId, VpcId:ResourceId, State:State}" \
+      --output table \
+      --profile "${AwsProfile}" || {
+      echo "Error fetching Transit Gateway Attachments for ${TgwId}"
+      continue
+    }
+
+    # Fetch VPCs and Names
+    echo "Associated VPCs:"
+    aws ec2 describe-vpcs \
+      --query "Vpcs[].{VpcId:VpcId, VpcName:Tags[?Key=='Name'].Value | [0]}" \
+      --output table \
+      --profile "${AwsProfile}" || {
+      echo "Error fetching VPCs for ${TgwId}"
+      continue
+    }
+
+    # Fetch Transit Gateway Route Tables
+    echo "Transit Gateway Route Tables:"
+    aws ec2 describe-transit-gateway-route-tables \
+      --filters "Name=transit-gateway-id,Values=${TgwId}" \
+      --query "TransitGatewayRouteTables[].{RouteTableId:TransitGatewayRouteTableId, State:State}" \
+      --output table \
+      --profile "${AwsProfile}" || {
+      echo "Error fetching Transit Gateway Route Tables for ${TgwId}"
+      continue
+    }
+  done
+
+  echo "Completed fetching details for all Transit Gateways."
+  return 0
+}
+
+# Function to validate and return AWS profile context
+get_aws_context() {
+  local profile="$1" # Local variable declared and assigned
+
+  local valid_profiles
+  valid_profiles=$(aws configure list-profiles) # Fetch all configured profiles
+
+  if [[ $? -ne 0 ]]; then
+    echo "Error: Unable to fetch AWS profiles. Ensure the AWS CLI is installed and configured."
+    return 1
+  fi
+
+  if [[ -z "$profile" ]]; then
+    echo "Error: Missing profile name. Please provide a valid AWS profile."
+    echo "Available profiles:"
+    echo "$valid_profiles"
+    return 1
+  fi
+
+  if ! echo "$valid_profiles" | grep -qw "$profile"; then
+    echo "Error: Invalid profile '$profile'."
+    echo "Available profiles:"
+    echo "$valid_profiles"
+    return 1
+  fi
+
+  echo "$profile"
 }

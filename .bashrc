@@ -140,6 +140,7 @@ shopt -s autocd 2>/dev/null
 shopt -s dirspell 2>/dev/null
 shopt -s cdspell 2>/dev/null
 shopt -s cdable_vars
+shopt -s lithist
 PROMPT_COMMAND='history -a'
 export HISTSIZE=50000
 export HISTFILESIZE=10000
@@ -254,4 +255,8 @@ if [[ -d "${home_bashrc_directory}" ]]; then
   done
 else
   echo "Directory ${home_bashrc_directory} does not exist."
+fi
+
+if command -v aws_completer &>/dev/null; then
+  complete -C "$(command -v aws_completer)" aws
 fi
