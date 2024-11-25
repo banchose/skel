@@ -24,6 +24,45 @@ echo "Setting AWS_PROFILE to lab"
 #    return 0
 #  fi
 
+set_stack_outputs() {
+  local stack_name="$1"
+  local region="${2:-us-east-1}"
+  local profile="${3:-default}"
+
+  # Get all stack outputs
+  local outputs_json
+  outputs_json=$(aws cloudformation describe-stacks \
+    --stack-name "$stack_name" \
+    --query "Stacks[0].Outputs" \
+    --output json \
+    --region "$region" \
+    --profile "$profile") || {
+    echo "Error: Failed to retrieve stack outputs for '$stack_name'." >&2
+    return 1
+  }
+
+  # Check if the outputs JSON is empty
+  if [[ -z "$outputs_json" || "$outputs_json" == "[]" ]]; then
+    echo "No outputs found for stack: $stack_name"
+    return 1
+  fi
+
+  # Parse outputs using a Bash array
+  local output_key output_value
+  mapfile -t outputs < <(jq -r '.[] | "\(.OutputKey) \(.OutputValue)"' <<<"$outputs_json")
+
+  for line in "${outputs[@]}"; do
+    output_key="${line%% *}"
+    output_value="${line#* }"
+
+    # Export with a prefix to avoid namespace collisions
+    export "$output_key=$output_value"
+
+    # Print for verification (optional)
+    echo "Exported $output_key=$output_value"
+  done
+}
+
 get_aws_context() {
   local profile="$1" # Correct: Local variable declared and assigned
 
@@ -386,10 +425,4 @@ get_aws_context() {
   fi
 
   echo "$profile"
-}
-
-alsrs() {
-  AwsProfile=$(get_aws_context "$@")
-
-  aws cloudformation describe-stack-resources --stack-name my-vpc-stack --region us-east-1 --profile lab3 --query "StackResources[*].[LogicalResourceId, PhysicalResourceId, ResourceType]" --output table
 }
