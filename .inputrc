@@ -31,6 +31,10 @@ set show-all-if-ambiguous on
 set show-all-if-unmodified on
 set completion-ignore-case on
 
+# Bind Tab to menu-complete (cycles forward)
+"\t": menu-complete
+# Optionally bind Shift-Tab to menu-complete-backward (cycles backward)
+"\e[Z": menu-complete-backward
 
 # Color files by types
 set colored-stats On
