@@ -141,7 +141,7 @@ shopt -s dirspell 2>/dev/null
 shopt -s cdspell 2>/dev/null
 shopt -s cdable_vars
 shopt -s lithist
-PROMPT_COMMAND='history -a'
+PROMPT_COMMAND='history -a; history -n'
 export HISTSIZE=50000
 export HISTFILESIZE=10000
 export HISTCONTROL="ignorespace:erasedups"

@@ -12,9 +12,9 @@ echo "Output: $AWS_DEFAULT_OUTPUT"
 echo "Setting AWS_PROFILE to lab"
 
 # Ensure AWS CLI autocompletion is enabled
-# if command -v aws_completer &>/dev/null; then
-#  complete -C "$(command -v aws_completer)" aws
-# fi
+if command -v aws_completer &>/dev/null; then
+  complete -C "$(command -v aws_completer)" aws
+fi
 
 # Function: Get AWS Profile
 #get_aws_context() {
