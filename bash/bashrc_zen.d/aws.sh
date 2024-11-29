@@ -1,4 +1,5 @@
 # Ensure BASH environment
+# This script is sourced to create the functions
 
 # Global settings
 
@@ -63,8 +64,17 @@ set_stack_outputs() {
   done
 }
 
+set_aws_envs() {
+
+  set_stack_outputs HRI-BIGNETWORK us-east-1 net
+  set_stack_outputs HRI-BIGAWSDNS us-east-1 net
+  set_stack_outputs HRI-BIGDEV us-east-1 dev
+  set_stack_outputs HRI-BIGTEST us-east-1 test
+}
+
 get_aws_context() {
   local profile="$1" # Correct: Local variable declared and assigned
+  local AwsRegion="us-east-1"
 
   local valid_profiles                          # Correct: Variable declared
   valid_profiles=$(aws configure list-profiles) # Correct: Command substitution is properly closed
@@ -398,31 +408,91 @@ alstg() {
   return 0
 }
 
-# Function to validate and return AWS profile context
-get_aws_context() {
-  local profile="$1" # Local variable declared and assigned
+check_appliance_mode() {
+  AwsProfile=$(get_aws_context "$@")
+  local PROFILE="${AwsProfile}"
+  local REGION=${2:-us-east-1}
 
-  local valid_profiles
-  valid_profiles=$(aws configure list-profiles) # Fetch all configured profiles
-
-  if [[ $? -ne 0 ]]; then
-    echo "Error: Unable to fetch AWS profiles. Ensure the AWS CLI is installed and configured."
+  # Validate inputs
+  if [[ -z "$PROFILE" ]]; then
+    echo "Error: AWS profile is required. Pass it as the first parameter."
     return 1
   fi
 
-  if [[ -z "$profile" ]]; then
-    echo "Error: Missing profile name. Please provide a valid AWS profile."
-    echo "Available profiles:"
-    echo "$valid_profiles"
+  # Validate the region
+  case "$REGION" in
+  us-east-1 | us-east-2 | us-west-1 | us-west-2)
+    # Valid region
+    ;;
+  *)
+    echo "Error: Invalid AWS region: $REGION"
+    echo "Valid regions are: us-east-1, us-east-2, us-west-1, us-west-2."
+    return 1
+    ;;
+  esac
+
+  echo "Fetching all Transit Gateway Attachments in region: $REGION using profile: $PROFILE"
+
+  local attachments
+  if ! attachments=$(aws ec2 describe-transit-gateway-attachments \
+    --profile "${AwsProfile}" \
+    --region "$REGION" \
+    --query 'TransitGatewayAttachments[*].[TransitGatewayAttachmentId,ResourceId,ResourceType]' \
+    --output text 2>&1); then
+    echo "Error: Failed to fetch Transit Gateway Attachments. AWS CLI error: $attachments"
     return 1
   fi
 
-  if ! echo "$valid_profiles" | grep -qw "$profile"; then
-    echo "Error: Invalid profile '$profile'."
-    echo "Available profiles:"
-    echo "$valid_profiles"
-    return 1
+  if [[ -z "$attachments" ]]; then
+    echo "No Transit Gateway attachments found in region: $REGION using profile: $PROFILE"
+    return 0
   fi
 
-  echo "$profile"
+  printf "%-20s %-20s %-20s %-10s\n" "Attachment ID" "Resource ID" "Resource Type" "Appliance Mode"
+  echo "-------------------------------------------------------------------------------------"
+
+  while IFS=$'\t' read -r attachment_id resource_id resource_type; do
+    local appliance_mode
+    appliance_mode=$(aws ec2 describe-transit-gateway-vpc-attachments \
+      --profile "$PROFILE" \
+      --region "$REGION" \
+      --transit-gateway-attachment-ids "$attachment_id" \
+      --query 'TransitGatewayVpcAttachments[0].Options.ApplianceModeSupport' \
+      --output text 2>/dev/null)
+    appliance_mode=${appliance_mode:-UNKNOWN}
+    printf "%-20s %-20s %-20s %-10s\n" "$attachment_id" "$resource_id" "$resource_type" "$appliance_mode"
+    sleep 0.2 # Throttle API calls
+  done <<<"$attachments"
+}
+
+# Example usage
+# check_appliance_mode "my-aws-profile" "us-west-2"
+#
+#
+##################################################################################
+
+Get_SCPs_from_OU() {
+  AwsProfile=$(get_aws_context "$@")
+  AwsRegion="${AwsRegion:-us-east-1}"
+
+  echo "Fetching policies attached to OU: $OU_ID..."
+
+  # Fetch SCP IDs attached to the OU
+  POLICY_IDS=$(aws organizations list-policies-for-target \
+    --target-id "$OU_ID" \
+    --filter SERVICE_CONTROL_POLICY \
+    --profile "$PROFILE" \
+    --query "Policies[].Id" \
+    --output text --region "${AwsRegion}" --profile "${AwsProfile}")
+
+  # Loop through each policy ID and fetch its JSON content
+  for POLICY_ID in $POLICY_IDS; do
+    echo "Fetching details for policy: $POLICY_ID..."
+    aws organizations describe-policy \
+      --policy-id "$POLICY_ID" \
+      --profile "$PROFILE" \
+      --query "Policy.Content" \
+      --output json --region "${AwsRegion}" --profile "${AwsProfile}" | jq
+    echo "----------------------------------------------------"
+  done
 }
