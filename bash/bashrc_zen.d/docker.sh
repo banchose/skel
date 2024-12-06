@@ -12,23 +12,23 @@ source <(docker completion bash)
 complete -F __start_docker d
 
 function dwipe() {
-	docker container prune --force
-	docker image prune --force --all
+  docker container prune --force
+  docker image prune --force --all
 }
 
 function dockerpurge() {
 
-	docker rm -f $(docker ps -aq)
-	docker system prune -f -a # Boom
-	docker volume prune -f
-	docker network prune -f
+  docker rm -f $(docker ps -aq)
+  docker system prune -f -a # Boom
+  docker volume prune -f
+  docker network prune -f
 
 }
 
 function dockupdate() {
 
-	for i in $(docker images | tail -n +2 | awk '{ print $1 }'); do docker pull "$i"; done
+  for i in $(docker images | tail -n +2 | awk '{ print $1 }'); do docker pull "$i"; done
 }
 
 # [[ $HOSTNAME == arc ]] && export DOCKER_HOST="ssh://orb.example.net"
-[[ $HOSTNAME == arc ]] && export DOCKER_HOST="ssh://star.example.net"
+# [[ $HOSTNAME == arc ]] && export DOCKER_HOST="ssh://star.example.net"
