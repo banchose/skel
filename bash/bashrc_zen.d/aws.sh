@@ -1,5 +1,4 @@
 # Ensure BASH environment
-# This script is sourced to create the functions
 
 # Global settings
 
@@ -74,7 +73,6 @@ set_aws_envs() {
 
 get_aws_context() {
   local profile="$1" # Correct: Local variable declared and assigned
-  local AwsRegion="us-east-1"
 
   local valid_profiles                          # Correct: Variable declared
   valid_profiles=$(aws configure list-profiles) # Correct: Command substitution is properly closed
@@ -115,13 +113,26 @@ alssts() {
 
 # Function: List EC2 instances by VPC
 alsec2() {
-  AwsProfile=$(get_aws_context "$@")
+  # Ensure get_aws_context is available and properly used
+  local AwsProfile
+  AwsProfile=$(get_aws_context "$@") || {
+    echo "Error: Failed to retrieve AWS context. Check your inputs." >&2
+    return 1
+  }
+  if [[ -z "$AwsRegion" ]]; then
+    echo "Error: AwsRegion is not set. Ensure get_aws_context outputs it correctly." >&2
+    return 1
+  fi
 
   local vpcs
   vpcs=$(aws ec2 describe-vpcs \
     --region "$AwsRegion" \
     --profile "$AwsProfile" \
-    --query 'Vpcs[].VpcId' --output text)
+    --query 'Vpcs[].VpcId' \
+    --output text 2>/dev/null) || {
+    echo "Error: Failed to retrieve VPCs. Check your AWS CLI credentials and region." >&2
+    return 1
+  }
 
   if [[ -z "$vpcs" ]]; then
     echo "No VPCs found in region $AwsRegion for profile $AwsProfile."
@@ -129,6 +140,7 @@ alsec2() {
   fi
 
   echo "Listing EC2 instances for each VPC in region $AwsRegion using profile $AwsProfile:"
+
   for vpc_id in $vpcs; do
     echo "VPC: $vpc_id"
     local instances
@@ -136,9 +148,13 @@ alsec2() {
       --filters "Name=vpc-id,Values=$vpc_id" \
       --region "$AwsRegion" \
       --profile "$AwsProfile" \
-      --query 'Reservations[*].Instances[*].[InstanceId,State.Name,InstanceType,PrivateIpAddress]' \
-      --output table)
-    if [[ -z "$instances" ]]; then
+      --query 'Reservations[*].Instances[*].[InstanceId,State.Name,InstanceType,PrivateIpAddress,PublicIpAddress]' \
+      --output table 2>/dev/null) || {
+      echo "  Error: Failed to retrieve instances for VPC $vpc_id." >&2
+      continue
+    }
+
+    if [[ -z "$instances" || "$instances" == "None" ]]; then
       echo "  No EC2 instances found in this VPC."
     else
       echo "$instances"
@@ -147,6 +163,39 @@ alsec2() {
   done
 }
 
+# alsec2() {
+#   AwsProfile=$(get_aws_context "$@")
+#
+#   local vpcs
+#   vpcs=$(aws ec2 describe-vpcs \
+#     --region "$AwsRegion" \
+#     --profile "$AwsProfile" \
+#     --query 'Vpcs[].VpcId' --output text)
+#
+#   if [[ -z "$vpcs" ]]; then
+#     echo "No VPCs found in region $AwsRegion for profile $AwsProfile."
+#     return 0
+#   fi
+#
+#   echo "Listing EC2 instances for each VPC in region $AwsRegion using profile $AwsProfile:"
+#   for vpc_id in $vpcs; do
+#     echo "VPC: $vpc_id"
+#     local instances
+#     instances=$(aws ec2 describe-instances \
+#       --filters "Name=vpc-id,Values=$vpc_id" \
+#       --region "$AwsRegion" \
+#       --profile "$AwsProfile" \
+#       --query 'Reservations[*].Instances[*].[InstanceId,State.Name,InstanceType,PrivateIpAddress]' \
+#       --output table)
+#     if [[ -z "$instances" ]]; then
+#       echo "  No EC2 instances found in this VPC."
+#     else
+#       echo "$instances"
+#     fi
+#     echo "-------------------------------------"
+#   done
+# }
+#
 # Function: List Route Tables
 alsrt() {
   AwsProfile=$(get_aws_context "$@")
@@ -408,91 +457,31 @@ alstg() {
   return 0
 }
 
-check_appliance_mode() {
-  AwsProfile=$(get_aws_context "$@")
-  local PROFILE="${AwsProfile}"
-  local REGION=${2:-us-east-1}
+# Function to validate and return AWS profile context
+get_aws_context() {
+  local profile="$1" # Local variable declared and assigned
 
-  # Validate inputs
-  if [[ -z "$PROFILE" ]]; then
-    echo "Error: AWS profile is required. Pass it as the first parameter."
+  local valid_profiles
+  valid_profiles=$(aws configure list-profiles) # Fetch all configured profiles
+
+  if [[ $? -ne 0 ]]; then
+    echo "Error: Unable to fetch AWS profiles. Ensure the AWS CLI is installed and configured."
     return 1
   fi
 
-  # Validate the region
-  case "$REGION" in
-  us-east-1 | us-east-2 | us-west-1 | us-west-2)
-    # Valid region
-    ;;
-  *)
-    echo "Error: Invalid AWS region: $REGION"
-    echo "Valid regions are: us-east-1, us-east-2, us-west-1, us-west-2."
-    return 1
-    ;;
-  esac
-
-  echo "Fetching all Transit Gateway Attachments in region: $REGION using profile: $PROFILE"
-
-  local attachments
-  if ! attachments=$(aws ec2 describe-transit-gateway-attachments \
-    --profile "${AwsProfile}" \
-    --region "$REGION" \
-    --query 'TransitGatewayAttachments[*].[TransitGatewayAttachmentId,ResourceId,ResourceType]' \
-    --output text 2>&1); then
-    echo "Error: Failed to fetch Transit Gateway Attachments. AWS CLI error: $attachments"
+  if [[ -z "$profile" ]]; then
+    echo "Error: Missing profile name. Please provide a valid AWS profile."
+    echo "Available profiles:"
+    echo "$valid_profiles"
     return 1
   fi
 
-  if [[ -z "$attachments" ]]; then
-    echo "No Transit Gateway attachments found in region: $REGION using profile: $PROFILE"
-    return 0
+  if ! echo "$valid_profiles" | grep -qw "$profile"; then
+    echo "Error: Invalid profile '$profile'."
+    echo "Available profiles:"
+    echo "$valid_profiles"
+    return 1
   fi
 
-  printf "%-20s %-20s %-20s %-10s\n" "Attachment ID" "Resource ID" "Resource Type" "Appliance Mode"
-  echo "-------------------------------------------------------------------------------------"
-
-  while IFS=$'\t' read -r attachment_id resource_id resource_type; do
-    local appliance_mode
-    appliance_mode=$(aws ec2 describe-transit-gateway-vpc-attachments \
-      --profile "$PROFILE" \
-      --region "$REGION" \
-      --transit-gateway-attachment-ids "$attachment_id" \
-      --query 'TransitGatewayVpcAttachments[0].Options.ApplianceModeSupport' \
-      --output text 2>/dev/null)
-    appliance_mode=${appliance_mode:-UNKNOWN}
-    printf "%-20s %-20s %-20s %-10s\n" "$attachment_id" "$resource_id" "$resource_type" "$appliance_mode"
-    sleep 0.2 # Throttle API calls
-  done <<<"$attachments"
-}
-
-# Example usage
-# check_appliance_mode "my-aws-profile" "us-west-2"
-#
-#
-##################################################################################
-
-Get_SCPs_from_OU() {
-  AwsProfile=$(get_aws_context "$@")
-  AwsRegion="${AwsRegion:-us-east-1}"
-
-  echo "Fetching policies attached to OU: $OU_ID..."
-
-  # Fetch SCP IDs attached to the OU
-  POLICY_IDS=$(aws organizations list-policies-for-target \
-    --target-id "$OU_ID" \
-    --filter SERVICE_CONTROL_POLICY \
-    --profile "$PROFILE" \
-    --query "Policies[].Id" \
-    --output text --region "${AwsRegion}" --profile "${AwsProfile}")
-
-  # Loop through each policy ID and fetch its JSON content
-  for POLICY_ID in $POLICY_IDS; do
-    echo "Fetching details for policy: $POLICY_ID..."
-    aws organizations describe-policy \
-      --policy-id "$POLICY_ID" \
-      --profile "$PROFILE" \
-      --query "Policy.Content" \
-      --output json --region "${AwsRegion}" --profile "${AwsProfile}" | jq
-    echo "----------------------------------------------------"
-  done
+  echo "$profile"
 }
