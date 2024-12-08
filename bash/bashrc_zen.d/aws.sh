@@ -256,12 +256,13 @@ alssn() {
 }
 
 alsid() {
+  AwsProfile=$(get_aws_context "$@")
   # jq -s (slurp the whole thing) reads in both objects and puts each into an array
   # Then, `.|add` combines the two JSON objects into one by merging their key-value pairs.
   # so one oject that combines the 'interesting' information
   {
-    aws sts get-caller-identity &
-    aws iam list-account-aliases
+    aws sts get-caller-identity --region "${AwsRegion}" --profile "${AwsProfile}" &
+    aws iam list-account-aliases --region "${AwsRegion}" --profile "${AwsProfile}"
   } | jq -s ".|add"
 
 }
