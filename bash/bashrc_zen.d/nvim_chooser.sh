@@ -10,100 +10,93 @@
 
 get-astro() {
 
-	local name=astronvim
-	local configdir=~/.config/"${name}"
-	local sharedir=~/.local/share/"${name}"
+  local name=astronvim
+  local configdir=~/.config/"${name}"
+  local sharedir=~/.local/share/"${name}"
 
-	[[ -d $configdir ]] && rm -rfv -- "$configdir"
-	[[ -d $sharedir ]] && rm -rfv -- "$sharedir"
+  [[ -d $configdir ]] && rm -rfv -- "$configdir"
+  [[ -d $sharedir ]] && rm -rfv -- "$sharedir"
 
-	git clone --depth 1 -- "https://github.com/${configdir##*/}/template" "$configdir" && rm -rf -- ~/"${configdir}/${name}".git
+  git clone --depth 1 -- "https://github.com/${configdir##*/}/template" "$configdir" && rm -rf -- ~/"${configdir}/${name}".git
 
 }
 
 get-nvchad() {
 
-	local name=nvchad
-	local configdir=~/.config/"${name}"
-	local sharedir=~/.local/share/"${name}"
+  local name=nvchad
+  local configdir=~/.config/"${name}"
+  local sharedir=~/.local/share/"${name}"
 
-	[[ -d $configdir ]] && rm -rfv -- "$configdir"
-	[[ -d $sharedir ]] && rm -rfv -- "$sharedir"
+  [[ -d $configdir ]] && rm -rfv -- "$configdir"
+  [[ -d $sharedir ]] && rm -rfv -- "$sharedir"
 
-	git clone --depth 1 -- "https://github.com/${configdir##*/}/${configdir##*/}" "$configdir" && rm -rf -- ~/"${configdir}/${name}".git
+  git clone --depth 1 -- "https://github.com/${configdir##*/}/${configdir##*/}" "$configdir" && rm -rf -- ~/"${configdir}/${name}".git
 }
 
 get-lazy() {
 
-	local name=lazyvim
-	local configdir=~/.config/"${name}"
-	local sharedir=~/.local/share/"${name}"
+  local name=lazyvim
+  local configdir=~/.config/"${name}"
+  local sharedir=~/.local/share/"${name}"
 
-	[[ -d $configdir ]] && rm -rfv -- "$configdir"
-	[[ -d $sharedir ]] && rm -rfv -- "$sharedir"
+  [[ -d $configdir ]] && rm -rfv -- "$configdir"
+  [[ -d $sharedir ]] && rm -rfv -- "$sharedir"
 
-	git clone --depth 1 -- "https://github.com/lazyvim/starter" "$configdir" && rm -rf -- ~/"${configdir}/${name}".git
+  git clone --depth 1 -- "https://github.com/lazyvim/starter" "$configdir" && rm -rf -- ~/"${configdir}/${name}".git
 }
 
 get-space() {
-	# Hard coded git
-	local name=spacevim
-	local configdir=~/.config/"${name}"
-	local sharedir=~/.local/share/"${name}"
+  # Hard coded git
+  local name=spacevim
+  local configdir=~/.config/"${name}"
+  local sharedir=~/.local/share/"${name}"
 
-	[[ -d $configdir ]] && rm -rfv -- "$configdir"
-	[[ -d $sharedir ]] && rm -rfv -- "$sharedir"
+  [[ -d $configdir ]] && rm -rfv -- "$configdir"
+  [[ -d $sharedir ]] && rm -rfv -- "$sharedir"
 
-	git clone --depth 1 -- "https://gitlab.com/${configdir##*/}/${configdir##*/}" "${configdir,,}" && rm -rf -- ~/"${configdir}/${name}".git
+  git clone --depth 1 -- "https://gitlab.com/${configdir##*/}/${configdir##*/}" "${configdir,,}" && rm -rf -- ~/"${configdir}/${name}".git
 }
 
 get-default() {
-	# Hard coded git
-	local name=nvim
-	local configdir=~/.config/"${name}"
-	local sharedir=~/.local/share/"${name}"
+  # Hard coded git
+  local name=nvim
+  local configdir=~/.config/"${name}"
+  local sharedir=~/.local/share/"${name}"
 
-	[[ -d $configdir ]] && rm -rfv -- "$configdir"
-	[[ -d $sharedir ]] && rm -rfv -- "$sharedir"
+  [[ -d $configdir ]] && rm -rfv -- "$configdir"
+  [[ -d $sharedir ]] && rm -rfv -- "$sharedir"
 
-	git clone --depth 1 -- "https://github.com/lazyvim/starter" "$configdir"
+  git clone --depth 1 -- "https://github.com/lazyvim/starter" "$configdir"
 }
 
 get-kickstart() {
-	# Hard coded git
-	local name=kickstart
-	local configdir=~/.config/"${name}"
-	local sharedir=~/.local/share/"${name}"
 
-	[[ -d $configdir ]] && rm -rfv -- "$configdir"
-	[[ -d $sharedir ]] && rm -rfv -- "$sharedir"
-
-	git clone --depth 1 -- "https://github.com/nvim-lua/kickstart.nvim" "$configdir"
+  git clone --depth 1 "https://github.com/nvim-lua/kickstart.nvim" ~/.config/kickstart.nvim
 
 }
 
 nvims() {
 
-	# This just gets a string from fzf and that sting must match
-	# a directory in ~/.config
-	# That directory should have the git repo of the nvim disto
-	# So it may expect ~/.config/astronvim if you pick "astronvim" from the menu
-	# Then set the handy NVIM_APPNAME=astronvim which must be name under ~/.config
-	items=("default" "kickstart.nvim" "LazyVim" "NvChad" "AstroNvim" "SpaceVim")
+  # This just gets a string from fzf and that sting must match
+  # a directory in ~/.config
+  # That directory should have the git repo of the nvim disto
+  # So it may expect ~/.config/astronvim if you pick "astronvim" from the menu
+  # Then set the handy NVIM_APPNAME=astronvim which must be name under ~/.config
+  items=("default" "kickstart.nvim" "LazyVim" "NvChad" "AstroNvim" "SpaceVim")
 
-	config=$(printf "%s\n" "${items[@]}" | fzf --prompt="Neovim Config >> " --height=50% --layout=reverse --border --exit-0)
+  config=$(printf "%s\n" "${items[@]}" | fzf --prompt="Neovim Config >> " --height=50% --layout=reverse --border --exit-0)
 
-	# Avoid case confusion caused by presentation
-	# make sane
-	items=("${items[@],,}")
-	config="${config,,}"
+  # Avoid case confusion caused by presentation
+  # make sane
+  items=("${items[@],,}")
+  config="${config,,}"
 
-	if [[ -z $config ]]; then
-		echo "Nothing selected"
-		retrun 0
-	elif [[ $config == "default" ]]; then
-		config=""
-	fi
+  if [[ -z $config ]]; then
+    echo "Nothing selected"
+    retrun 0
+  elif [[ $config == "default" ]]; then
+    config=""
+  fi
 
-	NVIM_APPNAME="$config" nvim "$@"
+  NVIM_APPNAME="$config" nvim "$@"
 }
