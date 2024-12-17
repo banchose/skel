@@ -69,7 +69,7 @@ set_aws_envs() {
   set_stack_outputs HRI-BIGAWSDNS us-east-1 net
   set_stack_outputs HRI-BIGDEV us-east-1 dev
   set_stack_outputs HRI-BIGTEST us-east-1 test
-  set_stack_outputs HRI-BIGDATA us-east-1 test # MIND THE PROFILE
+  set_stack_outputs HRI-BIGDATA us-east-1 production # MIND THE PROFILE
 }
 
 get_aws_context() {
