@@ -16,6 +16,9 @@ if command -v aws_completer &>/dev/null; then
   complete -C "$(command -v aws_completer)" aws
 fi
 
+alias cdaws='cd ~/aws'
+alias vaws='nvim ~/gitdir/skel/bash/bashrc_zen.d/aws.sh'
+
 # Function: Get AWS Profile
 #get_aws_context() {
 #  local profile="$1"
