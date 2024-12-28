@@ -1,0 +1,103 @@
+events {
+    worker_connections 1024;
+	  multi_accept on;
+}
+
+http {
+    include mime.types;
+    default_type application/octet-stream;
+
+    sendfile on;
+    keepalive_timeout 65;
+    resolver 9.9.9.9 149.112.112.112 ipv6=off;
+
+    # Adjust cache keys zone to 60m for more cache entries
+    proxy_cache_path /var/cache/nginx/archmirror levels=1:2 keys_zone=archmirror:60m inactive=120d max_size=10g;
+
+    # Updated log format to include upstream cache status for easier debugging
+    log_format archmirror '$remote_addr - $remote_user [$time_local] "$request" '
+                          '$status $body_bytes_sent "$http_referer" '
+                          '"Cache: $upstream_cache_status" "$upstream_status" '
+                          'rt=$request_time urt=$upstream_response_time';
+
+                        # log_format archmirror '$remote_addr - $upstream_cache_status [$time_local] $request_method $host$request_uri $server_protocol $status $body_bytes_sent $request_time $upstream_response_time';
+    server {
+        listen 80;
+        server_name archmirror.example.net;
+
+        access_log /var/log/nginx/archmirror.access.log archmirror;
+        error_log /var/log/nginx/archmirror.error.log;
+
+        root /srv/http/pacman-cache;
+        autoindex on;
+
+        # Force proxy to use TLS for upstream server requests
+        proxy_ssl_protocols     TLSv1 TLSv1.1 TLSv1.2;
+        # Use previously negotiated connection parameters
+        proxy_ssl_session_reuse on;
+        # Enables revalidation of expired cache items using conditional requests with the "If-Modified-Since" and "If-None-Match" header fields.
+        proxy_cache_revalidate  on;
+        # Only one request at a time will be allowed to populate a new cache element
+        proxy_cache_lock        on;
+        # Cache any responses for 1 minute by default, can be overridden by more specific response codes
+        proxy_cache_valid       any 1d; # was 1m
+
+        # Keep connections to upstream server open
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_read_timeout     300;
+        proxy_connect_timeout  300;
+
+        # Directly proxy non-cacheable files (db, sig, files)
+        location ~ \.(db|sig|files)$ {
+            proxy_pass http://mirrors$request_uri;
+        }
+
+        # Serve package files from cache if available, otherwise fetch and store
+        location ~ \.tar\.(xz|zst)$ {
+            proxy_cache archmirror;
+            proxy_cache_valid 200 120d;   # Successful responses valid for 5 minutes
+            proxy_cache_valid 301 120d;  # Permanent redirects valid for 30 days
+            proxy_cache_valid 404 10m;  # Not found responses valid for 10 minutes
+            proxy_cache_valid any 120d;   # Any other responses valid for 1 minute
+            proxy_cache_use_stale error timeout invalid_header updating http_500 http_502 http_503 http_504 http_404;
+            proxy_cache_background_update on;
+            proxy_cache_revalidate on;  # Revalidate stale content with upstream
+            proxy_cache_lock on;        # Prevent duplicate requests to upstream
+
+            proxy_pass http://mirrors$request_uri;
+
+            # Headers to help track cache behavior
+            add_header X-Cache-Status $upstream_cache_status;
+            add_header X-Upstream-Status $upstream_status;
+        }
+    }
+
+    upstream mirrors {
+        server 127.0.0.1:8001;
+        server 127.0.0.1:8002 backup;
+        server 127.0.0.1:8003 backup;
+    }
+
+    # Define upstream proxy servers for arch mirror
+    server {
+        listen 127.0.0.1:8001;
+        location / {
+            proxy_pass https://mirrors.rit.edu$request_uri;
+        }
+    }
+
+    server {
+        listen 127.0.0.1:8002;
+        location / {
+            proxy_pass http://mirrors.siena.edu$request_uri;
+        }
+    }
+
+    server {
+        listen 127.0.0.1:8003;
+        location / {
+            proxy_pass http://mirrors.rutgers.edu$request_uri;
+        }
+    }
+}

@@ -1,0 +1,12 @@
+sudo mkdir -p /var/log/nginx
+sudo touch /var/log/nginx/archmirror.access.log /var/log/nginx/archmirror.error.log
+sudo chown -R http:http /var/log/nginx
+sudo chmod -R 750 /var/log/nginx
+
+sudo mkdir -p /srv/http/pacman-cache
+sudo chown -R http:http /srv/http/pacman-cache
+sudo chmod -R 755 /srv/http/pacman-cache
+
+sudo mkdir -p /var/cache/nginx/archmirror
+sudo chown -R http:http /var/cache/nginx
+sudo chmod -R 750 /var/cache/nginx
