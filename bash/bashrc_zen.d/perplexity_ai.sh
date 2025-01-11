@@ -1,55 +1,115 @@
-#!/bin/bash
+pptxmodel="llama-3.1-sonar-small-128k-online" # 8B
+# pptxmodel="llama-3.1-sonar-large-128k-online"     # 70B
+# pptxmodel="llama-3.1-sonar-huge-128k-online" # 405B
 
-KeyFile=~/sec/perplexity_key.env
-MODEL="llama-3-sonar-large-32k-online"
-# MODEL="llama-3-sonar-small-32k-online"
+maxinput=2048
 
-tell() {
-	# Ensure the first argument is provided
-	if [ -z "$1" ]; then
-		echo "Usage: tell 'Your question here'"
-		return 1
-	fi
+system_content="You are an expert in IT, specializing in networking, Linux, AWS, and Kubernetes. Provide precise, concise, and technically accurate answers. When explaining concepts, assume the user has intermediate to advanced technical knowledge. Avoid repetitive explanations of basic concepts unless explicitly requested."
 
-	source "${KeyFile}"
+sanitize_input() {
+  local input="$1"
+  # Remove non-printable characters except for newline, and truncate to 300 characters
+  sanitized_input=$(echo "$input" | tr -cd '[:print:]\n' | cut -c 1-${maxinput})
+  echo "$sanitized_input"
+}
 
-	QUESTION="$1"
+query_perplexity() {
+  # Check if API key is set
+  if [[ -z "$PERPLEXITY_API_KEY" ]]; then
+    echo "Error: PERPLEXITY_API_KEY is not defined. Please set it and try again." >&2
+    exit 1
+  fi
 
-	[[ -r $KeyFile ]] || {
-		echo "Can't read $KeyFile"
-		return 0
-	}
+  # Check if input is provided either as a parameter or from stdin
+  local content
+  if [[ -n "$1" ]]; then
+    content="$1"
+  elif ! tty -s && read -r content; then
+    : # Input from stdin
+  else
+    echo "Error: No input provided. Please provide input as a parameter or via stdin." >&2
+    exit 1
+  fi
 
-	DATA='
-    {
-      "model": "'"$MODEL"'",
+  # Sanitize the input
+  local sanitized_input
+  sanitized_input=$(sanitize_input "$content")
+  # API call with sanitized content
+  curl -s --location 'https://api.perplexity.ai/chat/completions' \
+    --header 'accept: application/json' \
+    --header 'content-type: application/json' \
+    --header "Authorization: Bearer ${PERPLEXITY_API_KEY}" \
+    --data '{
+      "model": "'"${pptxmodel}"'",
+      "stream": false,
+      "return_related_questions": false,
+      "return_images": false,
+      "search_recency_filter": "month",
+      "max_tokens": 150,
       "messages": [
         {
           "role": "system",
-          "content": "You will favor precise and concise. You are located in the New York State Capital District Albany New York 12204. Current date/time is: '"$(date)"'"
+          "content": "Be precise and concise."
         },
         {
           "role": "user",
-          "content": "'"$QUESTION"'"
+          "content": "'"${sanitized_input}"'"
         }
       ]
-    }
-    '
-	# Use the variable in the data payload
-	curl -s --request POST \
-		--url https://api.perplexity.ai/chat/completions \
-		--header "accept: application/json" \
-		--header "authorization: Bearer $Perplexity_api_key" \
-		--header "content-type: application/json" \
-		--data "$DATA" | jq '.choices[0].message.content' | sed -e 's/\"//g' -e 's/\\n/\n/g' | fmt
-
+    }' | tee --append ~/temp/answers.json | jq '.'
 }
-# --data "$DATA" | jq '.choices[0].message.content' | sed -e 's/\"//g' -e 's/\\n/\n/g' | tee --append "$LOG" | fmt
-# [4563][arc][una][2024-05-18 22:03:53][~/gitdir/configs]
-# [0][5.2]$ curl -s --request POST --url https://api.perplexity.ai/chat/completions --header "accept: application/json" --header "authorization: Bearer $Perplexity_api_key" --header "content-type: application/json" --data "hello"
-# {"error":{"message":"[\"At body -> 0: JSON decode error\"]","type":"bad_request","code":400}}[4564][arc][una][2024-05-18 22:04:19][~/gitdir/configs]
-# [0][5.2]$ curl -s --request POST --url https://api.perplexity.ai/chat/completions --header "accept: application/json" --header "authorization: Bearer $Perplexity_api_key" --header "content-type: application/json" --data '{"prompt": "hello"}'
-# {"error":{"message":"[\"At body -> model: Field required\", \"At body -> messages: Field required\"]","type":"bad_request","code":400}}[4565][arc][una][2024-05-18 22:08:40][~/gitdir/configs]
-# [0][5.2]$ curl -s --request POST --url https://api.perplexity.ai/chat/completions --header "accept: application/json" --header "authorization: Bearer $Perplexity_api_key" --header "content-type: application/json" --data '{"prompt": "hello"}'
-# {"error":{"message":"[\"At body -> model: Field required\", \"At body -> messages: Field required\"]","type":"bad_request","code":400}}[4565][arc][una][2024-05-18 22:08:58][~/gitdir/configs]
-#
+
+qp() {
+  # Check if API key is set
+  if [[ -z "$PERPLEXITY_API_KEY" ]]; then
+    echo "Error: PERPLEXITY_API_KEY is not defined. Please set it and try again." >&2
+    exit 1
+  fi
+
+  # Check if input is provided either as a parameter or from stdin
+  local content
+  if [[ -n "$1" ]]; then
+    content="$1"
+  elif ! tty -s && read -r content; then
+    : # Input from stdin
+  else
+    echo "Error: No input provided. Please provide input as a parameter or via stdin." >&2
+    exit 1
+  fi
+
+  # Sanitize the input
+  local sanitized_input
+  sanitized_input=$(sanitize_input "$content")
+
+  # API call with sanitized content
+  curl -s --location 'https://api.perplexity.ai/chat/completions' \
+    --header 'accept: application/json' \
+    --header 'content-type: application/json' \
+    --header "Authorization: Bearer ${PERPLEXITY_API_KEY}" \
+    --data '{
+      "model": "'"${pptxmodel}"'",
+      "stream": false,
+      "return_related_questions": false,
+      "return_images": false,
+      "search_recency_filter": "month",
+      "max_tokens": 150,
+      "messages": [
+        {
+          "role": "system",
+          "content": "Be precise and concise."
+        },
+        {
+          "role": "user",
+          "content": "'"${sanitized_input}"'"
+        }
+      ]
+    }' | tee --append ~/temp/answers.json | jq -r '{prompt_tokens: .usage.prompt_tokens, total_tokens: .usage.total_tokens, completion_tokens: .usage.completion_tokens, Model: .model, Answer: .choices[0].message.content}'
+}
+# jq '{prompt_tokens: .usage.prompt_tokens, total_tokens: .usage.total_tokens, Model: .model, Answer: .choices[0].message.content}'
+
+# Example usage:
+# Passing input as a parameter:
+# query_perplexity "Your input content here..."
+
+# Passing input via stdin:
+# echo "Your input content here..." | query_perplexity
