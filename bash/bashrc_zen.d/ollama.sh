@@ -13,3 +13,25 @@ ol () {
 	echo " ollama run ${model}"
 	ollama run "${model// */}"
 }
+
+
+echo "**** BASH COMPLETION DEFINED ****"
+echo "**** ollama bash completion ****"
+
+_complete_ollama() {
+    local cur prev words cword
+    _init_completion -n : || return
+
+    if [[ ${cword} -eq 1 ]]; then
+        COMPREPLY=($(compgen -W "serve create show run push pull list ps cp rm help" -- "${cur}"))
+    elif [[ ${cword} -eq 2 ]]; then
+        case "${prev}" in
+            (run|show|cp|rm|push|list)
+                WORDLIST=$((ollama list 2>/dev/null || echo "") | tail -n +2 | cut -d "	" -f 1)
+                COMPREPLY=($(compgen -W "${WORDLIST}" -- "${cur}"))
+                __ltrim_colon_completions "$cur"
+                ;;
+        esac
+    fi
+}
+complete -F _complete_ollama ollama
