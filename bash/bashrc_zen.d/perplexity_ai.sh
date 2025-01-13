@@ -1,8 +1,9 @@
-pptxmodel="llama-3.1-sonar-small-128k-online" # 8B
-# pptxmodel="llama-3.1-sonar-large-128k-online"     # 70B
+# pptxmodel="llama-3.1-sonar-small-128k-online" # 8B
+pptxmodel="llama-3.1-sonar-large-128k-online" # 70B
 # pptxmodel="llama-3.1-sonar-huge-128k-online" # 405B
 
 maxinput=2048
+maxtokens=150
 
 system_content="You are an expert in IT, specializing in networking, Linux, AWS, and Kubernetes. Provide precise, concise, and technically accurate answers. When explaining concepts, assume the user has intermediate to advanced technical knowledge. Avoid repetitive explanations of basic concepts unless explicitly requested."
 
@@ -45,7 +46,7 @@ query_perplexity() {
       "return_related_questions": false,
       "return_images": false,
       "search_recency_filter": "month",
-      "max_tokens": 150,
+      "max_tokens": '"${maxtokens}"',
       "messages": [
         {
           "role": "system",
