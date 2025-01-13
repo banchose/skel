@@ -103,10 +103,19 @@ qp() {
           "content": "'"${sanitized_input}"'"
         }
       ]
-    }' | tee --append ~/temp/answers.json | jq -r '{prompt_tokens: .usage.prompt_tokens, total_tokens: .usage.total_tokens, completion_tokens: .usage.completion_tokens, Model: .model, Answer: .choices[0].message.content}'
+    }' | tee --append ~/temp/answers.json | jq -r '
+          "prompt_tokens: \(.usage.prompt_tokens)\n" +
+          "total_tokens: \(.usage.total_tokens)\n" +
+          "completion_tokens: \(.usage.completion_tokens)\n" +
+          "Model: \(.model)\n\n" +
+          .choices[0].message.content
+        '
+
 }
 # jq '{prompt_tokens: .usage.prompt_tokens, total_tokens: .usage.total_tokens, Model: .model, Answer: .choices[0].message.content}'
-
+#
+# tee --append ~/temp/answers.json | jq -r '{prompt_tokens: .usage.prompt_tokens, total_tokens: .usage.total_tokens, completion_tokens: .usage.completion_tokens, Model: .model, Answer: .choices[0].message.content}'
+#
 # Example usage:
 # Passing input as a parameter:
 # query_perplexity "Your input content here..."
