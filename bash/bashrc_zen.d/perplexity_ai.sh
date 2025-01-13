@@ -93,7 +93,7 @@ qp() {
       "return_related_questions": false,
       "return_images": false,
       "search_recency_filter": "month",
-      "max_tokens": 150,
+      "max_tokens": '"${maxtokens}"',
       "messages": [
         {
           "role": "system",
@@ -105,9 +105,10 @@ qp() {
         }
       ]
     }' | tee --append ~/temp/answers.json | jq -r '
-          "prompt_tokens: \(.usage.prompt_tokens)\n" +
-          "total_tokens: \(.usage.total_tokens)\n" +
-          "completion_tokens: \(.usage.completion_tokens)\n" +
+          "Prompt tokens: \(.usage.prompt_tokens)\n" +
+          "Total tokens: \(.usage.total_tokens)\n" +
+          "Completion tokens: \(.usage.completion_tokens)\n" +
+          "Finish reason: \(.choices[0].finish_reason)\n" +
           "Model: \(.model)\n\n" +
           .choices[0].message.content
         '
