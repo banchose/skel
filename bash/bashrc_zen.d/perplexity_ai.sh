@@ -1,6 +1,6 @@
 # pptxmodel="llama-3.1-sonar-small-128k-online" # 8B
-pptxmodel="llama-3.1-sonar-large-128k-online" # 70B
-# pptxmodel="llama-3.1-sonar-huge-128k-online" # 405B
+# pptxmodel="llama-3.1-sonar-large-128k-online" # 70B
+pptxmodel="llama-3.1-sonar-huge-128k-online" # 405B
 
 maxinput=2048
 maxtokens=150
@@ -97,7 +97,7 @@ qp() {
       "messages": [
         {
           "role": "system",
-          "content": "Be precise and concise."
+          "content": "Be precise and concise. Conserve output tokens were possible."
         },
         {
           "role": "user",

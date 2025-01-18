@@ -35,3 +35,18 @@ _complete_ollama() {
     fi
 }
 complete -F _complete_ollama ollama
+
+qo() {
+  obj='{
+    "model": "olmo2:13b",
+    "messages": [
+      {
+        "role": "user",
+        "content": "'"$1"'"
+      }
+    ],
+    "stream": false
+  }'
+  ssh cube "curl -s http://localhost:11434/api/chat -H "Content-Type: application/json" -d '$obj'" | jq -r '.message.content'
+}
+
