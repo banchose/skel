@@ -7,7 +7,7 @@ source ~/.bashrc_zen.d/api_keys_envs.sh
 #
 # Endpoint
 #
-PPTX_EndPoint="https://api.perplexity.ai/chat/completions"
+PPTX_ENDPOINT="https://api.perplexity.ai/chat/completions"
 OR_ENDPOINT="https://openrouter.ai/api/v1/chat/completions"
 
 # Models
@@ -16,14 +16,17 @@ OR_ENDPOINT="https://openrouter.ai/api/v1/chat/completions"
 #
 # Model="llama-3.1-sonar-small-128k-online" # 8B
 # Model="llama-3.1-sonar-large-128k-online" # 70B
-PPTX_Model="llama-3.1-sonar-huge-128k-online" # 405B
-OR_MODEL="mistralai/ministral-8b"
+PPTX_MODEL="llama-3.1-sonar-huge-128k-online" # 405B
+# OR_MODEL="mistralai/ministral-8b"
+# OR_MODEL="mistralai/ministral-8b"
 #
 ## OpenRouter
 #
-# Model="mistralai/mistral-nemo"
-# Model="deepseek/deepseek-chat"
-# Model="anthropic/claude-3.5-sonnet"
+# OR_MODEL="mistralai/mistral-nemo"
+# OR_MODEL="deepseek/deepseek-chat"
+OR_MODEL="anthropic/claude-3.5-sonnet"
+# OR_MODEL="minimax/minimax-01"
+# OR_MODEL="deepseek/deepseek-r1"
 #
 # Tokens
 #
@@ -32,10 +35,10 @@ Max_Tokens=500
 #
 # API Key
 #
-API_KEY="${PERPLEXITY_API_KEY}"
+# API_KEY="${PERPLEXITY_API_KEY}"
 # API_KEY="${OPENROUTER_API_KEY}"
 # echo "${OPENROUTER_API_KEY}"
-echo "$API_KEY"
+# echo "$API_KEY"
 # System prompt
 #
 # System_Prompt="Before providing your answer, please ensure that you thoroughly check the information for accuracy and completeness. Consider different perspectives and relevant sources, and make any necessary adjustments to present a well-rounded and precise response. Include a separate section for mistakes and their corrections."
@@ -120,7 +123,8 @@ qx() {
 qp() {
   local content
   local API_KEY="${PERPLEXITY_API_KEY}"
-  local EndPoint="${PPTX_EndPoint}"
+  local EndPoint="${PPTX_ENDPOINT}"
+  local Model="${PPTX_MODEL}"
   # Check if API key is set
   if [[ -z "$API_KEY" ]]; then
     echo "Error: API_KEY is not defined. Please set it and try again." >&2
