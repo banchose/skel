@@ -38,7 +38,7 @@ complete -F _complete_ollama ollama
 
 qo() {
   obj='{
-    "model": "olmo2:13b",
+    "model": "mixtral:8x22b",
     "messages": [
       {
         "role": "user",

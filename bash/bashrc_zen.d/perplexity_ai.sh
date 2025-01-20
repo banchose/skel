@@ -2,6 +2,8 @@
 # pptxmodel="llama-3.1-sonar-large-128k-online" # 70B
 pptxmodel="llama-3.1-sonar-huge-128k-online" # 405B
 
+system_pompt0="Before providing your answer, please ensure that you thoroughly check the information for accuracy and completeness. Consider different perspectives and relevant sources, and make any necessary adjustments to present a well-rounded and precise response. Include a separate section for mistakes and their corrections."
+
 maxinput=2048
 maxtokens=150
 
@@ -24,9 +26,9 @@ query_perplexity() {
   # Check if input is provided either as a parameter or from stdin
   local content
   if [[ -n "$1" ]]; then
-    content="$1"
-  elif ! tty -s && read -r content; then
-    : # Input from stdin
+    content="$(sanitize_input "$1")"
+  elif ! tty -s && read -r input_stdin; then
+    content="$(sanitize_input "${input_stdin}")"
   else
     echo "Error: No input provided. Please provide input as a parameter or via stdin." >&2
     exit 1
