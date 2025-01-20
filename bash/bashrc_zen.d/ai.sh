@@ -1,20 +1,32 @@
-# pptxmodel="llama-3.1-sonar-small-128k-online" # 8B
-# pptxmodel="llama-3.1-sonar-large-128k-online" # 70B
-# pptxmodel="llama-3.1-sonar-huge-128k-online" # 405B
+# Fill in the key ENVs
+source ~/.bashrc_zen.d/api_keys_envs.sh
+# EndPoint="https://api.perplexity.ai/chat/completions"
+EndPoint=https://openrouter.ai/api/v1/chat/completions
 
+#
+# Models
+## Perplexity
+#
 # Model="llama-3.1-sonar-small-128k-online" # 8B
 # Model="llama-3.1-sonar-large-128k-online" # 70B
-Model="llama-3.1-sonar-huge-128k-online" # 405B
-
+# Model="llama-3.1-sonar-huge-128k-online" # 405B
+#
+## OpenRouter
+#
+# Model="mistralai/mistral-nemo"
+Model="deepseek/deepseek-chat"
+#
+# Tokens
+#
 Max_Input_Tokens=2048
-Max_Tokens=150
+Max_Tokens=500
 
 # Perplexity_AI_EndPoint="https://api.perplexity.ai/chat/completions"
 
-API_KEY="${PERPLEXITY_API_KEY}"
-
-Chat_EndPoint="https://api.perplexity.ai/chat/completions"
-#
+# API_KEY="${PERPLEXITY_API_KEY}"
+API_KEY="${OPENROUTER_API_KEY}"
+echo "${OPENROUTER_API_KEY}"
+echo "$API_KEY"
 # System prompt
 #
 # System_Prompt="Before providing your answer, please ensure that you thoroughly check the information for accuracy and completeness. Consider different perspectives and relevant sources, and make any necessary adjustments to present a well-rounded and precise response. Include a separate section for mistakes and their corrections."
@@ -59,7 +71,7 @@ qa() {
   Sanitized_Input=$(sanitize_input "$content")
 
   # API call with sanitized content
-  curl -s --location "${Chat_EndPoint}" \
+  curl -s --location "${EndPoint}" \
     --header 'Accept: Application/json' \
     --header 'Content-Type: application/json' \
     --header "Authorization: Bearer ${API_KEY}" \
