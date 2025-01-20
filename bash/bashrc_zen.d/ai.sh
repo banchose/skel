@@ -2,9 +2,9 @@
 # pptxmodel="llama-3.1-sonar-large-128k-online" # 70B
 # pptxmodel="llama-3.1-sonar-huge-128k-online" # 405B
 
-Model="llama-3.1-sonar-small-128k-online" # 8B
+# Model="llama-3.1-sonar-small-128k-online" # 8B
 # Model="llama-3.1-sonar-large-128k-online" # 70B
-# Model="llama-3.1-sonar-huge-128k-online" # 405B
+Model="llama-3.1-sonar-huge-128k-online" # 405B
 
 Max_Input_Tokens=2048
 Max_Tokens=150
@@ -19,7 +19,7 @@ Chat_EndPoint="https://api.perplexity.ai/chat/completions"
 #
 # System_Prompt="Before providing your answer, please ensure that you thoroughly check the information for accuracy and completeness. Consider different perspectives and relevant sources, and make any necessary adjustments to present a well-rounded and precise response. Include a separate section for mistakes and their corrections."
 # System_Prompt="You are an expert in IT, specializing in networking, Linux, AWS, and Kubernetes. Provide precise, concise, and technically accurate answers. When explaining concepts, assume the user has intermediate to advanced technical knowledge. Avoid repetitive explanations of basic concepts unless explicitly requested."
-System_Prompt="Be precise and concise"
+System_Prompt="Note that todays date is $(date '+%D %T'). Be precise and concise"
 # System_Prompt="Before providing your answer, please ensure that you thoroughly check the information for accuracy and completeness. Consider different perspectives and relevant sources, and make any necessary adjustments to present a well-rounded and precise response. Include a separate section for mistakes and their corrections."
 #
 # User prompt
