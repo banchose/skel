@@ -24,14 +24,18 @@ PPTX_MODEL="llama-3.1-sonar-huge-128k-online" # 405B
 #
 # OR_MODEL="mistralai/mistral-nemo"
 # OR_MODEL="deepseek/deepseek-chat"
-OR_MODEL="anthropic/claude-3.5-sonnet"
+# OR_MODEL="anthropic/claude-3.5-sonnet"
+# OR_MODEL="meta-llama/llama-3.3-70b-instruct"
+# OR_MODEL="anthropic/claude-3.5-sonnet"
+# OR_MODEL="mistralai/mistral-large-2411"
 # OR_MODEL="minimax/minimax-01"
 # OR_MODEL="deepseek/deepseek-r1"
+OR_MODEL="anthropic/claude-3-opus"
 #
 # Tokens
 #
 Max_Input_Tokens=2048
-Max_Tokens=500
+Max_Tokens=100
 #
 # API Key
 #
@@ -43,7 +47,7 @@ Max_Tokens=500
 #
 # System_Prompt="Before providing your answer, please ensure that you thoroughly check the information for accuracy and completeness. Consider different perspectives and relevant sources, and make any necessary adjustments to present a well-rounded and precise response. Include a separate section for mistakes and their corrections."
 # System_Prompt="You are an expert in IT, specializing in networking, Linux, AWS, and Kubernetes. Provide precise, concise, and technically accurate answers. When explaining concepts, assume the user has intermediate to advanced technical knowledge. Avoid repetitive explanations of basic concepts unless explicitly requested."
-System_Prompt="Note that todays date is $(date '+%D %T'). Be precise and concise"
+System_Prompt="Note that todays date is $(date '+%D %T'). Be precise and very concise"
 # System_Prompt="Before providing your answer, please ensure that you thoroughly check the information for accuracy and completeness. Consider different perspectives and relevant sources, and make any necessary adjustments to present a well-rounded and precise response. Include a separate section for mistakes and their corrections."
 #
 # User prompt
@@ -97,7 +101,7 @@ qx() {
       "return_related_questions": false,
       "return_images": false,
       "search_recency_filter": "month",
-      "max_tokens": '"${Max_Tokens}"',
+      "max_tokens": '"${Max_Tokens:-10}"',
       "messages": [
         {
           "role": "system",
@@ -156,7 +160,7 @@ qp() {
       "return_related_questions": false,
       "return_images": false,
       "search_recency_filter": "month",
-      "max_tokens": '"${Max_Tokens}"',
+      "max_tokens": '"${Max_Tokens:-10}"',
       "messages": [
         {
           "role": "system",
@@ -179,7 +183,7 @@ qp() {
 
 }
 
-qa() {
+qo() {
 
   local content
   local API_KEY="${OPENROUTER_API_KEY}"
@@ -217,7 +221,7 @@ qa() {
       "return_related_questions": false,
       "return_images": false,
       "search_recency_filter": "month",
-      "max_tokens": '"${Max_Tokens}"',
+      "max_tokens": '"${Max_Tokens:-10}"',
       "messages": [
         {
           "role": "system",
