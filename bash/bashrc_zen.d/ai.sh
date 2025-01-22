@@ -35,7 +35,7 @@ OR_MODEL="anthropic/claude-3-opus"
 # Tokens
 #
 Max_Input_Tokens=2048
-Max_Tokens=100
+Max_Tokens=500
 #
 # API Key
 #
