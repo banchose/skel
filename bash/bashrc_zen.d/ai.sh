@@ -29,8 +29,8 @@ PPTX_MODEL="llama-3.1-sonar-huge-128k-online" # 405B
 # OR_MODEL="anthropic/claude-3.5-sonnet"
 # OR_MODEL="mistralai/mistral-large-2411"
 # OR_MODEL="minimax/minimax-01"
-# OR_MODEL="deepseek/deepseek-r1"
-OR_MODEL="anthropic/claude-3-opus"
+OR_MODEL="deepseek/deepseek-r1"
+# OR_MODEL="anthropic/claude-3-opus"
 #
 # Tokens
 #
