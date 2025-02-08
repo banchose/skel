@@ -291,6 +291,16 @@ alsvpcs() {
     --output table
 }
 
+alsrdss() {
+
+  AwsProfile=$(get_aws_context "$@")
+  aws rds describe-db-snapshots \
+    --profile "${AwsProfile}" \
+    --query "DBSnapshots[*].[DBInstanceIdentifier, DBSnapshotArn]" \
+    --output text
+
+}
+
 list_vpcs_with_subnets() {
 
   AwsProfile=$(get_aws_context "$@")
