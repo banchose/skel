@@ -243,3 +243,53 @@ qo() {
         '
 
 }
+
+list_stack_templates() {
+  local AWS_PROFILE
+  local AWS_REGION="us-east-1"
+
+  # Ensure AWS profiles exist before proceeding
+  local profiles
+  profiles=$(aws configure list-profiles)
+
+  if [[ -z "$profiles" ]]; then
+    echo "No AWS profiles found. Exiting."
+    return 1
+  fi
+
+  # Ensure profiles are listed one per line (handles cases where they're space-separated)
+  AWS_PROFILE=$(echo "$profiles" | tr ' ' '\n' | fzf --prompt="Select AWS Profile: ")
+
+  # Ensure a profile was selected
+  if [[ -z "$AWS_PROFILE" ]]; then
+    echo "No profile selected. Exiting."
+    return 1
+  fi
+
+  echo "Using AWS Profile: $AWS_PROFILE"
+
+  # Get the list of CloudFormation stacks
+  local stacks
+  stacks=$(aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE UPDATE_COMPLETE \
+    --query "StackSummaries[*].StackName" --output text --profile "$AWS_PROFILE" --region "$AWS_REGION")
+
+  if [[ -z "$stacks" ]]; then
+    echo "No CloudFormation stacks found."
+    return 1
+  fi
+
+  # Use fzf to select a stack
+  local selected_stack
+  selected_stack=$(echo "$stacks" | tr '\t' '\n' | fzf --prompt="Select a stack: ")
+
+  if [[ -z "$selected_stack" ]]; then
+    echo "No stack selected. Exiting."
+    return 1
+  fi
+
+  echo "Fetching template for stack: $selected_stack"
+
+  # Get the template
+  aws cloudformation get-template --stack-name "$selected_stack" --query "TemplateBody" --output text --profile "$AWS_PROFILE" --region "$AWS_REGION"
+}
+alias alsstt="list_stack_templates"
