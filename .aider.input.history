@@ -1,0 +1,67 @@
+
+# 2025-02-11 19:58:11.817714
++Is it possible to have a drone go into the clouds in the usa
+
+# 2025-02-11 19:59:20.228808
++Ok, how about, I saw a video of a white light blinking behind a cloud.  The commentator found it very mysterious.  But can't drones be equiped to do this
+
+# 2025-02-11 20:05:32.984652
++And are you ok with cloudformation
+
+# 2025-02-11 20:07:21.696283
++I have a eks cluster.  I want to put the nginx ingress controller on it. Then I want to create an internal (non-public) NLB.  Could you give me a template that contain just the NLB resources.
+
+# 2025-02-11 20:08:28.350109
++N
+
+# 2025-02-11 20:09:31.986692
++I would like that again but, I have a second az, I needed it for eks I think, but I do not want to use the other AZ yet.  This is all single az.  I just need the NLB because eks needs it for the nginx ingress
+
+# 2025-02-11 20:11:57.570051
++N
+
+# 2025-02-11 20:12:06.631707
++D
+
+# 2025-02-11 20:14:25.848199
++ NLBTargetGroup:
++     Type: AWS::ElasticLoadBalancingV2::TargetGroup
++     Properties:
++       Name: nginx-ingress-tg
++       Port: 80
++       Protocol: TCP
++       VpcId: !Ref VpcId
++       TargetType: ip
++       HealthCheckEnabled: true
++       HealthCheckPort: '80'
++       HealthCheckProtocol: TCP
++       HealthCheckIntervalSeconds: 10
++       HealthyThresholdCount: 3
++. What does this do?
+
+# 2025-02-11 20:15:49.832851
++HOw do you know what address to hit on the NLB?
+
+# 2025-02-11 20:16:01.681923
++D
+
+# 2025-02-11 20:19:16.446544
++on prem, we have an nginx ingress.  It uses metallb. MetalLB publishes an ip.  I use that for the ingress.  I  have it in my dns as say app1.example.net on https.  What does this look like with eks and an nlb  
+
+# 2025-02-11 20:24:46.612846
++N
+
+# 2025-02-11 20:25:24.574209
++Ok, so I guess I would put the certificate in the cloudformation and then I am guessing I manually put it in aws secrets?
+
+# 2025-02-11 20:25:51.721423
++N
+
+# 2025-02-11 20:27:24.005711
++but it is for one certificate.  Do I really need an aws service.  Or can I just store it in another way.  Is the ssl cert still configured in the ingress.  In that case I will manually create it
+
+# 2025-02-11 20:29:04.309057
++N
+
+# 2025-02-11 20:29:29.878191
++/exit

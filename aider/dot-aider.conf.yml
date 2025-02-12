@@ -1,0 +1,5 @@
+code-theme: monokai
+model:  openrouter/anthropic/claude-3.5-sonnet
+options:
+  dry-run: true
+  no-suggest-shell-commands: true
