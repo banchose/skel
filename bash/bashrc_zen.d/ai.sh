@@ -7,18 +7,10 @@ source ~/.bashrc_zen.d/api_keys_envs.sh
 #
 # Endpoint
 #
-PPTX_ENDPOINT="https://api.perplexity.ai/chat/completions"
 OR_ENDPOINT="https://openrouter.ai/api/v1/chat/completions"
 
 # Models
 #
-## Perplexity
-#
-# Model="llama-3.1-sonar-small-128k-online" # 8B
-# Model="llama-3.1-sonar-large-128k-online" # 70B
-PPTX_MODEL="llama-3.1-sonar-huge-128k-online" # 405B
-# OR_MODEL="mistralai/ministral-8b"
-# OR_MODEL="mistralai/ministral-8b"
 #
 ## OpenRouter
 #
@@ -39,7 +31,6 @@ Max_Tokens=500
 #
 # API Key
 #
-# API_KEY="${PERPLEXITY_API_KEY}"
 # API_KEY="${OPENROUTER_API_KEY}"
 # echo "${OPENROUTER_API_KEY}"
 # echo "$API_KEY"
@@ -77,65 +68,6 @@ qx() {
 
   # Check if input is provided either as a parameter or from stdin
   local content
-  if [[ -n "$1" ]]; then
-    content="$1"
-  elif ! tty -s && read -r content; then
-    : # Input from stdin
-  else
-    echo "Error: No input provided. Please provide input as a parameter or via stdin." >&2
-    return 1
-  fi
-
-  # Sanitize the input
-  local Sanitized_Input
-  Sanitized_Input=$(sanitize_input "$content")
-
-  # API call with sanitized content
-  curl -s --location "${EndPoint}" \
-    --header 'Accept: Application/json' \
-    --header 'Content-Type: application/json' \
-    --header "Authorization: Bearer ${API_KEY}" \
-    --data '{
-      "model": "'"${Model}"'",
-      "stream": false,
-      "return_related_questions": false,
-      "return_images": false,
-      "search_recency_filter": "month",
-      "max_tokens": '"${Max_Tokens:-10}"',
-      "messages": [
-        {
-          "role": "system",
-          "content": "'"${System_Prompt}"'"
-        },
-        {
-          "role": "user",
-          "content": "'"${Sanitized_Input}"'"
-        }
-      ]
-    }' | tee --append ~/temp/answers.json | jq -r --arg api_key "$API_KEY" '
-          "Prompt tokens: \(.usage.prompt_tokens)\n" +
-          "Total tokens: \(.usage.total_tokens)\n" +
-          "Completion tokens: \(.usage.completion_tokens)\n" +
-          "Finish reason: \(.choices[0].finish_reason)\n" +
-          "Model: \(.model)\n" +
-          "Abbreviated key: \($api_key | split("-")[0])\n\n" +
-          .choices[0].message.content
-        '
-
-}
-
-qp() {
-  local content
-  local API_KEY="${PERPLEXITY_API_KEY}"
-  local EndPoint="${PPTX_ENDPOINT}"
-  local Model="${PPTX_MODEL}"
-  # Check if API key is set
-  if [[ -z "$API_KEY" ]]; then
-    echo "Error: API_KEY is not defined. Please set it and try again." >&2
-    return 1
-  fi
-
-  # Check if input is provided either as a parameter or from stdin
   if [[ -n "$1" ]]; then
     content="$1"
   elif ! tty -s && read -r content; then
@@ -243,3 +175,53 @@ qo() {
         '
 
 }
+
+list_stack_templates() {
+  local AWS_PROFILE
+  local AWS_REGION="us-east-1"
+
+  # Ensure AWS profiles exist before proceeding
+  local profiles
+  profiles=$(aws configure list-profiles)
+
+  if [[ -z "$profiles" ]]; then
+    echo "No AWS profiles found. Exiting."
+    return 1
+  fi
+
+  # Ensure profiles are listed one per line (handles cases where they're space-separated)
+  AWS_PROFILE=$(echo "$profiles" | tr ' ' '\n' | fzf --prompt="Select AWS Profile: ")
+
+  # Ensure a profile was selected
+  if [[ -z "$AWS_PROFILE" ]]; then
+    echo "No profile selected. Exiting."
+    return 1
+  fi
+
+  echo "Using AWS Profile: $AWS_PROFILE"
+
+  # Get the list of CloudFormation stacks
+  local stacks
+  stacks=$(aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE UPDATE_COMPLETE \
+    --query "StackSummaries[*].StackName" --output text --profile "$AWS_PROFILE" --region "$AWS_REGION")
+
+  if [[ -z "$stacks" ]]; then
+    echo "No CloudFormation stacks found."
+    return 1
+  fi
+
+  # Use fzf to select a stack
+  local selected_stack
+  selected_stack=$(echo "$stacks" | tr '\t' '\n' | fzf --prompt="Select a stack: ")
+
+  if [[ -z "$selected_stack" ]]; then
+    echo "No stack selected. Exiting."
+    return 1
+  fi
+
+  echo "Fetching template for stack: $selected_stack"
+
+  # Get the template
+  aws cloudformation get-template --stack-name "$selected_stack" --query "TemplateBody" --output text --profile "$AWS_PROFILE" --region "$AWS_REGION"
+}
+alias alsstt="list_stack_templates"
