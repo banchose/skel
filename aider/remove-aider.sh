@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -xeuo pipefail
 
+if command -v yay &>/dev/null; then
+  yay -Rns aider
+elif command -v pacman &>/dev/null; then
+  pacman -Rns aider
+fi
 pipx uninstall aider
 
 rm -fr -- ~/.local/bin/aider

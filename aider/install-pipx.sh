@@ -1,0 +1,1 @@
+../pip-pipx/install-pipx.sh
