@@ -90,61 +90,38 @@ XDGnvimDir="${XDG_CONFIG_HOME:-${HOME}/.config/}${XDG_CONFIG_HOME:+/}nvim"
 
 # need_cmd {{{
 need_cmd() {
-	if ! hash "$1" &>/dev/null; then
-		error "Need '$1' (command not found)"
-		exit 1
-	fi
+  if ! hash "$1" &>/dev/null; then
+    error "Need '$1' (command not found)"
+    exit 1
+  fi
 }
 # }}}
 
 # success/info/error/warn {{{
 msg() {
-	printf '%b\n' "$1" >&2
+  printf '%b\n' "$1" >&2
 }
 
 success() {
-	msg "${Green}[✔]${Color_off} ${1}${2}"
+  msg "${Green}[✔]${Color_off} ${1}${2}"
 }
 
 info() {
-	msg "${Blue}[➭]${Color_off} ${1}${2}"
+  msg "${Blue}[➭]${Color_off} ${1}${2}"
 }
 
 error() {
-	msg "${Red}[✘]${Color_off} ${1}${2}"
-	exit 1
+  msg "${Red}[✘]${Color_off} ${1}${2}"
+  exit 1
 }
 
 warn() {
-	msg "${Yellow}[⚠]${Color_off} ${1}${2}"
+  msg "${Yellow}[⚠]${Color_off} ${1}${2}"
 }
 # }}}
 
 # echo_with_color {{{
 echo_with_color() {
-	printf '%b\n' "$1$2$Color_off" >&2
-}
-# }}}
-
-# fetch_repo {{{
-fetch_repo() {
-	need_cmd 'git'
-	if [[ -d "${XDGSpaceDir:-}" ]]; then
-		info "Trying to update SpaceVim"
-		(
-			cd "${XDGSpaceDir:?}"
-			git pull
-		)
-		success "Successfully update SpaceVim"
-	else
-		info "Trying to clone SpaceVim"
-		git clone https://spacevim.org/git/repos/SpaceVim/ "${XDGSpaceDir:-}"
-		if [ $? -eq 0 ]; then
-			success "Successfully clone SpaceVim"
-		else
-			error "Failed to clone SpaceVim"
-			exit 0
-		fi
-	fi
+  printf '%b\n' "$1$2$Color_off" >&2
 }
 # }}}

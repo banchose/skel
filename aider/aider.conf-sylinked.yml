@@ -1,0 +1,7 @@
+model: openrouter/anthropic/claude-3.5-sonnet
+dry-run: true
+dark-mode: true
+auto-commits: false
+vim: true
+suggest-shell-commands: true
+detect-urls: false
