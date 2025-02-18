@@ -60,7 +60,8 @@ sanitize_input() {
 }
 #
 # echo "$(sanitize_input "${input_stdin}")"
-qq() {
+
+qo() {
   local content
   local API_KEY="${API_KEY}"
   local EndPoint="${Current_Endpoint}"
@@ -122,68 +123,12 @@ qq() {
     }
   ],
   "max_tokens": ${Max_Tokens},
-  "stream": false
+  "stream": false,
+  "web_search": true,
+  "return_search_results": true,
+  "search_recency_filter": "month",
+  "search_provider": "trusted",
+  "search_recency_filter": "month"
 }
 EOF
-}
-
-qo() {
-
-  local content
-  local API_KEY="${OPENROUTER_API_KEY}"
-  local EndPoint="${OR_ENDPOINT}"
-  local Model="${OR_MODEL}"
-
-  # Check if API key is set
-  if [[ -z "$API_KEY" ]]; then
-    echo "Error: API_KEY is not defined. Please set it and try again." >&2
-    return 1
-  fi
-
-  # Check if input is provided either as a parameter or from stdin
-  if [[ -n "$1" ]]; then
-    content="$1"
-  elif ! tty -s && read -r content; then
-    : # Input from stdin
-  else
-    echo "Error: No input provided. Please provide input as a parameter or via stdin." >&2
-    return 1
-  fi
-
-  # Sanitize the input
-  local Sanitized_Input
-  Sanitized_Input=$(sanitize_input "$content")
-
-  # API call with sanitized content
-  curl -s --location "${EndPoint}" \
-    --header 'Accept: Application/json' \
-    --header 'Content-Type: application/json' \
-    --header "Authorization: Bearer ${API_KEY}" \
-    --data '{
-      "model": "'"${Model}"'",
-      "stream": false,
-      "return_related_questions": false,
-      "return_images": false,
-      "search_recency_filter": "month",
-      "max_tokens": '"${Max_Tokens:-10}"',
-      "messages": [
-        {
-          "role": "system",
-          "content": "'"${System_Prompt}"'"
-        },
-        {
-          "role": "user",
-          "content": "'"${Sanitized_Input}"'"
-        }
-      ]
-    }' | tee --append ~/temp/answers.json | jq -r --arg api_key "$API_KEY" '
-          "Prompt tokens: \(.usage.prompt_tokens)\n" +
-          "Total tokens: \(.usage.total_tokens)\n" +
-          "Completion tokens: \(.usage.completion_tokens)\n" +
-          "Finish reason: \(.choices[0].finish_reason)\n" +
-          "Model: \(.model)\n" +
-          "Abbreviated key: \($api_key | split("-")[0])\n\n" +
-          .choices[0].message.content
-        '
-
 }
