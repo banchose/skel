@@ -33,7 +33,7 @@ Current_Model="${OR_MODEL}"
 # Tokens
 #
 Max_Input_Tokens=2048
-Max_Tokens=500
+Max_Tokens=2048
 #
 # API Key
 #
@@ -125,72 +125,6 @@ qq() {
   "stream": false
 }
 EOF
-}
-qx() {
-  local content
-  local API_KEY="${API_KEY}"
-  local EndPoint="${Current_Endpoint}"
-  local Model="${Current_Model}"
-
-  echo "The content was: $content"
-  # Check if API key is set
-  if [[ -z "$API_KEY" ]]; then
-    echo "Error: API_KEY is not defined. Please set it and try again." >&2
-    return 1
-  else
-    {
-      echo "Key being used: ${API_KEY:0:20}"
-    }
-  fi
-
-  # Check if input is provided either as a parameter or from stdin
-  if [[ -n "$1" ]]; then
-    content="$1"
-  elif ! tty -s && read -r content; then
-    : # Input from stdin
-  else
-    echo "Error: No input provided. Please provide input as a parameter or via stdin." >&2
-    return 1
-  fi
-
-  # Sanitize the input
-  local Sanitized_Input
-  local Model="${Current_Model}"
-  Sanitized_Input=$(sanitize_input "$content")
-  echo "Sanatized content: ${Sanitized_Input}"
-
-  # API call with sanitized content
-  curl -s --location "${EndPoint}" \
-    --header 'Accept: Application/json' \
-    --header 'Content-Type: application/json' \
-    --header "Authorization: Bearer ${API_KEY}" \
-    --data '{
-      "model": "'"${Model}"'",
-      "stream": false,
-      "return_related_questions": false,
-      "return_images": false,
-      "search_recency_filter": "month",
-     # "max_tokens": '"${Max_Tokens:-10}"',
-      "messages": [
-        {
-          "role": "system",
-          "content": "'"${System_Prompt}"'"
-        },
-        {
-          "role": "user",
-          "content": "'"${Sanitized_Input}"'"
-        }
-      ]
-    }' | tee --append ~/temp/answers.json | jq -r --arg api_key "$API_KEY" '
-          "Prompt tokens: \(.usage.prompt_tokens)\n" +
-          "Total tokens: \(.usage.total_tokens)\n" +
-          "Completion tokens: \(.usage.completion_tokens)\n" +
-          "Finish reason: \(.choices[0].finish_reason)\n" +
-          "Model: \(.model)\n" +
-          "Abbreviated key: \($api_key | split("-")[0])\n\n" +
-          .choices[0].message.content
-        '
-
 }
 
 qo() {
