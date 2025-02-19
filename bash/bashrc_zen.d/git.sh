@@ -9,6 +9,19 @@ alias cdhzen='cd ~/.bashrc_zen.d'
 alias cdconfigs='cd ~/gitdir/configs'
 alias cdhzen='cd ~/.bashrc_zen.d'
 
+gitcheck() {
+  (
+    cd ~/gitdir || return 1
+    for i in aws configs skel awscft; do
+      cd "$i" || return 1
+      git fetch
+      git status
+      git pull
+      cd ..
+    done
+  )
+}
+
 gitclear() {
   # Clear
   git config --unset-all credential.helper
