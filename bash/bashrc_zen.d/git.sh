@@ -12,7 +12,7 @@ alias cdhzen='cd ~/.bashrc_zen.d'
 gitcheck() {
   (
     cd ~/gitdir || return 1
-    for i in aws configs skel awscft; do
+    for i in aws configs skel awscfts; do
       cd "$i" || return 1
       git fetch
       git status
