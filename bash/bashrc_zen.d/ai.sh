@@ -63,9 +63,9 @@ sanitize_input() {
 
 qo() {
   local content
-  local API_KEY="${API_KEY}"
+  local API_KEY="${OPENROUTER_API_KEY}"
   local EndPoint="${Current_Endpoint}"
-  local Model="${Current_Model}"
+  local Model="claude-3-5-sonnet-20241022"
 
   # Debug information
   echo "Using Endpoint: ${EndPoint}"
@@ -131,4 +131,46 @@ qo() {
   "search_recency_filter": "month"
 }
 EOF
+}
+
+qa() {
+  local ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}"
+  local EndPoint="https://api.anthropic.com/v1/messages"
+  local Model="claude-3-5-sonnet-20241022"
+  local Max_Tokens=1024
+
+  # Check if API key is set
+  if [[ -z "$ANTHROPIC_API_KEY" ]]; then
+    echo "Error: ANTHROPIC_API_KEY is not defined" >&2
+    return 1
+  fi
+
+  # Check if input is provided
+  if [[ -n "$1" ]]; then
+    local content="$1"
+  elif ! tty -s && read -r content; then
+    :
+  else
+    echo "Error: No input provided" >&2
+    return 1
+  fi
+
+  curl -s "${EndPoint}" \
+    --header "x-api-key: ${ANTHROPIC_API_KEY}" \
+    --header "anthropic-version: 2023-06-01" \
+    --header "content-type: application/json" \
+    --data '{
+      "model": "'"${Model}"'",
+      "max_tokens": '"${Max_Tokens}"',
+      "messages": [
+        {"role": "user", "content": "'"${content}"'"}
+      ]
+    }' | jq -r '
+      "Message ID: \(.id)\n" +
+      "Model: \(.model)\n" +
+      "Input tokens: \(.usage.input_tokens)\n" +
+      "Output tokens: \(.usage.output_tokens)\n" +
+      "Stop reason: \(.stop_reason)\n" +
+      "\nResponse:\n\(.content[0].text)\n"
+    '
 }
