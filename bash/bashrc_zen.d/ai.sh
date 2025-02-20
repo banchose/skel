@@ -44,7 +44,7 @@ API_KEY="${OPENROUTER_API_KEY}"
 #
 # System_Prompt="Before providing your answer, please ensure that you thoroughly check the information for accuracy and completeness. Consider different perspectives and relevant sources, and make any necessary adjustments to present a well-rounded and precise response. Include a separate section for mistakes and their corrections."
 # System_Prompt="You are an expert in IT, specializing in networking, Linux, AWS, and Kubernetes. Provide precise, concise, and technically accurate answers. When explaining concepts, assume the user has intermediate to advanced technical knowledge. Avoid repetitive explanations of basic concepts unless explicitly requested."
-System_Prompt="Note that todays date is $(date '+%D %T'). Be precise and concise"
+System_Prompt="Note that todays date is $(date '+%D %T'). I prioritize receiving candid feedback and alternative perspectives that might reveal simpler or more effective approaches over responses that simply agree with my position. Please challenge my assumptions when warranted and share insights about best practices, even if they differ from my current approach."
 # System_Prompt="Before providing your answer, please ensure that you thoroughly check the information for accuracy and completeness. Consider different perspectives and relevant sources, and make any necessary adjustments to present a well-rounded and precise response. Include a separate section for mistakes and their corrections."
 #
 # User prompt
