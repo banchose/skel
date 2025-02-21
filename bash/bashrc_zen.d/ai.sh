@@ -19,9 +19,8 @@ Current_Endpoint="${OR_ENDPOINT}"
 # OR_MODEL="deepseek/deepseek-chat"
 # OR_MODEL="anthropic/claude-3.5-sonnet"
 # OR_MODEL="meta-llama/llama-3.3-70b-instruct"
-OR_MODEL="anthropic/claude-3.5-haiku"
-# OR_MODE="anthropic/claude-3.5-sonnet"
-# OR_MODEL="anthropic/claude-3.5-sonnet"
+# OR_MODEL="anthropic/claude-3.5-haiku"
+OR_MODEL="anthropic/claude-3.5-sonnet"
 # OR_MODEL="mistralai/mistral-large-2411"
 # OR_MODEL="minimax/minimax-01"
 # OR_MODEL="deepseek/deepseek-r1"
@@ -65,7 +64,7 @@ qo() {
   local content
   local API_KEY="${OPENROUTER_API_KEY}"
   local EndPoint="${Current_Endpoint}"
-  local Model="claude-3-5-sonnet-20241022"
+  local Model="${OR_MODEL}"
 
   # Debug information
   echo "Using Endpoint: ${EndPoint}"
