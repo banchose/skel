@@ -9,7 +9,7 @@ alias cdhzen='cd ~/.bashrc_zen.d'
 alias cdconfigs='cd ~/gitdir/configs'
 alias cdhzen='cd ~/.bashrc_zen.d'
 
-gitcheck() {
+gitroll() {
   (
     cd ~/gitdir || return 1
     for i in aws configs skel awscfts; do
