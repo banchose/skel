@@ -6,6 +6,10 @@ export AWS_PROFILE=lab
 export AWS_DEFAULT_REGION=us-east-1
 export AwsRegion=us-east-1
 
+# AWS Regions to check
+REGIONS=("us-east-1" "us-west-2")
+PROFILES=("net" "test" "dev" "production")
+
 echo "$AWS_PROFILE"
 echo "Region: $AWS_DEFAULT_REGION"
 echo "Output: $AWS_DEFAULT_OUTPUT"
@@ -68,11 +72,13 @@ set_stack_outputs() {
 
 set_aws_envs() {
 
-  set_stack_outputs HRI-BIGNETWORK us-east-1 net
+  set_stack_outputs v2-HRI-BIGNETWORK us-east-1 net
+  # set_stack_outputs HRI-BIGNETWORK us-east-1 net
   set_stack_outputs HRI-BIGAWSDNS us-east-1 net
   set_stack_outputs HRI-BIGDEV us-east-1 dev
   set_stack_outputs HRI-BIGTEST us-east-1 test
   set_stack_outputs HRI-BIGDATA us-east-1 production # MIND THE PROFILE
+
 }
 
 get_aws_context() {
@@ -470,31 +476,44 @@ alstg() {
   return 0
 }
 
-# Function to validate and return AWS profile context
-get_aws_context() {
-  local profile="$1" # Local variable declared and assigned
+# Function to check resources for a given profile and region
+check_resources() {
+  local profile=$(get_aws_context "$@")
 
-  local valid_profiles
-  valid_profiles=$(aws configure list-profiles) # Fetch all configured profiles
+  local region=${AwsRegion}"
 
-  if [[ $? -ne 0 ]]; then
-    echo "Error: Unable to fetch AWS profiles. Ensure the AWS CLI is installed and configured."
-    return 1
-  fi
+  echo "--------------------------------------------------"
+  echo "Profile: $profile, Region: $region"
+  echo "--------------------------------------------------"
 
-  if [[ -z "$profile" ]]; then
-    echo "Error: Missing profile name. Please provide a valid AWS profile."
-    echo "Available profiles:"
-    echo "$valid_profiles"
-    return 1
-  fi
+  # EC2 Instances
+  echo "Checking EC2 Instances..."
+  aws ec2 describe-instances --region "$region" --profile "$profile" --output text | grep "INSTANCE.*STOPPED"
 
-  if ! echo "$valid_profiles" | grep -qw "$profile"; then
-    echo "Error: Invalid profile '$profile'."
-    echo "Available profiles:"
-    echo "$valid_profiles"
-    return 1
-  fi
+  # Unattached EBS Volumes
+  echo "Checking Unattached EBS Volumes..."
+  aws ec2 describe-volumes --region "$region" --profile "$profile" --filters "Name=status,Values=available" --output text
 
-  echo "$profile"
+  # NAT Gateways (if you use them)
+  echo "Checking NAT Gateways..."
+  aws ec2 describe-nat-gateways --region "$region" --profile "$profile" --output text
+
+  # Elastic Load Balancers
+  echo "Checking Load Balancers..."
+  aws elbv2 describe-load-balancers --region "$region" --profile "$profile" --output text
+
+  # RDS Instances
+  echo "Checking RDS Instances..."
+  aws rds describe-db-instances --region "$region" --profile "$profile" --output text
+
+  echo "" # Add a newline for readability
 }
+
+# Main execution loop
+for PROFILE in "${PROFILES[@]}"; do
+  for REGION in "${REGIONS[@]}"; do
+    check_resources "$PROFILE" "$REGION"
+  done
+done
+
+echo "DONE"
