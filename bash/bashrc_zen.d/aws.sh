@@ -72,8 +72,7 @@ set_stack_outputs() {
 
 set_aws_envs() {
 
-  set_stack_outputs v2-HRI-BIGNETWORK us-east-1 net
-  # set_stack_outputs HRI-BIGNETWORK us-east-1 net
+  set_stack_outputs HRI-BIGNETWORK us-east-1 net
   set_stack_outputs HRI-BIGAWSDNS us-east-1 net
   set_stack_outputs HRI-BIGDEV us-east-1 dev
   set_stack_outputs HRI-BIGTEST us-east-1 test
