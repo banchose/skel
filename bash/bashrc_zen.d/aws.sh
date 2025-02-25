@@ -507,9 +507,12 @@ get-pubs() {
 # Function to check resources for a given profile and region
 check_resources() {
 
+<<<<<<< HEAD
   local profile
   profile=$(get_aws_context "$@")
 
+=======
+>>>>>>> e647cbfd476276b75f9609988fb5249e69aa0f52
   local region="${AwsRegion}"
 
   echo "--------------------------------------------------"
