@@ -474,6 +474,35 @@ alstg() {
   echo "Completed fetching details for all Transit Gateways."
   return 0
 }
+get-pubs() {
+  # Ensure AWS CLI is installed
+  if ! command -v aws >/dev/null 2>&1; then
+    echo "Error: AWS CLI is not installed. Please install it to use this function."
+    return 1
+  fi
+
+  # Determine AWS profile using get_aws_context
+  AwsProfile=$(get_aws_context "$@")
+  if [[ $? -ne 0 || -z "${AwsProfile}" ]]; then
+    echo "Failed to retrieve a valid AWS profile."
+    return 1
+  fi
+
+  echo "Using AWS profile: ${AwsProfile}"
+aws ec2 describe-instances \
+  --filters "Name=instance-state-name,Values=running" \
+  --query 'Reservations[].Instances[].{
+    Name: Tags[?Key==`Name`].Value | [0],
+    InstanceId: InstanceId,
+    Type: InstanceType,
+    AZ: Placement.AvailabilityZone,
+    PublicIP: PublicIpAddress || `No Public IP`,
+    PrivateIP: PrivateIpAddress
+  }' \
+  --output table \
+  --region us-east-1 \
+  --profile "${AwsProfile}"
+}
 
 # Function to check resources for a given profile and region
 check_resources() {
