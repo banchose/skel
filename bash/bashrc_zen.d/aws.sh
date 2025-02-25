@@ -489,9 +489,9 @@ get-pubs() {
   fi
 
   echo "Using AWS profile: ${AwsProfile}"
-aws ec2 describe-instances \
-  --filters "Name=instance-state-name,Values=running" \
-  --query 'Reservations[].Instances[].{
+  aws ec2 describe-instances \
+    --filters "Name=instance-state-name,Values=running" \
+    --query 'Reservations[].Instances[].{
     Name: Tags[?Key==`Name`].Value | [0],
     InstanceId: InstanceId,
     Type: InstanceType,
@@ -499,16 +499,18 @@ aws ec2 describe-instances \
     PublicIP: PublicIpAddress || `No Public IP`,
     PrivateIP: PrivateIpAddress
   }' \
-  --output table \
-  --region us-east-1 \
-  --profile "${AwsProfile}"
+    --output table \
+    --region us-east-1 \
+    --profile "${AwsProfile}"
 }
 
 # Function to check resources for a given profile and region
 check_resources() {
-  local profile=$(get_aws_context "$@")
 
-  local region=${AwsRegion}"
+  local profile
+  profile=$(get_aws_context "$@")
+
+  local region="${AwsRegion}"
 
   echo "--------------------------------------------------"
   echo "Profile: $profile, Region: $region"
@@ -536,12 +538,3 @@ check_resources() {
 
   echo "" # Add a newline for readability
 }
-
-# Main execution loop
-for PROFILE in "${PROFILES[@]}"; do
-  for REGION in "${REGIONS[@]}"; do
-    check_resources "$PROFILE" "$REGION"
-  done
-done
-
-echo "DONE"
