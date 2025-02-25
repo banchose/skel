@@ -36,8 +36,8 @@ Max_Tokens=2048
 #
 # API Key
 #
-API_KEY="${XXOPENROUTER_API_KEYXX}"
-# echo "${XXOPENROUTER_API_KEYXX}"
+API_KEY="${OPENROUTER_API_KEY}"
+# echo "${OPENROUTER_API_KEY}"
 # echo "$API_KEY"
 # System prompt
 #
@@ -62,7 +62,7 @@ sanitize_input() {
 
 qo() {
   local content
-  local API_KEY="${XXOPENROUTER_API_KEYXX}"
+  local API_KEY="${OPENROUTER_API_KEY}"
   local EndPoint="${Current_Endpoint}"
   local Model="${OR_MODEL}"
 
