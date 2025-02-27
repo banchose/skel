@@ -21,6 +21,7 @@ if command -v aws_completer &>/dev/null; then
 fi
 
 alias cdaws='cd ~/gitdir/aws'
+alias cdeks='cd ~/gitdir/aws/PHRIBIGNETWORK/EKSALB/'
 alias vaws='nvim ~/gitdir/skel/bash/bashrc_zen.d/aws.sh'
 
 # Function: Get AWS Profile
