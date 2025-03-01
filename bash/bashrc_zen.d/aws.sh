@@ -23,6 +23,7 @@ fi
 alias cdaws='cd ~/gitdir/aws'
 alias cdeks='cd ~/gitdir/aws/PHRIBIGNETWORK/EKSALB/'
 alias vaws='nvim ~/gitdir/skel/bash/bashrc_zen.d/aws.sh'
+alias awsbk="tar zcvf ~/temp/aws-$(date +%Y%m%d)_"${RANDOM}".tar.gz --exclude=".git" ~/gitdir/aws"
 
 # Function: Get AWS Profile
 #get_aws_context() {
