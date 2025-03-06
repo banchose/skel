@@ -27,6 +27,7 @@
     cmd = nvim -f -c \"Gdiff\" \"$MERGED\"
 
 [alias]
+    hist = log --oneline --all --decorate --graph --color
     a = add --all
     ai = add -i
     #############
