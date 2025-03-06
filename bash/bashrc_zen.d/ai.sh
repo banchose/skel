@@ -45,6 +45,14 @@ System_Prompt="Note that todays date is $(date '+%D %T'). I prioritize receiving
 #
 # User prompt
 #
+#
+# Read openrouter exported chats
+#
+#  cat ./openrouter-export.json | jq -r '.messages[] | select(.content != null) | .content'
+#
+#
+#
+#
 # User_Prompt0="This is just a test. Make your anwser as short as possible"
 alias vai='nvim ~/gitdir/skel/bash/bashrc_zen.d/ai.sh'
 
@@ -55,7 +63,12 @@ sanitize_input() {
   echo "$Sanitized_Input"
 }
 #
-# echo "$(sanitize_input "${input_stdin}")"
+#   cat ./FOWARDER-RULE-TO-HEALTHRESEARCH-ORG.json | jq -r '.messages[] | select(.content != null) | .content'
+#   cat ./FOWARDER-RULE-TO-HEALTHRESEARCH-ORG.json | jq -r '.messages[] | select(.characterId == "USER" and .content != null) | .content'
+#   cat ./FOWARDER-RULE-TO-HEALTHRESEARCH-ORG.json | jq -r '.messages[] | select(.characterId == "char-1741271155-P4PhggbFhRwtqwMniCB0" and .content != null) | .content'
+#
+orc{
+local input="$(sanitize_input)"
 
 qo() {
   local content
