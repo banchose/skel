@@ -1,0 +1,18 @@
+# the ID or name of the model that is selected by default on launch
+default_model = "claude-3-7-sonnet-20250219"
+# the system prompt on launch
+system_prompt = "Helpful assitant that sticks to the most current way of doing things and sticks to best practices"
+
+# choose from "nebula", "cobalt", "twilight", "hacker", "alpine", "galaxy", "nautilus", "monokai", "textual"
+theme = "hacker"
+
+# change the syntax highlighting theme of code in messages
+# choose from https://pygments.org/styles/
+# defaults to "monokai"
+message_code_theme = "dracula"
+
+# example of adding local llama3 support
+# only the `name` field is required here.
+[[models]]
+name = "claude-3-7-sonnet-20250219"
+api_base = "https://api.anthropic.com/v1/messages"

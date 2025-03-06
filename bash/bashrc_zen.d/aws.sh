@@ -407,6 +407,25 @@ alslt() {
     --output table
 }
 
+alsstsb() {
+  local StackName AwsRegion="us-east-1" AwsProfile="default"
+  if [[ $# -lt 1 ]]; then
+    echo "Usage: alsstsb <stack-name> [aws-region] [aws-profile]"
+    return 1
+  fi
+  StackName="$1"
+  shift
+  if [[ $# -gt 0 ]]; then
+    AwsRegion="$1"
+    shift
+    if [[ $# -gt 0 ]]; then
+      AwsProfile="$1"
+    fi
+  fi
+  echo "Using Stack: $StackName, Region: $AwsRegion, Profile: $AwsProfile"
+  aws cloudformation get-template --region "$AwsRegion" --profile "$AwsProfile" --stack-name "$StackName" --query 'TemplateBody' --output json | jq -r '.'
+}
+
 alstg() {
   # Ensure AWS CLI is installed
   if ! command -v aws >/dev/null 2>&1; then

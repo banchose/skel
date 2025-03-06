@@ -27,6 +27,10 @@ OR_MODEL="anthropic/claude-3.7-sonnet"
 OPENROUTER_ENDPOINT="https://openrouter.ai/api/v1/chat/completions"
 Current_Model="${OR_MODEL}"
 
+# ANTHROPIC OR_MODEL
+# claude-3-7-sonnet-20250219"
+ANTHROPIC_MODEL="claude-3-7-sonnet-20250219"
+
 #
 # Tokens
 #
@@ -132,41 +136,52 @@ EOF
 qa() {
   local ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}"
   local EndPoint="https://api.anthropic.com/v1/messages"
-  local Model="claude-3-5-sonnet-20241022"
+  local Model="${ANTHROPIC_MODEL}"
   local Max_Tokens=1024
-
-  # Check if API key is set
+  local Verbose=false
+  if [[ "$1" == "-v" || "$1" == "--verbose" ]]; then
+    Verbose=true
+    shift
+  fi
   if [[ -z "$ANTHROPIC_API_KEY" ]]; then
-    echo "Error: ANTHROPIC_API_KEY is not defined" >&2
+    echo "Error: ANTHROPIC_API_KEY is not defined" 1>&2
     return 1
   fi
-
-  # Check if input is provided
-  if [[ -n "$1" ]]; then
-    local content="$1"
-  elif ! tty -s && read -r content; then
-    :
+  if [[ -z "$1" ]]; then
+    echo "Usage: qa [-v|--verbose] \"your message\"" 1>&2
+    return 1
+  fi
+  local content="$1"
+  local payload
+  payload=$(jq -cn --arg model "$Model" --arg content "$content" --argjson max_tokens "$Max_Tokens" '{
+        model: $model, 
+        max_tokens: $max_tokens, 
+        messages: [{role: "user", content: $content}]
+    }')
+  local response
+  response=$(curl -s "$EndPoint" -H "x-api-key: $ANTHROPIC_API_KEY" -H "anthropic-version: 2023-06-01" -H "Content-Type: application/json" -d "$payload")
+  if $Verbose; then
+    echo "$response" | jq -r '
+            if .error then
+                "Error: \(.error.message)"
+            elif .content and (.content | length > 0) then
+                "Message ID: \(.id)\n" +
+                "Model: \(.model)\n" +
+                "Input tokens: \(.usage.input_tokens)\n" +
+                "Output tokens: \(.usage.output_tokens)\n" +
+                "Stop reason: \(.stop_reason)\n\n" +
+                "Response:\n" + (.content | map(select(.type == "text") | .text) | join("\n"))
+            else
+                "Unexpected response format: \(.)"
+            end'
   else
-    echo "Error: No input provided" >&2
-    return 1
+    echo "$response" | jq -r '
+            if .error then
+                "Error: \(.error.message)"
+            elif .content and (.content | length > 0) then
+                .content | map(select(.type == "text") | .text) | join("\n")
+            else
+                "Unexpected response format. Use -v for details."
+            end'
   fi
-
-  curl -s "${EndPoint}" \
-    --header "x-api-key: ${ANTHROPIC_API_KEY}" \
-    --header "anthropic-version: 2023-06-01" \
-    --header "content-type: application/json" \
-    --data '{
-      "model": "'"${Model}"'",
-      "max_tokens": '"${Max_Tokens}"',
-      "messages": [
-        {"role": "user", "content": "'"${content}"'"}
-      ]
-    }' | jq -r '
-      "Message ID: \(.id)\n" +
-      "Model: \(.model)\n" +
-      "Input tokens: \(.usage.input_tokens)\n" +
-      "Output tokens: \(.usage.output_tokens)\n" +
-      "Stop reason: \(.stop_reason)\n" +
-      "\nResponse:\n\(.content[0].text)\n"
-    '
 }
