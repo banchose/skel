@@ -146,6 +146,33 @@ qo() {
 EOF
 }
 
+ailsma() {
+  if [[ -z "${ANTHROPIC_API_KEY:-}" ]]; then
+    echo "Error: ANTHROPIC_API_KEY environment variable is not set." >&2
+    return 1
+  fi
+
+  local response
+  response=$(curl -s "https://api.anthropic.com/v1/models" \
+    --header "x-api-key: ${ANTHROPIC_API_KEY}" \
+    --header "anthropic-version: 2023-06-01")
+
+  # Check if curl command succeeded
+  if [[ $? -ne 0 ]]; then
+    echo "Error: Failed to connect to Anthropic API." >&2
+    return 2
+  fi
+
+  # Check if the response contains an error
+  if echo "${response}" | jq -e 'has("error")' >/dev/null; then
+    echo "Error from Anthropic API: $(echo "${response}" | jq -r '.error.message')" >&2
+    return 3
+  fi
+
+  # Pretty print the models one per line
+  echo "${response}" | jq -r '.data[] | "\(.display_name) (\(.id)) - Released: \(.created_at | fromdateiso8601 | strftime("%Y-%m-%d"))"'
+}
+
 qa() {
   local ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}"
   local EndPoint="https://api.anthropic.com/v1/messages"
