@@ -80,6 +80,8 @@ set_aws_envs() {
   set_stack_outputs HRI-BIGTEST us-east-1 test
   set_stack_outputs HRI-BIGDATA us-east-1 production # Mind the profile
   set_stack_outputs HRI-BIGEKSALB us-east-1 test     # Mind the profile
+  set_stack_outputs HRI-VPC-ONLY-EKS us-east-1 test  # Mind the profile
+  set_stack_outputs HRI-BIGEKSALB us-east-1 test     # Mind the profile
 
 }
 

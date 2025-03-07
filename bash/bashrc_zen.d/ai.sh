@@ -288,3 +288,46 @@ ailsmo() {
 
   echo -e "\n\033[1;37mNote:\033[0m For model pricing information, visit \033[4mhttps://openrouter.ai/docs#models\033[0m"
 }
+
+######################## EXAMPLES #######################
+# Using curl for a more complete submission
+#
+# curlaiapiexamp() {
+#     if [[ -z "${OPENROUTER_API_KEY:-}" ]]; then
+#         echo "Error: OPENROUTER_API_KEY environment variable is not set." >&2
+#         return 1
+#     fi
+#
+#     # Model selection with system role
+#     local model_id="anthropic/claude-3-haiku-20240307"
+#     local system_role="Be concise and precise."
+#     local prompt="Explain quantum computing in simple terms."
+#
+#     local response
+#     response=$(curl -s "https://openrouter.ai/api/v1/chat/completions" \
+#         -H "Authorization: Bearer ${OPENROUTER_API_KEY}" \
+#         -H "Content-Type: application/json" \
+#         -d '{
+#             "model": "'"${model_id}"'",
+#             "messages": [
+#                 {"role": "system", "content": "'"${system_role}"'"},
+#                 {"role": "user", "content": "'"${prompt}"'"}
+#             ]
+#         }')
+#
+#     # Extract and display the response content
+#     echo "${response}" | jq -r '.choices[0].message.content'
+# }
+#
+# curl https://api.anthropic.com/v1/messages \
+#      --header "x-api-key: $ANTHROPIC_API_KEY" \
+#      --header "anthropic-version: 2023-06-01" \
+#      --header "content-type: application/json" \
+#      --data \
+# '{
+#     "model": "claude-3-7-sonnet-20250219",
+#     "max_tokens": 1024,
+#     "messages": [
+#         {"role": "user", "content": "Hello, world"}
+#     ]
+# }'
