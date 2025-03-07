@@ -225,3 +225,66 @@ qa() {
             end'
   fi
 }
+
+ailsmo() {
+  if [[ -z "${OPENROUTER_API_KEY:-}" ]]; then
+    echo "Error: OPENROUTER_API_KEY environment variable is not set." >&2
+    return 1
+  fi
+
+  # Inform the user that we're fetching data
+  echo -e "\033[1;34mFetching model information from OpenRouter API...\033[0m"
+
+  local response
+  response=$(curl -s "https://openrouter.ai/api/v1/models" \
+    --header "Authorization: Bearer ${OPENROUTER_API_KEY}" \
+    --header "Content-Type: application/json")
+
+  # Check if curl command succeeded
+  if [[ $? -ne 0 ]]; then
+    echo "Error: Failed to connect to OpenRouter API." >&2
+    return 2
+  fi
+
+  # Check if the response contains an error
+  if echo "${response}" | jq -e 'has("error")' >/dev/null; then
+    echo "Error from OpenRouter API: $(echo "${response}" | jq -r '.error.message // .error')" >&2
+    return 3
+  fi
+
+  # Get total model count
+  local model_count
+  model_count=$(echo "${response}" | jq '.data | length')
+  echo -e "\033[1;32mFound ${model_count} available models\033[0m"
+
+  # Sort models by provider and name
+  local sorted_response
+  sorted_response=$(echo "${response}" | jq '.data | sort_by(.id)')
+
+  # Format the header
+  printf "%-35s %-30s %-12s\n" "MODEL NAME" "MODEL ID" "CONTEXT"
+  printf "%-35s %-30s %-12s\n" "$(printf '%*s' 35 '' | tr ' ' '-')" "$(printf '%*s' 30 '' | tr ' ' '-')" "$(printf '%*s' 12 '' | tr ' ' '-')"
+
+  # Extract and display provider groups
+  local current_provider=""
+
+  echo "${sorted_response}" | jq -r '.[] | 
+        .id as $full_id |
+        ($full_id | split("/")[0]) as $provider |
+        ($full_id | split("/")[1]) as $model_id |
+        .name as $display_name |
+        .context_length as $context |
+        [$provider, $display_name, $model_id, $context] | @tsv
+    ' | while IFS=$'\t' read -r provider display_name model_id context; do
+    # Print provider header when provider changes
+    if [[ "${provider}" != "${current_provider}" ]]; then
+      printf "\n\033[1;36m%s\033[0m\n" "=== ${provider^^} ==="
+      current_provider="${provider}"
+    fi
+
+    # Print model details
+    printf "%-35s %-30s %-12s\n" "${display_name:0:35}" "${model_id:0:30}" "${context}"
+  done
+
+  echo -e "\n\033[1;37mNote:\033[0m For model pricing information, visit \033[4mhttps://openrouter.ai/docs#models\033[0m"
+}
