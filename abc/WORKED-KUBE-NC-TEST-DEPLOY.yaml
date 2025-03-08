@@ -1,0 +1,40 @@
+#cat  ./new-deployment-nc-test.yaml                                                                                         
+apiVersion: apps/v1                                                                                                                    
+kind: Deployment                                                                                                                       
+metadata:                                                                                                                              
+  name: nc-test                                                                                                                        
+  labels:                                                                                                                              
+    app: nc-test                                                                                                                       
+spec:                                                                                                                                  
+  replicas: 2                                                                                                                          
+  selector:                                                                                                                            
+    matchLabels:
+      app: nc-test
+  template:
+    metadata:
+      labels:
+        app: nc-test
+    spec:
+      containers:
+      - name: nc-test
+        image: busybox
+        command: ["/bin/sh"]
+        args:
+          - -c
+          - >
+            while true; do 
+              { echo -e 'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 26\r\n\r\nHello from Kubernetes Pod!'; } | nc -
+l -p 8080; 
+              echo "$(date) - Request received" >> /tmp/requests.log; 
+            done
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nc-test
+spec:
+  selector:
+[0] 1:[tmux]*Z                         
