@@ -124,7 +124,7 @@ function vr() { nvim -R "${@}"; }
 
 ## GENERAL OPTIONS ##
 
-export PATH=/home/"${USER}"/.local/bin:$PATH
+export PATH="$HOME/.local/bin:$PATH"
 
 set -o noclobber
 

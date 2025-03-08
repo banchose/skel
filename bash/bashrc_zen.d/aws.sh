@@ -5,6 +5,7 @@
 export AWS_PROFILE=lab
 export AWS_DEFAULT_REGION=us-east-1
 export AwsRegion=us-east-1
+MANINSTANCE=i-04aebda9960485984
 
 # AWS Regions to check
 REGIONS=("us-east-1" "us-west-2")
@@ -24,6 +25,7 @@ alias cdaws='cd ~/gitdir/aws'
 alias cdeks='cd ~/gitdir/aws/PHRIBIGNETWORK/EKSALB/'
 alias vaws='nvim ~/gitdir/skel/bash/bashrc_zen.d/aws.sh'
 alias awsbk="tar zcvf ~/temp/aws-$(date +%Y%m%d)_"${RANDOM}".tar.gz --exclude=".git" ~/gitdir/aws"
+alias awsssh="aws ssm start-session --target ${MANINSTANCE} --region us-east-1 --profile net"
 
 # Function: Get AWS Profile
 #get_aws_context() {
