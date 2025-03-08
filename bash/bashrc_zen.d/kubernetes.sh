@@ -30,57 +30,57 @@ source <(kubectl completion bash)
 complete -F __start_kubectl k
 
 getyn() {
-	local yn='n'
-	while true; do
-		read -n 1 -p "Do you want to continue? (y/n): " yn
-		case $yn in
-		[Yy]*)
-			exec some_command_here
-			break
-			;;
-		[Nn]*) exit ;;
-		*) echo "Please answer y or n." ;;
-		esac
-	done
+  local yn='n'
+  while true; do
+    read -n 1 -p "Do you want to continue? (y/n): " yn
+    case $yn in
+    [Yy]*)
+      exec some_command_here
+      break
+      ;;
+    [Nn]*) exit ;;
+    *) echo "Please answer y or n." ;;
+    esac
+  done
 }
 
 klc() {
-	kubectl get pods --all-namespaces -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' |
-		sort
+  kubectl get pods --all-namespaces -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' |
+    sort
 }
 
 mkbashC() {
-	kubectl run -i --tty --image=bash --restart=Always xbx -- bash
+  kubectl run -i --tty --image=bash --restart=Always xbx -- bash
 }
 
 mkkubeconfg() {
 
-	[[ -r /etc/kubernets/admin.conf ]] || {
-		echo "No /etc/kubernetes/admin.conf file"
-		return 1
-	}
-	[[ -d ~/.kube ]] || mkdir -p -- ~/.kube
-	sudo cp -v /etc/kubernetes/admin.conf ~/.kube
-	sudo chown -R -- "$USER":users ~/.kube
+  [[ -r /etc/kubernets/admin.conf ]] || {
+    echo "No /etc/kubernetes/admin.conf file"
+    return 1
+  }
+  [[ -d ~/.kube ]] || mkdir -p -- ~/.kube
+  sudo cp -v /etc/kubernetes/admin.conf ~/.kube
+  sudo chown -R -- "$USER":users ~/.kube
 }
 
 mkkube() {
-	[[ -d ~/.kube ]] || mkdir -p -- ~/.kube &>/dev/null
-	sudo cp -v -- /etc/kubernetes/admin.conf "$SUDO_USER/.kube"
-	sudo chown -v -R -- "$SUDO_USER":users "$SUDO_USER/.kube"
+  [[ -d ~/.kube ]] || mkdir -p -- ~/.kube &>/dev/null
+  sudo cp -v -- /etc/kubernetes/admin.conf "$SUDO_USER/.kube"
+  sudo chown -v -R -- "$SUDO_USER":users "$SUDO_USER/.kube"
 }
 
 kscale() {
-	kubectl scale -n nginx-a --replicas 1 deployment nginx-a
+  kubectl scale -n nginx-a --replicas 1 deployment nginx-a
 }
 
 kpodr() {
-	kubectl get pods --sort-by='.status.containerStatuses[0].restartCount'
+  kubectl get pods --sort-by='.status.containerStatuses[0].restartCount'
 }
 
-ket-ca() {
-	kubectl config view --raw | awk '/certificate-authority-data:/ { print $2 }' | base64 -d | openssl x509 -text -noout
+ketca() {
+  kubectl config view --raw | awk '/certificate-authority-data:/ { print $2 }' | base64 -d | openssl x509 -text -noout
 }
-ket-cca() {
-	kubectl config view --raw | awk '/client-certificate-data:/ { print $2 }' | base64 -d | openssl x509 -text -noout
+ketcca() {
+  kubectl config view --raw | awk '/client-certificate-data:/ { print $2 }' | base64 -d | openssl x509 -text -noout
 }
