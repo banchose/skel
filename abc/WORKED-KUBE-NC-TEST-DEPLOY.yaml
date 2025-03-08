@@ -62,7 +62,7 @@ metadata:
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/load-balancer-name: nc-test-alb
     alb.ingress.kubernetes.io/group.name: test-group
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
 spec:
   ingressClassName: alb
   rules:
