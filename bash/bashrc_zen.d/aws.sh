@@ -500,7 +500,7 @@ alstg() {
   echo "Completed fetching details for all Transit Gateways."
   return 0
 }
-get-pubs() {
+getpubs() {
   # Ensure AWS CLI is installed
   if ! command -v aws >/dev/null 2>&1; then
     echo "Error: AWS CLI is not installed. Please install it to use this function."
