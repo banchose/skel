@@ -565,3 +565,43 @@ check_resources() {
 
   echo "" # Add a newline for readability
 }
+
+alslb() {
+
+  local profile
+  profile=$(get_aws_context "$@")
+  local region="${AwsRegion}"
+
+  # Get ALB ARN
+  if ! ALB_ARN=$(aws elbv2 describe-load-balancers --names k8s-default-awsingre-32ebfbcf83 --query "LoadBalancers[0].LoadBalancerArn" --output text --region "${region}" --profile "${profile}" --no-cli-pager 2>/dev/null); then
+    echo "Error: Failed to retrieve ALB ARN" >&2
+    return 1
+  fi
+
+  # Check if ALB_ARN is empty
+  if [[ -z "${ALB_ARN}" ]]; then
+    echo "Error: No ALB found with the specified name" >&2
+    return 1
+  fi
+
+  # Get listener ARNs for this ALB
+  if ! LISTENER_ARNS=$(aws elbv2 describe-listeners --load-balancer-arn "${ALB_ARN}" --query "Listeners[*].ListenerArn" --output text --region "${region}" --profile "${profile}" --no-cli-pager 2>/dev/null); then
+    echo "Error: Failed to retrieve listener ARNs" >&2
+    return 1
+  fi
+
+  # Check if LISTENER_ARNS is empty
+  if [[ -z "${LISTENER_ARNS}" ]]; then
+    echo "Warning: No listeners found for the ALB" >&2
+    return 0
+  fi
+
+  # For each listener, get the rules
+  for LISTENER_ARN in ${LISTENER_ARNS}; do
+    echo "Listener: ${LISTENER_ARN}"
+    if ! aws elbv2 describe-rules --listener-arn "${LISTENER_ARN}" --region "${region}" --profile "${profile}" --no-cli-pager; then
+      echo "Error: Failed to retrieve rules for listener ${LISTENER_ARN}" >&2
+      # Continue with next listener instead of failing completely
+    fi
+  done
+}

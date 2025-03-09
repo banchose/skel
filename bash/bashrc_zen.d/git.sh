@@ -4,6 +4,7 @@
 alias gitb='git branch -vv' # show detailed branch info
 alias gitr='git branch -r'  # show remote branches
 alias cdskel='cd ~/gitdir/skel'
+alias cdskelb='cd ~/gitdir/skel/bash/bashrc_zen.d'
 alias cdzen='cd ~/gitdir/skel/bash/bashrc_zen.d'
 alias cdhzen='cd ~/.bashrc_zen.d'
 alias cdconfigs='cd ~/gitdir/configs'
