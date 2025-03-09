@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: default-site
+  namespace: default
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Health Research Inc</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin-top: 100px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Welcome to Health Research Inc</h1>
+        <p>Please navigate to a specific application.</p>
+    </body>
+    </html>
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: default-site
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: default-site
+  template:
+    metadata:
+      labels:
+        app: default-site
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:stable
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html/
+      volumes:
+      - name: html
+        configMap:
+          name: default-site
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: default-site
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: default-site
