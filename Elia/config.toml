@@ -9,7 +9,7 @@ theme = "hacker"
 # change the syntax highlighting theme of code in messages
 # choose from https://pygments.org/styles/
 # defaults to "monokai"
-message_code_theme = "dracula"
+message_code_theme = "emacs"
 
 # example of adding local llama3 support
 # only the `name` field is required here.
