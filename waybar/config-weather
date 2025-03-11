@@ -1,0 +1,293 @@
+{
+    // "layer": "top", // Waybar at top layer
+    // "position": "bottom", // Waybar position (top|bottom|left|right)
+    "height": 38, // Waybar height (to be removed for auto height)
+    // "width": 1280, // Waybar width
+    "spacing": 4, // Gaps between modules (4px)
+    // Choose the order of the modules
+    "modules-left": ["hyprland/workspaces", "custom/firefox-default", "custom/firefox-youtube", "custom/firefox-TV","custom/firefox-Other", "custom/pinger", "custom/1min","custom/5min","custom/15min", "cpu", "custom/weather"],
+    "modules-center": ["clock"],
+    "modules-right": ["custom/Ping_GW","custom/Ping_fios", "custom/Ping_firewall", "idle_inhibitor", "custom/clearmako", "pulseaudio", "cpu", "memory", "temperature", "tray"],
+    // Modules configuration
+    // "sway/workspaces": {
+    //     "disable-scroll": true,
+    //     "all-outputs": true,
+    //     "format": "{name}: {icon}",
+    //     "format-icons": {
+    //         "1": "",
+    //         "2": "",
+    //         "3": "",
+    //         "4": "",
+    //         "5": "",
+    //         "urgent": "",
+    //         "focused": "",
+    //         "default": ""
+    //     }
+    // },
+    "keyboard-state": {
+        "numlock": true,
+        "capslock": true,
+        "format": "{name} {icon}",
+        "format-icons": {
+            "locked": "",
+            "unlocked": ""
+        }
+    },
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    "sway/scratchpad": {
+        "format": "{icon} {count}",
+        "show-empty": false,
+        "format-icons": ["", ""],
+        "tooltip": true,
+        "tooltip-format": "{app}: {title}"
+    },
+    "mpd": {
+        "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
+        "format-disconnected": "Disconnected ",
+        "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+        "unknown-tag": "N/A",
+        "interval": 2,
+        "artist-len": 5,
+        "album-len": 5,
+        "album-artist-len": 5,
+        "title-len": 5,
+        "consume-icons": {
+            "on": " "
+        },
+        "random-icons": {
+            "off": "<span color=\"#f53c3c\"></span> ",
+            "on": " "
+        },
+        "repeat-icons": {
+            "on": " "
+        },
+        "single-icons": {
+            "on": "1 "
+        },
+        "state-icons": {
+            "paused": "",
+            "playing": ""
+        },
+        "tooltip-format": "MPD (connected)",
+        "tooltip-format-disconnected": "MPD (disconnected)",
+        "on-click": "mpc toggle",
+        "on-click-middle": "mpc pause;mpc seek +00:00:15;mpc play",
+        "on-click-right": "mpc pause;mpc seek -00:00:15;mpc play"
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+    "tray": {
+        // "icon-size": 21,
+        "spacing": 10
+    },
+    "clock": {
+        // "timezone": "America/New_York",
+        "format": "{:%H %M %a %m %d %y}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%Y-%m-%d}"
+    },
+//     "cpu": {
+//         "format": "{avg_frequency}GHz ",
+//         "tooltip": false
+//     },
+    "cpu": {
+        "interval": 1,
+        "format": "{icon0}{icon1}{icon2}{icon2} {usage:>2}% ",
+        "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+    },
+    "memory": {
+        "format": "{}% "
+    },
+    "temperature": {
+        // "thermal-zone": 2,
+        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "critical-threshold": 80,
+        // "format-critical": "{temperatureC}°C {icon}",
+        "format": "{temperatureC}°C {icon}",
+        "format-icons": ["", "", ""]
+    },
+    "backlight": {
+        // "device": "acpi_video1",
+        "format": "{percent}% {icon}",
+        "format-icons": ["", "", "", "", "", "", "", "", ""]
+    },
+    "battery": {
+        "states": {
+            // "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-charging": "{capacity}% ",
+        "format-plugged": "{capacity}% ",
+        "format-alt": "{time} {icon}",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "battery#bat2": {
+        "bat": "BAT2"
+    },
+    "network": {
+        // "interface" : "wlp2*", // (Optional) To force the use of this interface
+        "format-wifi": "{essid} ({signalStrength}%) ",
+        "format-ethernet": "{ipaddr}/{cidr} ",
+        "tooltip-format": "{ifname} via {gwaddr} ",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "Disconnected ⚠",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}"
+    },
+    "pulseaudio": {
+        // "scroll-step": 1, // %, can be a float
+        "format": "{volume}% {icon} {format_source}",
+        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-muted": " {format_source}",
+        "format-source": "{volume}% ",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    },
+    "custom/firefox-default": {
+        "format": "",
+        "on-click": "firefox -P Super-Default",
+        "on-click-right": "firefox --ProfileManager"
+    },
+    "custom/firefox-youtube": {
+        "format": "",
+        "on-click": "firefox -P Youtube",
+        "on-click-right": "firefox --ProfileManager"
+    },
+    "custom/firefox-TV": {
+        "format": "",
+        "on-click": "firefox -P TV",
+        "on-click-right": "firefox --ProfileManager"
+    },
+    "custom/firefox-Other": {
+        "format": "",
+        "on-click": "firefox -P LastPass",
+        "on-click-right": "firefox --ProfileManager"
+    },
+    "custom/firefox-PIA": {
+        "format": "",
+        "on-click": "firefox -P PIA-Attempt",
+        "on-click-right": "firefox --ProfileManager"
+    },
+    "hyprland/workspaces": {
+        "format": "{name}",
+        "on-click": "activate",
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1"
+      },
+    "custom/pinger": {
+        "exec" : "~/.config/waybar/pinger.sh",
+        "format":"{icon} {0}",
+        "interval": 10,
+        "return-type": "json",
+        "min-length": 4,
+        "format-icons": {
+            "default": "",
+            "low":""
+        }
+    },
+   "custom/1min": {
+        "exec" : "cut -f1 -d' ' /proc/loadavg",
+        "format":"{icon} {0}",
+        "interval": 10,
+        "min-length": 4,
+        "format-icons": {
+            "default": "",
+            "low":""
+        }
+    },
+    "custom/5min": {
+        "exec" : "cut -f2 -d' ' /proc/loadavg",
+        "format":"{icon} {0}",
+        "interval": 10,
+        "min-length": 4,
+        "format-icons": {
+            "default": "",
+            "low":""
+        }
+    },
+    "custom/15min": {
+        "exec" : "cut -f3 -d' ' /proc/loadavg",
+        "format":"{icon} {0}",
+        "interval": 10,
+        "min-length": 4,
+        "format-icons": {
+            "default": "",
+            "low":""
+        }
+    },
+    "custom/Ping_firewall": {
+      "exec" : "/home/una/.config/waybar/scripts/ping_firewall.sh",
+      "format":"{icon} {0}",
+      "return-type": "json",
+      "interval": 10,
+      "min-length": 4,
+      "format-icons": {
+          "default": "",
+          "low":""
+      }
+    },
+    "custom/Ping_fios": {
+      "exec" : "/home/una/.config/waybar/scripts/ping_fios.sh",
+      "format":"{icon} {0}",
+      "return-type": "json",
+      "interval": 10,
+      "min-length": 4,
+      "format-icons": {
+          "default": "",
+          "low":""
+      }
+    },
+    "custom/Ping_GW": {
+      "exec" : "/home/una/.config/waybar/scripts/ping_gw.sh",
+      "format":"{icon} {0}",
+      "return-type": "json",
+      "interval": 10,
+      "min-length": 4,
+      "format-icons": {
+          "default": "",
+          "low":""
+      }
+    },
+    "custom/clearmako": {
+        "format": "🔊",
+        "on-click": "makoctl dismiss --all"
+    },
+    "custom/media": {
+        "format": "{icon}",
+        "return-type": "json",
+        "max-length": 40,
+        "format-icons": {
+            "spotify": "",
+            "default": "🎜"
+        },
+        "escape": true,
+        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
+        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+    },
+    "custom/weather": {
+        "exec": "~/.config/waybar/scripts/OPENWEATHER.sh",
+        "return-type": "json",
+        "interval": 600,
+        "tooltip": true
+    }
+}
