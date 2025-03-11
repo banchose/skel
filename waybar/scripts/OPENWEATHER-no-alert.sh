@@ -30,31 +30,13 @@ fi
 # Units setting
 UNITS="metric" # Use metric for Celsius as the base
 
-# Make API request for current weather
+# Make API request
 WEATHER_DATA=$(curl -s "https://api.openweathermap.org/data/2.5/weather?lat=${LAT}&lon=${LON}&appid=${API_KEY}&units=${UNITS}") || handle_error "API request failed"
 
 # Check if the API returned an error
 if echo "${WEATHER_DATA}" | jq -e '.cod != 200' >/dev/null; then
   ERROR_MSG=$(echo "${WEATHER_DATA}" | jq -r '.message // "Unknown error"')
   handle_error "API error: ${ERROR_MSG}"
-fi
-
-# Make API request for alerts (using One Call API)
-ONECALL_DATA=$(curl -s "https://api.openweathermap.org/data/3.0/onecall?lat=${LAT}&lon=${LON}&exclude=minutely,hourly&appid=${API_KEY}&units=${UNITS}") || handle_error "One Call API request failed"
-
-# Extract weather alert information
-ALERT_ICON=""
-ALERT_TEXT=""
-if echo "${ONECALL_DATA}" | jq -e '.alerts' >/dev/null; then
-  ALERT_COUNT=$(echo "${ONECALL_DATA}" | jq '.alerts | length')
-  if [ "${ALERT_COUNT}" -gt 0 ]; then
-    ALERT_ICON=" 🚨" # Alert icon
-    FIRST_ALERT=$(echo "${ONECALL_DATA}" | jq -r '.alerts[0].event')
-    ALERT_TEXT="\nALERT: ${FIRST_ALERT}"
-    if [ "${ALERT_COUNT}" -gt 1 ]; then
-      ALERT_TEXT="${ALERT_TEXT} (and ${ALERT_COUNT-1} more)"
-    fi
-  fi
 fi
 
 # Extract the dt (data calculation time) from the API response and format it in 24-hour format
@@ -112,5 +94,5 @@ get_icon() {
 
 ICON=$(get_icon "${WEATHER_ICON}")
 
-# Create JSON output for Waybar with the actual data time in 24-hour format and alert info
-echo "{\"text\":\"${TEMP_C}°C / ${TEMP_F}°F ${ICON}${ALERT_ICON}\", \"tooltip\":\"${CITY_NAME}: ${WEATHER_DESC}\nPressure: ${PRESSURE}\nData time: ${DATA_TIME}${ALERT_TEXT}\", \"class\":\"weather\"}"
+# Create JSON output for Waybar with the actual data time in 24-hour format
+echo "{\"text\":\"${TEMP_C}°C / ${TEMP_F}°F ${ICON}\", \"tooltip\":\"${CITY_NAME}: ${WEATHER_DESC}\nPressure: ${PRESSURE}\nData time: ${DATA_TIME}\", \"class\":\"weather\"}"
