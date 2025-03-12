@@ -24,7 +24,6 @@ fi
 alias cdaws='cd ~/gitdir/aws'
 alias cdeks='cd ~/gitdir/aws/PHRIBIGNETWORK/EKSALB/'
 alias vaws='nvim ~/gitdir/skel/bash/bashrc_zen.d/aws.sh'
-alias awsbk="tar zcvf ~/temp/aws-$(date +%Y%m%d)_"${RANDOM}".tar.gz --exclude=".git" ~/gitdir/aws"
 alias awsssh="aws ssm start-session --target ${MANINSTANCE} --region us-east-1 --profile net"
 alias aslb='aws elbv2 describe-load-balancers --query "LoadBalancers[].DNSName" --region us-east-1'
 

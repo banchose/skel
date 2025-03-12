@@ -71,9 +71,6 @@ sanitize_input() {
 #   cat ./FOWARDER-RULE-TO-HEALTHRESEARCH-ORG.json | jq -r '.messages[] | select(.characterId == "USER" and .content != null) | .content'
 #   cat ./FOWARDER-RULE-TO-HEALTHRESEARCH-ORG.json | jq -r '.messages[] | select(.characterId == "char-1741271155-P4PhggbFhRwtqwMniCB0" and .content != null) | .content'
 #
-orc{
-local input="$(sanitize_input)"
-
 qo() {
   local content
   local API_KEY="${OPENROUTER_API_KEY}"
