@@ -48,7 +48,7 @@ ALERT_TEXT=""
 if echo "${ONECALL_DATA}" | jq -e '.alerts' >/dev/null; then
   ALERT_COUNT=$(echo "${ONECALL_DATA}" | jq '.alerts | length')
   if [ "${ALERT_COUNT}" -gt 0 ]; then
-    ALERT_ICON=" !" # More muted alert icon
+    ALERT_ICON=" 🚨" # Alert icon
     FIRST_ALERT=$(echo "${ONECALL_DATA}" | jq -r '.alerts[0].event')
     ALERT_TEXT="\nALERT: ${FIRST_ALERT}"
     if [ "${ALERT_COUNT}" -gt 1 ]; then
@@ -93,20 +93,20 @@ TEMP_F=$(awk "BEGIN {printf \"%.1f\", (${TEMP_C} * 9/5) + 32}")
 # Round temperature to one decimal place
 TEMP_C=$(printf "%.1f" "${TEMP_C}")
 
-# Select icon based on weather condition code (more muted icons)
+# Select icon based on weather condition code
 get_icon() {
   local icon_code="${1}"
   case "${icon_code:0:2}" in
-  "01") echo "☼" ;; # clear sky
-  "02") echo "⛅" ;; # few clouds
-  "03") echo "☁" ;; # scattered clouds
-  "04") echo "☁" ;; # broken clouds
-  "09") echo "⋆" ;; # shower rain
-  "10") echo "☂" ;; # rain
-  "11") echo "⚡" ;; # thunderstorm
-  "13") echo "❄" ;; # snow
-  "50") echo "≡" ;; # mist/fog
-  *) echo "○" ;;    # default
+  "01") echo "☀️" ;; # clear sky
+  "02") echo "🌤️" ;; # few clouds
+  "03") echo "☁️" ;; # scattered clouds
+  "04") echo "☁️" ;; # broken clouds
+  "09") echo "🌧️" ;; # shower rain
+  "10") echo "🌦️" ;; # rain
+  "11") echo "⛈️" ;; # thunderstorm
+  "13") echo "❄️" ;; # snow
+  "50") echo "🌫️" ;; # mist
+  *) echo "🌡️" ;;    # default
   esac
 }
 
