@@ -13,7 +13,7 @@ complete -F __start_docker d
 
 dclear() {
   cons="$(docker ps -q)"
-  [[ -z $cons ]] && docker stop $(docker ps -q)
+  [[ -z $cons ]] || docker stop $cons
   docker container prune -f
 }
 
