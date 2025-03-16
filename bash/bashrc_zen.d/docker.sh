@@ -24,7 +24,8 @@ function dwipe() {
 
 function dockerpurge() {
 
-  docker rm -f $(docker ps -aq)
+  contains=$(docker ps -aq)
+  [[ -z $contains ]] || docker rm -f $contains
   docker system prune -f -a # Boom
   docker volume prune -f
   docker network prune -f
