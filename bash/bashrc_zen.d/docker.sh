@@ -11,6 +11,12 @@ alias dls='docker ps --format "table {{.Image}}\t{{.Names}}\t{{.Status}}"'
 source <(docker completion bash)
 complete -F __start_docker d
 
+dclear() {
+  cons="$(docker ps -q)"
+  [[ -z $cons ]] && docker stop $(docker ps -q)
+  docker container prune -f
+}
+
 function dwipe() {
   docker container prune --force
   docker image prune --force --all

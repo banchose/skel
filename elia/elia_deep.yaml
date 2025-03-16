@@ -1,0 +1,25 @@
+name: elia_deep  # Use this in config.toml
+
+# Fluorescent Purple for Borders & UI Elements (Your Picked Color)
+primary: '#7E3AF2'      
+
+# Bright Fluorescent Green for Main Text (Your Picked Color)
+secondary: '#7BB426'  
+
+# Green for Buttons, Selection Highlights, Menus
+accent: '#7BB426'      
+
+# Background - Deep Black for High Contrast
+background: '#090909'  
+
+# Slightly lighter black for raised elements (panels, menus)
+surface: '#161616'     
+
+# Error messages - Keep red for visibility
+error: '#ff5555'    
+
+# Success messages - Fluorescent green to match text
+success: '#7BB426'    
+
+# Warnings - Soft yellow for clarity
+warning: '#f1fa8c'    

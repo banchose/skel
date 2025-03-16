@@ -10,5 +10,6 @@ function wood-sync() {
   rsync -rvptgle ssh /home/una/y/youtube-down star.xaax.dev:/sync/"${HOSTNAME}"
   rsync --del -rvptgle ssh /home/una/gitdir star.xaax.dev:/sync/"${HOSTNAME}"
   rsync --del -rvptgle ssh /home/una/Dropbox star.xaax.dev:/sync/"${HOSTNAME}"
+  rsync --del -rvptgle ssh /home/una/.config/ star.xaax.dev:/sync/"${HOSTNAME}"/dotconfig
 
 }
