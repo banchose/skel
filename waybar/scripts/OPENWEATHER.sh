@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# For debugging - save both stderr and full API response
-exec 2>>/tmp/waybar-weather-error.log
-
 # Function to handle errors
 handle_error() {
   echo "{\"text\":\"Weather Unavailable ⚠️\", \"tooltip\":\"Error: ${1}\"}"
-  echo "Error: ${1}" >>/tmp/waybar-weather-error.log
   exit 1
 }
 
@@ -34,18 +30,10 @@ fi
 # Units setting
 UNITS="metric" # Use metric for Celsius as the base
 
-# Make API request for One Call API and save full response
-ONECALL_RESPONSE=$(curl -s "https://api.openweathermap.org/data/3.0/onecall?lat=${LAT}&lon=${LON}&exclude=minutely&appid=${API_KEY}&units=${UNITS}")
-echo "FULL API RESPONSE: ${ONECALL_RESPONSE}" >/tmp/waybar-weather-full-response.json
+# Make API request for One Call API with minimal data
+ONECALL_DATA=$(curl -s "https://api.openweathermap.org/data/3.0/onecall?lat=${LAT}&lon=${LON}&exclude=minutely,hourly,daily&appid=${API_KEY}&units=${UNITS}") || handle_error "API request failed"
 
-# Parse the data
-ONECALL_DATA=$(echo "${ONECALL_RESPONSE}") || handle_error "Failed to parse API response"
-
-# Extract data using grep and sed (alternative to jq)
-echo "Checking for wind gust in raw JSON..." >>/tmp/waybar-weather-debug.log
-grep -o '"wind_gust":[0-9.]*' /tmp/waybar-weather-full-response.json >>/tmp/waybar-weather-debug.log
-
-# Now use jq for extraction
+# Extract basic weather data
 TEMP_C=$(echo "${ONECALL_DATA}" | jq -r '.current.temp')
 PRESSURE=$(echo "${ONECALL_DATA}" | jq -r '.current.pressure')
 WEATHER_DESC=$(echo "${ONECALL_DATA}" | jq -r '.current.weather[0].description')
@@ -55,24 +43,8 @@ DT=$(echo "${ONECALL_DATA}" | jq -r '.current.dt')
 WIND_SPEED=$(echo "${ONECALL_DATA}" | jq -r '.current.wind_speed')
 WIND_DEG=$(echo "${ONECALL_DATA}" | jq -r '.current.wind_deg')
 
-# Try multiple ways to extract wind gust
-WIND_GUST_RAW=$(echo "${ONECALL_DATA}" | jq '.current.wind_gust')
-echo "WIND_GUST_RAW (jq output): ${WIND_GUST_RAW}" >>/tmp/waybar-weather-debug.log
-
-# Manual extraction for wind_gust
-WIND_GUST_GREP=$(grep -o '"wind_gust":[0-9.]*' /tmp/waybar-weather-full-response.json | head -1 | sed 's/"wind_gust"://')
-echo "WIND_GUST_GREP (grep output): ${WIND_GUST_GREP}" >>/tmp/waybar-weather-debug.log
-
-# Use the grep result if available, otherwise fall back to N/A
-if [[ -n "${WIND_GUST_GREP}" ]]; then
-  WIND_GUST="${WIND_GUST_GREP}"
-elif [[ "${WIND_GUST_RAW}" != "null" && -n "${WIND_GUST_RAW}" ]]; then
-  WIND_GUST="${WIND_GUST_RAW}"
-else
-  WIND_GUST="N/A"
-fi
-
-echo "Final WIND_GUST value: ${WIND_GUST}" >>/tmp/waybar-weather-debug.log
+# Check for wind gust - use grep to be safe since it might not always be present
+WIND_GUST=$(echo "${ONECALL_DATA}" | grep -o '"wind_gust":[0-9.]*' | sed 's/"wind_gust"://' || echo "N/A")
 
 # Extract weather alert information
 ALERT_ICON=""
@@ -110,9 +82,6 @@ else
   WIND_GUST_MPH="N/A"
   GUST_DISPLAY=""
 fi
-
-# Debug the conversion
-echo "After conversion: WIND_SPEED_MPH=${WIND_SPEED_MPH}, WIND_GUST_MPH=${WIND_GUST_MPH}" >>/tmp/waybar-weather-debug.log
 
 # Determine the speed to use for the wind icon (use gust if available, otherwise use wind speed)
 if [[ "${WIND_GUST}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
@@ -191,9 +160,6 @@ get_wind_icon() {
 
 WEATHER_ICON=$(get_icon "${WEATHER_ICON}")
 WIND_ICON=$(get_wind_icon "${ICON_SPEED}")
-
-# Check our final values before output
-echo "Final values - WEATHER_ICON: ${WEATHER_ICON}, WIND_ICON: ${WIND_ICON}, GUST_DISPLAY: ${GUST_DISPLAY}" >>/tmp/waybar-weather-debug.log
 
 # Create JSON output with weather icon, wind icon and gust info in the main text
 echo "{\"text\":\"${TEMP_C}°C / ${TEMP_F}°F ${WEATHER_ICON} ${WIND_ICON}${GUST_DISPLAY}${ALERT_ICON}\", \"tooltip\":\"${CITY_NAME}: ${WEATHER_DESC}\nPressure: ${PRESSURE}\nWind: ${WIND_SPEED_MPH} mph ${WIND_DIR}\nGust: ${WIND_GUST_MPH} mph\nData time: ${DATA_TIME}${ALERT_TEXT}\", \"class\":\"weather\"}"
