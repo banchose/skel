@@ -73,43 +73,6 @@ WEATHER_DESC=$(echo "${WEATHER_DATA}" | jq -r '.weather[0].description')
 WEATHER_ICON=$(echo "${WEATHER_DATA}" | jq -r '.weather[0].icon')
 CITY_NAME=$(echo "${WEATHER_DATA}" | jq -r '.name')
 
-# Extract wind information including gust
-WIND_SPEED=$(echo "${WEATHER_DATA}" | jq -r '.wind.speed')
-WIND_DEG=$(echo "${WEATHER_DATA}" | jq -r '.wind.deg')
-WIND_GUST=$(echo "${WEATHER_DATA}" | jq -r '.wind.gust // "N/A"') # Using N/A if gust data is not available
-
-# Convert wind speeds to mph (from m/s)
-if [[ "${WIND_SPEED}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
-  WIND_SPEED_MPH=$(awk "BEGIN {printf \"%.1f\", ${WIND_SPEED} * 2.237}")
-else
-  WIND_SPEED_MPH="N/A"
-fi
-
-if [[ "${WIND_GUST}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
-  WIND_GUST_MPH=$(awk "BEGIN {printf \"%.1f\", ${WIND_GUST} * 2.237}")
-  GUST_DISPLAY=" ${WIND_GUST_MPH}" # Format for display in main bar
-else
-  WIND_GUST_MPH="N/A"
-  GUST_DISPLAY="" # No gust info to display
-fi
-
-# Determine the speed to use for the wind icon (use gust if available, otherwise use wind speed)
-if [[ "${WIND_GUST}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
-  ICON_SPEED="${WIND_GUST_MPH}" # Use gust for icon if available
-else
-  ICON_SPEED="${WIND_SPEED_MPH}" # Fallback to wind speed
-fi
-
-# Get wind direction as a compass point
-get_wind_direction() {
-  local degrees=$1
-  local directions=("N" "NNE" "NE" "ENE" "E" "ESE" "SE" "SSE" "S" "SSW" "SW" "WSW" "W" "WNW" "NW" "NNW" "N")
-  local index=$(awk "BEGIN {printf \"%d\", (${degrees} + 11.25) / 22.5}")
-  echo "${directions[index]}"
-}
-
-WIND_DIR=$(get_wind_direction "${WIND_DEG}")
-
 # Check if temperature is a valid number
 if [[ ! "${TEMP_C}" =~ ^-?[0-9]+(\.[0-9]+)?$ ]]; then
   handle_error "Invalid temperature value"
@@ -147,29 +110,24 @@ get_icon() {
   esac
 }
 
-# Wind icon based on speed in mph
-get_wind_icon() {
-  local speed=$1
-  if [[ ! "${speed}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
-    echo "" # No icon if invalid speed
-    return
-  fi
-
-  if (($(echo "$speed > 38.0" | bc -l))); then   # Hurricane/storm force
-    echo "🌪️"                                    # hurricane
-  elif (($(echo "$speed > 30.0" | bc -l))); then # Gale/near gale
-    echo "💨"                                     # strong wind
-  elif (($(echo "$speed > 12.0" | bc -l))); then # Moderate breeze
-    echo "🍃"                                     # moderate wind
-  elif (($(echo "$speed > 5.0" | bc -l))); then  # Light breeze
-    echo "🌬️"                                    # light wind
-  else
-    echo "🌫️" # very light/calm
-  fi
+# Select icon based on weather condition code (more muted icons)
+get_icon_small() {
+  local icon_code="${1}"
+  case "${icon_code:0:2}" in
+  "01") echo "☼" ;; # clear sky
+  "02") echo "⛅" ;; # few clouds
+  "03") echo "☁" ;; # scattered clouds
+  "04") echo "☁" ;; # broken clouds
+  "09") echo "⋆" ;; # shower rain
+  "10") echo "☂" ;; # rain
+  "11") echo "⚡" ;; # thunderstorm
+  "13") echo "❄" ;; # snow
+  "50") echo "≡" ;; # mist/fog
+  *) echo "○" ;;    # default
+  esac
 }
 
-WEATHER_ICON=$(get_icon "${WEATHER_ICON}")
-WIND_ICON=$(get_wind_icon "${ICON_SPEED}")
+ICON=$(get_icon "${WEATHER_ICON}")
 
-# Create JSON output with weather icon, wind icon and gust info in the main text
-echo "{\"text\":\"${TEMP_C}°C / ${TEMP_F}°F ${WEATHER_ICON} ${GUST_DISPLAY} ${WIND_ICON}${ALERT_ICON}\", \"tooltip\":\"${CITY_NAME}: ${WEATHER_DESC}\nPressure: ${PRESSURE}\nWind: ${WIND_SPEED_MPH} mph ${WIND_DIR}\nGust: ${WIND_GUST_MPH} mph\nData time: ${DATA_TIME}${ALERT_TEXT}\", \"class\":\"weather\"}"
+# Create JSON output for Waybar with the actual data time in 24-hour format and alert info
+echo "{\"text\":\"${TEMP_C}°C / ${TEMP_F}°F ${ICON}${ALERT_ICON}\", \"tooltip\":\"${CITY_NAME}: ${WEATHER_DESC}\nPressure: ${PRESSURE}\nData time: ${DATA_TIME}${ALERT_TEXT}\", \"class\":\"weather\"}"
