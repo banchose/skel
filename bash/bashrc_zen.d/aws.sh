@@ -74,6 +74,27 @@ set_stack_outputs() {
   done
 }
 
+hang_fire() {
+  local StackName="$1"
+  local StackAWSProfile="$2"
+  local WaitTime=30
+
+  ## Wait for net to finish
+  aws cloudformation wait stack-create-complete \
+    --stack-name "${StackName}" \
+    --region us-east-1 --profile "${StackAWSProfile}"
+
+  echo "Just completed ${StackName}"
+
+  echo "Waiting for ${WaitTime}"
+
+  sleep "${WaitTime}"
+
+  set_stack_outputs "${StackName}" us-east-1 "${StackAWSProfile}"
+
+  sleep 5
+}
+
 set_aws_envs() {
 
   set_stack_outputs HRI-BIGNETWORK us-east-1 net
