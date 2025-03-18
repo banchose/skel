@@ -11,6 +11,12 @@ alias dls='docker ps --format "table {{.Image}}\t{{.Names}}\t{{.Status}}"'
 source <(docker completion bash)
 complete -F __start_docker d
 
+dclear() {
+  cons="$(docker ps -q)"
+  [[ -z $cons ]] || docker stop $cons
+  docker container prune -f
+}
+
 function dwipe() {
   docker container prune --force
   docker image prune --force --all
@@ -18,7 +24,8 @@ function dwipe() {
 
 function dockerpurge() {
 
-  docker rm -f $(docker ps -aq)
+  contains=$(docker ps -aq)
+  [[ -z $contains ]] || docker rm -f $contains
   docker system prune -f -a # Boom
   docker volume prune -f
   docker network prune -f

@@ -11,3 +11,6 @@ pipx install ruff
 pipx install black
 pipx install flake8
 pipx install pylint
+pipx install cfn-lint
+pipx install posting
+pipx install visidata
