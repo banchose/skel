@@ -5,7 +5,7 @@
     // "width": 1280, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
-    "modules-left": ["hyprland/workspaces", "custom/firefox-default", "custom/firefox-youtube", "custom/firefox-TV","custom/firefox-Other", "custom/pinger", "custom/1min","custom/5min","custom/15min", "cpu", "custom/weather"],
+    "modules-left": ["hyprland/workspaces", "custom/firefox-youtube", "custom/firefox-TV","custom/firefox-Other", "custom/pinger", "custom/1min","custom/5min","custom/15min", "cpu", "custom/weather"],
     "modules-center": ["clock"],
     "modules-right": ["custom/Ping_GW","custom/Ping_fios", "custom/Ping_firewall", "idle_inhibitor", "custom/clearmako", "pulseaudio", "cpu", "memory", "temperature", "tray"],
     // Modules configuration
@@ -193,7 +193,7 @@
         "on-click": "activate",
         "on-scroll-up": "hyprctl dispatch workspace e+1",
         "on-scroll-down": "hyprctl dispatch workspace e-1"
-      },
+    },
     "custom/pinger": {
         "exec" : "~/.config/waybar/pinger.sh",
         "format":"{icon} {0}",

@@ -13,4 +13,9 @@ pipx install flake8
 pipx install pylint
 pipx install cfn-lint
 pipx install posting
+pipx install pipenv
+pipx install poetry
+pipx install glances
+pipx install jupyter
+pipx install cookiecutter
 pipx install visidata
