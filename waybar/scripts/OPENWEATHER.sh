@@ -42,9 +42,10 @@ CITY_NAME=$(echo "${ONECALL_DATA}" | jq -r '.timezone' | sed 's|.*/||')
 DT=$(echo "${ONECALL_DATA}" | jq -r '.current.dt')
 WIND_SPEED=$(echo "${ONECALL_DATA}" | jq -r '.current.wind_speed')
 WIND_DEG=$(echo "${ONECALL_DATA}" | jq -r '.current.wind_deg')
+WIND_GUST=$(echo "${ONECALL_DATA}" | jq -r '.current.wind_gust')
 
 # Check for wind gust - use grep to be safe since it might not always be present
-WIND_GUST=$(echo "${ONECALL_DATA}" | grep -o '"wind_gust":[0-9.]*' | sed 's/"wind_gust"://' || echo "N/A")
+# WIND_GUST=$(echo "${ONECALL_DATA}" | grep -o '"wind_gust":[0-9.]*' | sed 's/"wind_gust"://' || echo "N/A")
 
 # Extract weather alert information
 ALERT_ICON=""

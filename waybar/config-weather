@@ -287,7 +287,7 @@
     "custom/weather": {
         "exec": "~/.config/waybar/scripts/OPENWEATHER.sh",
         "return-type": "json",
-        "interval": 600,
+        "interval": 700,
         "tooltip": true
     }
 }
