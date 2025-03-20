@@ -15,6 +15,7 @@ export FZF_TMUX_HEIGHT="40%"
 
 # Source the completion script if it exists
 if [[ -r "$FZF_COMPLETION_SCRIPT" ]]; then
+  echo "BASH COMPLETIONS: Modifying bash completion pipx"
   echo "Sourcing fzf completion from: $FZF_COMPLETION_SCRIPT"
   source "$FZF_COMPLETION_SCRIPT"
 else
@@ -23,7 +24,7 @@ fi
 
 # Source the key bindings script if it exists
 if [[ -r "$FZF_KEYBINDINGS_SCRIPT" ]]; then
-  echo "Sourcing fzf key bindings from: $FZF_KEYBINDINGS_SCRIPT"
+  echo "KEYBINDINGS: Sourcing fzf key bindings from: $FZF_KEYBINDINGS_SCRIPT"
   source "$FZF_KEYBINDINGS_SCRIPT"
 else
   echo "Warning: fzf key bindings script not found at $FZF_KEYBINDINGS_SCRIPT"
