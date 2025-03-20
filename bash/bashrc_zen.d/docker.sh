@@ -5,6 +5,7 @@ alias rdp='docker -H ssh://una@s1 ps --all'
 alias rdr='docker -H ssh://una@s1 ps'
 alias rde='docker -H ssh://una@s1'
 alias rdx='docker -H ssh://una@s1 container prune'
+alias dboom='docker system prune -af;docker volume prune -fa;docker container prune -f'
 
 alias d='docker'
 alias dls='docker ps --format "table {{.Image}}\t{{.Names}}\t{{.Status}}"'

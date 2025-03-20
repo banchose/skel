@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+[[ -z $OPENWEATHER_APP_ID ]] && {
+  echo "OPENWEATHER_APP_ID is not defined... not loading openweather"
+  return 1
+}
+
+alias get_weather='curl -s "https://api.openweathermap.org/data/3.0/onecall?lat=${LAT}&lon=${LON}&exclude=minutely,hourly,daily&appid=${OPENWEATHER_APP_ID}"'
+alias get_weathera='curl -s "https://api.openweathermap.org/data/3.0/onecall?lat=${LAT}&lon=${LON}&appid=${OPENWEATHER_APP_ID}"'
+
 getwet() {
   # Ensure required environment variables are set
   if [[ -z "${OPENWEATHER_APP_ID}" ]]; then
