@@ -199,16 +199,43 @@ get_dew_point_icon() {
   fi
 }
 
+# Get human-readable dew point comfort level description
+get_dew_point_comfort() {
+  local dew_point=$1
+  if [[ ! "${dew_point}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+    echo "Unknown" # No description if invalid dew point
+    return
+  fi
+
+  if (($(echo "$dew_point >= 75.0" | bc -l))); then
+    echo "Extremely uncomfortable, oppressive"
+  elif (($(echo "$dew_point >= 70.0" | bc -l))); then
+    echo "Very humid and uncomfortable"
+  elif (($(echo "$dew_point >= 65.0" | bc -l))); then
+    echo "Humid, becoming uncomfortable"
+  elif (($(echo "$dew_point >= 60.0" | bc -l))); then
+    echo "Slightly humid, becoming noticeable"
+  elif (($(echo "$dew_point >= 55.0" | bc -l))); then
+    echo "Comfortable"
+  elif (($(echo "$dew_point >= 50.0" | bc -l))); then
+    echo "Very comfortable"
+  else
+    echo "Dry air"
+  fi
+}
+
 WEATHER_ICON=$(get_icon "${WEATHER_ICON}")
 WIND_ICON=$(get_wind_icon "${ICON_SPEED}")
 
-# Get dew point icon if dew point is available
+# Get dew point icon and comfort level if dew point is available
 if [[ "${DEW_POINT_F}" != "N/A" ]]; then
   DEW_POINT_ICON=$(get_dew_point_icon "${DEW_POINT_F}")
+  DEW_POINT_COMFORT=$(get_dew_point_comfort "${DEW_POINT_F}")
   DEW_POINT_DISPLAY=" ${DEW_POINT_ICON} ${DEW_POINT_F}°F"
 else
   DEW_POINT_DISPLAY=""
+  DEW_POINT_COMFORT="Unknown"
 fi
 
 # Create JSON output with weather icon, wind icon, gust info, and dew point in the main text
-echo "{\"text\":\"${TEMP_C}°C / ${TEMP_F}°F ${WEATHER_ICON} ${WIND_ICON}${GUST_DISPLAY}${DEW_POINT_DISPLAY}${ALERT_ICON}\", \"tooltip\":\"${CITY_NAME}: ${WEATHER_DESC}\nPressure: ${PRESSURE}\nWind: ${WIND_SPEED_MPH} mph ${WIND_DIR}\nGust: ${WIND_GUST_MPH} mph\nDew Point: ${DEW_POINT_F}°F (${DEW_POINT_C}°C)\nData time: ${DATA_TIME}${ALERT_TEXT}\", \"class\":\"weather\"}"
+echo "{\"text\":\"${TEMP_C}°C / ${TEMP_F}°F ${WEATHER_ICON} ${WIND_ICON}${GUST_DISPLAY}${DEW_POINT_DISPLAY}${ALERT_ICON}\", \"tooltip\":\"${CITY_NAME}: ${WEATHER_DESC}\nPressure: ${PRESSURE}\nWind: ${WIND_SPEED_MPH} mph ${WIND_DIR}\nGust: ${WIND_GUST_MPH} mph\nDew Point: ${DEW_POINT_F}°F (${DEW_POINT_C}°C)\nHumidity Feel: ${DEW_POINT_COMFORT}\nData time: ${DATA_TIME}${ALERT_TEXT}\", \"class\":\"weather\"}"
