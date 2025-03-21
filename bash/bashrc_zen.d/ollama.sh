@@ -1,23 +1,36 @@
-ol () {
-	command -v ollama &>/dev/null || {
-		echo "ollama is not on path"
-		return 1
-	}
-	command -v  fzf &>/dev/null || {
-		echo "fzf is not on path"
-		return 1
-	}
-	model="$(ollama list | fzf --with-nth 1 | cut -f1)"
-	echo "Model selected full: $model"
-	echo " ollama run ${model%%:*}"
-	echo " ollama run ${model}"
-	ollama run "${model// */}"
+ol() {
+  command -v ollama &>/dev/null || {
+    echo "ollama is not on path"
+    return 1
+  }
+  command -v fzf &>/dev/null || {
+    echo "fzf is not on path"
+    return 1
+  }
+  model="$(ollama list | fzf --with-nth 1 | cut -f1)"
+  echo "Model selected full: $model"
+  echo " ollama run ${model%%:*}"
+  echo " ollama run ${model}"
+  ollama run "${model// */}"
 }
 
+echo "**** BASH COMPLETION DEFINED OLLAMA ****"
 
-echo "**** BASH COMPLETION DEFINED ****"
-echo "**** ollama bash completion ****"
+qo() {
+  obj='{
+    "model": "mixtral:8x22b",
+    "messages": [
+      {
+        "role": "user",
+        "content": "'"$1"'"
+      }
+    ],
+    "stream": false
+  }'
+  ssh cube "curl -s http://localhost:11434/api/chat -H "Content-Type: application/json" -d '$obj'" | jq -r '.message.content'
+}
 
+echo "BASH COMPLETION: WARNING THIS IS A HACK FOR OLLAMA"
 _complete_ollama() {
     local cur prev words cword
     _init_completion -n : || return
@@ -35,18 +48,3 @@ _complete_ollama() {
     fi
 }
 complete -F _complete_ollama ollama
-
-qo() {
-  obj='{
-    "model": "mixtral:8x22b",
-    "messages": [
-      {
-        "role": "user",
-        "content": "'"$1"'"
-      }
-    ],
-    "stream": false
-  }'
-  ssh cube "curl -s http://localhost:11434/api/chat -H "Content-Type: application/json" -d '$obj'" | jq -r '.message.content'
-}
-
