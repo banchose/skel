@@ -24,6 +24,14 @@ gitroll() {
 }
 
 gitclear() {
+  git credential reject <<EOF
+protocol=https
+host=github.com
+EOF
+  echo "Git credentials for github.com rejected. You'll be prompted for authentication on next Git operation."
+}
+
+gitdisablehelpers() {
   # Clear
   git config --unset-all credential.helper
 }
