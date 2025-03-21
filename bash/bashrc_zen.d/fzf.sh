@@ -1,4 +1,8 @@
 # Minimal FZF configuration that just loads the basics
+#
+#
+
+alias prev='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
 
 # Check if fzf is installed, exit if not
 type fzf &>/dev/null || {
