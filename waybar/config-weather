@@ -5,7 +5,7 @@
     // "width": 1280, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
-    "modules-left": ["hyprland/workspaces", "custom/firefox-Super-Default", "custom/firefox-youtube", "custom/firefox-TV","custom/firefox-Other", "custom/librewolf-default", "custom/pinger", "custom/1min","custom/5min","custom/15min", "cpu", "custom/weather"],
+    "modules-left": ["hyprland/workspaces", "custom/librewolf-default", "custom/firefox-Super-Default", "custom/firefox-youtube", "custom/firefox-TV","custom/firefox-Other", "custom/librewolf-default", "custom/pinger", "custom/1min","custom/5min","custom/15min", "cpu", "custom/weather"],
     "modules-center": ["clock"],
     "modules-right": ["custom/Ping_GW","custom/Ping_fios", "custom/Ping_firewall", "idle_inhibitor", "custom/clearmako", "pulseaudio", "cpu", "memory", "temperature", "tray"],
     // Modules configuration
