@@ -262,6 +262,4 @@ if command -v aws_completer &>/dev/null; then
   complete -C "$(command -v aws_completer)" aws
 fi
 
-export PERPLEXITY_API_KEY=""
-export OPENWEATHER_APP_ID=""
 export OPENWEATHER_LOCATION='{"lat": 42.6, "lon": -73.97}'
