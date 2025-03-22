@@ -1,0 +1,18 @@
+version: "3.3"
+
+services:
+  nginx:
+    image: "nginx:latest"
+    container_name: "nginx-server"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx.rule=Host(`nginx.xaax.dev`)"
+      - "traefik.http.routers.nginx.entrypoints=web"
+      - "traefik.http.services.nginx.loadbalancer.server.port=80"
+    networks:
+      - traefik_default
+
+networks:
+  traefik_default:
+    external: true  # Important: This connects to your existing Traefik network
+
