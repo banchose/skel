@@ -54,4 +54,3 @@ services:
 networks:
   traefik_network:
     external: true
->>>>>>> 96e3529b53cad1defc099ed3a0a9cfc9fcda2fc0
