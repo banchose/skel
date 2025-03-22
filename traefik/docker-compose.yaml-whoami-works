@@ -1,0 +1,35 @@
+services:
+  reverse-proxy:
+    image: traefik:v3.3
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--providers.file.directory=/etc/traefik"
+      - "--providers.file.watch=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./etc/traefik:/etc/traefik
+    networks:
+      - traefik_net
+
+  whoami:
+    image: traefik/whoami
+    command:
+      - --port=2001
+      - --name=iamfoo
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.whoami.entrypoints=web,websecure"
+      - "traefik.http.services.whoami.loadbalancer.server.port=2001"
+    networks:
+      - traefik_net
+
+networks:
+  traefik_net:
