@@ -71,7 +71,8 @@ bind '"jj":vi-movement-mode'
 
 export IGNOREEOF=4
 # export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\v]\$ \[$(tput sgr0)\]"
-export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\[$(tput setaf 9)\]\$(parse_git_branch)\[$(tput setaf 7)\]][\v]\$ \[$(tput sgr0)\]"
+# the git broke sudo bash export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\[$(tput setaf 9)\]\$(parse_git_branch)\[$(tput setaf 7)\]][\v]\$ \[$(tput sgr0)\]"
+PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?]\[$(tput setaf 7)\][\v]\$ \[$(tput sgr0)\]"
 # Make info friendly
 minfo() { info "$1" --subnodes -o - 2>/dev/null | "$PAGER"; }
 
