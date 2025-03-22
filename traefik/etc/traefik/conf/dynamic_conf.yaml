@@ -1,0 +1,8 @@
+tls:
+  stores:
+    default: {}  # Use the default store instead of mystore
+  certificates:
+    - certFile: /etc/traefik/certs/domain.cert.pem
+      keyFile: /etc/traefik/certs/private.key.pem
+      # No need to specify a store - will use "default" automatically
+
