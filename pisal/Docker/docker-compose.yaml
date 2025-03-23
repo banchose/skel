@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  builder:
+    image: node:latest
+    user: "$(id -u):$(id -g)"
+    volumes:
+      - .:/app
+    working_dir: /app
+    tty: true
+    command: bash -c "npm install --verbose vite@4 --include=optional && npm audit fix --force || true && npm update || true && npm run build"
