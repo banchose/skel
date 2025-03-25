@@ -4,5 +4,10 @@
 *.zip
 *.tmp
 *.xz
-
+*.pem
+*.crt
+*.cert
+*.key
+*.tmp
+node_modules/
 
