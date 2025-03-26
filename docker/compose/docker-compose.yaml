@@ -55,6 +55,17 @@ services:
     networks:
       - web
 
+  portainer:
+    image: portainer/portainer-ce:alpine
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.rule=Host(`port.xaax.dev`)"
+      - "traefik.http.routers.portainer.entrypoints=websecure"
+      - "traefik.http.routers.portainer.tls=true"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+    networks:
+      - web
+
   homer:
     image: b4bz/homer
     container_name: homer
