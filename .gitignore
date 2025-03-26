@@ -1,7 +1,7 @@
 docker/compose/homer
 docker/compose/config
 docker/compose/etc
-docke/compose/data
+docker/compose/data
 .aider*
 *.gz
 *.tar
