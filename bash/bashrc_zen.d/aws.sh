@@ -35,6 +35,29 @@ alias aslb='aws elbv2 describe-load-balancers --query "LoadBalancers[].DNSName" 
 #    return 0
 #  fi
 
+INGRESS=ingo.healthresearch.org
+
+tpisalapi() {
+  nslookup "${INGRESS}" || {
+    echo nslookup failed for "${INGRESS}"
+    return 1
+  }
+  ret="$(curl -s https://"${INGRESS}"/pisalapi/api/v1/app/version)" || {
+    echo ""
+    echo ""
+    echo "curl failed for ${INGRESS}"
+    echo ""
+    echo ""
+    return 1
+  }
+
+  if command -v jq &>/dev/null; then
+    echo "${ret}" | jq '.'
+  else
+    echo "${ret}"
+  fi
+}
+
 set_stack_outputs() {
   local stack_name="$1"
   local region="${2:-us-east-1}"
