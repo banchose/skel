@@ -2,6 +2,7 @@ docker/compose/homer
 docker/compose/config
 docker/compose/etc
 docker/compose/data
+mongo_data
 .aider*
 *.gz
 *.tar
