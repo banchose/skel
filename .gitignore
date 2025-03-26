@@ -1,3 +1,5 @@
+docker/compose/homer
+docker/compose/config
 .aider*
 *.gz
 *.tar
