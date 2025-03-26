@@ -3,6 +3,9 @@ docker/compose/config
 docker/compose/etc
 docker/compose/data
 mongo_data
+meilisearch_data/
+mongodb_data/
+
 .aider*
 *.gz
 *.tar
