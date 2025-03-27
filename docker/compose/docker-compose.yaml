@@ -117,6 +117,8 @@ services:
       - "traefik.http.routers.dashboard.entrypoints=websecure"
       - "traefik.http.routers.dashboard.tls=true"
       - "traefik.http.routers.dashboard.service=api@internal"
+
+# LibreChat
   api:
     container_name: LibreChat
     user: "${UID}:${GID}"
@@ -196,17 +198,3 @@ networks:
 volumes:
   dbvol:
   pgdata2:
-.
-├── docker-compose.yaml
-├── docker-compose.yaml.orig
-├── etc
-│   ├── certs
-│   │   ├── domain.cert.pem
-│   │   └── private.key.pem
-│   └── traefik
-│       └── tls.yaml
-├── nginx-content
-│   └── index.html
-└── remove-root-dirs.sh
-
-5 directories, 7 files
