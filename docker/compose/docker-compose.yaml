@@ -239,3 +239,17 @@ networks:
 volumes:
   dbvol:
   pgdata2:
+.
+├── docker-compose.yaml
+├── docker-compose.yaml.orig
+├── etc
+│   ├── certs
+│   │   ├── domain.cert.pem
+│   │   └── private.key.pem
+│   └── traefik
+│       └── tls.yaml
+├── nginx-content
+│   └── index.html
+└── remove-root-dirs.sh
+
+5 directories, 7 files
