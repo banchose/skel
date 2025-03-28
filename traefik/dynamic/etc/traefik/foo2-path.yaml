@@ -2,12 +2,7 @@
 http:
   routers:
     my-router2:
-      rule: "Path(`/foo2`)"
-      service: ealen
+      rule: "Path(`/foo2`) || Path(`/foo3`)"
+      service: ealen@docker
       entrypoints:
         - web
-  services:
-    ealen:
-      loadBalancer:
-        servers:
-          - url: "http://echo-server:80"

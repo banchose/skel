@@ -142,6 +142,9 @@ services:
       - ./images:/app/client/public/images
       - ./uploads:/app/uploads
       - ./logs:/app/api/logs
+      - type: bind
+        source: ./librechat.yaml
+        target: /app/librechat.yaml
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.librechat.rule=Host(`librechat.xaax.dev`)"
