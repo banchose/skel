@@ -1,0 +1,48 @@
+services:
+
+  traefik:
+    image: traefik:v3.0
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./etc/certs:/etc/certs:ro
+      - ./etc/traefik:/etc/traefik
+    networks:
+      - web
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.directory=/etc/traefik"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.http.tls=true"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`abc.localdomain`)"
+      - "traefik.http.routers.dashboard.entrypoints=web"
+      - "traefik.http.routers.dashboard.tls=false"
+      - "traefik.http.routers.dashboard.service=api@internal"
+
+  echo-server:
+    image: ealen/echo-server:latest
+    labels:
+      - "traefik.enable=true"
+      #      - "traefik.http.routers.ealen.rule=HostRegexp(`^.*$`) && Path(`/test`)"
+      - "traefik.http.routers.ealen.rule=Path(`/echo`) || Path(`/ealenecho`)"
+      - "traefik.http.routers.ealen.entrypoints=web"
+      - "traefik.http.routers.ealen.tls=false"
+      - "traefik.http.services.ealen.loadbalancer.server.port=80"
+    networks:
+      - web
+
+networks:
+  web: {}
+
+volumes:
+  vol1:
+  vol2:
