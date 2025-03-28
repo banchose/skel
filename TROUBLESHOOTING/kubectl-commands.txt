@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+
+set -xueo pipefail
+
+# aws eks update-kubeconfig --name alpha-eks-cluster --region us-east-1 --profile test
+#
+# # Ingress-Nginx Controller Install
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0/deploy/static/provider/aws/deploy.yaml
+#
+# kubectl config current-context
+# kubectl get pods -A
+# kubectl get nodes

@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ealenecho-server
+  labels:
+    app: ealenecho-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ealenecho-server
+  template:
+    metadata:
+      labels:
+        app: ealenecho-server
+    spec:
+      containers:
+      - name: ealenecho-server
+        image: ealen/echo-server:latest
+        env:
+        - name: PORT
+          value: "8080"
+        ports:
+        - containerPort: 8080
+          name: alt-web
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ealenecho-server
+  labels:
+    app: ealenecho-server
+spec:
+  selector:
+    app: ealenecho-server
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: alt-web
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ealenecho-ingress
+  namespace: default
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS-1-2-Ext-2018-06
+#    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:region:account-id:certificate/certificate-id  # Replace with your certificate ARN
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/success-codes: "200-499"
+    alb.ingress.kubernetes.io/tags: Environment=dev,Team=platform  # Optional: add tags to the ALB
+spec:
+  ingressClassName: alb  # Correctly placed here under spec
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ealenecho-server
+                port:
+                  number: 8080
+  # Optional: If you want to add TLS configuration
+  # tls:
+  # - hosts:
+  #   - your-hostname.example.com
