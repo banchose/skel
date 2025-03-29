@@ -147,10 +147,10 @@ services:
         target: /app/librechat.yaml
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.librechat.rule=Host(`librechat.xaax.dev`)"
-      - "traefik.http.routers.librechat.entrypoints=websecure"
-      - "traefik.http.routers.librechat.tls=true"
-      - "traefik.http.services.librechat.loadbalancer.server.port=3080"
+      - "traefik.http.routers.librechat-sec.rule=Host(`librechat.xaax.dev`)"
+      - "traefik.http.routers.librechat-sec.entrypoints=websecure"
+      - "traefik.http.routers.librechat-sec.tls=true"
+      - "traefik.http.services.librechat-sec.loadbalancer.server.port=3080"
     networks:
       - web
       - default
