@@ -15,6 +15,7 @@ Breakdown of the "language":
     keep \n: ...: The trick to preserve the trailing newline.
     Bashism: $(<file) == $(cat file) (no fork): Specific Bash optimization and its benefit.
     Ref: FAQ82 $() vs \``: Pointer to external resource comparing syntaxes.
+
 Bash read File/Stream line/field: Use 'while IFS= read -r line || [[ -n $line ]]'. Options/Setup: '-r': ALWAYS (prevents \ interp). 'IFS=': no trim WS, reads whole line. 'IFS=<char>': split fields (e.g., IFS=:). Unset IFS: trim lead/trail WS (default). 'read f1 f2 last': 'last' gets rest; 'read _ skip _': use vars (not just _) to discard fields. '-d<delim>': change line delim (e.g., -d '' for NUL w/ find -print0). '-u FD' / '<&FD': read from FD # (avoid stdin stealing by inner cmds like cat/ssh). Handle no final \n: 'while ... || [[ -n $line ]]' OR check '$line' after loop. Input Src: '< file', '<<< "$var"' (Bash), '<<EOF\n$var\nEOF' (POSIX), 'cmd |' (SUBshell!), '< <(cmd)' (NO subshell). Process lines: loop body. Skip comments: '[[ $line = \#* ]]' (trimmed) or '[[ $line = *([[:blank:]])\#* ]]' (untrimmed, extglob?). Ref: FA(Q) 5(arr), 20(NUL), 24(subshell), 89(stdin steal). AVOID 'for' loop.
 
 Breakdown of the "Language":
@@ -37,7 +38,29 @@ Breakdown of the "Language":
     Ref: FA(Q) ...: Pointers to related concepts/FAQs.
     AVOID 'for' loop.: Explicit negative instruction.
 
-Okay, here's a condensed summary of capturing command output and exit status in Bash:
+
+**`Bash AA/Indirect: Prefer AssocArrays (AA: Bash4+/ksh93) or Namerefs (NR: Bash4.3+/ksh93/zsh>5.9/mksh). AA: `declare -A map`; `map[key]=val`; access `${map[key]}`, keys `${!map[@]}`. Use AWK if no native AA. Nameref: `declare -n ref=varname`; use `$ref`/`${ref[@]}` like `varname`. Bash/mksh NR limitations (scope). AVOID indirection IF AA/NR/func suffice. Indirection Eval: Bash: `${!ref}` (old, issues); Zsh: `${(P)ref}`; Others: `eval` (DANGER!). Indirection Assign: NR best. Bash: `printf -v "$ref" val`, `read -r -- "$ref" <<< val`. Bash/ksh/zsh: `declare`/`typeset -- "${ref}=val"`. Portable: `eval "${ref}=\$val"` (HIGH DANGER - sanitize `$ref` & RHS quoting critical). SECURITY: `eval`/`declare`/`typeset`/`printf -v` = CODE EXEC RISK if `$ref` is untrusted (e.g., `ref='x[$(cmd)]'`). MUST validate ref names: `^[a-zA-Z_][a-zA-Z_0-9]*$`. Don't put code in vars.`**
+
+**Breakdown:**
+
+*   **`Bash AA/Indirect:`**: Topic: Associative Arrays & Indirection in Bash context.
+*   **`Prefer AssocArrays (...) or Namerefs (...)`**: State preferred modern methods first, with shell support.
+*   **`AA: ...`**: Syntax for Associative Arrays (declare, assign, access keys/values).
+*   **`Use AWK if no native AA`**: Recommendation for older shells.
+*   **`Nameref: ...`**: Syntax for Name References (declare, usage, limitations).
+*   **`AVOID indirection IF AA/NR/func suffice`**: Strong recommendation against unnecessary complexity/risk.
+*   **`Indirection Eval:`**: Section for evaluating *through* an indirect variable name.
+    *   **`Bash: ${!ref} (old, issues)`**: Bash-specific legacy method.
+    *   **`Zsh: ${(P)ref}`**: Zsh method.
+    *   **`Others: eval (DANGER!)`**: The risky fallback.
+*   **`Indirection Assign:`**: Section for assigning *to* an indirect variable name.
+    *   **`NR best`**: Namerefs are safest for assignment.
+    *   **`Bash: printf -v ..., read ...`**: Bash-specific safe-ish methods.
+    *   **`Bash/ksh/zsh: declare/typeset ...`**: Methods with scope implications (and risk).
+    *   **`Portable: eval "${ref}=\$val" (HIGH DANGER - ...)`**: The most portable but most dangerous method, highlighting critical quoting (`\$val`) and `$ref` sanitization need.
+*   **`SECURITY: ... CODE EXEC RISK if $ref untrusted ...`**: Explicit security warning for *all* methods involving `$ref` evaluation/assignment (except dedicated Namerefs). Shows example attack vector.
+*   **`MUST validate ref names: ...`**: Actionable advice: check variable names match expected pattern.
+*   **`Don't put code in vars`**: General principle violated by naive indirection.
 
 **`Bash Cap Cmd Output/Status: stdout->var: V=$(cmd). stdout+stderr->var: V=$(cmd 2>&1). Status->var: cmd; S=$?. Both: O=$(cmd); S=$?. Cond exec: 'if cmd' (just status); 'if O=$(cmd)' (status+stdout). stdout!=stderr (errors). Pipe: $?=last cmd status. Bash: PIPESTATUS[n]=nth status; 'set -o pipefail'=any fail breaks pipe. Cap ONLY stderr: discard stdout: E=$(cmd 2>&1 >/dev/null); stdout->tty: E=$(cmd 2>&1 >/dev/tty); swap stdout/stderr: E=$(cmd 3>&2 2>&1 1>&3-). Cap stderr, stdout pass-thru: exec 3>&1; E=$(cmd 2>&1 1>&3); exec 3>&- OR { E=$(cmd 2>&1 1>&3-) ;} 3>&1. CANNOT cap stdout/stderr -> sep vars w/o tmp file/pipe. Separator hack=non-robust.`**
 
