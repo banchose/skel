@@ -1,0 +1,2 @@
+ docker run -it --network compose_web nicolaka/netshoot
+
