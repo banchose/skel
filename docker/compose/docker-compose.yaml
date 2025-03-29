@@ -29,6 +29,43 @@ services:
     networks:
       - web
 
+  portainer:
+    image: portainer/portainer-ce:latest
+    volumes:
+      - data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.xaax.dev`)"
+      - "traefik.http.routers.portainer.entrypoints=websecure"
+      - "traefik.http.routers.portainer.tls=true"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+    networks:
+      - web
+
+
+  heimdall:
+    image: lscr.io/linuxserver/heimdall:latest
+    container_name: heimdall
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - /path/to/heimdall/config:/config
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.heimdall.rule=Host(`heimdall.xaax.dev`)"
+      - "traefik.http.routers.heimdall.entrypoints=websecure"
+      - "traefik.http.routers.heimdall.tls=true"
+      - "traefik.http.services.heimdall.loadbalancer.server.port=80"
+    networks:
+      - web
+
+
+
   it-tools:
     image: corentinth/it-tools:latest
     container_name: it-tools
@@ -201,3 +238,4 @@ networks:
 volumes:
   dbvol:
   pgdata2:
+  data:
