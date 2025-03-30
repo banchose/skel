@@ -29,6 +29,21 @@ services:
     networks:
       - web
 
+  privatebin:
+    image: privatebin/nginx-fpm-alpine
+    restart: always
+    read_only: true
+    user: "1000:1000"  # Run the container with the UID:GID of your Docker user
+    volumes:
+      - ./privatebin-data:/srv/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.privatebin.rule=Host(`privatebin.xaax.dev`)"
+      - "traefik.http.routers.privatebin.entrypoints=websecure"
+      - "traefik.http.routers.privatebin.tls=true"
+      - "traefik.http.services.privatebin.loadbalancer.server.port=8080"
+    networks:
+      - web
 
   dashy:
     # To build from source, replace 'image: lissy93/dashy' with 'build: .'

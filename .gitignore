@@ -5,6 +5,8 @@ docker/compose/data
 mongo_data
 meilisearch_data/
 mongodb_data/
+privatebin-data/
+
 
 .aider*
 *.gz
