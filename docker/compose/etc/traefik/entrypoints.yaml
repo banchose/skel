@@ -1,5 +1,0 @@
-entryPoints:
-  tcpep:
-    address: ":3179"
-  udpep:
-    address: ":3179/udp"

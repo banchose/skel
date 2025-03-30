@@ -146,6 +146,7 @@ services:
       - "80:80"
       - "443:443"
       - "8080:8080"
+      - "8082:8082"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./etc/certs:/etc/certs:ro
@@ -163,6 +164,8 @@ services:
       - "--api.insecure=true"
       - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
       - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entryPoints.ping.address=:8082"
+      - "--ping.entryPoint=ping"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`traefik.xaax.dev`)"
