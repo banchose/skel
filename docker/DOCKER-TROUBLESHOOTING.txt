@@ -1,2 +1,7 @@
  docker run -it --network compose_web nicolaka/netshoot
 
+ 
+
+docker network inspect compose_web | jq '.[].Containers[].IPv4Address'
+
+
