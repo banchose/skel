@@ -29,42 +29,38 @@ services:
     networks:
       - web
 
-  portainer:
-    image: portainer/portainer-ce:latest
-    volumes:
-      - data:/data
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.portainer.rule=Host(`portainer.xaax.dev`)"
-      - "traefik.http.routers.portainer.entrypoints=websecure"
-      - "traefik.http.routers.portainer.tls=true"
-      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
-    networks:
-      - web
 
-
-  heimdall:
-    image: lscr.io/linuxserver/heimdall:latest
-    container_name: heimdall
+  dashy:
+    # To build from source, replace 'image: lissy93/dashy' with 'build: .'
+    # build: .
+    image: lissy93/dashy
+    container_name: Dashy
+    # Pass in your config file below, by specifying the path on your host machine
+    # volumes:
+      # - /root/my-config.yml:/app/user-data/conf.yml
+    # Set any environmental variables
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/New_York
-    volumes:
-      - /path/to/heimdall/config:/config
+      - NODE_ENV=production
+    # Specify your user ID and group ID. You can find this by running `id -u` and `id -g`
+    #  - UID=1000
+    #  - GID=1000
+    # Specify restart policy
     restart: unless-stopped
+    # Configure healthchecks
+    healthcheck:
+      test: ['CMD', 'node', '/app/services/healthcheck']
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.heimdall.rule=Host(`heimdall.xaax.dev`)"
-      - "traefik.http.routers.heimdall.entrypoints=websecure"
-      - "traefik.http.routers.heimdall.tls=true"
-      - "traefik.http.services.heimdall.loadbalancer.server.port=80"
+      - "traefik.http.routers.dashy.rule=Host(`dashy.xaax.dev`)"
+      - "traefik.http.routers.dashy.entrypoints=websecure"
+      - "traefik.http.routers.dashy.tls=true"
+      - "traefik.http.services.dashy.loadbalancer.server.port=8080"
     networks:
       - web
-
-
 
   it-tools:
     image: corentinth/it-tools:latest
@@ -154,6 +150,8 @@ services:
       - "traefik.http.routers.dashboard.entrypoints=websecure"
       - "traefik.http.routers.dashboard.tls=true"
       - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.middlewares.test-auth.basicauth.users=una:$$apr1$$CEw2npT1$$cA69Oyu30LNfwYi4dJcx20"
+      - "traefik.http.routers.dashboard.middlewares=test-auth@docker"
 
 # LibreChat
   api:
