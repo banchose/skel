@@ -1,0 +1,661 @@
+[
+  {
+    "windows": {
+      "1": {
+        "22": {
+          "id": 22,
+          "index": 0,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 1895,
+          "height": 1966,
+          "lastAccessed": 1743201605570,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-9",
+          "url": "https://app.fastmail.com/mail/Inbox/?u=985c4119",
+          "title": "16 • Inbox | Fastmail",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAb1BMVEUAAAAAZ7n/wQcPbK8AaLr/zw+PmVUAb7//wQdPg4LPsCkAZ7n/wQcAZ7n/wQkAarkAaLnvuxL/xwc/fY1/lGAAZ7//xAoAaLn+wQcAZ7n/wQf/wweookT/wQevpT/fth0veJgAZ7v/wQcAZ7kAZ7q438OmAAAAJXRSTlMA////cBD/EJD//8DA4HAwkP8g//8gMNDQ8PBA6uD///9AgICgmALRfQAAAJdJREFUeJzd0kkWgyAQRVHqp9f0ien7uP81KiocCijGHpm++2uEGsZb7lO1yBVua7mPr6QASEeKnKgBwpF6bgBwOfl5c9bZAuDH+7/NDmBHzJwBYD5p82xrMwd43nX/rpzOgT7C5iHAg80DsFt42QOvUdBdEJkzMI3MHfA+RLMFwtyATJp34ChnDbJPqpNKzonKxIftz6sALjsGXqzxyMYAAAAASUVORK5CYII="
+        },
+        "24": {
+          "id": 24,
+          "index": 2,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 3800,
+          "height": 920,
+          "lastAccessed": 1743217369672,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isArticle": false,
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-11",
+          "url": "https://play.pocketcasts.com/new-releases",
+          "title": "New Releases - Pocket Casts",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAnFBMVEX0PjcAAAD0PjfzPjf0Pjf/bW3zPj7//f3////0PTj7trP0Pzf/+Pf7vLn2Xlj+6Of2PTb8yMb1S0X7v7z2amT2Pzj0Pzj/+vr3eHP4hH/1SEH2YFr5npv8w8H1Ukz3dG/+7Ov4jYn6rar0QDn+8fH6paL5k4/2ZWD0RT7/+fn7ubf8z87+9PP5j4v1SULzRTT93dz/VVX8zMr2Z2HZGm2XAAAANHRSTlP/APTX/gct//+Q/77/////lv////+Vkf///////////////////////////////yz/Bv//gDYJggAAAL5JREFUeJw1j1cSgzAQQ4ULNoTe0zuhp3D/u8U2ib5Wb3Z2JVhKdkEJoYWtZwV4xLDZBg1YxDXgKxzSUkrPTbDiCkSohtYda1+cMuQWbHYYXsE59ddzGE7MRoG0DT7lPhZdJi5wQDeley4fwFFW8e1KQbZyTPdQ6u87LyEggaz9WAMjAtp4/loc/4Cqo66YO9n/gKPeJqcwq+6LZ08dLAtFvFuACqajT5ebZ7yJbvGc4Zro/fxt2qr6jq7vmPpfHx0MM+53AMMAAAAASUVORK5CYII="
+        },
+        "25": {
+          "id": 25,
+          "index": 3,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 3800,
+          "height": 920,
+          "lastAccessed": 1743217370451,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isArticle": true,
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-10",
+          "url": "https://www.patreon.com/home",
+          "title": "Home | Patreon",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABGElEQVRYR+2XsQ2EMAxFTQUFQ9CzBYswCRMwCYvQMQI9BQNAdaecZGSdLrETh4TiUgXJyX92vlFSABllWb7o913z8zwL3PuapBJHYYT4AKQWpxBFLvHrCP4AvhU4jkPUHFVVieLEHpAKU9W+72GaJieICCBEHFXbtoV1Xa0QLMCyLGA20QzXcbAAmuwRumka2LbtZw5OgLquYd93TfLXWlsVnAAxskeCrADBHohVgawA3A/pVg9w4sYftwAMwwDjOIq6JxpA13Uwz7NIlAZFAZCU2kamBtCIsx4wAVwrZgXQiqsrkATAdgwxxEUVQPdSL8QS9wLwbnDhAvZCItwnOCw/gEH3vZoHp/u10LwPn/E4RbBUlaDP8zcIm38pCXYq2QAAAABJRU5ErkJggg=="
+        },
+        "26": {
+          "id": 26,
+          "index": 4,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 3800,
+          "height": 920,
+          "lastAccessed": 1743217372131,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-994",
+          "url": "https://sh.itjust.works/",
+          "title": "sh.itjust.works - A bilingual (EN/FR) general-purpose instance located in eastern Canada! Powered by 99% renewable energy! Everyone is welcome eh.",
+          "favIconUrl": "data:image/webp;base64,UklGRmQCAABXRUJQVlA4WAoAAAAQAAAAHwAAHwAAQUxQSJYAAAABgFzb2rHnmf0F+O/DQT+pKh3YHtm2bZsneN73e75oHBETIP/IEdRSIxrwDoZhgFcLoj5zmC6nXZg7CiZvNK4Nob05ejny0DXC/B4jYVQiItjXAT2u1hlg2WcYVVzWHbsi5UbzCoLIlw2ge8nLeS0acxhLv3YHMNFi8RXPBp7ZCBLxMxQ1BHFaVYmvxXlGbBP3SoX8HwFWUDggqAEAAFAJAJ0BKiAAIAA+0VyoTaglJCIoCqkAGglpABPOBAZ/jKer/qvQB/nfuA9jXzb7AX8o/mv+14Az9YlsztjeoLX4pcDT0k5ktK3D27n3bn59CYIAAP7DXff9VPrkHcZZfrPN3zLPNf8e+ZRvaPdpl44SAbHnT/42sme/tDSgAtMJoLA6mmjEBS8s/jtbnbZCfQrDex7gQZHviOIJHHM7NZ2pnztxEjZ6snr/3O8uyPDerlFzOqULTpT/+eN+KjcLpfx9jXmlpV5MaRyr36bjAYcpxlfxDDmprd/XN+/JzZ5UBQ//fD4Bz2f/iYxOKtN86imP30BPVJZXEVMPzQVU2k1RhVe6xlpn8Myjmcx+CX6BzeDVC8l0TloT8+7ZO8WQesUlbbDdNAkz8PrD4V2Tp4cKfPmu6dmeRlTTj6wA1PVEFAFPble21wGVzuGO+SiuZoLGCw0JC7HYoMGtcMOsh7srmiHZf+QVdjLCmn+zpXRcP18VUhxUxXHtOfg/CtpoqC/grN61dATI7uQzevdrwykZNJWmLPmcKTiCf0eWkPfkavAKs6egAAA="
+        },
+        "27": {
+          "id": 27,
+          "index": 5,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 3800,
+          "height": 920,
+          "lastAccessed": 1743217372979,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-710",
+          "url": "https://chatgpt.com/c/67e72b7e-4e60-8006-ad4a-918729860448",
+          "title": "LazyVim JSON Formatters",
+          "favIconUrl": "data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='180'%20height='180'%20fill='none'%3e%3cstyle%3e%20:root%20{%20--primary-fill:%20%23000;%20--secondary-fill:%20%23fff;%20}%20@media%20(prefers-color-scheme:%20dark)%20{%20:root%20{%20--primary-fill:%20%23fff;%20--secondary-fill:%20%23000;%20}%20}%20%3c/style%3e%3cg%20clip-path='url(%23a)'%3e%3crect%20width='180'%20height='180'%20fill='var(--primary-fill)'%20rx='90'%20/%3e%3cg%20clip-path='url(%23b)'%3e%3cpath%20fill='var(--secondary-fill)'%20d='M75.91%2073.628V62.232c0-.96.36-1.68%201.199-2.16l22.912-13.194c3.119-1.8%206.838-2.639%2010.676-2.639%2014.394%200%2023.511%2011.157%2023.511%2023.032%200%20.839%200%201.799-.12%202.758l-23.752-13.914c-1.439-.84-2.879-.84-4.318%200L75.91%2073.627Zm53.499%2044.383v-27.23c0-1.68-.72-2.88-2.159-3.719L97.142%2069.55l9.836-5.638c.839-.48%201.559-.48%202.399%200l22.912%2013.195c6.598%203.839%2011.035%2011.995%2011.035%2019.912%200%209.116-5.397%2017.513-13.915%2020.992v.001Zm-60.577-23.99-9.836-5.758c-.84-.48-1.2-1.2-1.2-2.16v-26.39c0-12.834%209.837-22.55%2023.152-22.55%205.039%200%209.716%201.679%2013.676%204.678L70.993%2055.516c-1.44.84-2.16%202.039-2.16%203.719v34.787-.002Zm21.173%2012.234L75.91%2098.339V81.546l14.095-7.917%2014.094%207.917v16.793l-14.094%207.916Zm9.056%2036.467c-5.038%200-9.716-1.68-13.675-4.678l23.631-13.676c1.439-.839%202.159-2.038%202.159-3.718V85.863l9.956%205.757c.84.48%201.2%201.2%201.2%202.16v26.389c0%2012.835-9.957%2022.552-23.27%2022.552v.001Zm-28.43-26.75L47.72%20102.778c-6.599-3.84-11.036-11.996-11.036-19.913%200-9.236%205.518-17.513%2014.034-20.992v27.35c0%201.68.72%202.879%202.16%203.718l29.989%2017.393-9.837%205.638c-.84.48-1.56.48-2.399%200Zm-1.318%2019.673c-13.555%200-23.512-10.196-23.512-22.792%200-.959.12-1.919.24-2.879l23.63%2013.675c1.44.84%202.88.84%204.32%200l30.108-17.392v11.395c0%20.96-.361%201.68-1.2%202.16l-22.912%2013.194c-3.119%201.8-6.837%202.639-10.675%202.639Zm29.748%2014.274c14.515%200%2026.63-10.316%2029.39-23.991%2013.434-3.479%2022.071-16.074%2022.071-28.91%200-8.396-3.598-16.553-10.076-22.43.6-2.52.96-5.039.96-7.557%200-17.153-13.915-29.99-29.989-29.99-3.239%200-6.358.48-9.477%201.56-5.398-5.278-12.835-8.637-20.992-8.637-14.515%200-26.63%2010.316-29.39%2023.991-13.434%203.48-22.07%2016.074-22.07%2028.91%200%208.396%203.598%2016.553%2010.075%2022.431-.6%202.519-.96%205.038-.96%207.556%200%2017.154%2013.915%2029.989%2029.99%2029.989%203.238%200%206.357-.479%209.476-1.559%205.397%205.278%2012.835%208.637%2020.992%208.637Z'%20/%3e%3c/g%3e%3c/g%3e%3cdefs%3e%3cclipPath%20id='a'%3e%3cpath%20fill='var(--primary-fill)'%20d='M0%200h180v180H0z'%20/%3e%3c/clipPath%3e%3cclipPath%20id='b'%3e%3cpath%20fill='var(--primary-fill)'%20d='M29.487%2029.964h121.035v119.954H29.487z'%20/%3e%3c/clipPath%3e%3c/defs%3e%3c/svg%3e"
+        },
+        "28": {
+          "id": 28,
+          "index": 6,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 3800,
+          "height": 920,
+          "lastAccessed": 1743217374549,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isArticle": false,
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-8738",
+          "url": "https://openrouter.ai/chat?room=orc-1743210987-4PQUXWf8RKJ8zHn23tpe",
+          "title": "Chatroom | OpenRouter",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEhklEQVRYR8VWb2xTVRQ/577Xdn+YG7gSwiIazfSDkpiIiZKomYLAyGIMZlFYJAWx4hZhQSPqhuUD2QczUVYG84OTbYWkIxhh6rpAGlGZgShOjaILEkUnrsD+yJ5r+949nlc3rGWvLeuW3U8v7957fr9zzu+cexBmeOEM48O0EfDu73wGDfjNQHnihYrSYStHp43ALl+gUSF6kkh85lBEzYbVS76ZiMSkCXg8HjG3eFG+AHuhlHIeERYIpGwJpAgC0gHXIcLSMVBNCKpTFDrwx5mT5/iuHCczKQJ79h0pItX2PBA8IAkWcCLz+DuLjdr4G4nAzK1pW4nzOioQegmwVZPQ8NLTy0bMvbQJmB4XFt97E0jbKgD5Mt+dO0kBG4x6VEhRR38Nfpk2AW9LVyn7tgOA7ox5mvkKKUKpS0lgd3NwHtnCzzJeLYdZzRSXs6Mz6M8sk/05N+S9mZSA973Ag6BSHQPfw8COTME542GOYD1Idd8nHZfPtreXG9cQ8HhIOBd8UER2+youoRo+cKMFMLHYBlDQD7z/lYJ4yiDRJ6SuG2DLEgptIilX8B7rDoZZm92snW2VFStOxdv7H4GGA13zhZTrScITfOiOpF4jdKuKqNUUeXr4+y8G40vLBPByHwBJGwnxWyCs0fWR49WuxwcTncGmtq5HdSlvBiGWE8llfCA3eajpokDR1h/te8Xjco1anW1oC7zG9Zhj0wp3uN2LNMtO6G3tNNtkTkLNXnMeEVk/0COlsWWWkX3C5SqxBDcvN78fLOju/2nkHbc7mswhZAKm4WTL3B/kRH6oysjWjWvLfs9cjP9ZSEmAPR9CEtU0PNBeWVl+ZSrBTVspCcQAEfokiRc1DT/a6l46NJUk0iPwL+IVjsYxQn1T1ZqVv0wVCZNAPSDezjV9C+tsPlft7JjPFotJ9BpE1Ze1aNDjLrNUd6OvsxENPCiz7Ccry0ssUxcDamo6khPOVeYIXbkVFCxlIs9xl8m34GA2lgHeOxyOZG/bsu6h8xOd8/o6e0BiEQMEow5bzebyh3+c6NxEnuLu1sD9gPJ17oSLuZHNsg439wQh9pKkz1FgSCKNqlKSNFDlqeAgO1E8pqEhRGU7gThUteaRX/nf1cqzDHVzc7BAUyMr+dHYyRecSXIu2cgIdzyNzerAbZS/+enHQsa5+moyYkQAnuHddy/pjibPWB9J+RruaQncZYB8m3XC0YgNHRkt8zXkFB4WZKsPadrXKQmYaLv8x5226N8VkqiWxWqKNPNFcF4IdKdFwETjfOLe1q4SA/FVftXu5l9zklVLEoYaR7OHDb518azjUNoExg3uZG04ssILeawo43CuZY1cz2h2jrVRGx1Vjm7esORP0+Z1E4j3zO/32y+F8xZLFPfxS3ob12cuzwWCo8WzKpizQAF7KvmlvcDi7MhWI9vXP/VYX7yNjAgkhpkJKU6nE0OhEPVH80/zPLAQQPhVgjcuGLbvxpU/bQTiDXt9H7dwrjuqVi/3J1PslEYgHqjR9+ns/t5jQ4mTUiKZaSOQbp3OOIF/ACfJ22yUkTIlAAAAAElFTkSuQmCC"
+        },
+        "29": {
+          "id": 29,
+          "index": 8,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 3800,
+          "height": 920,
+          "lastAccessed": 1743217406602,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-2820",
+          "url": "https://bsky.app/",
+          "title": "Following — Bluesky",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAhFBMVEURhf4AAAAQhv8Shv0Rhf8Xi/4Ojf8Rhf4ShP4RhP4Rhf4Rhf4Rhf4nif4Rhf4Shf8RhP4Shf0Viv8Shf4Rhf8/n/8Thf0TiP8Rhf0Uif8Thf8PiP8Shv8UiP8Rhf4ThP8Shv4Rhv8A//8zmf8Pg/8Shf8Qjf8dif4Skf8Ti/8ajP4XhP8sSs7DAAAALHRSTlP/AHyX+gsk/WzP8rTrDe7H54MYuOAInz2LJU0yvTDiNNSvAQohRS8aDjUdNuRoClQAAACSSURBVHicXU9FEsMwDFy5YWZOyvz//1WSp5f4sOTRaAXaPRxjk/5NauIZB6BZrZ8bsOUA0Vv8N2J5QMmIxCMaE1ElAiGEbRuqCDApYxgsT3ALFY6jVLggr7Za0tojLtafM+uz7sbFaPXF+IrJi4Nef3O7ZOTgkus6I7jICH02YHOf3PNUaUBVtzyI7rG5yrX783/+ZgYlSV3JRAAAAABJRU5ErkJggg=="
+        },
+        "30": {
+          "id": 30,
+          "index": 9,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 1895,
+          "height": 1966,
+          "lastAccessed": 1743201605794,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-4710",
+          "url": "https://x.com/i/flow/login?redirect_after_login=%2Fhome",
+          "title": "Log in to X / X",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAOVBMVEUAAAD////f398QEBAgICDv7+9wcHBAQECAgIC/v7/Pz88wMDCvr6+QkJCPj49/f3+fn59QUFBgYGBl+tQqAAAA3UlEQVR4nM1SSRLEIAgU97hkkvz/sSNkEUlynumDlmDRdIP6FxQgrDyW+NNoF2N0zvbQDJF/D+CV2mC6Ap8xr1SFrNSC3wgeiujCaG2QaSfJ0F4CAWY8iMRqzbrpJAGPRmLPQoIkIUly1iT8+oCMjWWXeqsSHjMepECGCbmnFwLq3jUR1t0lSpIm+LUEGlpeSZpArE+uPqKAp/rk6gNoglS/jqtx5Sub2p1khUR3gAVd7atxCTgnWGE7BA/5PuF9K8hVvi9owAHaCnJ1EMheFZYYEw+JFW31ECPJL/EFiw8FEh3nBTAAAAAASUVORK5CYII="
+        },
+        "31": {
+          "id": 31,
+          "index": 10,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 1895,
+          "height": 1966,
+          "lastAccessed": 1743201605819,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-1",
+          "url": "https://www.theguardian.com/us",
+          "title": "Latest news, sport and opinion from the Guardian",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADK0lEQVRYR7WXTWgTQRSA3yRGPAkq2II/bQ+VRDx50pYi9aKgaAWPtSZbkR5EEATbCoYo2AiKIAqN6EZLvRX8QUEFLVKiOYmC0KCUWvEgQi+ehJis88aMTmbnTTZhHQiBnZn3vnl/84YBAOO/QCMad44CeDsjAHvFBsY2i3/P+4J/VYCn/OObSsm9G0hgTbkVYFU82VEGNiaUSoUBpFc972YFvAko3VmyLUflJEA0npqMMHY8gD5yiedB5lfJzVALzAD81DFgr2wn3tLVDhva1sCm9rUw9aBgZ+QuKoO3y2QNP4BFef+OBJw7cRC6O9qEwhv3XkDx3QLMFucBgV5OnYHnhQ+QzT2Bj4vf6qEIiHoAQjkKz11IQu/2biH0+/IP2D10yadkbGQ/ZE4eEmumH732gxgg6gBi8dRn3eyqUHmkY+MuafbZ6VE7KEKU8p1S1l+AFXEnzRikVbuZlOPpN/adIn0uXbF+3WqxxgQrMqSUH8H5PwBoehZZVKUODfTCrYuOT5Ht9HIxxsoz9zQJgBNlr9qFQSkA9HTTT6FSbNt31h9gBntI61HA0goCIJZweBH7N9zsMAwe6PGJLbz9BP2DWdL8+gTGQ35mzhwvtVjgp3eSEQZ5dfPXuasgfah+x8h2Rm8HBkBL4vClZE1C1YMUmj+nVjvVf7qm9LX7MDH5ODBAo4XoBsZTb0lNPVPkS0FhA+Al5gOg/E+lVKNTWucFQMLx1EVqIdE3B0nBZoFCAcCa0WhQF1YoLsDAPTLQQ6auLRVDAcDTU9ljdRvGQFhp2AqASMOwClFrALwQ8Z6vs6J1P1QtsJXiVgDK8y4vwobLCH1KleOVW4eNAd8sQN1lhJ1vRbuOKStQQdUsQJRfxz/ldYxHMnXAJgjKDc0AqJ1ySy3ZHueyaETVQQH41lItGQoTrjC043qDYmpKdQC01PnrD+tBufIob8/R9BLe15ZTELgBS27qcJ9oOhFi/MoMFN8viPteAhgV42aDcvxsfJjYICQ5KsQR9GGin5y0gOpXU6fc6NLR59UO2LTX+jaUcSEep828Ebm58aUc449T1d8tAaib/sfz/DehMApT4tLRIgAAAABJRU5ErkJggg=="
+        },
+        "32": {
+          "id": 32,
+          "index": 11,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 1895,
+          "height": 1966,
+          "lastAccessed": 1743201605847,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-1",
+          "url": "https://claude.ai/chat/449250d3-f232-4b68-b3de-86edb558677d",
+          "title": "Claude",
+          "favIconUrl": "data:image/png;base64,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"
+        },
+        "33": {
+          "id": 33,
+          "index": 12,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 1895,
+          "height": 1966,
+          "lastAccessed": 1743201605877,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-1",
+          "url": "https://www.wolframalpha.com/?source=nav",
+          "title": "Wolfram|Alpha: Computational Intelligence",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAC/0lEQVRYR92WS0hUURjH/8eIkGhjBUERuYgIQ2hRmRoYVEJtem4KosfMOJS9IGjRIqOiKKjIklErrKiN0KJFkYuyoBgogigi7QUujEJRwopenn5zHcUZZ+7Vew2hA4dhzjnf9/2+17nHaIyHGWP7CgRgI5qCAztNnQ77dSQoQAzD25iFQLz2A+EJYMMqULfemEb9HGzARjVfvXrC2jjmHQBWpgNwZpZy1GFq1JMNzhsgomMIb5VVDQmLYagjocxW6CFrSwYUG60ytbrt7EVVwt5e5mpN0GRTrS9BACoRrk4q+M7vVUA+oPxEmtIWvD1CVPawviC51wPwJLfUeEcgpPUobvSTX2RaAZgTDCCsYjx+5AvAqtnUa2kwgJDyicB7XwDSDSKwacQA9PdMclyE50UIFzMX+QT4jFwTM05txDVDz02Vfg/WlVIDTssZ3eXAdJ8GvcS+4dgl0rK7/+CQIgRiPxCnsrZNnfvtSfQOIVuVRb4N/xeby2rPCuD0cVjnMLMrkxJy6to5LgBdSJZyV7zKmoL+DVtF2bU7rbc2A0Q27/qOWpVhqCxN7gfr5YT+Qbq+rN7Y7crjkm1DYKJXYoexf5LIHcgY0UyLdgOm84iA1ZpRisDXRFQI/9NhRYA81nIwMso18IkCLKYAU+6UoV0Q0UEMH/1HXdCi8SoxF9SZsQv4is3jwrjFZv4w8urnyC/SGnO9B5xC3qFphKvvJuxVKb8lfqwh04nB+8jH6as4/57xrkh8UQeG99ewQrNR0uoT4ArVv8VN1hsgRE/n4IW/0QRAeTCAiDai4Lo/+3oBQGEwgNRvQ+Jt18D8yEw81QaPl+T6LOnax2JBcqMDgKnBACI6jYJ1zPM8S+tNg7qtMBWmqIwWJpVb0rTMxHTP2YtqhQNitVxdyk1/0I6sCEOaq7e8iptTv+M25HTJY2aijm7iaQIyZThtnat35kxq5Y8IwC183JjXnOj0qsBc5KHqY3h2gStAlIfLH23mYjnuw7YjEgjAr9FRS8F/AfAXpNDXIZqcmE4AAAAASUVORK5CYII="
+        },
+        "34": {
+          "id": 34,
+          "index": 13,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 1895,
+          "height": 1966,
+          "lastAccessed": 1743201605903,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-2130",
+          "url": "https://us-east-1.signin.aws/platform/login?workflowStateHandle=f0fe4df7-6cc2-4b62-b199-fa75955a5694",
+          "title": "Amazon Web Services",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABcUlEQVQ4T92Tu0oDURCGZ87JjRA1Ku4LSBAVQp5A0CdILWIjYnueIG5puZUoGosU1nkCizyBCGphtAk2gYDmsrm4e8bZDau5bIK1p1mYOf93ZmbnRyJCCDtXW3nOWV4KERUcP5XDruEUoLidI1dbHN8ZFTCkglIoOHq8H4v/AG6zad364hfpMLSinyCWxEJUwf7Dh1+dB9CXmyYCKQJYnC8eZrnnJgFa4uTZxFZhfZfLK8eXZUQkIPkXwKCh7fab48g4HPgA0HDnCUUU67EVYfA3lON0CFpVp+7a2vDvS7k3BghUMsmgtDRQDCPkAPCL9X7D9YXBmQnw+xTQi6bEoP9J0H13YkCQmCxrLiC4bNfcmWP5LwBvkdqFjMmNKiCaWqSwGSBgkwRaxs2r+euFs2y6Y3c9D4yt8iSAxaVYMqWWzkdWeXTMdiGT0wSeJ3wzBQAWViAi1dr1ywwzTfys7ulGXmv3olPTPckuXC1WQ+38DaRCvJ6iRjG3AAAAAElFTkSuQmCC"
+        },
+        "35": {
+          "id": 35,
+          "index": 15,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 3800,
+          "height": 920,
+          "lastAccessed": 1743217654284,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-1",
+          "url": "https://www.mxroute.com/",
+          "title": "MXroute - Email Hosting",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAV1BMVEUAAAD/VarZH4K9K425JYvOIITGI4fCJJHTHoLBJInYHoDdHYHJIobLIYa7JoziHH7AJYvfP5+vKI/JI4fNI4fAJYnzF3/CI4jkHH28JIvUH4KzKI7hHX6saWw3AAAAHXRSTlMAAykv///+Ff/+/j3/gTz/jwj/zDN6FsKO+crK02lmjkEAAACFSURBVHicVc/bEoQgCABQ2JTyWq3WXv//O0OhZvIFPQMIAOMI1+n3vADKE2HJHB6URRDyc2gQy6oZPwEbU0tB2IyCpQqIMHyM6TBZW1qTlzmBJQFs7szwLA3IOQU/fXsJi4IPrWklEpjnt3ybIgn8dbC1RAEukNFDrBxDL9DlAod9v61/AIyFBQeZO+wnAAAAAElFTkSuQmCC"
+        },
+        "36": {
+          "id": 36,
+          "index": 16,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 3800,
+          "height": 920,
+          "lastAccessed": 1743217652370,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isArticle": false,
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-1",
+          "url": "https://glacier.mxrouting.net/roundcube/?_task=settings",
+          "title": "Roundcube Webmail :: Preferences",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEXUlEQVRYR6VXb2gbZRh/3svlv2napk3ahqQss65g2ZciOrc2Wde6IS7p1mYyPwydzA+DrZ1TM8Q/xTGFCc59UJAhCmWgG6hfhjIYOhiUjYTCtHabY90ncev+UGl6Js3d6/Oey7zmLpf3shcCl9zz/J7f8/8NAQtndnY2sLi4uJMQsgU/axsaGto8Ho+oKEqBUnoVf/sun89Pdnd3z/HCEh7BbDbrQbl30cA+NORlOo2NjeB2u3Xq+F6RZXlSEITXI5HIvVr4NQlMT093lUql79H4k2Uwr9cL6L0pNhK5hZF5IRqNZs0ETQnkcrnHEegCAoTKIDabDVpbWwEJ1XIOUFcqFouJWCx2qZpwVZSZmZnHJEli7NdolZnnLAK8B6NwWxTFnvb29nkjnaoE0PtP0IMDWiXmdTAYBMwvr31VDmviG0zFTm4CWHTtKHwDPy6tksvlgqamJkvGHwjTpaWlnq6urt8rlQ0jgAQOoeBHlcJWw6/Vx0I+2tnZmeEigOE/j+HvrxRubm4Gp9NZTwRYGuYwDTEuAhiBBRTU9RnLP+uCOo8cDodFUwKDIy/F7KLw6eE3x7caGQmFQpYLUIvz6vXg2XlFHMttJFfKv6s1sD6Z9IngeAcIjDvtdseHhw4aOvmoBF7+Iwh/K+Iy2vmsVIKJ3BBZIPHkyB5srw/QYlvZKiPgsNt1JB4lBQqlkL7WARStq4fCXXx8myRSo7TS0v7duyAa7tARCAQC4HA46iqBOwUKr90M63QNCWxO9MFQ33qdsN/vB9x+dRE4c88NX87rZ4ghgQAOm8zePbqCY9uPbUGrB1saMjcDcL24Yq6pMIYE2Ivn4hvUKGiXDntmhciziMok0Tb8dN8NJwy8NyXAXrI62LZlCCIdbDL/d6rdA4yiMleww4lbfrgiVa+bqhHQAvau7YHnB+Lg9/kANxu0tLSYRmGhJMDJOz44t+D5v+qr5I2LANN1YvVv2rAO+p5+CgI4ko1W8jKG+8f7Xvj2rg8khW9jchMoO9Dc1AhbBwcg/uwzK/ZCdtEFX883wJ9F3bQ1rVnLBMpoT8RWwa70drC3xeArNDyd11c4T7eQeGokT4DU1dzYDbK0/xTmGerbUBSWyKZkMiQLziPYq6/gkORLnMY1aew0j6MrZJCwgrZOqqO4/GbjcLoXe/Y4Dmn9CDQxUQeBi1SAA5cSZEqdAxXYJJEcfZESehTTEuFxzQKBvwQbZKb6YRJ7+OH+MbySrUun3c4CzSC9t5CE/t+HtRT8g4k9JhXgyOXNJF/plOnlvj+VigggfoyB2mEQLRWragQIUAT/QZThjQuDhF1wDU/tfxeoFk+N9qHgMXzsrUQxJEDhV+yLsYsJ8nOtNHIRYCATExPCL5d/2w0yHMavDy8vKwiwS4YN3ovehi9O7yByLeNGRVhTR72+CXh9ozCO7B0PCCzj989LCrzPrlk1QTQC3BGoBB0YHl6tUPtxaewUEQgcnNJcNK0Q+BcpN1MOWakbgAAAAABJRU5ErkJggg=="
+        },
+        "37": {
+          "id": 37,
+          "index": 17,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 3800,
+          "height": 920,
+          "lastAccessed": 1743217412085,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isArticle": true,
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-282",
+          "url": "https://ns2.xaax.dev/admin/login",
+          "title": "Pi-hole ns2",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABPlBMVEUAAACYAgD/AAD/AAD+AAD+AACZAgD+AACYAgCfHwD/AACYAgD/AAC/PwCbAgAPwQ+ZAgC/AAAQuRAP0g/dAQAZ5RmZAwB/PwARuxHqFAKXAgD/Pz/zAAD/AAAF6AUA/wCYAgDLAQAL0wv/fwCaAgAC8gQMygwD8AOXAwD2AADFAgAJ2Qn/AAAA/wCqKgCqVQDvAAC+AQAE7wT2AAAVuBWvAwAI6gjUKgAPwg8D+AMMygwS3AYA/g30AgDyCwCyGQCZMwAauxoPwA+nAgAbzQf+AAAD+wOrAwC+AQCcAwANzA0K1QoH9wenBAAayRoC+AKzAgCZAwDXAQAA/gCjAwAK1ArkAQAiuyL5AAAI3AigAwARuBEMygz1AACaBAChAwDwDwAI1gsOyg7JAQCWAgCcAgCqAgDyAAD/AAD/AACQL8rqAAAAanRSTlMA///x94TzCrIIA/lrBPj+bQTGEcQKRAR1ZW8E8zC/Ku3rlwJoeO7XgtFqUkUGBgOD+P/9JIA9BqmY+cYTXscKBRPa84LqT4yCmXTVIToT52+A7BWL7tAP3JxG4Pj6PZTMnHrx/erw9zRJr8tc2gAAALJJREFUeJxjYGAwiXZKEgbScBAuxB+jJMrg4xYME5HgVwvVNlP3l4cJOFpYeUfKGVnqwjX5eSW6WKvaIBkjLWmXYCuI4HPxMDMxyQSIo/CZjNOkeCF8Za3koAgWljA+NgF9sIBvKiO3e6ZOPCOjQhxYQIWRkZHDgZcDSAmABcTYGBk9ZTNCUhjZosACeoHcfCKuzJqKhh7mEFM5NZxjgdawsLLD7OU0TUfhMzDYGzAzQ/kABtUWg4/zr8MAAAAASUVORK5CYII="
+        },
+        "38": {
+          "id": 38,
+          "index": 18,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 3800,
+          "height": 920,
+          "lastAccessed": 1743217410854,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isArticle": false,
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-1",
+          "url": "https://console.anthropic.com/settings/billing",
+          "title": "Anthropic Console",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAE80lEQVRYR9VXbUzVZRT//XmJdy4MEHNj4wMBRsQQMpYfs2bmmkMM5PIyFt6BQkYIVCI5J0yCC4ggTGO8aXqHwLWZsZJm2OyTBTOhiNn4wgZBvCSX+8K9t3MehI0u3HtrIetsd/+3557zO7/ze87zPBLIpqamvGUy9wSTScqVJESYzWZnfr8BtghIg46OqHdwcFFJkjQrmc1T3kajZ43JZEqiF64UXNqAwCsuKYaZHrQUp9PZ2TVH0usX3qGXtfTCfSMDr+FbS2zkEwDtj0R71EZnvlZylPiQZDBodRT8maec/XI4E5eAa7Jp9v8BQGXCwsIC+MrmSHPJ1dVV3Ov1ehgMBnFPdYWbm5u42mN2MzA8PIy8vHzMzf0p/IaHh6GqqhJeXl7o6+vDyZMfg6YyvL29UV2tRGhoqD3xYRcABwcHnDtXi8rKqhUGOHBbWzNiY2MxMzOD+PgEDA//Ch57/Pj7OHbsXQHIltkFYG5ubiXAMrVcisOHM1FSUizoZoBKZbUIGhr6HLq6rgs2bJldANTqzymj91ay54AMYNu2Z3HjhhpbtwZicHAIyclyaut/PAFUg/3737IV33YJtFotsrOP4vbtXuEsKupFjI+P029CgDhz5jTS0lLB4xSKLNy5860Yt3v3q2hoqF8R6npIbDLA4ktKkmNycvJJZtW4e/c7qFQd9AzExb2M5uYmeHp6orOzSwiVzd/fH9euXbEpRqsAWFAXLjSivPwTGI1G4ay7uxP9/f1IT8/A4uKiqPPly62Ijo7G9PQ00R6PR49+E9O0qKgQR45kWRWjVQCPH8/jwIEEDA39LNSdn58n1K3RaHDokBz37/8gWMnKUuDEiY9E5kpllRCkyWTG9u3hxMp1YsdjXS1YBXDr1pei/lxrX19fXL16BRERz4ugzc0tOHXqtGAmKCiIxNiFgIAAPHjwE+TyVMEGj2Md7N37xj8HoNPpkJOTi56er4QjVnx6errocmxjY2NobW2l7kirKllZWSlSUpIFO5mZCqETtj17Xkdd3Xm4uLisCWJdBkZGRpCYmCzEx8bze7kNL3visjA4/rZr1ytoaroEDw8PYkpF9f9ADGNWVKrPEBISYj8Adnzx4qcoLS0TztcK/ncQMpmMxNgmpunk5JQQ4+joqBAj60OhyFxTjGsywDQePJgo6skZ7tz5EsLCwiwyYEZ6e78R5eBxublHUVhYIMadPVtOM6hBiDEy8gV0dKjg7m656bIAwHO7p+drUna2EBj3/JaWJsTExFgAYKZqa8/TolQjsgsODoZa3Qk/Pz8MDAyQGNMwOzsrWGhsbCA9vEZlXO3GAoBOpxdt9+bNL0RWO3ZEo729dd2+/vDhoJiSrHpmRKmsIO28jfn5eWRkZOLeve8pohn79r1J07OGxLh682UBgNtsQUERJiZ+p6yMpGw5UlNT1l3fuVzFxSW0FgwKAHFxcVTzD+Hs7EwLUjdp6RL91wFbtgSgoqIcgYGBqyiwAMBUcodbWnAAJydH0YSsGY/n/y2vlBycjQEZDHQUWHoiX04WvmyuBVYj/wcfNx8Abcv1G3gUs8oRlYy35ZoBEknkJh1MfpGMRr3CaDTVkEiWmvxTMspeS9oupMOpWUZlqKO4CfRb2mdvvOkohFqj0WWLzfsSCJ2cbvl4HkrP1ufdvwTINSffI3R6qNdotO0+Pj7TfwHSOYJaDpJrGgAAAABJRU5ErkJggg=="
+        },
+        "50": {
+          "id": 50,
+          "index": 7,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 3800,
+          "height": 920,
+          "lastAccessed": 1743217375612,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isArticle": false,
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-1",
+          "url": "https://librechat.xaax.dev/c/new",
+          "title": "LibreChat",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABblBMVEUAAAAwDIhRBmtGCHQ7Cn5ACXk1C4NXBWZMB28lDpFdBGEqDY1hA1wgD5UnFJMrDYwYEJx/f39ACXkWu90pp7xgFmIcEJkg988Tedkh+M0NYNtKB3BZDHIJb+0QkuIhEJMoycBqBFUq6b8h9MwoWa4qf/8lDpBLB28VaulaBGIt0rsnD44i98wNhegQVNEwK5UTqtxnAlcXwNotDYgTEqF/f/9/Pz86CnoVtt42C4Eeh8kj+cx/P38f49IJcusa0tYtNJsUEaAd4tQRZNcxd6tiLWYRm+NsAVIZJKkSEqAg9s4QK7YTqOEQmOYSpOMe6M4b19MyV6Ea0NlHC3NGMYFVB2gzEYhVBWYeW75bBGE1C4MMguo6iKAJb+0RFKE6DXwhFpgYwtoOjuULbOch984qDYpECHdgA14cEZcj98shz81kAlk9MYsZxdgTKrIg7dAk7MgLeesdkcsZzNoJb+wjH5waEZ4RoORZC2YSMrm7IXssAAAAenRSTlMA///////////////+/w3//wL3/f/+////rzrVFNWPifE8DGT/BufrDHz/dKPl//92/4s49wIEMNnL/zIE1cHB/8/9/f8+zc//Ns3vs///fnr9/0D/Qh6H/9nx+/3hSk7//6NCiZU8j3ZA/3r/l///Dsn9/+v/Ov//7bYab9QAAADOSURBVHicY0CAZCQ2AwMfn2qsBpwXlqrGK1ZZIgXjx0cx8nPy6sl6x0H4aUIsbIz8pc52eSaeIL6gNDMrUERCt9BDwNEUKBDKxAEUcfBNik4QEygDCmiyg0RUyuUkuDl5M4AC6VxAkcAiH7cIRm5OeaBANg8Xe0iisIGfPhsjtzZQQNGQh0uk2MjCCmS0McgWd9GYLPtc4Ryg0ZZgd7hq5dsGBLkAjRYyBwtYi3v5O4lUsDOpB0NcmimpI64gyhMZLgP1ipKyZEqBmQ2UBwD3lB6ql0beUAAAAABJRU5ErkJggg=="
+        },
+        "61": {
+          "id": 61,
+          "index": 1,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 3800,
+          "height": 920,
+          "lastAccessed": 1743217368967,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isArticle": true,
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-1",
+          "url": "https://librechat.xaax.dev/c/50bd1383-5ca0-4901-a64c-76e0947b0312",
+          "title": "LibreChat",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABblBMVEUAAAAwDIhRBms7Cn5GCHRACXk1C4NMB29XBWYqDY1dBGElDpFhA1wgD5V/f38YEJwpp7xACXkWu91gFmIcEJkg988TedlGCnUrDYwh+M1sAVINYNsSEqAJcusQkuIhEJMSpON/Pz8q6b8kEpFVB2gb19MQVNEqf/8UEaBLB28Vaukhz80i98w6DXwNhegoWa5ZDHIwK5UTqtwXwNoTEqEnD45kAll/f/82C4Eeh8kj+cx/P38f49IJb+0a0tYtNJtqBFUlDpAd4tQRZNcxd6sRm+NbBGEZJKliLWYg9s4QK7YoycATqOEQmOYVtt46Cnoh9Mwh984yV6Et0rtGMYEzEYhVBWYeW75KB3A1C4MMguo6iKAJb+0RFKEhFpgYwtotDYgOjuULbOdnAlce6M4qDYpgA14cEZcj98sa0NlaBGI9MYsZxdgTKrIg7dAk7MgLeesdkcsjH5wZzNoJb+waEZ4RoORZC2YSMrkqFZTMEraGAAAAenRSTlMA///////////////+/wL///f9/v///z7/r886NsGPif8EDA5Cev8Gz+sM/6NO5f8U/3aL93R6Asv/MgTV1cH/POf9/f/N2f8+ze/xs//ZMGSJ/f//Hof/1fH7/eFK//84o0L/fpWPdkD/fP+X//8Oyf3//+s6///tDOLgt9kAAADOSURBVHicY0CAJCQ2A4NypXqMFpwXmurIK1JRIg3j60YySnDzqtl6xUL44oLMbIwSRc6yuSYyID5fBAsrUERMr8CdX8McKKDCxA4UsfdNjIoT4S8FCmRxgET0y+TEOLl504ECaVxAkaBCH9dwRk5ueaCAGQ8XR0i8kJGCIRsjpylQwCGZh0ug2NjPEmR0AsgWKeFobbscoWyg0RZgd3gE59moZroAjRb0BwtYiXqmOAmUczBpikNcmiGpI+otzOMWZgD1ilKAZGC+ojWUBwAPRh6qHz7pxwAAAABJRU5ErkJggg=="
+        },
+        "75": {
+          "id": 75,
+          "index": 14,
+          "windowId": 1,
+          "highlighted": false,
+          "active": false,
+          "attention": false,
+          "pinned": true,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 3800,
+          "height": 920,
+          "lastAccessed": 1743217968523,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-container-1",
+          "url": "https://glacier.mxrouting.net:2222/evo/",
+          "title": "glacier.mxrouting.net | Dashboard",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAzFBMVEUAAAAxt+kxt+kxt+kxt+n///9///8yt+oxuOkxt+kxt+kxt+kxuesxt+kxt+oxt+kyt+kyt+kxt+kzt+oxuOkxuOkxuOkyuOkyt+kyt+sxueoxt+oxt+kxuOozuOsxuOkxuOkzueo/v/9V1P8xt+k0uuo4uPAxt+kxuOo/v+82yOwxt+oxuusxt+s0uuozzP8zuekzuOw0uOkzuOwzt+o/v+kzt+oxt+kzzP8yt+o8wvIyt+k6xOsxt+kzuewxuOkxt+kzu+kyt+ozuOudlb98AAAARHRSTlMA//747gECfWz67OpN4+j84HX2bpqC5nN5T3GhnHtzd0hkCAalPxJSqhAOlEJoSgpURTpQSwwyjAU9FYQNrzeRgDyIQU6yO2IAAAEuSURBVHiclZN5W8IwDMabVsV5TcZQ8ERQ5FBQwVs5v/93ItmStRzd8/D+s6Xvr2nSQ22nr+5+rt/vgrnL8RtXABD5iTb5AObZB7ztJABobx2PTESbiM5wV6kXJsw6UW9F5/ipMhGWVvy/S4CACMkRljChVfM+Ka6Cv0eHTBCeKebyiw5hLtzyD9JBKDh16FuHeDpj4hqD2skmQgYpxysHAS0pGp1yjs89pR6OGf+1wIcAYwSmEswy/5vnQBn9OVcU0nqpJCdMqAQJCtlmSe9QxqGeBNZX6UUATU32pAW3yZ9Wlr/G6yf7btXBw9AVTDngPdVFLNZV/99Q/qH4N8s2qj3AKVX2g3U/bYb9pYN0JJcWPPNVE68VzV+9blZ1IvzPAvUeQ5D/OBuxp74cLQB1zhIcyZpqsQAAAABJRU5ErkJggg=="
+        },
+        "77": {
+          "id": 77,
+          "index": 19,
+          "windowId": 1,
+          "highlighted": true,
+          "active": true,
+          "attention": false,
+          "pinned": false,
+          "status": "complete",
+          "hidden": false,
+          "discarded": false,
+          "incognito": false,
+          "width": 3800,
+          "height": 920,
+          "lastAccessed": 1743217984707,
+          "audible": false,
+          "autoDiscardable": true,
+          "mutedInfo": {
+            "muted": false
+          },
+          "isInReaderMode": false,
+          "sharingState": {
+            "camera": false,
+            "microphone": false
+          },
+          "successorTabId": -1,
+          "cookieStoreId": "firefox-default",
+          "url": "moz-extension://4f59a2d7-ca74-47da-b5a7-c4a2183f9d6a/index.html",
+          "title": "New Tab",
+          "favIconUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAABPlBMVEUAAAA0mNszmNsyl9s0l9szmNs0mdszmNs0l9ozmNozmNs/f78A//8zl9owlto0mNszl9szmNszmNszmNwzmN0AqqozmNskkdoymNszmcwzl9s1m98zl9s0mNw0mNs/n98zmNs1mNszl9w0l9ozmdo0mNs0mNs0m94zmd0ym9w0mN00mdwzmdw0mNs0l9s6nNd/qv8zmdv///8nk+EAf/80mNs1mNw2mtgZmcw/v/8tk9cfn98Aqv8plNsqf9QzmNs7nN1Vqv82kdououcqqtRCn90yltw0ldsqjdQzmdg1mNszmeVHot81lNsvl9kzmNszl946nOs2lto2muAqlNQzl980l9symt80mdwsld01mNk3m9wxl9o0mN0wndo1mNw0md03mdwzl90zmNwzmd02mt00mNszl9o0mNwxl9u1t9OIAAAAanRSTlMA//H/9eNlz+b91wQBy/vCye37qD0D1AeBBZkx6dqRCHt0X74jnPknLTNxQmev6w0GbAMaAleGIQoELQgDTwa2YgMOCwaDMx0SFEgKYCsbrE8NOCEMQNw4jS4+koVNFZVi2zZ3Hj2r4FK5kaf99gAAAXhJREFUeJyVUuVCAkEQnrnjklBQMEgREBGwu7u7u+v9X8CNu2MXvR9+P2b3m9yZWfgfTi1Eq8/ffoKdADk893XAeyoH0M++7Vhw08eh33W4kfWzT6s97BJyHYLsqBzv7bLLdQxNblFsKo0AZxpaL06OJBXLNFa9zSDNM0c1M1KhV5Y//3yhsyqk3ybg52KDfGi/Wm2xAbtcEscxo1W2Z0lEMeoys41kPJMclAytss9JgeafcHrh4CP6cueQZ7JdfOEOWQFArEKJbgEQ47vwzhyaB4hGko0AEC/DiG8a3jUSbBk4DiZupL8BaloZU3CEiUHVazHRcB0KYcgl4TA/p4Ri3VEQPpS6wlu8Ep6rlgWyzlodkaY6LzHMUhkZFnUx/jcYlkjDBKNS0IPA1EmnC28JFOle95byFlbydKxwBz8XIoJOXO6jwg6yUQGBkvcZiHsBIBiQtkkmhDXvHgc4xKJsJyE2KlVWfU1X0J5utlPodWSoV/+y+uEHz8IbJEQUFeUAAAAASUVORK5CYII="
+        }
+      }
+    },
+    "windowsNumber": 1,
+    "windowsInfo": {
+      "1": {
+        "id": 1,
+        "focused": true,
+        "top": 0,
+        "left": 0,
+        "width": 3800,
+        "height": 1036,
+        "incognito": false,
+        "type": "normal",
+        "state": "maximized",
+        "alwaysOnTop": false,
+        "title": "Mozilla Firefox"
+      }
+    },
+    "tabsNumber": 20,
+    "name": "Roundcube Webmail :: Preferences",
+    "date": 1743217984705,
+    "lastEditedTime": 1743217984743,
+    "tag": [
+      "_startup"
+    ],
+    "sessionStartTime": 1743201604786,
+    "id": "73d9933f-57cf-443f-9d88-675b060e1aa8"
+  }
+]

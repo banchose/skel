@@ -1,15 +1,13 @@
-docker/compose/homer
-docker/compose/config
-docker/compose/etc
-docker/compose/data
-mongo_data
+mongo_data/
 meilisearch_data/
 mongodb_data/
 privatebin-data/
+homer/
 
 
 .aider*
 *.gz
+*.db
 *.tar
 *.zip
 *.tmp

@@ -1,0 +1,13 @@
+http:
+  routers:
+    my-abc-router:
+      rule: Host(`abc.xaax.dev`) && Path(`/abc`)
+      service: nginx@docker
+      middlewares: make-root-path
+      entrypoints:
+        - "websecure"
+
+  middlewares:
+    make-root-path:
+      replacePath:
+        path: '/'
