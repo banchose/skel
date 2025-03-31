@@ -1,8 +1,8 @@
 # Don't source if not a hint of Docker
 type docker &>/dev/null || return 0
 
-export UID=$(id -u)
-export GID=$(id -g)
+# export UID=$(id -u)
+# export GID=$(id -g)
 
 alias rdp='docker -H ssh://una@s1 ps --all'
 alias rdr='docker -H ssh://una@s1 ps'

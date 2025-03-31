@@ -20,6 +20,10 @@ services:
     user: "${UID}:${GID}"
     volumes:
       - ./nginx-content:/usr/share/nginx/html
+      - type: tmpfs
+        target: /var/cache/nginx
+      - type: tmpfs
+        target: /var/run
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nginx.rule=Host(`nginx.xaax.dev`)"
