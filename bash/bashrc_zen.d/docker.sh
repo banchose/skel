@@ -11,6 +11,7 @@ alias d='docker'
 alias dls='docker ps --format "table {{.Image}}\t{{.Names}}\t{{.Status}}"'
 source <(docker completion bash)
 complete -F __start_docker d
+alias dkill='for i in $(docker ps -q);do docker kill "${i}";done'
 
 dclear() {
   cons="$(docker ps -q)"
