@@ -45,35 +45,6 @@ services:
     networks:
       - web
 
-  wyl:
-    image: aceberg/watchyourlan           # dockerhub
-    # image: ghcr.io/aceberg/watchyourlan # or github
-    restart: unless-stopped
-    # uncomment those if you are using local node-bootstrap:
-    # command: "-n http://YOUR_IP:8850"   # put your server IP or DNS name here
-    # depends_on:
-    #   - node-bootstrap
-    volumes:
-    - ~/.dockerdata/wyl:/data/WatchYourLAN
-    environment:
-      TZ: America/New_York              # required: needs your TZ for correct time
-      IFACES: "enp2s0"  # required: 1 or more interface
-      # HOST: "0.0.0.0"                   # optional, default: 0.0.0.0
-      # PORT: "8840"                      # optional, default: 8840
-      # TIMEOUT: "120"                    # optional, time in seconds, default: 120
-      # SHOUTRRR_URL: ""                  # optional, set url to notify
-      # THEME: "sand"                     # optional
-      # COLOR: "dark"                     # optional
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.wyl.rule=Host(`wyl.xaax.dev`)"
-      - "traefik.http.routers.wyl.entrypoints=websecure"
-      - "traefik.http.routers.wyl.tls=true"
-      - "traefik.http.services.wyl.loadbalancer.server.port=8840"
-    networks:
-      - web
-
-
   dashy:
     # To build from source, replace 'image: lissy93/dashy' with 'build: .'
     # build: .
