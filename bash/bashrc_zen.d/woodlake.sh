@@ -1,5 +1,12 @@
-# slash after will dump the contents of the directory in the destination
-# sync youtube-down
+# export heliospass
+
+user=api
+# user=admin
+
+function getjwt() {
+  curl -X POST -s -k -u "${user}:${heliospass}" https://helios.example.net/api/v2/auth/jwt
+}
+# getjwt  | jq -r '.data.token'
 
 function wood-sync() {
   local SyncDest=star
