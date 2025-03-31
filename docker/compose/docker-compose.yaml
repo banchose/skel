@@ -16,6 +16,7 @@
 
 services:
   nginx-site:
+    profiles: ["debug", "full"]
     image: nginx:alpine
     user: "${UID}:${GID}"
     volumes:
@@ -50,6 +51,7 @@ services:
       - web
 
   dashy:
+    profiles: ["full"]
     # To build from source, replace 'image: lissy93/dashy' with 'build: .'
     # build: .
     image: lissy93/dashy
