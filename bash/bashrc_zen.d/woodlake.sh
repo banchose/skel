@@ -20,3 +20,10 @@ function wood-sync() {
   rsync --del -rvptgle ssh /home/una/.config/ star.xaax.dev:/sync/"${HOSTNAME}"/dotconfig
 
 }
+
+testapps() {
+  local services=(privatebin whoami librechat dashy dozzle)
+  for service in "${services[@]}"; do
+    curl -I -L https://"${service}".xaax.dev
+  done
+}
