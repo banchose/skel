@@ -3,7 +3,7 @@
 # Change the router name traefik.http.routers.<routername>.... for each
 # Determine for sure what the container port is
 # for loadbalancer.server.port=
-# 
+#
 # Required files to function without issues
 # etc
 # ├── certs
@@ -38,7 +38,7 @@ services:
     image: privatebin/nginx-fpm-alpine
     restart: always
     read_only: true
-    user: "1000:1000"  # Run the container with the UID:GID of your Docker user
+    user: "1000:1000" # Run the container with the UID:GID of your Docker user
     volumes:
       - ./privatebin-data:/srv/data
     labels:
@@ -50,6 +50,17 @@ services:
     networks:
       - web
 
+  watchyourlan:
+    image: aceberg/watchyourlan
+    container_name: wyl
+    network_mode: host # This is equivalent to --network="host"
+    environment:
+      - IFACES=enp2s0
+      - TZ=America/New_York
+    volumes:
+      - ./data/watchYourLAN:/data/WatchYourLAN
+    restart: unless-stopped
+
   dashy:
     profiles: ["full"]
     # To build from source, replace 'image: lissy93/dashy' with 'build: .'
@@ -60,18 +71,18 @@ services:
     container_name: dashy
     # Pass in your config file below, by specifying the path on your host machine
     # volumes:
-      # - /root/my-config.yml:/app/user-data/conf.yml
+    # - /root/my-config.yml:/app/user-data/conf.yml
     # Set any environmental variables
     environment:
       - NODE_ENV=production
-    # Specify your user ID and group ID. You can find this by running `id -u` and `id -g`
+      # Specify your user ID and group ID. You can find this by running `id -u` and `id -g`
       - UID=1000
       - GID=1000
     # Specify restart policy
     restart: unless-stopped
     # Configure healthchecks
     healthcheck:
-      test: ['CMD', 'node', '/app/services/healthcheck']
+      test: ["CMD", "node", "/app/services/healthcheck"]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -114,7 +125,7 @@ services:
       - web
 
   whoami:
-  # A container that exposes an API to show its IP address
+    # A container that exposes an API to show its IP address
     image: traefik/whoami
     user: "${UID}:${GID}"
     labels:
@@ -123,8 +134,8 @@ services:
       - "traefik.http.routers.whoami.entrypoints=websecure"
       - "traefik.http.routers.whoami.tls=true"
       - "traefik.http.services.whoami.loadbalancer.server.port=80"
-#     - "traefik.http.middlewares.test-replacepath.replacepath.path=/foo"
-#     - "traefik.http.routers.whoami.middlewares=test-replacepath@docker"
+    #     - "traefik.http.middlewares.test-replacepath.replacepath.path=/foo"
+    #     - "traefik.http.routers.whoami.middlewares=test-replacepath@docker"
     networks:
       - web
 
@@ -181,7 +192,7 @@ services:
       - "traefik.http.middlewares.test-auth.basicauth.users=una:$$apr1$$CEw2npT1$$cA69Oyu30LNfwYi4dJcx20"
       - "traefik.http.routers.dashboard.middlewares=test-auth@docker"
 
-# LibreChat
+  # LibreChat
   api:
     container_name: LibreChat
     user: "${UID}:${GID}"
