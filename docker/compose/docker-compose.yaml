@@ -62,7 +62,7 @@ services:
     restart: unless-stopped
 
   dashy:
-    profiles: ["full"]
+#   profiles: ["full"]
     # To build from source, replace 'image: lissy93/dashy' with 'build: .'
     # build: .
     image: lissy93/dashy
