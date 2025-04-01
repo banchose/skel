@@ -2,8 +2,13 @@
 
 set -euo pipefail
 
+# Copy over etc/certs
+# Copy over ./librechat.yaml
+# Copy over .env for api keys and such
+
 mkdir -p -- ./config
 mkdir -p -- ./dashy
+mkdir -p -- ./data
 mkdir -p -- ./data/watchYourLAN
 mkdir -p -- ./etc/{certs,traefik}
 mkdir -p -- ./homer
