@@ -186,12 +186,12 @@ qq() {
       if (.error != null) then
         "Error: \(.error.message)"
       else
-        .choices[0].message.content\n\n +
         "Prompt tokens: \(.usage.prompt_tokens)\n" +
         "Total tokens: \(.usage.total_tokens)\n" +
         "Completion tokens: \(.usage.completion_tokens)\n" +
         "Finish reason: \(.choices[0].finish_reason)\n" +
-        "Model: \(.model)"
+        "Model: \(.model)\n\n" +
+        .choices[0].message.content
       end'
 {
   "model": "${Model}",
@@ -246,54 +246,85 @@ ailsma() {
 qa() {
   local ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}"
   local EndPoint="https://api.anthropic.com/v1/messages"
-  local Model="${ANTHROPIC_MODEL}"
+  local Model="${ANTHROPIC_MODEL:-claude-3-haiku-20240307}" # Default if not set
   local Max_Tokens=1024
-  local Verbose=false
+  local Verbose=false # Keep verbose flag for potential future use, but stats print always
+
+  # Basic CLI parsing for -v (optional - could be removed if only stats matter)
   if [[ "$1" == "-v" || "$1" == "--verbose" ]]; then
     Verbose=true
     shift
   fi
+
+  echo "Using Endpoint: ${EndPoint}"
+  echo "Using Model: ${Model}"
+
   if [[ -z "$ANTHROPIC_API_KEY" ]]; then
-    echo "Error: ANTHROPIC_API_KEY is not defined" 1>&2
+    echo "Error: ANTHROPIC_API_KEY is not defined. Please set it." 1>&2
     return 1
   fi
-  if [[ -z "$1" ]]; then
-    echo "Usage: qa [-v|--verbose] \"your message\"" 1>&2
-    return 1
-  fi
-  local content="$1"
-  local payload
-  payload=$(jq -cn --arg model "$Model" --arg content "$content" --argjson max_tokens "$Max_Tokens" '{
-        model: $model, 
-        max_tokens: $max_tokens, 
-        messages: [{role: "user", content: $content}]
-    }')
-  local response
-  response=$(curl -s "$EndPoint" -H "x-api-key: $ANTHROPIC_API_KEY" -H "anthropic-version: 2023-06-01" -H "Content-Type: application/json" -d "$payload")
-  if $Verbose; then
-    echo "$response" | jq -r '
-            if .error then
-                "Error: \(.error.message)"
-            elif .content and (.content | length > 0) then
-                "Message ID: \(.id)\n" +
-                "Model: \(.model)\n" +
-                "Input tokens: \(.usage.input_tokens)\n" +
-                "Output tokens: \(.usage.output_tokens)\n" +
-                "Stop reason: \(.stop_reason)\n\n" +
-                "Response:\n" + (.content | map(select(.type == "text") | .text) | join("\n"))
-            else
-                "Unexpected response format: \(.)"
-            end'
+
+  local content
+  # Handle piped input like qo does (optional, but good practice)
+  if [[ -n "$1" ]]; then
+    content="$1"
   else
-    echo "$response" | jq -r '
-            if .error then
-                "Error: \(.error.message)"
-            elif .content and (.content | length > 0) then
-                .content | map(select(.type == "text") | .text) | join("\n")
-            else
-                "Unexpected response format. Use -v for details."
-            end'
+    # Check if input is from a pipe/redirect and read it
+    if ! tty -s && IFS= read -r content; then
+      : # Content read from pipe/redirect
+    else
+      echo "Usage: qa [-v] \"your message\"  OR  echo \"your message\" | qa [-v]" 1>&2
+      return 1
+    fi
   fi
+
+  # Prepare payload using jq for safety
+  local payload
+  payload=$(jq -cn --arg model "$Model" \
+    --arg content "$content" \
+    --argjson max_tokens "$Max_Tokens" \
+    '{
+                       model: $model,
+                       max_tokens: $max_tokens,
+                       messages: [{role: "user", content: $content}]
+                   }')
+
+  # Make the API call and process the response
+  curl -s --location "$EndPoint" \
+    -H "x-api-key: $ANTHROPIC_API_KEY" \
+    -H "anthropic-version: 2023-06-01" \
+    -H "Content-Type: application/json" \
+    -d "$payload" |
+    # Optionally tee the raw response like qo
+    # tee --append ~/temp/anthropic_answers.json |
+    jq -r '
+        # Handle API errors first
+        if .error then
+          "Error: \(.error.type) - \(.error.message)"
+
+        # Handle successful responses with content
+        elif .content and (.content | length > 0) and .usage then
+          # Calculate total tokens
+          (.usage.input_tokens + .usage.output_tokens) as $total_tokens |
+
+          # Format stats similar to qo
+          "Input tokens: \(.usage.input_tokens)\n" +
+          "Output tokens: \(.usage.output_tokens)\n" +
+          "Total tokens: \($total_tokens)\n" +
+          "Stop reason: \(.stop_reason // "N/A")\n" + # Use // for default if null
+          "Model: \(.model)\n\n" +
+
+          # Extract and join the actual message content
+          (.content | map(select(.type == "text") | .text) | join("\n"))
+
+        # Handle other unexpected response formats
+        else
+          "Unexpected response format or empty content:\n\(.)"
+        end
+    '
+
+  # Optionally capture and return the exit status of jq (or curl if tee isn't used)
+  return "${PIPESTATUS[${#PIPESTATUS[@]} - 1]}"
 }
 
 ailsmo() {

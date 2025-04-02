@@ -34,6 +34,29 @@ services:
     networks:
       - web
 
+  nc:
+    profiles: ["debug"]
+    image: busybox
+    user: "${UID}:${GID}"
+    command:
+      [
+        "/bin/sh",
+        "-c",
+        "while true; do { echo -e \"HTTP/1.1 200 OK\\r\\nContent-Type: text/plain\\r\\nContent-Length: 27\\r\\n\\r\\nHello from Kubernetes Pod!\\r\\n\"; } | nc -l -p 8080; echo \"$(date) - Request received\" >> /tmp/requests.log; done",
+      ]
+    # Scaling replicas (equivalent to Kubernetes replicas: 2)
+    deploy:
+      replicas: 1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nc.rule=Host(`nc.xaax.dev`)"
+      - "traefik.http.routers.nc.entrypoints=web"
+      #     - "traefik.http.routers.nc.entrypoints=websecure"
+      #     - "traefik.http.routers.nc.tls=true"
+      - "traefik.http.services.nc.loadbalancer.server.port=8080"
+    networks:
+      - web
+
   privatebin:
     image: privatebin/nginx-fpm-alpine
     restart: always
@@ -62,7 +85,7 @@ services:
     restart: unless-stopped
 
   dashy:
-#   profiles: ["full"]
+    #   profiles: ["full"]
     # To build from source, replace 'image: lissy93/dashy' with 'build: .'
     # build: .
     image: lissy93/dashy
