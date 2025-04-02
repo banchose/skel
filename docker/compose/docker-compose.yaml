@@ -35,6 +35,7 @@ services:
       - web
 
   privatebin:
+    profiles: ["full"]
     image: privatebin/nginx-fpm-alpine
     restart: always
     read_only: true
@@ -50,16 +51,6 @@ services:
     networks:
       - web
 
-  watchyourlan:
-    image: aceberg/watchyourlan
-    container_name: wyl
-    network_mode: host # This is equivalent to --network="host"
-    environment:
-      - IFACES=enp2s0
-      - TZ=America/New_York
-    volumes:
-      - ./data/watchYourLAN:/data/WatchYourLAN
-    restart: unless-stopped
 
   dashy:
 #   profiles: ["full"]
