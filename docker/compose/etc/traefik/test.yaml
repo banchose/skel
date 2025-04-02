@@ -1,5 +1,0 @@
-http:
-  middlewares:
-    add-foo-prefix:
-      addPrefix:
-        prefix: "/foo"
