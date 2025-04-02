@@ -2,9 +2,14 @@
 
 set -euo pipefail
 
-# Copy over etc/certs
-# Copy over ./librechat.yaml
+# Copy over etc/certs/
+# Copy over etc/ if needed
 # Copy over .env for api keys and such
+# Copy over ./librechat.yaml
+# Copy over nginx-content/
+#
+# Apps
+# Copy over ./dashy
 
 mkdir -p -- ./config
 mkdir -p -- ./dashy
