@@ -173,7 +173,6 @@ alias rm='rm -v -I --preserve-root'
 alias df='df -H'
 alias du='du -ch'
 alias ls='ls -F -h --color=always --time-style=long-iso'
-alias ag --ignore-dir='.config/joplin*' --ignore-dir='.gitdir' --ignore-dir='.cache'
 #
 #
 #
