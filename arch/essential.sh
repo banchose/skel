@@ -235,6 +235,8 @@ yay -S bcc-tools --needed --noconfirm # /usr/share/bcc/{tools,man}
 yay -S python-bcc --needed --noconfirm
 yay -S bpftrace --needed --noconfirm
 
+yay -S jc jo yq htmlq jless xsv gron ripgrep-all moreutils entr --needed
+
 # Spelling
 
 sudo pacman -S words --needed --noconfirm
