@@ -23,3 +23,8 @@ mkdir -p -- ./mongodb_data
 mkdir -p -- ./nginx-content
 mkdir -p -- ./privatebin-data
 mkdir -p -- ./uploads
+cp -v -- ~/gitdir/skel/docker/compose/etc/traefik/tls.yaml ./etc/traefik
+cp -v -- ~/gitdir/skel/docker/compose/etc/certs/*.pem ./etc/certs
+cp -v -- ~/gitdir/skel/docker/compose/nginx-content/index.html ./etc/nginx-content
+cp -v -- ~/gitdir/skel/docker/compose/librechat.yaml ./
+cp -v -- ~/gitdir/skel/docker/compose/.env ./

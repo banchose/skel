@@ -16,7 +16,8 @@
 
 services:
   nginx-site:
-    profiles: ["debug", "full"]
+    profiles: ["full"]
+#   profiles: ["debug", "full"]
     image: nginx:alpine
     user: "${UID}:${GID}"
     volumes:
@@ -25,6 +26,12 @@ services:
         target: /var/cache/nginx
       - type: tmpfs
         target: /var/run
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://compose-nginx-site-1"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nginx.rule=Host(`nginx.xaax.dev`)"
@@ -74,8 +81,8 @@ services:
     networks:
       - web
 
-
   dashy:
+    profiles: ["full"]
     #   profiles: ["full"]
     # To build from source, replace 'image: lissy93/dashy' with 'build: .'
     # build: .
@@ -254,11 +261,11 @@ services:
       - type: bind
         source: ./librechat.yaml
         target: /app/librechat.yaml
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "http://librechat:3080"]
-      interval: 10s
-      timeout: 30s
-      start_period: 60s
+  #   healthcheck:
+  #     test: ["CMD", "wget", "--spider", "http://librechat:3080"]
+  #     interval: 10s
+  #     timeout: 30s
+  #     start_period: 60s
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.librechat-sec.rule=Host(`librechat.xaax.dev`)"
