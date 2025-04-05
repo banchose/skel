@@ -169,7 +169,7 @@ services:
       - FB_BASEURL=/filebrowser
     restart: always
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose" , "--tries=1", "--spider", "http://compose-filebrowser-1:8080"]
+      test: ["CMD", "wget", "--spider", "http://compose-filebrowser-1:8080"]
       interval: 10s
       timeout: 30s
       start_period: 60s
