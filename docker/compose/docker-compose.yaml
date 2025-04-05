@@ -137,6 +137,12 @@ services:
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
     networks:
       - web
+    healthcheck:
+      test: ["CMD", "/dozzle", "healthcheck"]
+      interval: 3s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
 
   whoami:
     # A container that exposes an API to show its IP address
@@ -162,6 +168,11 @@ services:
     environment:
       - FB_BASEURL=/filebrowser
     restart: always
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose" , "--tries=1", "--spider", "http://compose-filebrowser-1:8080"]
+      interval: 10s
+      timeout: 30s
+      start_period: 60s
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.filebrowser.rule=Host(`files.xaax.dev`)"
