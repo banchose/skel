@@ -114,6 +114,11 @@ services:
     image: corentinth/it-tools:latest
     container_name: it-tools
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://it-tools:80"]
+      interval: 10s
+      timeout: 30s
+      start_period: 60s
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.ittools.rule=Host(`ittools.xaax.dev`)"
@@ -208,6 +213,11 @@ services:
       - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
       - "--entryPoints.ping.address=:8082"
       - "--ping.entryPoint=ping"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://traefik:8080"]
+      interval: 10s
+      timeout: 30s
+      start_period: 60s
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`traefik.xaax.dev`)"
@@ -244,6 +254,11 @@ services:
       - type: bind
         source: ./librechat.yaml
         target: /app/librechat.yaml
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://librechat:3080"]
+      interval: 10s
+      timeout: 30s
+      start_period: 60s
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.librechat-sec.rule=Host(`librechat.xaax.dev`)"
@@ -258,6 +273,11 @@ services:
     user: "${UID}:${GID}"
     image: mongo
     restart: always
+    healthcheck:
+      test: ["CMD", "mongostat", "-n", "1"]
+      interval: 10s
+      timeout: 30s
+      start_period: 60s
     volumes:
       - ./mongodb_data:/data/db
     command: mongod --noauth
