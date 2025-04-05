@@ -261,11 +261,11 @@ services:
       - type: bind
         source: ./librechat.yaml
         target: /app/librechat.yaml
-  #   healthcheck:
-  #     test: ["CMD", "wget", "--spider", "http://librechat:3080"]
-  #     interval: 10s
-  #     timeout: 30s
-  #     start_period: 60s
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://librechat:3080"]
+      interval: 10s
+      timeout: 30s
+      start_period: 60s
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.librechat-sec.rule=Host(`librechat.xaax.dev`)"
