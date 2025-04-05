@@ -297,6 +297,11 @@ services:
       - MEILI_HOST=http://meilisearch:7700
       - MEILI_NO_ANALYTICS=true
       - MEILI_MASTER_KEY=${MEILI_MASTER_KEY}
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "localhost:7700/health"]
+      interval: 10s
+      timeout: 30s
+      start_period: 60s
     volumes:
       - ./meilisearch_data:/meili_data
   vectordb:
