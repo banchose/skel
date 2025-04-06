@@ -28,7 +28,7 @@ services:
         target: /var/run
     healthcheck:
       test: ["CMD", "wget", "--spider", "http://compose-nginx-site-1"]
-      interval: 1m30s
+      interval: 15s
       timeout: 10s
       retries: 3
       start_period: 40s
@@ -102,9 +102,9 @@ services:
     # Specify restart policy
     restart: unless-stopped
     # Configure healthchecks
-    healthcheck:
+    healthcheck :
       test: ["CMD", "node", "/app/services/healthcheck"]
-      interval: 1m30s
+      interval: 10s
       timeout: 10s
       retries: 3
       start_period: 40s
@@ -122,10 +122,11 @@ services:
     container_name: it-tools
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--spider", "http://it-tools:80"]
-      interval: 10s
-      timeout: 30s
-      start_period: 60s
+#      test: ["CMD", "curl", "---fail", "http://it-tools"]
+      test: ["CMD", "curl", "-s", "localhost"]
+      interval: 15s
+      timeout: 10s
+      start_period: 10s
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.ittools.rule=Host(`ittools.xaax.dev`)"
@@ -151,7 +152,7 @@ services:
       - web
     healthcheck:
       test: ["CMD", "/dozzle", "healthcheck"]
-      interval: 3s
+      interval: 13s
       timeout: 30s
       retries: 5
       start_period: 30s
@@ -312,6 +313,12 @@ services:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "sh", "-c", "pg_isready -q"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     volumes:
       - pgdata2:/var/lib/postgresql/data
   rag_api:
