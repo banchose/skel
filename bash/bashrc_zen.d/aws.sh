@@ -131,6 +131,7 @@ set_aws_envs() {
   set_stack_outputs HRI-BIGEKSALB us-east-1 test         # Mind the profile
   set_stack_outputs HRI-BIGEKSALB2 us-east-1 test        # Mind the profile
   set_stack_outputs HRI-EKSVPC-PROD us-east-1 production # Mind the profile
+  set_stack_outputs HRI-EKSNLB-PROD us-east-1 production # Mind the profile
 
 }
 
