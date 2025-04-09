@@ -27,3 +27,19 @@ testapps() {
     curl -I -L https://"${service}".xaax.dev
   done
 }
+
+dimon() {
+
+  # Hyprland hyprland sway
+
+  hyprctl keyword decoration:dim_inactive true
+
+}
+
+dimoff() {
+
+  # Hyprland hyprland sway
+
+  hyprctl keyword decoration:dim_inactive false
+
+}
