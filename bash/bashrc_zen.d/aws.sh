@@ -130,6 +130,8 @@ set_aws_envs() {
   set_stack_outputs HRI-BIGTEST us-east-1 test
   echo " HRI-BIGDATA"
   set_stack_outputs HRI-BIGDATA us-east-1 production # Mind the profile
+  echo " HRI-EKSNLB-PROD"
+  set_stack_outputs HRI-EKSNLB-PROD us-east-1 production
   echo " HRI-BIGEKSALB"
   set_stack_outputs HRI-BIGEKSALB us-east-1 test # Mind the profile
   echo " HRI-BIGEKSALB2"
