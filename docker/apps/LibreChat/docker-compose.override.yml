@@ -1,0 +1,21 @@
+services:
+  api:
+    volumes:
+    - type: bind
+      source: ./librechat.yaml
+      target: /app/librechat.yaml
+    image: ghcr.io/danny-avila/librechat:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.librechat-sec.rule=Host(`librechat.xaax.dev`)"
+      - "traefik.http.routers.librechat-sec.entrypoints=websecure"
+      - "traefik.http.routers.librechat-sec.tls=true"
+      - "traefik.http.services.librechat-sec.loadbalancer.server.port=3080"
+    networks:
+      - traefik_web
+      - default
+
+networks:
+  traefik_web:
+    external: true
+
