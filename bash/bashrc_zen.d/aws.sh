@@ -120,19 +120,30 @@ hang_fire() {
 
 set_aws_envs() {
 
+  echo " HRI-BIGNETWORK"
   set_stack_outputs HRI-BIGNETWORK us-east-1 net
+  echo " HRI-BIGAWSDNS"
   set_stack_outputs HRI-BIGAWSDNS us-east-1 net
+  echo " HRI-BIGDEV"
   set_stack_outputs HRI-BIGDEV us-east-1 dev
+  echo " HRI-BIGTEST"
   set_stack_outputs HRI-BIGTEST us-east-1 test
-  set_stack_outputs HRI-BIGDATA us-east-1 production     # Mind the profile
-  set_stack_outputs HRI-BIGEKSALB us-east-1 test         # Mind the profile
-  set_stack_outputs HRI-VPC-ONLY-EKS us-east-1 test      # Mind the profile
-  set_stack_outputs EKS-VPC-ONLY2 us-east-1 test         # Mind the profile
-  set_stack_outputs HRI-BIGEKSALB us-east-1 test         # Mind the profile
-  set_stack_outputs HRI-BIGEKSALB2 us-east-1 test        # Mind the profile
-  set_stack_outputs HRI-EKSVPC-PROD us-east-1 production # Mind the profile
-  set_stack_outputs HRI-EKSNLB-PROD us-east-1 production # Mind the profile
-  set_stack_outputs PubAlb us-east-1 net                 # Mind the profile
+  echo " HRI-BIGDATA"
+  set_stack_outputs HRI-BIGDATA us-east-1 production # Mind the profile
+  echo " HRI-EKSNLB-PROD"
+  set_stack_outputs HRI-EKSNLB-PROD us-east-1 production
+  echo " HRI-BIGEKSALB"
+  set_stack_outputs HRI-BIGEKSALB us-east-1 test # Mind the profile
+  echo " HRI-BIGEKSALB2"
+  set_stack_outputs HRI-BIGEKSALB2 us-east-1 test # Mind the profile
+  echo " PubAlb"
+  set_stack_outputs PubAlb us-east-1 net # Mind the profile
+  echo " BIG-ELBPUBLIC"
+  set_stack_outputs BIG-ELBPUBLIC us-east-1 net # Mind the profile
+  echo "HRI-EKSALB-PRIVATE-PROD"
+  set_stack_outputs HRI-EKSALB-PRIVATE-PROD us-east-1 production
+  echo "HRI-EKSVPC-PROD"
+  set_stack_outputs HRI-EKSVPC-PROD us-east-1 production
 
 }
 
