@@ -1,0 +1,22 @@
+services:
+  api:
+    ports: !reset []
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.librechat.rule=Host(`librechat.xaax.dev`)"
+      - "traefik.http.routers.librechat.entrypoints=websecure"
+      - "traefik.http.routers.librechat.tls=true"
+      - "traefik.http.services.librechat.loadbalancer.server.port=3080"
+      - "traefik.docker.network=traefik_web"
+    volumes:
+      - type: bind
+        source: ./librechat.yaml
+        target: /app/librechat.yaml
+    networks:
+      - traefik_web
+      - default
+
+networks:
+  traefik_web:
+    external: true
+
