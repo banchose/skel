@@ -16,6 +16,32 @@ services:
       - traefik_web
       - default
 
+  meilisearch:
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7700/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  mongodb:
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  rag_api:
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request, json; exit(0 if json.loads(urllib.request.urlopen('http://localhost:8000/health').read().decode()).get('status') == 'UP' else 1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+
+
 networks:
   traefik_web:
     external: true
