@@ -1,0 +1,14 @@
+services:
+  grist:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grist.rule=Host(`grist.xaax.dev`)"
+      - "traefik.http.routers.grist.entrypoints=websecure"
+      - "traefik.http.routers.grist.tls=true"
+      - "traefik.http.services.grist.loadbalancer.server.port=8484"
+    networks:
+      - traefik_web
+
+networks:
+  traefik_web:
+    external: true

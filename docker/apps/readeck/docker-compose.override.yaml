@@ -1,0 +1,14 @@
+services:
+  readeck:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.readeck.rule=Host(`readeck.xaax.dev`)"
+      - "traefik.http.routers.readeck.entrypoints=websecure"
+      - "traefik.http.routers.readeck.tls=true"
+      - "traefik.http.services.readeck.loadbalancer.server.port=8000"
+    networks:
+      - traefik_web
+
+networks:
+  traefik_web:
+    external: true

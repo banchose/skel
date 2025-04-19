@@ -1,0 +1,15 @@
+services:
+    sftpgo:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.sftpgo.rule=Host(`sftpgo.xaax.dev`)"
+        - "traefik.http.routers.sftpgo.entrypoints=websecure"
+        - "traefik.http.routers.sftpgo.tls=true"
+        - "traefik.http.services.sftpgo.loadbalancer.server.port=8080"
+        - "traefik.docker.network=traefik_web"
+      networks:
+        - traefik_web
+
+networks:
+  traefik_web:
+    external: true
