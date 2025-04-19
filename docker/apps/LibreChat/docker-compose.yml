@@ -20,6 +20,11 @@ services:
       - MEILI_HOST=http://meilisearch:7700
       - RAG_PORT=${RAG_PORT:-8000}
       - RAG_API_URL=http://rag_api:${RAG_PORT:-8000}
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://librechat:3080"]
+      interval: 10s
+      timeout: 30s
+      start_period: 60s
     volumes:
       - type: bind
         source: ./.env
@@ -32,6 +37,11 @@ services:
     image: mongo
     restart: always
     user: "${UID}:${GID}"
+    healthcheck:
+      test: ["CMD", "mongostat", "-n", "1"]
+      interval: 10s
+      timeout: 30s
+      start_period: 60s
     volumes:
       - ./data-node:/data/db
     command: mongod --noauth
@@ -44,6 +54,11 @@ services:
       - MEILI_HOST=http://meilisearch:7700
       - MEILI_NO_ANALYTICS=true
       - MEILI_MASTER_KEY=${MEILI_MASTER_KEY}
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "localhost:7700/health"]
+      interval: 10s
+      timeout: 30s
+      start_period: 60s
     volumes:
       - ./meili_data_v1.12:/meili_data
   vectordb:

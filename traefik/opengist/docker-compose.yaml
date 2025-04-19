@@ -1,0 +1,22 @@
+services:
+  opengist:
+    image: ghcr.io/thomiceli/opengist
+    container_name: opengist
+    restart: unless-stopped
+    volumes:
+      - "opengist:/opengist"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.opengist.rule=Host(`opengist.xaax.dev`)"
+      - "traefik.http.routers.opengist.entrypoints=websecure"
+      - "traefik.http.routers.opengist.tls=true"
+      - "traefik.http.services.opengist.loadbalancer.server.port=6157"
+    networks:
+      - traefik_web
+
+networks:
+  traefik_web:
+    external: true
+
+volumes:
+  opengist:
