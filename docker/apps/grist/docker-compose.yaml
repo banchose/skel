@@ -1,0 +1,19 @@
+version: "3.3"
+services:
+  grist:
+    image: gristlabs/grist
+    volumes:
+      - $PWD/persist:/persist
+    restart: unless-stopped  
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grist.rule=Host(`grist.xaax.dev`)"
+      - "traefik.http.routers.grist.entrypoints=websecure"
+      - "traefik.http.routers.grist.tls=true"
+      - "traefik.http.services.grist.loadbalancer.server.port=8484"
+    networks:
+      - traefik_web
+
+networks:
+  traefik_web:
+    external: true

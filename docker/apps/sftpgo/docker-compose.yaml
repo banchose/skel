@@ -1,0 +1,17 @@
+services:
+    sftpgo:
+      container_name: sftpgo
+      image: 'drakkan/sftpgo:edge'
+      restart: unless-stopped
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.sftpgo.rule=Host(`sftpgo.xaax.dev`)"
+        - "traefik.http.routers.sftpgo.entrypoints=websecure"
+        - "traefik.http.routers.sftpgo.tls=true"
+        - "traefik.http.services.sftpgo.loadbalancer.server.port=8080"
+      networks:
+        - traefik_web
+
+networks:
+  traefik_web:
+    external: true
