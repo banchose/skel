@@ -144,6 +144,8 @@ set_aws_envs() {
   set_stack_outputs HRI-EKSALB-PRIVATE-PROD us-east-1 production
   echo "HRI-EKSVPC-PROD"
   set_stack_outputs HRI-EKSVPC-PROD us-east-1 production
+  echo "HRI-EKS-VPC-TEST"
+  set_stack_outputs HRI-EKS-VPC-TEST us-east-1 test
 
 }
 
