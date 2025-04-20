@@ -28,7 +28,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
+      start_period: 30s
 
   mongodb:
     healthcheck:
@@ -36,7 +36,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-      start_period: 40s
+      start_period: 30s
 
   rag_api:
     healthcheck:
@@ -46,7 +46,13 @@ services:
       retries: 3
       start_period: 15s
 
-
+  vectordb:
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
 
 networks:
   traefik_web:
