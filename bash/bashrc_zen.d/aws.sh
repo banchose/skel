@@ -134,8 +134,6 @@ set_aws_envs() {
   set_stack_outputs HRI-EKSNLB-PROD us-east-1 production
   echo " HRI-BIGEKSALB"
   set_stack_outputs HRI-BIGEKSALB us-east-1 test # Mind the profile
-  echo " HRI-BIGEKSALB2"
-  set_stack_outputs HRI-BIGEKSALB2 us-east-1 test # Mind the profile
   echo " PubAlb"
   set_stack_outputs PubAlb us-east-1 net # Mind the profile
   echo " BIG-ELBPUBLIC"
@@ -148,6 +146,8 @@ set_aws_envs() {
   set_stack_outputs HRI-EKS-VPC-TEST us-east-1 test
   echo "HRI-EKSALB-PRIVATE-TEST"
   set_stack_outputs HRI-EKSALB-PRIVATE-TEST us-east-1 test
+  echo "HRI-BIGEKS-TEST"
+  set_stack_outputs HRI-BIGEKS-TEST us-east-1 test
 
 }
 
