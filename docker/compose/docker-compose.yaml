@@ -61,6 +61,7 @@ services:
       #     - "traefik.http.routers.nc.entrypoints=websecure"
       #     - "traefik.http.routers.nc.tls=true"
       - "traefik.http.services.nc.loadbalancer.server.port=8080"
+      - "traefik.docker.network=web"
     networks:
       - web
 
@@ -78,6 +79,7 @@ services:
       - "traefik.http.routers.privatebin.entrypoints=websecure"
       - "traefik.http.routers.privatebin.tls=true"
       - "traefik.http.services.privatebin.loadbalancer.server.port=8080"
+      - "traefik.docker.network=web"
     networks:
       - web
 
@@ -114,6 +116,7 @@ services:
       - "traefik.http.routers.dashy.entrypoints=websecure"
       - "traefik.http.routers.dashy.tls=true"
       - "traefik.http.services.dashy.loadbalancer.server.port=8080"
+      - "traefik.docker.network=web"
     networks:
       - web
 
@@ -133,6 +136,7 @@ services:
       - "traefik.http.routers.ittools.entrypoints=websecure"
       - "traefik.http.routers.ittools.tls=true"
       - "traefik.http.services.ittools.loadbalancer.server.port=80"
+      - "traefik.docker.network=web"
     networks:
       - web
 
@@ -148,6 +152,7 @@ services:
       - "traefik.http.routers.dozzle.entrypoints=websecure"
       - "traefik.http.routers.dozzle.tls=true"
       - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
+      - "traefik.docker.network=web"
     networks:
       - web
     healthcheck:
@@ -167,6 +172,7 @@ services:
       - "traefik.http.routers.whoami.entrypoints=websecure"
       - "traefik.http.routers.whoami.tls=true"
       - "traefik.http.services.whoami.loadbalancer.server.port=80"
+      - "traefik.docker.network=web"
     #     - "traefik.http.middlewares.test-replacepath.replacepath.path=/foo"
     #     - "traefik.http.routers.whoami.middlewares=test-replacepath@docker"
     networks:
@@ -192,6 +198,7 @@ services:
       - "traefik.http.routers.filebrowser.entrypoints=websecure"
       - "traefik.http.routers.filebrowser.tls=true"
       - "traefik.http.services.filebrowser.loadbalancer.server.port=8080"
+      - "traefik.docker.network=web"
     networks:
       - web
 
@@ -275,6 +282,7 @@ services:
 #       - "traefik.http.routers.librechat-sec.entrypoints=websecure"
 #       - "traefik.http.routers.librechat-sec.tls=true"
 #       - "traefik.http.services.librechat-sec.loadbalancer.server.port=3080"
+#       - "traefik.docker.network=web"
 #     networks:
 #       - web
 #       - default

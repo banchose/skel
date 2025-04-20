@@ -1,0 +1,32 @@
+services:
+
+  whoami:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.xaax.dev`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.services.whoami.loadbalancer.server.port=80"
+    #     - "traefik.http.middlewares.test-replacepath.replacepath.path=/foo"
+    #     - "traefik.http.routers.whoami.middlewares=test-replacepath@docker"
+    networks:
+      - web
+
+  traefik:
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://traefik:8080"]
+      interval: 10s
+      timeout: 30s
+      start_period: 60s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.xaax.dev`)"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.tls=true"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.middlewares.test-auth.basicauth.users=una:$$apr1$$CEw2npT1$$cA69Oyu30LNfwYi4dJcx20"
+      - "traefik.http.routers.dashboard.middlewares=test-auth@docker"
+
+networks:
+  web: {}
+
