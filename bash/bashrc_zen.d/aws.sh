@@ -148,7 +148,8 @@ set_aws_envs() {
   set_stack_outputs HRI-EKSALB-PRIVATE-TEST us-east-1 test
   echo "HRI-BIGEKS-TEST"
   set_stack_outputs HRI-BIGEKS-TEST us-east-1 test
-
+  echo "HRI-EKS-NLB-TEST"
+  set_stack_outputs HRI-EKS-NLB-TEST us-east-1 test
 }
 
 get_aws_context() {
