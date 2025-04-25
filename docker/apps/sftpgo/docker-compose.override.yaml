@@ -9,6 +9,15 @@ services:
         - "traefik.docker.network=traefik_web"
       networks:
         - traefik_web
+      volumes:
+        - sftpgo_data:/var/lib/sftpgo
+        - sftpgo_config:/etc/sftpgo
+        - sftpgo_home:/srv/sftpgo/data
+
+volumes:
+  sftpgo_data:
+  sftpgo_config:
+  sftpgo_home:
 
 networks:
   traefik_web:

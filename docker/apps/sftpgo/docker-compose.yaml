@@ -3,3 +3,4 @@ services:
       container_name: sftpgo
       image: 'drakkan/sftpgo:edge'
       restart: unless-stopped
+
