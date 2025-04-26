@@ -1,3 +1,6 @@
+# NOTE: 
+# sftp -P 2222 star
+# mind the capital P
 services:
     sftpgo:
       container_name: sftpgo
