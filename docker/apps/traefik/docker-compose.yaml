@@ -39,6 +39,7 @@ services:
       - "8080:8080"
       - "8082:8082"
       - "1704:1704"
+      - "2222:2222"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./etc/certs:/etc/certs:ro
@@ -51,7 +52,8 @@ services:
       - "--providers.file.directory=/etc/traefik"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--entrypoints.ssh-server.address=:1704"
+      - "--entrypoints.sftp.address=:2222"
+      - "--entrypoints.ssh-server.address=:1722"
       - "--entrypoints.websecure.http.tls=true"
       - "--api.dashboard=true"
       - "--api.insecure=true"
