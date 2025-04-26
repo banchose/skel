@@ -1,16 +1,34 @@
 services:
     sftpgo:
+      container_name: sftpgo
       labels:
+        # HTTP routing for web interface
         - "traefik.enable=true"
         - "traefik.http.routers.sftpgo.rule=Host(`sftpgo.xaax.dev`)"
         - "traefik.http.routers.sftpgo.entrypoints=websecure"
         - "traefik.http.routers.sftpgo.tls=true"
         - "traefik.http.services.sftpgo.loadbalancer.server.port=8080"
-#       - "traefik.http.middlewares.sftpgo-health.healthcheck.path=/healthz"
-#       - "traefik.http.middlewares.sftpgo-health.healthcheck.interval=30s"
-#       - "traefik.http.middlewares.sftpgo-health.healthcheck.timeout=5s"
-#       - "traefik.http.routers.sftpgo.middlewares=sftpgo-health@docker"
+        
+        # Health check using the status API
+        - "traefik.http.middlewares.sftpgo-health.healthcheck.path=/api/v2/status"
+        - "traefik.http.middlewares.sftpgo-health.healthcheck.interval=30s"
+        - "traefik.http.middlewares.sftpgo-health.healthcheck.timeout=5s"
+        - "traefik.http.routers.sftpgo.middlewares=sftpgo-health@docker"
+        
+        # TCP routing for SFTP service
+        - "traefik.tcp.routers.sftpgo-sftp.rule=HostSNI(`*`)"
+        - "traefik.tcp.routers.sftpgo-sftp.entrypoints=sftp"
+        - "traefik.tcp.routers.sftpgo-sftp.service=sftpgo-sftp-service"
+        - "traefik.tcp.services.sftpgo-sftp-service.loadbalancer.server.port=2022"
+        
         - "traefik.docker.network=traefik_web"
+      environment:
+        - SFTPGO_HTTPD_BINDINGS_0_PORT=8080
+        - SFTPGO_HTTPD_BINDINGS_0_ADDRESS=0.0.0.0
+        - SFTPGO_DATA_PROVIDER_CREATE_DEFAULT_ADMIN=true
+        - SFTPGO_WEBDAVD_BINDINGS_0_PORT=10080
+        - SFTPGO_FTPD_BINDINGS_0_PORT=2121
+        - SFTPGO_FTPD_BINDINGS_0_FORCE_PASSIVE_IP='127.0.0.1:8080'
 
       networks:
         - traefik_web
@@ -27,3 +45,4 @@ volumes:
 networks:
   traefik_web:
     external: true
+
