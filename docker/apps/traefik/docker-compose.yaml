@@ -38,6 +38,7 @@ services:
       - "443:443"
       - "8080:8080"
       - "8082:8082"
+      - "1704:1704"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./etc/certs:/etc/certs:ro
@@ -50,6 +51,7 @@ services:
       - "--providers.file.directory=/etc/traefik"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.ssh-server.address=:1704"
       - "--entrypoints.websecure.http.tls=true"
       - "--api.dashboard=true"
       - "--api.insecure=true"
@@ -57,6 +59,7 @@ services:
       - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
       - "--entryPoints.ping.address=:8082"
       - "--ping.entryPoint=ping"
+      - "--log.level=DEBUG"
     healthcheck:
       test: ["CMD", "wget", "--spider", "http://traefik:8080"]
       interval: 10s

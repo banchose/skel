@@ -7,6 +7,11 @@ services:
         - "traefik.http.routers.sftpgo.tls=true"
         - "traefik.http.services.sftpgo.loadbalancer.server.port=8080"
         - "traefik.docker.network=traefik_web"
+        - "traefik.http.middlewares.sftpgo-health.healthcheck.path=/healthz"
+        - "traefik.http.middlewares.sftpgo-health.healthcheck.interval=30s"
+        - "traefik.http.middlewares.sftpgo-health.healthcheck.timeout=5s"
+        - "traefik.http.routers.sftpgo.middlewares=sftpgo-health@docker"
+
       networks:
         - traefik_web
       volumes:

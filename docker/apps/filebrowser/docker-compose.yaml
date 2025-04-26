@@ -8,8 +8,3 @@ services:
     environment:
       - FB_BASEURL=/filebrowser
     restart: always
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "http://localhost:8080"]
-      interval: 10s
-      timeout: 30s
-      start_period: 60s

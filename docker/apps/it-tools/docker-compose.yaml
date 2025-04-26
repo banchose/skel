@@ -4,9 +4,3 @@ services:
     image: corentinth/it-tools:latest
     container_name: it-tools
     restart: unless-stopped
-    healthcheck:
-#      test: ["CMD", "curl", "---fail", "http://it-tools"]
-      test: ["CMD", "curl", "-s", "localhost"]
-      interval: 15s
-      timeout: 10s
-      start_period: 10s
