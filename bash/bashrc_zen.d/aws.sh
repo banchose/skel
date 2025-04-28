@@ -130,16 +130,10 @@ set_aws_envs() {
   set_stack_outputs HRI-BIGTEST us-east-1 test
   echo " HRI-BIGDATA"
   set_stack_outputs HRI-BIGDATA us-east-1 production # Mind the profile
-  echo " HRI-EKSNLB-PROD"
-  set_stack_outputs HRI-EKSNLB-PROD us-east-1 production
   echo " HRI-BIGEKSALB"
   set_stack_outputs HRI-BIGEKSALB us-east-1 test # Mind the profile
   echo " BIG-ELBPUBLIC"
   set_stack_outputs BIG-ELBPUBLIC us-east-1 net # Mind the profile
-  echo "HRI-EKSALB-PRIVATE-PROD"
-  set_stack_outputs HRI-EKSALB-PRIVATE-PROD us-east-1 production
-  echo "HRI-EKSVPC-PROD"
-  set_stack_outputs HRI-EKSVPC-PROD us-east-1 production
   echo "HRI-EKS-VPC-TEST"
   set_stack_outputs HRI-EKS-VPC-TEST us-east-1 test
   echo "HRI-EKSALB-PRIVATE-TEST"
@@ -148,8 +142,16 @@ set_aws_envs() {
   set_stack_outputs HRI-BIGEKS-TEST us-east-1 test
   echo "HRI-EKS-NLB-TEST"
   set_stack_outputs HRI-EKS-NLB-TEST us-east-1 test
-  echo "HRI-EKS-VPC-SAND"
-  set_stack_outputs HRI-EKS-VPC-SAND us-east-1 lab3
+  echo "HRI-EKS-VPC-TEST"
+  set_stack_outputs HRI-EKS-VPC-TEST us-east-1 lab3
+  echo "HRI-EKS-CLUSTER-PROD"
+  set_stack_outputs HRI-EKS-CLUSTER-PROD us-east-1 production
+  echo "HRI-EKS-VPC-PROD"
+  set_stack_outputs HRI-EKS-VPC-PROD us-east-1 production
+  echo "HRI-EKSALB-PRIVATE-PROD"
+  set_stack_outputs HRI-EKS-VPC-PROD us-east-1 production
+  echo " HRI-EKSNLB-PROD"
+  set_stack_outputs HRI-EKSNLB-PROD us-east-1 production
 }
 
 get_aws_context() {
