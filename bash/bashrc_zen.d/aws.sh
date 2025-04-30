@@ -150,8 +150,18 @@ set_aws_envs() {
   set_stack_outputs HRI-EKS-VPC-PROD us-east-1 production
   echo "HRI-EKSALB-PRIVATE-PROD"
   set_stack_outputs HRI-EKSALB-PRIVATE-PROD us-east-1 production
-  echo " HRI-EKS-NLB-PROD"
+  echo "HRI-EKS-VPC-QA"
+  set_stack_outputs HRI-EKS-VPC-QA us-east-1 test
+  echo "HRI-BIGNETWORK-TGWRT-ASSC-EKSVPC-QA"
+  set_stack_outputs HRI-BIGNETWORK-TGWRT-ASSC-EKSVPC-QA us-east-1 net
+  echo "HRI-EKS-NLB-PROD production"
   set_stack_outputs HRI-EKS-NLB-PROD us-east-1 production
+  echo "HRI-BIGEKS-QA"
+  set_stack_outputs HRI-BIGEKS-QA us-east-1 test
+  echo "HRI-EKSALB-PRIVATE-QA"
+  set_stack_outputs HRI-EKSALB-PRIVATE-QA us-east-1 test
+  echo "HRI-EKS-NLB-QA"
+  set_stack_outputs HRI-EKS-NLB-QA us-east-1 test
 }
 
 get_aws_context() {
