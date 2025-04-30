@@ -1,7 +1,11 @@
 mm() {
-  cd ~/y/youtube-down/ && mpv "$(fzf)"
+  cd ~/y/youtube-down/ &&
+    mpv "$(find . -maxdepth 1 -type f -printf "%T@ %p\n" |
+      sort -nr |
+      cut -d' ' -f2- |
+      sed 's#\./##' |
+      fzf --preview 'file {}; echo; stat {}')"
 }
-
 mma() (
   local dir=~/y/youtube-down/
 

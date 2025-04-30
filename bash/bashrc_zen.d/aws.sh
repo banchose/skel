@@ -150,8 +150,8 @@ set_aws_envs() {
   set_stack_outputs HRI-EKS-VPC-PROD us-east-1 production
   echo "HRI-EKSALB-PRIVATE-PROD"
   set_stack_outputs HRI-EKSALB-PRIVATE-PROD us-east-1 production
-  echo " HRI-EKSNLB-PROD"
-  set_stack_outputs HRI-EKSNLB-PROD us-east-1 production
+  echo " HRI-EKS-NLB-PROD"
+  set_stack_outputs HRI-EKS-NLB-PROD us-east-1 production
 }
 
 get_aws_context() {
