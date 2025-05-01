@@ -100,7 +100,7 @@ set_stack_outputs() {
 hang_fire() {
   local StackName="$1"
   local StackAWSProfile="$2"
-  local WaitTime=30
+  local WaitTime=10
 
   ## Wait for net to finish
   aws cloudformation wait stack-create-complete \
@@ -162,6 +162,13 @@ set_aws_envs() {
   set_stack_outputs HRI-EKSALB-PRIVATE-QA us-east-1 test
   echo "HRI-EKS-NLB-QA"
   set_stack_outputs HRI-EKS-NLB-QA us-east-1 test
+  echo "HRI-BIGNETWORK-TGWRT-ASSC-EKSVPC-SAND"
+  set_stack_outputs "HRI-BIGNETWORK-TGWRT-ASSC-EKSVPC-SAND" us-east-1 net
+  echo "HRI-EKS-VPC-SAND"
+  set_stack_outputs "HRI-EKS-VPC-SAND" us-east-1 test
+  echo "HRI-EKSALB-PRIVATE-SAND"
+  set_stack_outputs HRI-EKSALB-PRIVATE-SAND us-east-1 test
+
 }
 
 get_aws_context() {
