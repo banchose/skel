@@ -64,6 +64,7 @@ services:
       - "--entryPoints.ping.address=:8082"
       - "--ping.entryPoint=ping"
       - "--log.level=DEBUG"
+      - "--accesslog"
     healthcheck:
       test: ["CMD", "wget", "--spider", "http://traefik:8080"]
       interval: 10s
