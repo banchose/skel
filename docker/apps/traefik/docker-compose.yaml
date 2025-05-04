@@ -54,8 +54,6 @@ services:
       - "--providers.file.directory=/etc/traefik"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--entrypoints.sftp.address=:2222"
-      - "--entrypoints.ssh-server.address=:1722"
       - "--entrypoints.websecure.http.tls=true"
       - "--api.dashboard=true"
       - "--api.insecure=true"
