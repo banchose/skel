@@ -1,0 +1,29 @@
+services:
+  test1:
+    image: node
+    command: node -e "const http = require('http'); http.createServer((req, res) => { res.write('Hello from test1\n'); res.end() }).listen(8080)"
+    ports:
+      - "18080:18080"
+    networks:
+      - network1
+  test2:
+    image: node
+    command: node -e "const http = require('http'); http.createServer((req, res) => { res.write('Hello from test2\n'); res.end() }).listen(8080)"
+    ports:
+      - "18081:18080"
+    networks:
+      - network1
+      - network2
+  test3:
+    image: node
+    command: node -e "const http = require('http'); http.createServer((req, res) => { res.write('Hello from test3\n'); res.end() }).listen(8080)"
+    ports:
+      - "18082:18080"
+    networks:
+      - network2
+
+networks:
+  network1:
+    name: network1
+  network2:
+    name: network2
