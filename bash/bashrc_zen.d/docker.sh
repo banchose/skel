@@ -15,6 +15,12 @@ if type docker &>/dev/null; then
   # complete -F __start_docker d
   alias dkill='for i in $(docker ps -q);do docker kill "${i}";done'
 
+  dls() {
+
+    docker ps --format 'table {{.ID}}\t{{.Names}}'
+
+  }
+
   dclear() {
     cons="$(docker ps -q)"
     [[ -z $cons ]] || docker stop $cons
