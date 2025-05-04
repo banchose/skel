@@ -51,12 +51,49 @@ gitwho() {
 }
 
 # hri swich git
-hrigit() {
+set-hri-git() {
 
   git config --unset credential.helper
   git config user.name "wjs04-hri"
   git config user.email "william.stewart"
   git config credential.helper "cache --timeout=7000"
+
+}
+
+set-own-git() {
+
+  git config --unset credential.helper
+  git config user.name "banchose"
+  git config user.email "a_gitmail@ownmail.net"
+  git config credential.helper "libsecret"
+
+}
+
+gitcredclear() {
+
+  git credential-manager erase
+  echo "url=https://github.com" | git credential reject
+}
+
+gitsync() {
+
+  local gitdir=~/gitdir
+  # put in subshell to avoid changing directory
+  (
+    cd "$gitdir" || {
+      echo "Cannot cd into $gitdir"
+      exit 1
+    }
+    # the ./*/ will do just directories.  ./* will do files and directories
+    for i in ./*/; do
+      cd "$i" >/dev/null
+      echo "**********************************"
+      echo $'\t'"${PWD##*/}"
+      echo "**********************************"
+      [[ -d .git ]] && git fetch --prune && git pull
+      cd ..
+    done
+  )
 
 }
 
