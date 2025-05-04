@@ -1,0 +1,240 @@
+Server Fault
+How to handle relative urls correctly with a nginx reverse proxy
+Asked 6 years, 7 months ago
+Modified 1 year ago
+Viewed 98k times
+
+Sure I'm not the first one that tried to serve a domain example.com from a example.net/bbb, but I haven't found a solution yet.
+
+My NGINX configuration follows the guidelines and looks something like this:
+
+server {
+    listen 80;
+    server_name example.net;
+    root /path/to/aaa;
+
+    location /bbb/ {
+        proxy_pass http://example.com/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+    location ~ \.(svg|ttf|js|css|svgz|eot|otf|woff|jpg|jpeg|gif|png|ico)$ {
+        access_log off;
+        log_not_found off;
+        expires max;
+    }
+}
+
+I can manage to render the root of example.com in example.net/bbb but:
+ISSUE 1
+
+example.net/bbb/some/path doesn't work as expected and the index.html of example.net is rendered.
+ISSUE 2
+
+Any asset in example.com/assets gives 404 because the browser look for example.net/assets. Be great if I could solve this without placing absolute paths everywhere.
+
+    nginxreverse-proxyproxypass
+
+Share
+Improve this question
+Follow
+edited Sep 28, 2018 at 9:12
+HBruijn's user avatar
+HBruijn
+83.6k2424 gold badges144144 silver badges221221 bronze badges
+asked Sep 25, 2018 at 20:19
+a.barbieri's user avatar
+a.barbieri
+57311 gold badge55 silver badges88 bronze badges
+
+    1
+    Are both domains pointing at the same instance of Nginx? – 
+    miknik
+    Commented Sep 25, 2018 at 21:11
+    They are currently on the same server if it's that what you mean by being on the same Nginx instance. But it'd be great to find a solution that works even if they are on two separate servers. – 
+    a.barbieri
+    Commented Sep 25, 2018 at 21:30
+
+Add a comment
+5 Answers
+Sorted by:
+65
+
+The problem is basically that using a proxy_pass directive won't rewrite HTML code and therefor relative URL's to for instance a img src="/assets/image.png" won't magically change to img src="/bbb/assets/image.png".
+
+I wrote about potential strategies to address that in Apache httpd here and similar solutions are possible for nginx as well:
+
+    If you have control over example.com and the how the application/content is deployed there, deploy in the same base URI you want to use on example.net for the reverse proxy
+    --> deploy your code in example.com/bbb and then your proxy_pass will become quite an easy as /assets/image.png will have been moved to /bbb/assets/image.png:
+
+      location /bbb/ {
+           proxy_pass http://example.com/bbb/; 
+
+    If you have control over example.com and the how the application/content is deployed:
+    change to relative paths, i.e. rather than img src="/assets/image.png"
+    refer to img src="./assets/image.png" from a page example.com/index.html
+    and to img src="../../assets/image.png"from a page example.com/some/path/index.html
+
+    Maybe you're lucky and example.com only uses a few URI paths in the root and non of those are used by example.net, then simply reverse proxy every necessary subdirectory:
+
+      location /bbb/ {
+           proxy_pass http://example.com/; 
+      }
+      location /assets/ {
+           proxy_pass http://example.com/assets/; 
+      }
+      location /styles/ {
+           proxy_pass http://example.com/styles/; 
+
+    give up using a example.com as subdirectory on example.net and instead host it on a subdomain of example.net:
+
+      server { 
+        server_name bbb.example.net 
+        location / {
+           proxy_pass http://example.com/; 
+        }
+      }
+
+    rewrite the (HTML) content by enabling the nginx ngx_http_sub_module. That will also allow you to rewrite absolute URL's with something similar to:
+
+      location /bbb/ {
+           sub_filter 'src="/assets/'  'src="/bbb/assets/';
+           sub_filter 'src="http://example.com/js/' 'src="http://www.example.net/bbb/js/' ;
+           sub_filter_once off;
+           proxy_pass http://example.com/; 
+      }
+
+Late addition
+
+    Sometimes developers provide special application settings specifically for deployments where the application is behind a reverse proxy or behind a CDN. The application can then be configured to generate self referential URL's, with the protocol, the site name and URI path that users are/should be using, rather then the hostname, the protocol and/or the URI the application detects. Expect terms like external URL, site URL. Then you don't need to solve anything in nginx.
+
+Share
+Improve this answer
+Follow
+edited Apr 22, 2024 at 14:16
+answered Sep 25, 2018 at 21:15
+HBruijn's user avatar
+HBruijn
+83.6k2424 gold badges144144 silver badges221221 bronze badges
+
+    I can definitely do the first option. The last one is pretty extreme but it's good to know there's such an alternative. – 
+    a.barbieri
+    Commented Sep 25, 2018 at 21:28
+    Excellent explanation of the implementation options. I've been looking for a breakdown like this for quite some time, happy I finally found it. Thank you. – 
+    Sammy
+    Commented Oct 16, 2019 at 9:32
+    The "rewrite the (HTML) content" solution is exactly what is needed when you have to deal with some dockerized service that you cannot modify! Thanks a lot, it was so easy! – 
+    afrish
+    Commented Oct 3, 2023 at 9:59
+
+Add a comment
+1
+
+I found the reason why the index page cannot correctly jump to sub-folder like \bbb is this line in html file: <base href="/">, which means it will throw off any existing folder whenever jump to a new path.
+Share
+Improve this answer
+Follow
+answered Apr 21, 2023 at 6:24
+George Y's user avatar
+George Y
+59833 gold badges1010 silver badges2020 bronze badges
+Add a comment
+0
+
+if you want to subdir's html file for default index.html. for example, copy /main/mainView.html to /index.html and use base tag in index.html to set relative location's base path.
+
+*I think adjusting client page's relative location's base path can be modified by not server-side but client-side(browser). because the page(client-side asset) has no way to know its real location in server-side.
+Share
+Improve this answer
+Follow
+answered Dec 12, 2020 at 9:13
+someone's user avatar
+someone
+1
+Add a comment
+0
+
+I had issues like you , If i have two container , each of them load a different frontend app , you should change a base root url for each your project in html for example :
+
+<base target="_blank" href="http://localhost:8081/react-app/" />
+
+this is in another container , but main project is on 80 , so it can find style files and etc . and for change a base route for child route i found sth for react router as name basename that can set
+Share
+Improve this answer
+Follow
+answered Aug 11, 2022 at 15:13
+tmohammad78's user avatar
+tmohammad78
+111 bronze badge
+Add a comment
+0
+
+Since the homepage already redirects you to the path "/admin/", the correct approach would be to check the path and issue a "return 302" to adjust the "location" as it appears in the original URL. See the examples below.
+Nginx version
+
+Docker: nginx:1.25-alpine3.18
+Nginx: 1.25
+
+Original URL:
+
+http://192.168.29.2:8088/admin/
+Reverse proxy:
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name ~^(dns).youdomain.com;
+
+    client_max_body_size 50M;
+    include ssl_config.config;
+
+    location = / {
+        return 302 https://$host/admin/;
+    }
+
+    location /admin/ {
+        proxy_pass http://192.168.29.2:8088/admin/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+ssl_config.config
+
+    # SSL configuration
+    ssl_certificate         /etc/nginx/certs/certificate.crt;
+    ssl_certificate_key     /etc/nginx/certs/certificate.key;
+
+    #ssl_protocols TLSv1.3 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-CHACHA20-POLY1305;
+    ssl_session_cache shared:SSL:1m;
+    ssl_session_timeout 10m;
+    ssl_session_tickets off;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    resolver_timeout 5s;
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection "1; mode=block";
+
+    ssl_dhparam /etc/nginx/certs/dhparam.pem;
+
+    # Your server DNS here
+    resolver 192.168.29.2;
+
+Share
+Improve this answer
+Follow
+answered Aug 20, 2023 at 19:50
+Tarcísio Miranda's user avatar
+Tarcísio Miranda
+1
+
+    This does not provide an answer to the question. Once you have sufficient reputation you will be able to comment on any post; instead, provide answers that don't require clarification from the asker. - From Review – 
