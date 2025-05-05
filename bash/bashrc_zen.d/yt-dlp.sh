@@ -17,7 +17,7 @@ mm() {
 
   # Only run mpv if a file was selected
   if [[ -n "$file" ]]; then
-    mpv "$file"
+    mpv --no-audio-display "$file"
   else
     echo "No file selected."
   fi
