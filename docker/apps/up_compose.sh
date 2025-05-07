@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 set -uo pipefail
+export UID=1000
+export GID=1000
 
 cd /apps
 

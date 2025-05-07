@@ -2,10 +2,10 @@ services:
   it-tools:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.it-tools.rule=Host(`it-tools.xaax.dev`)"
+      - "traefik.http.routers.it-tools.rule=Host(`ittools.xaax.dev`)"
       - "traefik.http.routers.it-tools.entrypoints=websecure"
       - "traefik.http.routers.it-tools.tls=true"
-      - "traefik.http.services.it-tools.loadbalancer.server.port=8000"
+      - "traefik.http.services.it-tools.loadbalancer.server.port=80"
       - "traefik.docker.network=traefik_web"
     healthcheck:
       test: ["CMD", "curl", "-s", "localhost"]

@@ -44,6 +44,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./etc/certs:/etc/certs:ro
       - ./etc/traefik:/etc/traefik
+      - '.:/plugins-local/src/github.com/acouvreur/traefik-modsecurity-plugin'
     networks:
       - web
     command:
@@ -57,6 +58,7 @@ services:
       - "--entrypoints.websecure.http.tls=true"
       - "--api.dashboard=true"
       - "--api.insecure=true"
+      - "--api.debug=true"
       - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
       - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
       - "--entryPoints.ping.address=:8082"
