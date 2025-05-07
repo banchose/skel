@@ -1,0 +1,47 @@
+Not all queries rely on this information.  It is here as a reference where needed.  This is my network summary: 
+AWS Network Architecture Summary
+Organization Structure
+
+    AWS Organization with Control Tower deployed
+    Network account containing primary networking infrastructure
+    Multi-AZ design (2 AZs) for redundancy
+
+CIDR Allocation
+
+    Main CIDR block: 172.22.0.0/16
+
+Network Account VPCs
+InspectVPC (172.22.0.0/20)
+
+    Private Hosted Zone associated
+    Public Subnets:
+        InspectPublicSubnet (172.22.0.0/24) [AZ-A] - Contains NAT Gateway
+        InspectPublicSubnetAZB (172.22.1.0/24) [AZ-B] - Contains NAT Gateway
+        InspectvMXPublicSubnet (172.22.2.0/24) [AZ-A] - Hosts Meraki vMX in passthru mode with site-to-site VPN to on-prem MX250
+        InspectvMXPublicSubnetAZB (172.22.3.0/24) [AZ-B] - Hosts redundant Meraki vMX with site-to-site VPN
+    Private Subnets:
+        InspectFirewallPrivateSubnet (172.22.4.0/24) [AZ-A] - Hosts AWS Network Firewall
+        InspectFirewallPrivateSubnetAZB (172.22.5.0/24) [AZ-B] - Hosts redundant AWS Network Firewall
+        InspectTgwPrivateSubnet (172.22.6.0/24) [AZ-A] - TGW attachment point
+        InspectTgwPrivateSubnetAZB (172.22.7.0/24) [AZ-B] - TGW attachment point
+
+ServiceVPC (172.22.32.0/24)
+
+    Private Hosted Zone associated
+    Transit Subnets:
+        ServiceTransitPrivateSubnet (172.22.32.0/24) [AZ-A] - Hosts resolver inbound/outbound endpoints for DNS
+        ServiceTransitPrivateSubnetAZB (172.22.33.0/24) [AZ-B] - Hosts redundant resolver endpoints
+    Workload Subnets:
+        ServiceWorkloadPrivateSubnet (172.22.34.0/24) [AZ-A]
+        ServiceWorkloadPrivateSubnetAZB (172.22.35.0/24) [AZ-B]
+    Data Subnets:
+        ServiceDataPrivateSubnet (172.22.36.0/24) [AZ-A]
+        ServiceDataPrivateSubnetAZB (172.22.37.0/24) [AZ-B]
+
+Connection Patterns
+
+    Site-to-site VPN through Meraki vMX to on-premises
+    Transit Gateway for inter-VPC connectivity
+    DNS resolution between on-premises and AWS through Route53 Resolver endpoints.
+I typically use cloudformation in conjunction with awscliv2 and the Bash shell v5.  When using bash scripting, always double quote varibles and use only bash v5 constructs like "[[]]" and the like.  I sometimes need help with how things connect together like Application load balancer listerers and target groups and connectiong them to other resources while keeping the security groups correct.  I need you to be accurate and deal with only the latest way of doing things in line with current best practices.  Always double check that you are not over complicating the problem or solving the wrong problem.
+

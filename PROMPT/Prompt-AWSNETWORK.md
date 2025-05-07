@@ -1,0 +1,37 @@
+- My Amazon AWS network infrastructure deployed in aws consists of the following that implements the networking infrastructure in the Network account with vpcs having subnets in 2 AZs to provide 2 separate paths:
+	- An AWS Organization with Control Tower deployed
+	- A Network account that consists of an Inspect VPC with subnets in 2 AZs 
+	- The subnets of the Inspect VPC are as follows
+	- The AWS Cidr is: 172.22.0.0/16
+
+### Network Account
+- InspectVPC (172.22.0.0/20) - PHZ associated - vpc-069ca27d3806c79a5
+	- InspectPublicSubnet (172.22.0.0/24) - subnet-0501b4ef37c4499d8
+		- NAT Gateway deployed - nat-033aac4b3fd078044
+	- InspectPublicSubnetAZB (172.22.1.0/24) - subnet-09386486a8504916d
+		- NAT Gateway deployed - nat-06e1fd0a1aa366596
+	- InspectvMXPublicSubnet  (172.22.2.0/24) - subnet-0c4741929b04390aa
+		- Hosting Meraki vMX in passthru and spoke site-to-site with onprem Meraki MX250
+	- InspectvMXPublicSubnetAZB  (172.22.3.0/24) - subnet-06f55a15ea0dc1ba5
+		- Hosting Meraki vMX-AZB in passthru and spoke site-to-site with onprem Meraki MX250
+	- InspectFirewallPrivateSubnet (172.22.4.0/24) - subnet-057aacdba2a4d8f7d
+		- Hosting AWS Network Firewall - InspectFirewall
+	- InspectFirewallPrivateSubnetAZB (172.22.5.0/24) - subnet-007ea0f9c4816e37f
+		- Hosting AWS Network Firewall - InspectFirewallAZB
+	- InspectTgwPrivateSubnet (172.22.6.0/24) - subnet-061a82c350837da4d
+		- Hosting the transit gateway attach: tgw-attach-0fffe088bb0723bed
+	- InspectTgwPrivateSubnetAZB (172.22.7.0/24) -subnet-06a01a642a901cc81
+		- Hosting the transit gateway attach: tgw-attach-0fffe088bb0723bed
+- ServiceVPC (172.22.32.0/24) - PHZ associated - vpc-017f08d5a97db27e1
+	- ServiceTransitPrivateSubnet (172.22.32.0/24) - subnet-04bc633fa98895084
+		- Hosting resolver inbound endpoint from onprem - rni-34a704c6ed1e4a469
+		- Hosting resolver outbound endpoint to onprem  - rni-7a4c5b15e68449138
+		- Hosting resolver outbound endpoint rev dns to onprem - rni-eec966c076e0409d8
+	- ServiceTransitPrivateSubnetAZB (172.22.33.0/24) - subnet-0e45f41c24c1718f0
+		- Hosting resolver inbound endpoint from onprem - rni-4bcea81a4e464bfb8
+		- Hosting resolver outbound endpoint dns to onprem - rni-684424b5f93443978
+		- Hosting resolver outbound endpoint rev dns to onprem - rni-9d17db29bddd49fc9
+- ServiceWorkloadPrivateSubnet (172.22.34.0/24) - subnet-051cf7bcd24fe9669
+		- ServiceWorkloadPrivateSubnetAZB (172.22.35.0/24) - subnet-0bcd7ff8e71176443
+		- ServiceDataPrivateSubnet (172.22.36.0/24) - subnet-04b23f`8456cbc09c0
+		- ServiceDataPrivateSubnetAZB (172.22.37.0/24) - subnet-00d751b24ae619c0eeDataPrivateSubnetAZB (172.22.37.0/24) - subnet-00d751b24ae619c0e
