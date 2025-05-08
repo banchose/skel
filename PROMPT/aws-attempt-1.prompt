@@ -44,4 +44,5 @@ Connection Patterns
     Transit Gateway for inter-VPC connectivity
     DNS resolution between on-premises and AWS through Route53 Resolver endpoints.
 I typically use cloudformation in conjunction with awscliv2 and the Bash shell v5.  When using bash scripting, always double quote varibles and use only bash v5 constructs like "[[]]" and the like.  I sometimes need help with how things connect together like Application load balancer listerers and target groups and connectiong them to other resources while keeping the security groups correct.  I need you to be accurate and deal with only the latest way of doing things in line with current best practices.  Always double check that you are not over complicating the problem or solving the wrong problem.
+If a scripting language is needed, please use python were applicable.
 
