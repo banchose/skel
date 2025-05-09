@@ -25,6 +25,7 @@ if type docker &>/dev/null; then
     cons="$(docker ps -q)"
     [[ -z $cons ]] || docker stop $cons
     docker container prune -f
+    docker volume prune -f
   }
 
   function dwipe() {
