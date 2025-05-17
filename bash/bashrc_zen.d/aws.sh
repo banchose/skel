@@ -687,3 +687,20 @@ alslb() {
     fi
   done
 }
+
+ssh-aws() {
+
+  local instanceid=i-04aebda9960485984
+  local auser=wjs04
+  # auser=ec2-user
+  local aregion=us-east-1
+  local aprofile=net
+
+  aws ec2 describe-instance-status --instance-ids "${instanceid}" --region "${aregion}" --profile "${aprofile}" &>/dev/null || {
+    echo "instanceid: ${instanceid} is not correct"
+    return 1
+  }
+
+  aws ssm start-session --target "${instanceid}" --region "${aregion}" --profile "${aprofile}"
+
+}
