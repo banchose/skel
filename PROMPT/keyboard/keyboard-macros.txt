@@ -1,0 +1,30 @@
+... starts ...
+"Some advantages of macros (not key mappings; that is a separate topic (still very valuable, though)):
+
+    Dedicated macro keys (no need for modifier keys), at least for the most commonly used macros. This presumes there are enough keys; it could also be a separate macro keyboard or macro pad. There isn't any need to use modifier keys. The whole point of macros is to avoid unnecessary key strokes, incl. modifier keys.
+
+    I have both repurposed the numeric keypad as a macro pad and use a separate macro keyboard (which happens to be QMK-based (but it was a custom-made previously, using an old PS/2 keyboard)). I am already running out of keys on the macro keyboard! (at least for them to have a sensible location and sensible key legends)
+
+    Option for a separate macro keyboard or macro pad. Operating systems don't distinguish between where key input comes from (unless a special low-level driver is installed). Thus it is difficult or impossible to do this with a software-only solution. The low-level driver may be obsoleted by future changes to the operating system.
+
+    They follow the keyboard. There isn't anything to install and to configure on a new system (say, after reinstalling Windows or getting a new laptop / desktop). It is all in one place.
+
+    Some employers don't allow anything to be installed, including AutoHotkey.
+
+    100% compatibility. AutoHotkey may not work (I am not sure) in some more 'virtual' environments like Remote Desktop, cloud solutions (Citrix?), and Docker containers (yes, Windows can run in Docker containers though they get quite big; 40 GB is not uncommon). In any case, it would have to be installed on those system.
+
+Some disadvantages:
+
+    Most macro systems work on a very low level, a (very long) linear series of key presses, key releases, and delays, without any ability to annotate what each section or series of keys actions are for. It can be very tedious to painstakingly to set up each macro working on this low level, even if recording macros is possible. There often isn't a good way to document and organise the macros (for instance, they can't even get a name in Via, only "M1", "M2", ... "M15"). The equivalent of a real programming language would offer that.
+
+    Mouse actions in macros are not supported in Via (only in key mappings). But they are supported in Vial. Vial may not work for some of the newer Keychron keyboards; and/or it may become very complicated very quickly to make them work with Vial.
+
+    It does not really work out of the box if using Via or Vial: There is very little space avaiable for macros (a consequence of the little amount of (emulated) EEPROM memory). And the number of macros is limited to 16. Though both limits can be changed to be essentially unlimited; that requires changing the content of files in QMK, compiling, and flashing. The latter limit can only be changed for Vial, not Via (as far as know (I have tried it)) can only be changed for Vial, not Via (as far as know (I have tried it))"
+
+
+... more ...
+
+"And full programmability. Including the ability to drop down to C programming is, as Pascal Getreuer said it, extremely powerful.
+
+For instance, I have implemented cancelling of macros in progress in QMK (press any key during macro execution and it stops immediately). That is possible to varying degrees in other systems. For instance, Ducky macros can be cancelled that way, a workaround is possible for Cooler Master keyboards, whereas I don't it is possible to cancel macros on Corsair keyboards."
+
