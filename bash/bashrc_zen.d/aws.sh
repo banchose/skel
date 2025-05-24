@@ -168,6 +168,8 @@ set_aws_envs() {
   set_stack_outputs "HRI-EKS-VPC-SAND" us-east-1 test
   echo "HRI-EKSALB-PRIVATE-SAND"
   set_stack_outputs HRI-EKSALB-PRIVATE-SAND us-east-1 test
+  echo "HRI-BIGEKS-SAND"
+  set_stack_outputs HRI-BIGEKS-SAND us-east-1 test
 }
 
 get_aws_context() {
