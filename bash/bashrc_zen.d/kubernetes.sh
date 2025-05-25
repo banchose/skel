@@ -25,9 +25,11 @@ alias kcp='kubectl config use-context Production'
 alias kct='kubectl config use-context Test'
 alias kn='kubectl get nodes'
 alias kp='kubectl get pods'
+alias ki='kubectl get ingress -A'
+alias kra='for i in $(kubectl api-resources -o name);do echo "${i%%.*}";kubectl get "${i%%.*}";done'
 
 source <(kubectl completion bash)
-complete -F __start_kubectl k
+# complete -F __start_kubectl k
 
 getyn() {
   local yn='n'
