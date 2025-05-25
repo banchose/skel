@@ -35,7 +35,7 @@ kxbt() {
 
 kxbs() {
 
-  kubectl run -it bash-kbp --restart=Never --image=bash:latest
+  kubectl run -it bash-kbp --rm --restart=Never --image=bash:latest
 }
 
 kxct() {
@@ -46,7 +46,7 @@ kxct() {
 
 kxcc() {
 
-  kubectl run -it curl-1 --rm --restart=Never --image=curlimages/curl -- --connect-timeout 5 "$1"
+  kubectl run -it curl-1 --rm --restart=Never --image=curlimages/curl -- --max-time 10 --connect-timeout 5 "$1"
 }
 
 source <(kubectl completion bash)
