@@ -21,12 +21,33 @@ alias kda='kubectl get deployment -A'
 alias kdaw='kubectl get deployment -A -o wide'
 alias ks='kubectl get svc -A'
 alias kc='kubectl config current-context'
-alias kcp='kubectl config use-context Production'
-alias kct='kubectl config use-context Test'
+# alias kct='kubectl config use-context Test'
 alias kn='kubectl get nodes'
 alias kp='kubectl get pods'
 alias ki='kubectl get ingress -A'
 alias kra='for i in $(kubectl api-resources -o name);do echo "${i%%.*}";kubectl get "${i%%.*}";done'
+alias klsp='kubectl run  -it alpine-test --image=alpine --restart=Never --rm --command  -- ls'
+
+kxtp() {
+
+  kubectl run -it bash-count --rm --restart=Never --image=bash:latest -- -c 'for i in {1..10};do echo "$i";done'
+}
+
+kxbp() {
+
+  kubectl run -it bash-kbp --restart=Never --image=bash:latest
+}
+
+kxbpt() {
+
+  kubectl run -it bash-kbp --rm --restart=Never --image=bash:latest
+}
+
+kxcv() {
+
+  kubectl run -it curl-1 --rm --restart=Never --image=curlimages/curl --command -- curl --version
+  kubectl run -it curl-1 --rm --restart=Never --image=curlimages/curl -- --version
+}
 
 source <(kubectl completion bash)
 # complete -F __start_kubectl k
