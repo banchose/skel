@@ -28,6 +28,15 @@ alias ki='kubectl get ingress -A'
 alias kra='for i in $(kubectl api-resources -o name);do echo "${i%%.*}";kubectl get "${i%%.*}";done'
 alias klsp='kubectl run  -it alpine-test --image=alpine --restart=Never --rm --command  -- ls'
 
+kbash() {
+
+  if kubectl get pods | grep ubash; then
+    kubectl attach ubash -c ubash -i -t
+  else
+    kubectl run -it --tty --restart=Always --image=bash:latest ubash
+  fi
+}
+
 kxbt() {
 
   kubectl run -it bash-count --rm --restart=Never --image=bash:latest -- -c 'for i in {1..10};do echo "$i";done'
@@ -44,7 +53,7 @@ kxct() {
   kubectl run -it curl-1 --rm --restart=Never --image=curlimages/curl -- --version
 }
 
-kxcc() {
+kcurl() {
 
   kubectl run -it curl-1 --rm --restart=Never --image=curlimages/curl -- --max-time 10 --connect-timeout 5 "$1"
 }
