@@ -1,5 +1,36 @@
 # kubectl commands
 
+## info
+
+```sh
+kubectl cluster-info
+kubectl cluster-info dump
+kubectl cluster-info dump --output-directory=/path/to/cluster-state
+```
+
+## resources
+
+```sh
+kubectl cluster-info dump --output-directory=/path/to/cluster-state
+kubectl api-resources --namespaced=true
+kubectl api-resources --namespaced=false
+kubectl api-resources -o name
+kubectl api-resources -o wide
+kubectl api-resources --verbs=list,get
+kubectl api-resources --api-group=extensions
+```
+
+##
+
+## scale
+
+```sh
+kubectl scale --replicas=3 rs/foo
+kubectl scale --replicas=3 -f foo.yaml
+kubectl scale --current-replicas=2 --replicas=3 deployment/mysql
+kubectl scale --replicas=5 rc/foo rc/bar rc/baz
+```
+
 ## get
 
 ## Delete
@@ -16,9 +47,11 @@ kubectl get pods -n mynamespace --no-headers=true | awk '/pattern1|pattern2/{pri
 ## apply / create
 
 ```sh
+kubectl replace --force -f ./pod.json
 kubectl apply -f ./my1.yaml -f ./my2.yaml
 kubectl apply -f ./dir
 kubectl apply -f https://example.com/manifest.yaml
+kubectl expose rc nginx --port=80 --target-port=8000 # creates a service
 kubectl create namespace my-namespace
 kubectl create deployment nginx --image=nginx
 kubectl create job hello --image=busybox:1.28 -- echo 'Hello World'
