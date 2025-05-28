@@ -166,8 +166,8 @@ set_aws_envs() {
   set_stack_outputs "HRI-BIGNETWORK-TGWRT-ASSC-EKSVPC-SAND" us-east-1 net
   echo "HRI-EKS-VPC-SAND"
   set_stack_outputs "HRI-EKS-VPC-SAND" us-east-1 test
-  echo "HRI-EKSALB-PRIVATE-SAND"
-  set_stack_outputs HRI-EKSALB-PRIVATE-SAND us-east-1 test
+  echo "HRI-EKS-NLB-SAND"
+  set_stack_outputs HRI-EKS-NLB-SAND us-east-1 test
   echo "HRI-BIGEKS-SAND"
   set_stack_outputs HRI-BIGEKS-SAND us-east-1 test
 }
