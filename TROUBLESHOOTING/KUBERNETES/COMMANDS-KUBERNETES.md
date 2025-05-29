@@ -1,5 +1,28 @@
 # kubectl commands
 
+## get
+
+```sh
+kubectl get pod mypod -o yaml | sed 's/\(image: myimage\):.*$/\1:v4/' | kubectl replace -f -
+kubectl get deployment nginx-deployment --subresource=status
+kubectl get pods -o json | jq -c 'paths|join(".")'
+kubectl get nodes -o json | jq -c 'paths|join(".")'
+kubectl get events --sort-by=.metadata.creationTimestamp
+kubectl get pods --sort-by='.status.containerStatuses[0].restartCount'
+kubectl get pods --selector=app=cassandra -o jsonpath='{.items[*].metadata.labels.version}'
+kubectl get configmap myconfig -o jsonpath='{.data.ca\.crt}'
+kubectl get secret my-secret --template='{{index .data "key-name-with-dashes"}}'
+kubectl get pods --field-selector=status.phase=Running
+kubectl get node -o custom-columns='NODE_NAME:.metadata.name,STATUS:.status.conditions[?(@.type=="Ready")].status'
+kubectl get secret my-secret -o go-template='{{range $k,$v := .data}}{{"### "}}{{$k}}{{" "}}{{$v|base64decode}}{{" "}}{{end}}'
+kubectl get pods -o json | jq '.items[].spec.containers[].env[]?.valueFrom.secretKeyRef.name' | grep -v null | sort | uniq
+kubectl get pods --all-namespaces -o jsonpath='{range .items[*].status.initContainerStatuses[*]}{.containerID}{" "}{end}' | cut -d/ -f3
+```
+
+```
+
+```
+
 ## info
 
 ```sh
@@ -20,7 +43,12 @@ kubectl api-resources --verbs=list,get
 kubectl api-resources --api-group=extensions
 ```
 
-##
+## curl
+
+```sh
+kubectl run -it curl-1 --rm --restart=Never --image=curlimages/curl --image-pull-policy=Always --command -- curl --version
+kubectl run -it curl-1 --rm --restart=Never --image=curlimages/curl --image-pull-policy=Never --command -- curl --version
+```
 
 ## scale
 
@@ -33,7 +61,7 @@ kubectl scale --replicas=5 rc/foo rc/bar rc/baz
 
 ## get
 
-## Delete
+## delete
 
 ```sh
 # delete pods and services with the names baz and foo
@@ -127,7 +155,7 @@ KUBE_EDITOR="vim" kubectl edit svc/docker-registry
 kubectl edit svc/docker-registry
 ```
 
-## Classify
+## classify
 
 ```sh
 kubectl get pod mypod -o yaml | sed 's/\(image: myimage\):.*$/\1:v4/' | kubectl replace -f -

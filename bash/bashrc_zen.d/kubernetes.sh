@@ -30,10 +30,10 @@ alias klsp='kubectl run  -it alpine-test --image=alpine --restart=Never --rm --c
 
 kbash() {
 
-  if kubectl get pods | grep ubash; then
-    kubectl attach ubash -c ubash -i -t
+  if kubectl get pods | grep kbash; then
+    kubectl exec -it kbash
   else
-    kubectl run -it --tty --restart=Always --image=bash:latest ubash
+    kubectl run -it --tty --restart=Always --image=bash:latest kbash
   fi
 }
 
