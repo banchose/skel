@@ -5,7 +5,7 @@
 export AWS_PROFILE=lab
 export AWS_DEFAULT_REGION=us-east-1
 export AwsRegion=us-east-1
-MANINSTANCE=i-04aebda9960485984
+MANINSTANCE=i-0ee921efcdf1df9ff
 
 # AWS Regions to check
 REGIONS=("us-east-1" "us-west-2")
@@ -692,7 +692,8 @@ alslb() {
 
 ssh-aws() {
 
-  local instanceid=i-04aebda9960485984
+  # local instanceid=i-04aebda9960485984
+  local instanceid=i-0ee921efcdf1df9ff
   local auser=wjs04
   # auser=ec2-user
   local aregion=us-east-1

@@ -8,8 +8,13 @@ if type docker &>/dev/null; then
   alias rde='docker -H ssh://una@s1'
   alias rdx='docker -H ssh://una@s1 container prune'
 
-  alias d='docker'
-  alias dls='docker ps --format "table {{.Image}}\t{{.Names}}\t{{.Status}}"'
+  # alias d='docker'
+  alias dlsb='docker ps --format "table {{.Image}}\t{{.Names}}\t{{.Status}}"'
+  alias dp='docker ps'
+  alias dl='docker ps -l'
+  alias di='docker images'
+  alias dlc='docker container ls'
+  alias dlspa='docker ps --all'
 
   function dkill() {
 
