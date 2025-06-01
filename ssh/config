@@ -1,0 +1,40 @@
+
+Host mbp mac
+    HostName mac.xaax.dev
+    User williamstewart
+    ForwardX11 yes
+
+Host ns1.xaax.de vns1
+    HostName ns1.xaax.dev
+    User una
+    # 192.168.1.50/24
+
+Host ns2.xaax.dev ns2 pi
+    Hostname ns2.xaax.dev
+    User una
+    AddressFamily inet
+    # 192.168.2.2/24
+    # should have key
+
+Host helios h1 fireone
+    Hostname helios.xaax.dev
+    # 192.168.10.1
+    # Netgate 6100 firewall pfsense
+    User admin
+    # has key ssh-rsa
+
+Host arc
+    Hostname  arc.xaax.dev
+    User una 
+    ForwardX11 no
+    ForwardAgent yes
+
+Host i-04aebda9960485984
+  ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=22' --region us-east-1 --profile net"
+
+Host *
+  EscapeChar `
+  AddressFamily inet
+  ServerAliveInterval 60
+  ServerAliveCountMax 3
+  TCPKeepAlive yes

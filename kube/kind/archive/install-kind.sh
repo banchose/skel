@@ -1,7 +1,7 @@
-#
+# CONTROL PLANE ONLY - NO EXTRA NODES
 # source ~/gitdir/skel/bash/bashrc_zen.d/kubernetes.sh
 # source ~/gitdir/skel/bash/bashrc_zen.d/docker.sh
-# go install sigs.k8s.io/kind@v0.29.0
+# go install sigs.k8s.io/kind
 # ~/go/bin/kind get nodes
 # ~/go/bin/kind get clusters
 # ~/go/bin/kind create cluster

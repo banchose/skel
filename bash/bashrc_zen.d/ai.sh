@@ -19,7 +19,8 @@ source ~/.bashrc_zen.d/api_keys_envs.sh
 # OR_MODEL="meta-llama/llama-3.3-70b-instruct"
 # OR_MODEL="anthropic/claude-3.5-haiku"
 # OR_MODEL="anthropic/claude-3.5-sonnet"
-OR_MODEL="anthropic/claude-3.7-sonnet"
+# OR_MODEL="anthropic/claude-3.7-sonnet"
+OR_MODEL="anthropic/claude-sonnet-4"
 OR_MODEL_QUICK=mistralai/mistral-small-3.1-24b-instruct
 # OR_MODEL="mistralai/mistral-large-2411"
 # OR_MODEL="minimax/minimax-01"

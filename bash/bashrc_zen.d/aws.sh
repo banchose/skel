@@ -5,8 +5,8 @@
 export AWS_PROFILE=lab
 export AWS_DEFAULT_REGION=us-east-1
 export AwsRegion=us-east-1
-MANINSTANCE=i-0ee921efcdf1df9ff
-
+export MANINSTANCE=i-0a495644db9737bf6
+#
 # AWS Regions to check
 REGIONS=("us-east-1" "us-west-2")
 PROFILES=("net" "test" "dev" "production")
@@ -692,18 +692,40 @@ alslb() {
 
 ssh-aws() {
 
-  # local instanceid=i-04aebda9960485984
-  local instanceid=i-0ee921efcdf1df9ff
-  local auser=wjs04
-  # auser=ec2-user
-  local aregion=us-east-1
+  local aregion="${AWS_DEFAULT_REGION}"
   local aprofile=net
 
-  aws ec2 describe-instance-status --instance-ids "${instanceid}" --region "${aregion}" --profile "${aprofile}" &>/dev/null || {
-    echo "instanceid: ${instanceid} is not correct"
+  aws sts get-caller-identity --region "${aregion}" --profile "${aprofile}"
+  aws ec2 describe-instance-status --instance-ids "${MANINSTANCE}" --region "${aregion}" --profile "${aprofile}" || {
+    echo "instanceid: ${MANINSTANCE} is not correct"
     return 1
   }
 
-  aws ssm start-session --target "${instanceid}" --region "${aregion}" --profile "${aprofile}"
+  aws ssm start-session --target "${MANINSTANCE}" --region "${aregion}" --profile "${aprofile}"
 
+}
+
+kci() {
+  echo '
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  name: ${GENERIC}
+  namespace: default
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /${GENERIC}(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ${GENERIC}
+            port: 
+              number: 80
+' | GENERIC=mypath envsubst | kubectl create -f -
 }
