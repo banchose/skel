@@ -90,7 +90,7 @@ gitsync() {
       echo "**********************************"
       echo $'\t'"${PWD##*/}"
       echo "**********************************"
-      [[ -d .git ]] && git fetch --prune && git pull
+      [[ -d .git ]] && git fetch --prune && git status && git pull
       cd ..
     done
   )
