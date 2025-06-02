@@ -1,5 +1,36 @@
 # llm cheat
 
+## Set default model
+
+```sh
+llm models default openrouter/anthropic/claude-sonnet-4
+```
+
+## Help
+
+## Pettern
+
+```sh
+llm –help
+
+    llm prompt –help
+    llm chat –help
+    llm keys –help
+```
+
+```sh
+llm prompt --help
+# -td, tools-debug: tool debug
+# -f, --fragment: fragment
+# -q, --query: (0 or more -q) use first model in search,
+# -s, --system: system prompt
+# -a, --attachement: <path, url, ->
+# -c, --continue: chat?
+# -u, --usage: Show prompt usage
+# -x, --extract: extract code from fenced code blocks
+# -xl, --extract-last: the last one
+```
+
 ## Search Web?
 
 ```sh
