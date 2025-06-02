@@ -1,5 +1,11 @@
 # llm cheat
 
+## Search Web?
+
+```sh
+llm -m openrouter/anthropic/claude-sonnet-4 -o online 1 'key events on june 1st 2025'
+```
+
 ## OpenRouter
 
 ```sh
@@ -11,6 +17,21 @@ llm -m openrouter/anthropic/claude-sonnet-4 "test, please ignore"
 llm keys
 # or
 ## llm openrouter key --key sk-xxx
+```
+
+## Fast
+
+```sh
+llm -m openrouter/anthropic/claude-2 "Five spooky names for a pet tarantula"
+llm aliases set claude openrouter/anthropic/claude-sonnet-4
+cat llm_openrouter.py | llm -m claude -s 'write some pytest tests for this'
+```
+
+## Fast Screen Capture
+
+```sh
+grim -g "$(slurp -d)"
+
 ```
 
 ## Options
