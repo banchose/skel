@@ -729,3 +729,34 @@ spec:
               number: 80
 ' | GENERIC=mypath envsubst | kubectl create -f -
 }
+
+Install_kubectl_eksctl() {
+
+  (
+    cd /tmp || {
+      echo "cd /tmp failed"
+      exit 1
+    }
+    curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/arm64/kubectl &&
+      sudo mv ./kubectl /usr/local/bin && sudo chmod +x /usr/local/bin/kubectl &&
+      echo "*** Movedd kubectl to /usr/local/bin"
+
+    # curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/arm64/kubectl.sha256
+    # curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/arm64/kubectl
+    # # for ARM systems, set ARCH to: `arm64`, `armv6` or `armv7`
+    ARCH=arm64
+    PLATFORM=$(uname -s)_$ARCH
+
+    curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_${PLATFORM}.tar.gz"
+
+    # (Optional) Verify checksum
+    curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep "${PLATFORM}" | sha256sum --check
+
+    tar -xzf eksctl_"${PLATFORM}".tar.gz -C /tmp && rm eksctl_"${PLATFORM}".tar.gz
+
+    echo "*** Moving eksctl to /usr/local/bin"
+
+    sudo mv /tmp/eksctl /usr/local/bin && sudo chmod +x /usr/local/bin/eksctl
+  )
+
+}
