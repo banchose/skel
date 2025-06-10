@@ -761,3 +761,25 @@ Install_kubectl_eksctl() {
   )
 
 }
+
+tailwaf() {
+  aws logs tail aws-waf-logs-HRI-APP-WAF \
+    --follow \
+    --region us-east-1 \
+    --profile net |
+    awk '{print substr($0, index($0, "{"))}' |
+    jq -r --unbuffered '
+    select(.action == "BLOCK" or (.nonTerminatingMatchingRules | length > 0) or .terminatingRuleId != "Default_Action") |
+    
+    (.timestamp / 1000 | strftime("%H:%M:%S")) as $time |
+    ([.labels[]?.name | select(. and test("geo"))] | map(gsub("awswaf:clientip:geo:"; "")) | join(" | ")) as $geo |
+    (.nonTerminatingMatchingRules | map(.ruleId) | join(", ")) as $matched |
+    
+    (if .action == "BLOCK" then "🚫"
+     elif ($matched != "") then "👀"
+     else "⚠️" end) as $icon |
+    
+    "\($icon) \($time) | \(.httpRequest.clientIp) | \($geo) | \(.action) | \(.terminatingRuleId) | \(.httpRequest.httpMethod) \(.httpRequest.uri)" +
+    (if $matched != "" then " | Triggered: \($matched)" else "" end)
+  '
+}
