@@ -28,6 +28,13 @@ alias ki='kubectl get ingress -A'
 alias kra='for i in $(kubectl api-resources -o name);do echo "${i%%.*}";kubectl get "${i%%.*}";done'
 alias klsp='kubectl run  -it alpine-test --image=alpine --restart=Never --rm --command  -- ls'
 
+kwhoami() {
+
+  kubectl auth can-i --list
+  kubectl config current-context
+
+}
+
 kbash() {
 
   if kubectl get pods | grep kbash; then
