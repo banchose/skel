@@ -27,6 +27,7 @@ alias kn='kubectl get nodes'
 alias ki='kubectl get ingress -A'
 alias kra='for i in $(kubectl api-resources -o name);do echo "${i%%.*}";kubectl get "${i%%.*}";done'
 alias klsp='kubectl run  -it alpine-test --image=alpine --restart=Never --rm --command  -- ls'
+alias akcurl='kubectl run -it curl-$RANDOM --rm --restart=Never --image=curlimages/curl --'
 
 kwhoami() {
 
@@ -62,7 +63,7 @@ kxct() {
 
 kcurl() {
 
-  kubectl run -it curl-1 --rm --restart=Never --image=curlimages/curl -- --max-time 10 --connect-timeout 5 "$1"
+  kubectl run -it curl-1 --rm --restart=Never --image=curlimages/curl -- --max-time 10 --connect-timeout 5 "$@"
 }
 
 source <(kubectl completion bash)
