@@ -783,3 +783,45 @@ tailwaf() {
     (if $matched != "" then " | Triggered: \($matched)" else "" end)
   '
 }
+
+awsdnscheck() {
+  command -v cowsay &>/dev/null && cowsay "Herrrrrrre goes..."
+  echo "#########################################"
+  echo "Checking corp.healthresearch.org FORWARD DNS"
+  echo "#########################################"
+  nslookup alb-prd-dc-3.corp.healthresearch.org
+  echo "#########################################"
+  echo "Checking Single Label FORWARD DNS"
+  echo "#########################################"
+  nslookup alb-prd-dc-3
+  echo "#########################################"
+  echo "Checking corp.healthresearch.org REVERSE DNS"
+  echo "#########################################"
+  nslookup 10.1.100.100
+  nslookup 10.1.100.101
+  echo "#########################################"
+  echo "Checking PING DNS name prem HRI alb-prd-dc-3"
+  echo "#########################################"
+  ping -l 1 -c 3 alb-prd-dc-3
+  echo "#########################################"
+  echo "Checking PING to on prem HRI DMZ alb-prd-dc-3"
+  echo "#########################################"
+  ping -l 1 -c 3 alb-prd-zdns-1
+  echo "#########################################"
+  echo "Checking PING to on prem HRI IP"
+  echo "#########################################"
+  ping -l 1 -c 2 10.1.100.100
+  ping -l 1 -c 2 10.1.100.101
+  echo "#########################################"
+  echo "Checking PING to Internet IP"
+  echo "#########################################"
+  ping -l 1 -c 3 1.1.1.1
+  echo "#########################################"
+  echo "Checking PING to Internet DNS"
+  echo "#########################################"
+  ping -l 1 -c 3 www.cnn.com
+  echo "#########################################"
+  echo "Checking ssh"
+  echo "#########################################"
+  curl -s --connect-timeout 2 www.cnn.com:80 >/dev/null 2>&1 && echo "Connected to cnn 80"
+}
