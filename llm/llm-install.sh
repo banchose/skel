@@ -12,6 +12,11 @@ pipx inject llm llm-tools-simpleeval --pip-args="--upgrade" --force
 pipx inject llm llm-cmd-comp --pip-args="--upgrade" --force
 pipx inject llm llm-cmd --pip-args="--upgrade" --force
 pipx inject llm llm-templates-fabric --pip-args="--upgrade" --force
+pipx inject llm llm-bedrock --pip-args="--upgrade" --force
+pipx inject llm llm-bedrock-anthropic --pip-args="--upgrade" --force
+pipx inject llm llm-fragments-github --pip-args="--upgrade" --force
+pipx inject llm llm-fragments-pdf --pip-args="--upgrade" --force
+pipx inject llm llm-fragments-site-text --pip-args="--upgrade" --force
 
 # set:
 # export OPENWEATHER_APP_ID="04d5441a8a0215
