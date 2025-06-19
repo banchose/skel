@@ -1,3 +1,8 @@
+# llm -f setup.py 'extract the metadata'
+# llm -f - 'extract the metadata' < setup.py
+#
+# llm chat -f my_doc.txt
+
 pipx install llm
 pipx inject llm llm-tools-exa --pip-args="--upgrade" --force
 pipx inject llm llm-openrouter --pip-args="--upgrade"
@@ -33,6 +38,10 @@ pipx inject llm llm-templates-fabric --pip-args="--upgrade" --force
 ##################################################
 # Example commands
 ##################################################
+# llm -m anthropic/claude-sonnet-4-0 -T llm_version -T llm_time 'Give me the current time and LLM version'
+#
+# # Use a system prompt against a file
+# cat myfile.py | llm -m anthropic/claude-sonnet-4-0 -s "Explain this code"
 # llm -m claude-4-sonnet -T web_search "search the web to get today's weather in nyc"
 #
 # # Summarize a webpage
@@ -44,4 +53,30 @@ pipx inject llm llm-templates-fabric --pip-args="--upgrade" --force
 # Extract wisdom from a document
 # llm -t fabric:extract_wisdom < document.txt
 
+# path:
+# llm templates path
+
 # https://llm.datasette.io
+
+## Fragments
+
+# set a fragment to a file
+# llm fragments set cli cli.py
+# use it
+# llm -f cli 'explain this code'
+#
+# llm "extract text" -a scanned-document.jpg
+#
+# llm chat -m gpt-4.1
+#
+# Chatting with gpt-4.1
+# Type 'exit' or 'quit' to exit
+# Type '!multi' to enter multiple lines, then '!end' to finish
+# Type '!edit' to open your default editor and modify the prompt.
+# Type '!fragment <my_fragment> [<another_fragment> ...]' to insert one or more fragments
+# > Tell me a joke about a pelican
+# Why don't pelicans like to tip waiters?
+#
+# Because they always have a big bill!
+#
+#
