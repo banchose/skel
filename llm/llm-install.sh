@@ -43,20 +43,20 @@ pipx inject llm llm-fragments-site-text --pip-args="--upgrade" --force
 ##################################################
 # Example commands
 ##################################################
-# llm -m anthropic/claude-sonnet-4-0 -T llm_version -T llm_time 'Give me the current time and LLM version'
+# llm -u -m anthropic/claude-sonnet-4-0 -T llm_version -T llm_time 'Give me the current time and LLM version'
 #
 # # Use a system prompt against a file
 # cat myfile.py | llm -m anthropic/claude-sonnet-4-0 -s "Explain this code"
-# llm -m claude-4-sonnet -T web_search "search the web to get today's weather in nyc"
+# llm -u -m claude-4-sonnet -T web_search "search the web to get today's weather in nyc"
 #
 # # Summarize a webpage
-# llm -t fabric:summarize -f https://example.com
+# llm -u -t fabric:summarize -f https://example.com
 
 # Explain code from a file
-# llm -t fabric:explain_code < script.py
+# llm -u -t fabric:explain_code < script.py
 
 # Extract wisdom from a document
-# llm -t fabric:extract_wisdom < document.txt
+# llm -u -t fabric:extract_wisdom < document.txt
 
 # path:
 # llm templates path

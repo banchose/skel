@@ -34,11 +34,6 @@ llm prompt --help
 ## Search Web?
 
 ```sh
-llm -m anthropic/claude-sonnet-4-0  -T web_search "search the web to get todays weather in nyc"
-
-```
-
-```sh
 llm -m openrouter/anthropic/claude-sonnet-4 -o online 1 'key events on june 1st 2025'
 ```
 
