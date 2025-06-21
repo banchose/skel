@@ -2,42 +2,8 @@
 
 This page lists the `--help` output for all of the `llm` commands.
 
-<!-- [[[cog
-from click.testing import CliRunner
-from llm.cli import cli
-def all_help(cli):
-    "Return all help for Click command and its subcommands"
-    # First find all commands and subcommands
-    # List will be [["command"], ["command", "subcommand"], ...]
-    commands = []
-    def find_commands(command, path=None):
-        path = path or []
-        commands.append(path + [command.name])
-        if hasattr(command, 'commands'):
-            for subcommand in command.commands.values():
-                find_commands(subcommand, path + [command.name])
-    find_commands(cli)
-    # Remove first item of each list (it is 'cli')
-    commands = [command[1:] for command in commands]
-    # Now generate help for each one, with appropriate heading level
-    output = []
-    for command in commands:
-        heading_level = len(command) + 2
-        result = CliRunner().invoke(cli, command + ["--help"])
-        hyphenated = "-".join(command)
-        if hyphenated:
-            hyphenated = "-" + hyphenated
-        output.append(f"\n(help{hyphenated})=")
-        output.append("#" * heading_level + " llm " + " ".join(command) + " --help")
-        output.append("```")
-        output.append(result.output.replace("Usage: cli", "Usage: llm").strip())
-        output.append("```")
-    return "\n".join(output)
-cog.out(all_help(cli))
-]]] -->
+## llm --help
 
-(help)=
-## llm  --help
 ```
 Usage: llm [OPTIONS] COMMAND [ARGS]...
 
@@ -90,8 +56,10 @@ Commands:
 ```
 
 (help-prompt)=
+
 ### llm prompt --help
-```
+
+````
 Usage: llm prompt [OPTIONS] [PROMPT]
 
   Execute a prompt
@@ -153,10 +121,12 @@ Options:
   -x, --extract                   Extract first fenced code block
   --xl, --extract-last            Extract last fenced code block
   -h, --help                      Show this message and exit.
-```
+````
 
 (help-chat)=
+
 ### llm chat --help
+
 ```
 Usage: llm chat [OPTIONS]
 
@@ -187,7 +157,9 @@ Options:
 ```
 
 (help-keys)=
+
 ### llm keys --help
+
 ```
 Usage: llm keys [OPTIONS] COMMAND [ARGS]...
 
@@ -204,7 +176,9 @@ Commands:
 ```
 
 (help-keys-list)=
+
 #### llm keys list --help
+
 ```
 Usage: llm keys list [OPTIONS]
 
@@ -215,7 +189,9 @@ Options:
 ```
 
 (help-keys-path)=
+
 #### llm keys path --help
+
 ```
 Usage: llm keys path [OPTIONS]
 
@@ -226,7 +202,9 @@ Options:
 ```
 
 (help-keys-get)=
+
 #### llm keys get --help
+
 ```
 Usage: llm keys get [OPTIONS] NAME
 
@@ -241,7 +219,9 @@ Options:
 ```
 
 (help-keys-set)=
+
 #### llm keys set --help
+
 ```
 Usage: llm keys set [OPTIONS] NAME
 
@@ -258,7 +238,9 @@ Options:
 ```
 
 (help-logs)=
+
 ### llm logs --help
+
 ```
 Usage: llm logs [OPTIONS] COMMAND [ARGS]...
 
@@ -277,7 +259,9 @@ Commands:
 ```
 
 (help-logs-path)=
+
 #### llm logs path --help
+
 ```
 Usage: llm logs path [OPTIONS]
 
@@ -288,7 +272,9 @@ Options:
 ```
 
 (help-logs-status)=
+
 #### llm logs status --help
+
 ```
 Usage: llm logs status [OPTIONS]
 
@@ -299,7 +285,9 @@ Options:
 ```
 
 (help-logs-backup)=
+
 #### llm logs backup --help
+
 ```
 Usage: llm logs backup [OPTIONS] PATH
 
@@ -310,7 +298,9 @@ Options:
 ```
 
 (help-logs-on)=
+
 #### llm logs on --help
+
 ```
 Usage: llm logs on [OPTIONS]
 
@@ -321,7 +311,9 @@ Options:
 ```
 
 (help-logs-off)=
+
 #### llm logs off --help
+
 ```
 Usage: llm logs off [OPTIONS]
 
@@ -332,7 +324,9 @@ Options:
 ```
 
 (help-logs-list)=
+
 #### llm logs list --help
+
 ```
 Usage: llm logs list [OPTIONS]
 
@@ -370,7 +364,9 @@ Options:
 ```
 
 (help-models)=
+
 ### llm models --help
+
 ```
 Usage: llm models [OPTIONS] COMMAND [ARGS]...
 
@@ -386,7 +382,9 @@ Commands:
 ```
 
 (help-models-list)=
+
 #### llm models list --help
+
 ```
 Usage: llm models list [OPTIONS]
 
@@ -403,7 +401,9 @@ Options:
 ```
 
 (help-models-default)=
+
 #### llm models default --help
+
 ```
 Usage: llm models default [OPTIONS] [MODEL]
 
@@ -414,7 +414,9 @@ Options:
 ```
 
 (help-models-options)=
+
 #### llm models options --help
+
 ```
 Usage: llm models options [OPTIONS] COMMAND [ARGS]...
 
@@ -431,7 +433,9 @@ Commands:
 ```
 
 (help-models-options-list)=
+
 ##### llm models options list --help
+
 ```
 Usage: llm models options list [OPTIONS]
 
@@ -446,7 +450,9 @@ Options:
 ```
 
 (help-models-options-show)=
+
 ##### llm models options show --help
+
 ```
 Usage: llm models options show [OPTIONS] MODEL
 
@@ -461,7 +467,9 @@ Options:
 ```
 
 (help-models-options-set)=
+
 ##### llm models options set --help
+
 ```
 Usage: llm models options set [OPTIONS] MODEL KEY VALUE
 
@@ -476,7 +484,9 @@ Options:
 ```
 
 (help-models-options-clear)=
+
 ##### llm models options clear --help
+
 ```
 Usage: llm models options clear [OPTIONS] MODEL [KEY]
 
@@ -493,7 +503,9 @@ Options:
 ```
 
 (help-templates)=
+
 ### llm templates --help
+
 ```
 Usage: llm templates [OPTIONS] COMMAND [ARGS]...
 
@@ -511,7 +523,9 @@ Commands:
 ```
 
 (help-templates-list)=
+
 #### llm templates list --help
+
 ```
 Usage: llm templates list [OPTIONS]
 
@@ -522,7 +536,9 @@ Options:
 ```
 
 (help-templates-show)=
+
 #### llm templates show --help
+
 ```
 Usage: llm templates show [OPTIONS] NAME
 
@@ -533,7 +549,9 @@ Options:
 ```
 
 (help-templates-edit)=
+
 #### llm templates edit --help
+
 ```
 Usage: llm templates edit [OPTIONS] NAME
 
@@ -544,7 +562,9 @@ Options:
 ```
 
 (help-templates-path)=
+
 #### llm templates path --help
+
 ```
 Usage: llm templates path [OPTIONS]
 
@@ -555,7 +575,9 @@ Options:
 ```
 
 (help-templates-loaders)=
+
 #### llm templates loaders --help
+
 ```
 Usage: llm templates loaders [OPTIONS]
 
@@ -566,7 +588,9 @@ Options:
 ```
 
 (help-schemas)=
+
 ### llm schemas --help
+
 ```
 Usage: llm schemas [OPTIONS] COMMAND [ARGS]...
 
@@ -582,7 +606,9 @@ Commands:
 ```
 
 (help-schemas-list)=
+
 #### llm schemas list --help
+
 ```
 Usage: llm schemas list [OPTIONS]
 
@@ -598,7 +624,9 @@ Options:
 ```
 
 (help-schemas-show)=
+
 #### llm schemas show --help
+
 ```
 Usage: llm schemas show [OPTIONS] SCHEMA_ID
 
@@ -610,7 +638,9 @@ Options:
 ```
 
 (help-schemas-dsl)=
+
 #### llm schemas dsl --help
+
 ```
 Usage: llm schemas dsl [OPTIONS] INPUT
 
@@ -624,7 +654,9 @@ Options:
 ```
 
 (help-tools)=
+
 ### llm tools --help
+
 ```
 Usage: llm tools [OPTIONS] COMMAND [ARGS]...
 
@@ -638,7 +670,9 @@ Commands:
 ```
 
 (help-tools-list)=
+
 #### llm tools list --help
+
 ```
 Usage: llm tools list [OPTIONS]
 
@@ -652,7 +686,9 @@ Options:
 ```
 
 (help-aliases)=
+
 ### llm aliases --help
+
 ```
 Usage: llm aliases [OPTIONS] COMMAND [ARGS]...
 
@@ -669,7 +705,9 @@ Commands:
 ```
 
 (help-aliases-list)=
+
 #### llm aliases list --help
+
 ```
 Usage: llm aliases list [OPTIONS]
 
@@ -681,7 +719,9 @@ Options:
 ```
 
 (help-aliases-set)=
+
 #### llm aliases set --help
+
 ```
 Usage: llm aliases set [OPTIONS] ALIAS [MODEL_ID]
 
@@ -702,7 +742,9 @@ Options:
 ```
 
 (help-aliases-remove)=
+
 #### llm aliases remove --help
+
 ```
 Usage: llm aliases remove [OPTIONS] ALIAS
 
@@ -717,7 +759,9 @@ Options:
 ```
 
 (help-aliases-path)=
+
 #### llm aliases path --help
+
 ```
 Usage: llm aliases path [OPTIONS]
 
@@ -728,7 +772,9 @@ Options:
 ```
 
 (help-fragments)=
+
 ### llm fragments --help
+
 ```
 Usage: llm fragments [OPTIONS] COMMAND [ARGS]...
 
@@ -749,7 +795,9 @@ Commands:
 ```
 
 (help-fragments-list)=
+
 #### llm fragments list --help
+
 ```
 Usage: llm fragments list [OPTIONS]
 
@@ -763,7 +811,9 @@ Options:
 ```
 
 (help-fragments-set)=
+
 #### llm fragments set --help
+
 ```
 Usage: llm fragments set [OPTIONS] ALIAS FRAGMENT
 
@@ -780,7 +830,9 @@ Options:
 ```
 
 (help-fragments-show)=
+
 #### llm fragments show --help
+
 ```
 Usage: llm fragments show [OPTIONS] ALIAS_OR_HASH
 
@@ -793,7 +845,9 @@ Options:
 ```
 
 (help-fragments-remove)=
+
 #### llm fragments remove --help
+
 ```
 Usage: llm fragments remove [OPTIONS] ALIAS
 
@@ -808,7 +862,9 @@ Options:
 ```
 
 (help-fragments-loaders)=
+
 #### llm fragments loaders --help
+
 ```
 Usage: llm fragments loaders [OPTIONS]
 
@@ -819,7 +875,9 @@ Options:
 ```
 
 (help-plugins)=
+
 ### llm plugins --help
+
 ```
 Usage: llm plugins [OPTIONS]
 
@@ -832,7 +890,9 @@ Options:
 ```
 
 (help-install)=
+
 ### llm install --help
+
 ```
 Usage: llm install [OPTIONS] [PACKAGES]...
 
@@ -849,7 +909,9 @@ Options:
 ```
 
 (help-uninstall)=
+
 ### llm uninstall --help
+
 ```
 Usage: llm uninstall [OPTIONS] PACKAGES...
 
@@ -861,7 +923,9 @@ Options:
 ```
 
 (help-embed)=
+
 ### llm embed --help
+
 ```
 Usage: llm embed [OPTIONS] [COLLECTION] [ID]
 
@@ -881,7 +945,9 @@ Options:
 ```
 
 (help-embed-multi)=
+
 ### llm embed-multi --help
+
 ```
 Usage: llm embed-multi [OPTIONS] COLLECTION [INPUT_PATH]
 
@@ -936,7 +1002,9 @@ Options:
 ```
 
 (help-similar)=
+
 ### llm similar --help
+
 ```
 Usage: llm similar [OPTIONS] COLLECTION [ID]
 
@@ -962,7 +1030,9 @@ Options:
 ```
 
 (help-embed-models)=
+
 ### llm embed-models --help
+
 ```
 Usage: llm embed-models [OPTIONS] COMMAND [ARGS]...
 
@@ -977,7 +1047,9 @@ Commands:
 ```
 
 (help-embed-models-list)=
+
 #### llm embed-models list --help
+
 ```
 Usage: llm embed-models list [OPTIONS]
 
@@ -989,7 +1061,9 @@ Options:
 ```
 
 (help-embed-models-default)=
+
 #### llm embed-models default --help
+
 ```
 Usage: llm embed-models default [OPTIONS] [MODEL]
 
@@ -1001,7 +1075,9 @@ Options:
 ```
 
 (help-collections)=
+
 ### llm collections --help
+
 ```
 Usage: llm collections [OPTIONS] COMMAND [ARGS]...
 
@@ -1017,7 +1093,9 @@ Commands:
 ```
 
 (help-collections-path)=
+
 #### llm collections path --help
+
 ```
 Usage: llm collections path [OPTIONS]
 
@@ -1028,7 +1106,9 @@ Options:
 ```
 
 (help-collections-list)=
+
 #### llm collections list --help
+
 ```
 Usage: llm collections list [OPTIONS]
 
@@ -1041,7 +1121,9 @@ Options:
 ```
 
 (help-collections-delete)=
+
 #### llm collections delete --help
+
 ```
 Usage: llm collections delete [OPTIONS] COLLECTION
 
@@ -1057,7 +1139,9 @@ Options:
 ```
 
 (help-openai)=
+
 ### llm openai --help
+
 ```
 Usage: llm openai [OPTIONS] COMMAND [ARGS]...
 
@@ -1071,7 +1155,9 @@ Commands:
 ```
 
 (help-openai-models)=
+
 #### llm openai models --help
+
 ```
 Usage: llm openai models [OPTIONS]
 
@@ -1082,4 +1168,5 @@ Options:
   --key TEXT  OpenAI API key
   -h, --help  Show this message and exit.
 ```
+
 <!-- [[[end]]] -->
