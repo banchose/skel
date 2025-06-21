@@ -185,7 +185,8 @@ alias pg="pcre2grep -i"
 alias path='echo -e ${PATH//:/\\n}'
 alias now='date +"%T"'
 alias j='jobs -l'
-alias acurl='curl -s -A "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0"'
+# Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:139.0) Gecko/20100101 Firefox/139.0
+alias acurl='curl -L -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:139.0) Gecko/20100101 Firefox/139.0"'
 ## shortcut  for iptables and pass it via sudo#
 alias ipt='sudo /sbin/iptables'
 # display all rules #

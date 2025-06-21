@@ -24,6 +24,14 @@ nodes:
 - role: worker
 EOF
 
+# three node (two workers) cluster config
+# kind: Cluster
+# apiVersion: kind.x-k8s.io/v1alpha4
+# nodes:
+# - role: control-plane
+# - role: worker
+# - role: worker
+
 # cat <<EOF | ~/go/bin/kind create cluster --config=-
 # kind: Cluster
 # apiVersion: kind.x-k8s.io/v1alpha4
