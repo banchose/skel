@@ -18,6 +18,9 @@ pipx inject llm llm-bedrock-anthropic --pip-args="--upgrade" --force
 pipx inject llm llm-fragments-github --pip-args="--upgrade" --force
 pipx inject llm llm-fragments-pdf --pip-args="--upgrade" --force
 pipx inject llm llm-fragments-site-text --pip-args="--upgrade" --force
+llm keys set anthropic --value "${ANTHROPIC_API_KEY}"
+llm keys set exa --value "${EXA_API_KEY}"
+llm models default anthropic/claude-sonnet-4-0
 
 # -T llm_time
 # echo $ANTHROPIC_API_KEY
