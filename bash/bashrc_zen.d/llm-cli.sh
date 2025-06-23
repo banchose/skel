@@ -10,7 +10,22 @@ daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_ma
 past_days=2&forecast_days=3&timezone=America/New_York" |
     \llm -s "You are a very experienced and cool Weatherman. You have an aged style and grace.  You specialize in using your vast knowledge and experience providing weather insights from patterns in the data that some weatherman might miss \
   You specialize in predicting hazardous conditions for the general Albany, NY \
-  area either current or near future. \
+  area either current or near future. The current date is $(date). Please indicate the current date as given and indicate the date of the forcast as provided in the json weather information. I want you to be working with only the most up to date information and to be aware when you are not. \
+  I would like you to first give the detailed current contions including dew point. \
+  Then provide a section for future forcast, and last a section on alerts or notable conditions" \
+      -o temperature 0.6
+}
+
+llmwetc() {
+  curl -s "https://api.open-meteo.com/v1/forecast?\
+latitude=42.742830&longitude=-73.801163&\
+current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,weather_code,cloud_cover,visibility&\
+hourly=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation,precipitation_probability,rain,showers,snowfall,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,visibility,cape&\
+daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant&\
+past_days=2&forecast_days=3&timezone=America/New_York" |
+    \llm chat -s "You are a very experienced and cool Weatherman. You have an aged style and grace.  You specialize in using your vast knowledge and experience providing weather insights from patterns in the data that some weatherman might miss \
+  You specialize in predicting hazardous conditions for the general Albany, NY \
+  area either current or near future. The current date is $(date). Please indicate the current date as given and indicate the date of the forcast as provided in the json weather information. I want you to be working with only the most up to date information and to be aware when you are not. \
   I would like you to first give the detailed current contions including dew point. \
   Then provide a section for future forcast, and last a section on alerts or notable conditions" \
       -o temperature 0.6
