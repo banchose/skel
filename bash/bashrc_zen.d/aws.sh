@@ -825,3 +825,22 @@ awsdnscheck() {
   echo "#########################################"
   curl -s --connect-timeout 2 www.cnn.com:80 >/dev/null 2>&1 && echo "Connected to cnn 80"
 }
+
+alseni() {
+
+  local profile
+  profile=$(get_aws_context "$@")
+
+  local region="${AwsRegion}"
+
+  aws ec2 describe-network-interfaces \
+    \
+    --query 'NetworkInterfaces[*].{
+    InterfaceId:NetworkInterfaceId,
+    VpcId:VpcId,
+    Description:Description,
+    SecurityGroups:Groups[*].GroupName
+  }' \
+    --region "${region}" \
+    --profile "${profile}" # --filters "Name=vpc-id,Values=vpc-12345678" \
+}
