@@ -1,0 +1,19 @@
+{
+  "name": "open-meteo-mcp",
+  "version": "1.0.0",
+  "description": "Open-Meteo Weather MCP Server for LibreChat",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test-client.js",
+    "interactive": "node test-client.js --interactive",
+    "debug": "node --inspect server.js"
+  },
+  "keywords": ["mcp", "weather", "open-meteo", "librechat"],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.13.1"
+  }
+}
