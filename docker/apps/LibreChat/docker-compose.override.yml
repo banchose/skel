@@ -12,6 +12,9 @@ services:
       - type: bind
         source: ./librechat.yaml
         target: /app/librechat.yaml
+      - type: bind
+        source: ./mcp-servers
+        target: /app/mcp-servers
     networks:
       - traefik_web
       - default

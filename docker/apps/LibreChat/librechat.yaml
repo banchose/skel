@@ -9,9 +9,40 @@ endpoints:
       apiKey: "${OPENROUTER_KEY}"
       baseURL: "https://openrouter.ai/api/v1"
       models:
-        default: ["meta-llama/llama-3-70b-instruct"]
+        default: ["anthropic/claude-sonnet-4-0:online"]
         fetch: true
       titleConvo: true
-      titleModel: "meta-llama/llama-3-70b-instruct"
+      titleModel: "anthropic/claude-sonnet-4-0:oneline"
       dropParams: ["stop"]
       modelDisplayLabel: "OpenRouter"
+
+mcpServers:
+  open-meteo-weather:
+    type: stdio
+    command: node
+    args:
+      - "./mcp-servers/open-meteo-mcp/server.js"
+    serverInstructions: "Provide comprehensive weather analysis with focus on hazardous conditions and experienced meteorological insights for any location. Uses the same data as the llmwet bash function."
+    timeout: 30000
+    initTimeout: 10000
+  
+  aws-documentation:
+    type: stdio
+    command: uvx
+    args:
+      - "awslabs.aws-documentation-mcp-server@latest"
+    env:
+      FASTMCP_LOG_LEVEL: "ERROR"
+      AWS_DOCUMENTATION_PARTITION: "aws"
+    serverInstructions: "Fetch AWS documentation pages, search AWS docs, and get content recommendations. Use read_documentation for specific URLs, search_documentation for finding content, and recommend for related pages."
+
+  exa:
+    command: npx
+    args:
+      - -y
+      - exa-mcp-server
+#     - --tools=web_search_exa,research_paper_search,company_research,crawling,competitor_finder,linkedin_search,wikipedia_search_exa,github_search
+      - --tools=web_search_exa,crawling,wikipedia_search_exa,github_search
+    env:
+      EXA_API_KEY: 7ba0437f-b85e-44fe-a697-e1d5f42404f7
+
