@@ -7,9 +7,10 @@ export kport=43549
 
 alias k='kubectl'
 alias ka='kubectl get all -A'
-alias kp='kubectl get pods'
-alias kpw='kubectl get pods -o wide'
 alias kpa='kubectl get pods -A'
+alias kpp='kubectl get pods'
+alias kp='kubectl get pods -A --field-selector=metadata.namespace!=kube-system --sort-by=.metadata.namespace'
+alias kpw='kubectl get pods -o wide'
 alias kpaw='kubectl get pods -A -o wide'
 alias kn='kubectl get nodes'
 alias knw='kubectl get nodes -o wide'
@@ -21,13 +22,52 @@ alias kda='kubectl get deployment -A'
 alias kdaw='kubectl get deployment -A -o wide'
 alias ks='kubectl get svc -A'
 alias kc='kubectl config current-context'
-alias kcp='kubectl config use-context Production'
-alias kct='kubectl config use-context Test'
+# alias kct='kubectl config use-context Test'
 alias kn='kubectl get nodes'
-alias kp='kubectl get pods'
+alias ki='kubectl get ingress -A'
+alias kra='for i in $(kubectl api-resources -o name);do echo "${i%%.*}";kubectl get "${i%%.*}";done'
+alias klsp='kubectl run  -it alpine-test --image=alpine --restart=Never --rm --command  -- ls'
+alias akcurl='kubectl run -it curl-$RANDOM --rm --restart=Never --image=curlimages/curl --'
+
+kwhoami() {
+
+  kubectl auth can-i --list
+  kubectl config current-context
+
+}
+
+kbash() {
+
+  if kubectl get pods | grep kbash; then
+    kubectl exec -it kbash
+  else
+    kubectl run -it --tty --restart=Always --image=bash:latest kbash
+  fi
+}
+
+kxbt() {
+
+  kubectl run -it bash-count --rm --restart=Never --image=bash:latest -- -c 'for i in {1..10};do echo "$i";done'
+}
+
+kxbs() {
+
+  kubectl run -it bash-kbp --rm --restart=Never --image=bash:latest
+}
+
+kxct() {
+
+  kubectl run -it curl-1 --rm --restart=Never --image=curlimages/curl --command -- curl --version
+  kubectl run -it curl-1 --rm --restart=Never --image=curlimages/curl -- --version
+}
+
+kcurl() {
+
+  kubectl run -it curl-1 --rm --restart=Never --image=curlimages/curl -- --max-time 10 --connect-timeout 5 "$@"
+}
 
 source <(kubectl completion bash)
-complete -F __start_kubectl k
+# complete -F __start_kubectl k
 
 getyn() {
   local yn='n'

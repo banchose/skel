@@ -5,8 +5,8 @@
 export AWS_PROFILE=lab
 export AWS_DEFAULT_REGION=us-east-1
 export AwsRegion=us-east-1
-MANINSTANCE=i-04aebda9960485984
-
+export MANINSTANCE=i-0a495644db9737bf6
+#
 # AWS Regions to check
 REGIONS=("us-east-1" "us-west-2")
 PROFILES=("net" "test" "dev" "production")
@@ -26,6 +26,7 @@ alias cdeks='cd ~/gitdir/aws/PHRIBIGNETWORK/EKSALB/'
 alias vaws='nvim ~/gitdir/skel/bash/bashrc_zen.d/aws.sh'
 alias awsssh="aws ssm start-session --target ${MANINSTANCE} --region us-east-1 --profile net"
 alias aslb='aws elbv2 describe-load-balancers --query "LoadBalancers[].DNSName" --region us-east-1'
+alias alswf="aws logs tail aws-waf-logs-HRI-APP-WAF   --follow   --region us-east-1   --profile net"
 
 # Function: Get AWS Profile
 #get_aws_context() {
@@ -166,8 +167,10 @@ set_aws_envs() {
   set_stack_outputs "HRI-BIGNETWORK-TGWRT-ASSC-EKSVPC-SAND" us-east-1 net
   echo "HRI-EKS-VPC-SAND"
   set_stack_outputs "HRI-EKS-VPC-SAND" us-east-1 test
-  echo "HRI-EKSALB-PRIVATE-SAND"
-  set_stack_outputs HRI-EKSALB-PRIVATE-SAND us-east-1 test
+  echo "HRI-EKS-NLB-SAND"
+  set_stack_outputs HRI-EKS-NLB-SAND us-east-1 test
+  echo "HRI-BIGEKS-SAND"
+  set_stack_outputs HRI-BIGEKS-SAND us-east-1 test
 }
 
 get_aws_context() {
@@ -686,4 +689,158 @@ alslb() {
       # Continue with next listener instead of failing completely
     fi
   done
+}
+
+ssh-aws() {
+
+  local aregion="${AWS_DEFAULT_REGION}"
+  local aprofile=net
+
+  aws sts get-caller-identity --region "${aregion}" --profile "${aprofile}"
+  aws ec2 describe-instance-status --instance-ids "${MANINSTANCE}" --region "${aregion}" --profile "${aprofile}" || {
+    echo "instanceid: ${MANINSTANCE} is not correct"
+    return 1
+  }
+
+  aws ssm start-session --target "${MANINSTANCE}" --region "${aregion}" --profile "${aprofile}"
+
+}
+
+kci() {
+  echo '
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  name: ${GENERIC}
+  namespace: default
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /${GENERIC}(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ${GENERIC}
+            port: 
+              number: 80
+' | GENERIC=mypath envsubst | kubectl create -f -
+}
+
+Install_kubectl_eksctl() {
+
+  (
+    cd /tmp || {
+      echo "cd /tmp failed"
+      exit 1
+    }
+    curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/arm64/kubectl &&
+      sudo mv ./kubectl /usr/local/bin && sudo chmod +x /usr/local/bin/kubectl &&
+      echo "*** Movedd kubectl to /usr/local/bin"
+
+    # curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/arm64/kubectl.sha256
+    # curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/arm64/kubectl
+    # # for ARM systems, set ARCH to: `arm64`, `armv6` or `armv7`
+    ARCH=arm64
+    PLATFORM=$(uname -s)_$ARCH
+
+    curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_${PLATFORM}.tar.gz"
+
+    # (Optional) Verify checksum
+    curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep "${PLATFORM}" | sha256sum --check
+
+    tar -xzf eksctl_"${PLATFORM}".tar.gz -C /tmp && rm eksctl_"${PLATFORM}".tar.gz
+
+    echo "*** Moving eksctl to /usr/local/bin"
+
+    sudo mv /tmp/eksctl /usr/local/bin && sudo chmod +x /usr/local/bin/eksctl
+  )
+
+}
+
+tailwaf() {
+  aws logs tail aws-waf-logs-HRI-APP-WAF \
+    --follow \
+    --region us-east-1 \
+    --profile net |
+    awk '{print substr($0, index($0, "{"))}' |
+    jq -r --unbuffered '
+    select(.action == "BLOCK" or (.nonTerminatingMatchingRules | length > 0) or .terminatingRuleId != "Default_Action") |
+    
+    (.timestamp / 1000 | strftime("%H:%M:%S")) as $time |
+    ([.labels[]?.name | select(. and test("geo"))] | map(gsub("awswaf:clientip:geo:"; "")) | join(" | ")) as $geo |
+    (.nonTerminatingMatchingRules | map(.ruleId) | join(", ")) as $matched |
+    
+    (if .action == "BLOCK" then "🚫"
+     elif ($matched != "") then "👀"
+     else "⚠️" end) as $icon |
+    
+    "\($icon) \($time) | \(.httpRequest.clientIp) | \($geo) | \(.action) | \(.terminatingRuleId) | \(.httpRequest.httpMethod) \(.httpRequest.uri)" +
+    (if $matched != "" then " | Triggered: \($matched)" else "" end)
+  '
+}
+
+awsdnscheck() {
+  command -v cowsay &>/dev/null && cowsay "Herrrrrrre goes..."
+  echo "#########################################"
+  echo "Checking corp.healthresearch.org FORWARD DNS"
+  echo "#########################################"
+  nslookup alb-prd-dc-3.corp.healthresearch.org
+  echo "#########################################"
+  echo "Checking Single Label FORWARD DNS"
+  echo "#########################################"
+  nslookup alb-prd-dc-3
+  echo "#########################################"
+  echo "Checking corp.healthresearch.org REVERSE DNS"
+  echo "#########################################"
+  nslookup 10.1.100.100
+  nslookup 10.1.100.101
+  echo "#########################################"
+  echo "Checking PING DNS name prem HRI alb-prd-dc-3"
+  echo "#########################################"
+  ping -l 1 -c 3 alb-prd-dc-3
+  echo "#########################################"
+  echo "Checking PING to on prem HRI DMZ alb-prd-dc-3"
+  echo "#########################################"
+  ping -l 1 -c 3 alb-prd-zdns-1
+  echo "#########################################"
+  echo "Checking PING to on prem HRI IP"
+  echo "#########################################"
+  ping -l 1 -c 2 10.1.100.100
+  ping -l 1 -c 2 10.1.100.101
+  echo "#########################################"
+  echo "Checking PING to Internet IP"
+  echo "#########################################"
+  ping -l 1 -c 3 1.1.1.1
+  echo "#########################################"
+  echo "Checking PING to Internet DNS"
+  echo "#########################################"
+  ping -l 1 -c 3 www.cnn.com
+  echo "#########################################"
+  echo "Checking ssh"
+  echo "#########################################"
+  curl -s --connect-timeout 2 www.cnn.com:80 >/dev/null 2>&1 && echo "Connected to cnn 80"
+}
+
+alseni() {
+
+  local profile
+  profile=$(get_aws_context "$@")
+
+  local region="${AwsRegion}"
+
+  aws ec2 describe-network-interfaces \
+    \
+    --query 'NetworkInterfaces[*].{
+    InterfaceId:NetworkInterfaceId,
+    VpcId:VpcId,
+    Description:Description,
+    SecurityGroups:Groups[*].GroupName
+  }' \
+    --region "${region}" \
+    --profile "${profile}" # --filters "Name=vpc-id,Values=vpc-12345678" \
 }

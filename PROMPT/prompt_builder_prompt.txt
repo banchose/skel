@@ -1,1 +1,0 @@
-Summarize this conversation in a way that can be used to prompt another session of you and (a) convey as much relevant detail context as possible while (b) using the minimum character count. I guess i'm asking you so translate this conversation into a language designed just for you

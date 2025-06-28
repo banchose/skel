@@ -7,25 +7,38 @@ if type docker &>/dev/null; then
   alias rdr='docker -H ssh://una@s1 ps'
   alias rde='docker -H ssh://una@s1'
   alias rdx='docker -H ssh://una@s1 container prune'
-  alias dboom='docker system prune -af;docker volume prune -fa;docker container prune -f'
 
-  alias d='docker'
-  alias dls='docker ps --format "table {{.Image}}\t{{.Names}}\t{{.Status}}"'
-  # source <(docker completion bash)
-  # complete -F __start_docker d
-  alias dkill='for i in $(docker ps -q);do docker kill "${i}";done'
+  # alias d='docker'
+  alias dlsb='docker ps --format "table {{.Image}}\t{{.Names}}\t{{.Status}}"'
+  alias dp='docker ps'
+  alias dl='docker ps -l'
+  alias di='docker images'
+  alias dlc='docker container ls'
+  alias dlspa='docker ps --all'
 
-  dls() {
+  function dkill() {
 
-    docker ps --format 'table {{.ID}}\t{{.Names}}'
+    for i in $(docker ps -q); do
+      docker kill "${i}"
+    done
 
   }
 
-  dclear() {
+  function dclear() {
     cons="$(docker ps -q)"
     [[ -z $cons ]] || docker stop $cons
+    dkill # defined here
     docker container prune -f
     docker volume prune -f
+  }
+
+  function dboom() {
+
+    dclear # defined here
+    docker system prune -af
+    docker volume prune -fa
+    docker container prune -f
+
   }
 
   function dwipe() {

@@ -23,6 +23,24 @@ mm() {
   fi
 }
 
+mmv() {
+  cd ~/y/youtube-down/ || return
+
+  local file
+  file=$(find . -maxdepth 1 -type f -printf "%T@ %p\n" |
+    sort -nr |
+    cut -d' ' -f2- |
+    sed 's#\./##' |
+    fzf --preview 'file {}; echo; stat {}')
+
+  # Only run mpv if a file was selected
+  if [[ -n "$file" ]]; then
+    mpv "$file"
+  else
+    echo "No file selected."
+  fi
+}
+
 yta() {
   # get best audio any format
   (
