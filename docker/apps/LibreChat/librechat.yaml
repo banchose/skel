@@ -45,4 +45,30 @@ mcpServers:
       - --tools=web_search_exa,crawling,wikipedia_search_exa,github_search
     env:
       EXA_API_KEY: 7ba0437f-b85e-44fe-a697-e1d5f42404f7
+  
+# k8s-pilot:
+#   type: stdio
+#   command: uv
+#   args:
+#     - "--directory"
+#     - "/app/k8s-pilot"  # Note: /app/ inside container
+#     - "run"
+#     - "--with"
+#     - "mcp[cli]"
+#     - "--link-mode=copy"
+#     - "mcp"
+#     - "run"
+#     - "k8s_pilot.py"
+#   serverInstructions: "Kubernetes multi-cluster management for local KIND cluster. Can create/manage deployments, services, pods, and other k8s resources."
+#   timeout: 30000
+#   initTimeout: 10000
+ 
+  time:
+    type: stdio
+    command: uvx
+    args:
+      - "mcp-server-time"
+    serverInstructions: "Get current time in any timezone and convert times between timezones using IANA timezone names. Can detect system timezone automatically."
+    timeout: 30000
+    initTimeout: 10000
 
