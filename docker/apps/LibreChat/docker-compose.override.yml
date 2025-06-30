@@ -15,6 +15,11 @@ services:
       - type: bind
         source: ./mcp-servers
         target: /app/mcp-servers
+      - type: bind
+        source: ./k8s-pilot
+        target: /app/k8s-pilot
+      - ./k8s-pilot/kind-kubeconfig.yaml:/root/.kube/config:ro
+
     networks:
       - traefik_web
       - default
