@@ -205,7 +205,7 @@ sudo pacman -S ranger --needed --noconfirm
 sudo pacman -S shellcheck --needed --noconfirm
 sudo pacman -S bash-language-server --needed --noconfirm
 sudo pacman -S dive --needed --noconfirm # docker
-
+sudo pacman -S uv --needed --noconfirm
 # sudo pacman -S yt-dlp --needed --noconfirm
 # sudo pacman -S aws-cli --needed --noconfirm
 # sudo pacman -S neofetch  --needed --noconfirm
