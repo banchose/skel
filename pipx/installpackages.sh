@@ -19,6 +19,7 @@ pipx install twisted
 pipx install ipython --include-deps
 # pipx install ansible --include deps
 pipx install httpie
+pipx install httpx
 pipx install pgcli
 pipx install mycli
 pipx install pycowsay
@@ -43,4 +44,4 @@ pipx install django
 pipx install pandas
 pipx install speedtest
 
-pipx inject ipython boto3 pandas numpy httpie --force
+pipx inject ipython boto3 cryptography black pendulum icecream loguru pydantic httpx pandas numpy httpie --force
