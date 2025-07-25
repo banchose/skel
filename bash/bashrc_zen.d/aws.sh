@@ -171,6 +171,10 @@ set_aws_envs() {
   set_stack_outputs HRI-EKS-NLB-SAND us-east-1 test
   echo "HRI-BIGEKS-SAND"
   set_stack_outputs HRI-BIGEKS-SAND us-east-1 test
+  echo "HRI-INFRA-VPC-PROD"
+  set_stack_outputs HRI-INFRA-VPC-PROD us-east-1 production
+  echo "HRI-BIGNETWORK-TGWRT-ASSC-INFRA-VPC-PROD"
+  set_stack_outputs HRI-BIGNETWORK-TGWRT-ASSC-INFRA-VPC-PROD us-east-1 net
 }
 
 get_aws_context() {
