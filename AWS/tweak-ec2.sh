@@ -4,7 +4,9 @@ set -euo pipefail
 
 sudo yum -y install python3 tmux nodejs python3-pip ninja-build cmake gcc make unzip gettext jq curl git --allowerasing
 
-mkdir ~/temp ~/gitdir
+[[ -d ~/temp ]] || mkdir ~/temp
+[[ -d ~/gitdir ]] || mkdir ~/gitdir
+
 cd ~/gitdir
 git clone https://github.com/neovim/neovim.git
 cd ~/gitdir/neovim
