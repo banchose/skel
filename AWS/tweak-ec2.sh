@@ -20,6 +20,7 @@ sudo yum install python3-pip
 
 python3 -m pip install --user pipx
 
+set +e
 pipx install httpie
 pipx install pgcli
 pipx install mycli
@@ -30,7 +31,6 @@ pipx install black
 pipx install flake8
 pipx install pylint
 pipx install cfn-lint
-pipx install posting
 pipx install pipenv
 pipx install poetry
 pipx install glances
