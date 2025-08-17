@@ -1,0 +1,16 @@
+services:
+  openwebui:
+    ports: !reset []
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.openwebui.rule=Host(`openwebui.xaax.dev`)"
+      - "traefik.http.routers.openwebui.entrypoints=websecure"
+      - "traefik.http.routers.openwebui.tls=true"
+      - "traefik.http.services.openwebui.loadbalancer.server.port=8080"
+      - "traefik.docker.network=traefik_web"
+    networks:
+      - traefik_web
+
+networks:
+  traefik_web:
+    external: true
