@@ -31,8 +31,7 @@ Current_Model="${OR_MODEL}"
 
 # ANTHROPIC OR_MODEL
 # claude-3-7-sonnet-20250219"
-ANTHROPIC_MODEL="claude-3-7-sonnet-20250219"
-
+ANTHROPIC_MODEL="claude-sonnet-4-20250514"
 #
 # Tokens
 #
