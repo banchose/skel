@@ -124,3 +124,11 @@ ketca() {
 ketcca() {
   kubectl config view --raw | awk '/client-certificate-data:/ { print $2 }' | base64 -d | openssl x509 -text -noout
 }
+
+kscan() {
+  for i in $(kubectl config get-contexts --no-headers=true -o name); do
+    echo "$i"
+    kubectl config use-context "$i"
+    kubectl get pods
+  done
+}
