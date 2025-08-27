@@ -13,7 +13,6 @@ set -euo pipefail
 # PyPi
 # pipx completions
 pipx install checkov
-# pipx install ipython
 pipx install csvkit
 pipx install twisted
 pipx install ipython --include-deps
@@ -42,6 +41,5 @@ pipx install isort
 pipx install flask
 pipx install django
 pipx install pandas
-pipx install speedtest
 
-pipx inject ipython boto3 cryptography black pendulum icecream loguru pydantic httpx pandas numpy httpie --force
+pipx inject ipython boto3 pydantic cryptography black pendulum icecream loguru pydantic httpx pandas numpy httpie --force

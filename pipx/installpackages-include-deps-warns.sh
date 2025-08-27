@@ -13,31 +13,31 @@ set -euo pipefail
 # PyPi
 # pipx completions
 pipx install checkov --include-deps
-# pipx install ipython --include-deps
-pipx install csvkit --include-deps
-pipx install twisted --include-deps
 pipx install ipython --include-deps
+pipx install csvkit
+pipx install twisted
+pipx install ipython
 # pipx install ansible --include deps
-pipx install httpie --include-deps
-pipx install pgcli --include-deps
-pipx install mycli --include-deps
-pipx install pycowsay --include-deps
-pipx install litecli --include-deps
-pipx install ruff --include-deps
-pipx install black --include-deps
+pipx install httpie
+pipx install pgcli
+pipx install mycli
+pipx install pycowsay
+pipx install litecli
+pipx install ruff
+pipx install black
 pipx install flake8 --include-deps
-pipx install pylint --include-deps
+pipx install pylint
 pipx install cfn-lint --include-deps
-pipx install posting --include-deps
-pipx install pipenv --include-deps
-pipx install poetry --include-deps
-pipx install glances --include-deps
-pipx install jupyter --include-deps
-pipx install cookiecutter --include-deps
-pipx install visidata --include-deps
-pipx install esptool --include-deps
-pipx install shell-functools --include-deps
-pipx install isort --include-deps
+pipx install posting
+pipx install pipenv
+pipx install poetry
+pipx install glances
+pipx install jupyter
+pipx install cookiecutter
+pipx install visidata
+pipx install esptool
+pipx install shell-functools
+pipx install isort
 pipx install flask --include-deps
 pipx install django --include-deps
 pipx install pandas --include-deps
