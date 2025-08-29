@@ -21,6 +21,7 @@ pipx install httpie
 pipx install httpx
 pipx install pgcli
 pipx install mycli
+pipx install iredis
 pipx install pycowsay
 pipx install litecli
 pipx install ruff
@@ -39,7 +40,12 @@ pipx install esptool
 pipx install shell-functools
 pipx install isort
 pipx install flask
+pipx install howdoi
 pipx install django
 pipx install pandas
 
-pipx inject ipython boto3 pydantic cryptography black pendulum icecream loguru pydantic httpx pandas numpy httpie --force
+pipx inject ipython boto3 boltons howdoi pydantic cryptography black pendulum psutil icecream loguru pydantic httpx pandas numpy httpie --force
+
+# ipython --TerminalInteractiveShell.editing_mode=vi
+# ~/.ipython/profile_default/ipython_config.py
+# c.TerminalInteractiveShell.editing_mode = 'vi'
