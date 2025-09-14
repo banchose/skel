@@ -1,4 +1,42 @@
 #!/usr/bin/env bash
+
+# 1. run ./build-rust.sh # or bat ripgrep fd
+# curl https://sh.rustup.rs -sSf | sh
+# cargo install --git repo_url
+# cargo install --git repo_url --branch|tag|rev branch_name|tag|commit_hash
+#
+#####  Installs in ~/.cargo/bin in the container mapped to ~/.cargo/bin on the host
+#
+# ./build-rust.sh fd
+# ./build-rust.sh ripgrep
+# ./build-rust.sh bin
+#
+# ./build-rust.sh coreutils
+# ./build-rust.sh diffutils
+# ./build-rust.sh findutils
+# ./build-rust.sh util-linux
+# ./build-rust.sh platform-info
+# ./build-rust.sh procps
+# ./build-rust.sh sed
+# ./build-rust.sh gping
+# ./build-rust.sh procs
+# ./build-rust.sh bottom
+# ./build-rust.sh broot
+# ./build-rust.sh hexyl
+# ./build-rust.sh xh
+# ./build-rust.sh fd
+# ./build-rust.sh rigrep
+# ./build-rust.sh bat
+# ./build-rust.sh eza
+# ./build-rust.sh dust
+# ./build-rust.sh bandwhich
+# ./build-rust.sh zellij
+# ./build-rust.sh zoxide
+# ./build-rust.sh starship
+# ./build-rust.sh cargo-update
+# ./build-rust.sh ddgr
+#
+
 set -euo pipefail
 BUILDERNAME=rusto
 
@@ -14,7 +52,7 @@ fi
 docker run --rm \
   --user "$(id -u):$(id -g)" \
   -v "$(pwd):/workspace" \
-  -v "$HOME/.cargo:/home/$(whoami)/.cargo" \
+  -v "$HOME/temp:/home/$(whoami)/.cargo" \
   -e CARGO_HOME="/home/$(whoami)/.cargo" \
   -w /workspace \
   rusto \

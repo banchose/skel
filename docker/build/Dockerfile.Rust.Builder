@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     bash-completion \
     musl-dev \
     clang \
+    jq \
     llvm \
     git \
     curl \
