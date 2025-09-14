@@ -18,6 +18,15 @@ if type docker &>/dev/null; then
   alias dps='docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.RunningFor}}"'
   alias dpsp='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
 
+  function dconnet() {
+
+    docker ps --format '{{.Names}}' | while read -r container; do
+      networks=$(docker inspect $container --format '{{range $k, $v := .NetworkSettings.Networks}}{{$k}} {{end}}')
+      echo "$container: $networks"
+    done | column -t -s ':'
+
+  }
+
   function dkill() {
 
     for i in $(docker ps -q); do
