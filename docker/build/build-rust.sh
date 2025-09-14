@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # 1. run ./build-rust.sh # or bat ripgrep fd
 # curl https://sh.rustup.rs -sSf | sh
 # cargo install --git repo_url
@@ -36,9 +35,21 @@
 # ./build-rust.sh cargo-update
 # ./build-rust.sh ddgr
 #
-
 set -euo pipefail
+
+# Check if arguments provided
+if [ $# -eq 0 ]; then
+  echo "Error: No crate name provided"
+  echo "Usage: $0 <crate_name> [additional_args...]"
+  echo "Example: $0 fd"
+  echo "Example: $0 ripgrep"
+  exit 1
+fi
+
 BUILDERNAME=rusto
+
+# Create cargo directory if it doesn't exist
+mkdir -p "$HOME/temp"
 
 # Build image if it doesn't exist
 if ! docker images | grep -q "${BUILDERNAME}"; then
@@ -49,6 +60,7 @@ else
   echo "Rust Environment Container already exists"
 fi
 
+echo "Installing Rust crate: $1"
 docker run --rm \
   --user "$(id -u):$(id -g)" \
   -v "$(pwd):/workspace" \
@@ -57,3 +69,5 @@ docker run --rm \
   -w /workspace \
   rusto \
   cargo install --target x86_64-unknown-linux-musl "$@"
+
+echo "Installation completed. Binary should be available in $HOME/temp/bin/"
