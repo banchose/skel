@@ -27,6 +27,14 @@ if type docker &>/dev/null; then
 
   }
 
+  function dpip() {
+
+    docker ps --format '{{.Names}}' | while read -r container; do
+      networks=$(docker inspect $container --format '{{range $k, $v := .NetworkSettings.Networks}}{{$k}}:{{.IPAddress}} {{end}}')
+      printf "%-40s %s\n" "$container" "$networks"
+    done
+
+  }
   function dkill() {
 
     for i in $(docker ps -q); do
