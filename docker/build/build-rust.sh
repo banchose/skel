@@ -47,9 +47,17 @@ if [ $# -eq 0 ]; then
 fi
 
 BUILDERNAME=rusto
+DESTDIR="$HOME/temp"
+
+echo "######################"
+echo "#"
+echo "#  Building ${BUILDERNAME}"
+echo "#  Target: ${DESTDIR}"
+echo "#"
+echo "######################"
 
 # Create cargo directory if it doesn't exist
-mkdir -p "$HOME/temp"
+mkdir -p "$DESTDIR"
 
 # Build image if it doesn't exist
 if ! docker images | grep -q "${BUILDERNAME}"; then
