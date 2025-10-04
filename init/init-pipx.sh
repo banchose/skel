@@ -23,6 +23,7 @@ if grep 'ID=alpine' /etc/os-release; then
   apk add make
   apk add cmake
   apk add nmap
+  apk add esptool
   apk add ninja
   apk add gcc
   apk add gettext-dev
