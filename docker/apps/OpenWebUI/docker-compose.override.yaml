@@ -11,6 +11,36 @@ services:
     networks:
       - traefik_web
 
+
+#####
+  mcpo-timeserver:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.mcpo.timeserver
+    networks:
+      - traefik_web
+    restart: unless-stopped
+
+  mcpo-awsdoc:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.mcpo.awsdoc
+    networks:
+      - traefik_web
+    restart: unless-stopped
+    environment:
+      - FASTMCP_LOG_LEVEL=ERROR
+      - AWS_DOCUMENTATION_PARTITION=aws
+
+  mcpo-aws-knowledge:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.mcpo.aws-know
+    networks:
+      - traefik_web
+    restart: unless-stopped
+#####
+
 networks:
   traefik_web:
     external: true
