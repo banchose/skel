@@ -47,7 +47,7 @@ pipx install flask --include-deps
 pipx install django --include-deps
 pipx install pandas --include-deps
 pipx install speedtest --include-deps
-pipx install httpie
+pipx install httpie --include-deps
 pipx install pgcli
 # pipx install mycli
 pipx install pycowsay
@@ -64,19 +64,15 @@ pipx install poetry
 pipx install glances
 pipx install isort
 # pipx install jupyter
-pipx install ipython
 pipx install llm
 pipx install aider-chat
 pipx install ansible
-pipx install cfn-lint
 pipx install cfn-lsp-extra
 pipx install cookiecutter
 pipx install csvkit
 pipx install elia-chat
-pipx install llm
 pipx install openai
 pipx install ptpython
-pipx install pycowsay
 pipx install s3cmd
 pipx install shell-functools
 pipx install speedtest-cli
@@ -84,18 +80,18 @@ pipx install twisted
 pipx install visidata
 pipx install psutils
 
-pipx inject llm llm-tools-exa --pip-args="--upgrade" --force
+pipx inject llm llm-tools-exa --pip-args="--upgrade"
 pipx inject llm llm-openrouter --pip-args="--upgrade"
-pipx inject llm llm-anthropic --pip-args="--upgrade" --force
-pipx inject llm llm-fragments-github --pip-args="--upgrade" --force
-pipx inject llm llm-tools-simpleeval --pip-args="--upgrade" --force
-pipx inject llm llm-cmd-comp --pip-args="--upgrade" --force
-pipx inject llm llm-cmd --pip-args="--upgrade" --force
-pipx inject llm llm-templates-fabric --pip-args="--upgrade" --force
-pipx inject llm howdoi --pip-args="--upgrade" --force
-pipx inject llm httpx --pip-args="--upgrade" --force
-pipx inject llm psutils --pip-args="--upgrade" --force
-pipx inject llm beautifulsoup4 --pip-args="--upgrade" --force
+pipx inject llm llm-anthropic --pip-args="--upgrade"
+pipx inject llm llm-fragments-github --pip-args="--upgrade"
+pipx inject llm llm-tools-simpleeval --pip-args="--upgrade"
+pipx inject llm llm-cmd-comp --pip-args="--upgrade"
+pipx inject llm llm-cmd --pip-args="--upgrade"
+pipx inject llm llm-templates-fabric --pip-args="--upgrade"
+pipx inject llm howdoi --pip-args="--upgrade"
+pipx inject llm httpx --pip-args="--upgrade"
+pipx inject llm psutils --pip-args="--upgrade"
+pipx inject llm beautifulsoup4 --pip-args="--upgrade"
 
 pipx inject \
   ipython \
@@ -122,8 +118,7 @@ pipx inject \
   llm-anthropic \
   llm-tools-simpleeval \
   httpie \
-  --pip-args="--upgrade" \
-  --force
+  --pip-args="--upgrade"
 
 pipx ensurepath
 
@@ -151,7 +146,7 @@ fi
 
 # neovim
 build_neovim() {
-  mkdir /BUILD
+  mkdir -p /BUILD
   cd /BUILD || {
     echo "failed to cd into ~/BUILD"
     return 1
