@@ -18,12 +18,10 @@ if grep 'ID=alpine' /etc/os-release; then
   apk add cargo
   apk add git
   apk add make gcc musl-dev
-  apt add build-essential
   apk add musl-dev
   apk add make
   apk add cmake
   apk add nmap
-  apk add esptool
   apk add ninja
   apk add gcc
   apk add gettext-dev
@@ -51,6 +49,7 @@ pipx install httpie --include-deps
 pipx install pgcli
 # pipx install mycli
 pipx install pycowsay
+pipx install esptool
 pipx install litecli
 pipx install ruff
 pipx install black
@@ -109,6 +108,7 @@ pipx inject \
   pydantic \
   httpx \
   pandas \
+  esptool \
   numpy \
   ipython-extensions \
   llm \
