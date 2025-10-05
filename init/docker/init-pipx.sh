@@ -40,6 +40,7 @@ command -v pipx || {
   echo "no pipx"
   exit 1
 }
+
 pipx install checkov --include-deps
 pipx install ipython --include-deps
 pipx install flask --include-deps
@@ -94,11 +95,13 @@ pipx inject llm llm-templates-fabric --pip-args="--upgrade" --force
 pipx inject llm howdoi --pip-args="--upgrade" --force
 pipx inject llm httpx --pip-args="--upgrade" --force
 pipx inject llm psutils --pip-args="--upgrade" --force
+pipx inject llm beautifulsoup4 --pip-args="--upgrade" --force
 
 pipx inject \
   ipython \
   boto3 \
   boltons \
+  beautifulsoup4 \
   psutils \
   howdoi \
   pydantic \
@@ -112,6 +115,12 @@ pipx inject \
   pandas \
   numpy \
   ipython-extensions \
+  llm \
+  llm-tools-exa \
+  llm-openrouter \
+  llm-fragments-github \
+  llm-anthropic \
+  llm-tools-simpleeval \
   httpie \
   --pip-args="--upgrade" \
   --force
@@ -120,21 +129,38 @@ pipx ensurepath
 
 ############## Rust ##############
 
-cargo install fd-find
-cargo install ripgrep
+command -v fd &>/dev/null || cargo install fd-find
+command -v rg &>/dev/null || cargo install ripgrep
 
 # git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
 
 # Install bat
-mkdir ~/gitdir
-cd ~/gitdir && git clone --depth=1 https://github.com/sharkdp/bat && cd bat && cargo install --path . --locked
+if ! command -v bat &>/dev/null; then
+  mkdir -p ~/gitdir
+  cd ~/gitdir || {
+    echo "failed to cd into ~/gitdir"
+    return 1
+  }
+  git clone --depth=1 https://github.com/sharkdp/bat
+  cd bat || {
+    echo "failed to cd into ~/bat"
+    return 1
+  }
+  cargo install --path . --locked
+fi
 
 # neovim
 build_neovim() {
   mkdir /BUILD
-  cd /BUILD
+  cd /BUILD || {
+    echo "failed to cd into ~/BUILD"
+    return 1
+  }
   git clone https://github.com/neovim/neovim.git >/dev/null
-  cd neovim
+  cd neovim || {
+    echo "failed to cd into neovim"
+    return 1
+  }
   make CMAKE_BUILD_TYPE=RelWithDebInfo
   if [[ $UID == 0 ]]; then
     make install
