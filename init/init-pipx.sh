@@ -172,5 +172,8 @@ get_lazyvim() {
 
 }
 
+# git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+# ~/.fzf/install
+
 # ping -q -l 1 -c 1 www.github.com &>/dev/null && echo "build_neovim"
 # ping -q -l 1 -c 1 www.github.com &>/dev/null && echo "get_lazyvim"
