@@ -64,12 +64,13 @@ pipx install glances
 pipx install isort
 # pipx install jupyter
 pipx install llm
-pipx install ansible
+pipx install aider-chat
+# pipx install ansible
 pipx install cfn-lsp-extra
 pipx install cookiecutter
 pipx install csvkit
 pipx install elia-chat
-pipx install openai
+# pipx install openai
 pipx install ptpython
 pipx install s3cmd
 pipx install shell-functools
@@ -123,8 +124,8 @@ pipx ensurepath
 
 ############## Rust ##############
 
-command -v fd &>/dev/null || cargo install fd-find
-command -v rg &>/dev/null || cargo install ripgrep
+# command -v fd &>/dev/null || cargo install fd-find
+# command -v rg &>/dev/null || cargo install ripgrep
 
 # git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
 
