@@ -64,7 +64,6 @@ pipx install glances
 pipx install isort
 # pipx install jupyter
 pipx install llm
-pipx install aider-chat
 pipx install ansible
 pipx install cfn-lsp-extra
 pipx install cookiecutter
@@ -134,12 +133,12 @@ if ! command -v bat &>/dev/null; then
   mkdir -p ~/gitdir
   cd ~/gitdir || {
     echo "failed to cd into ~/gitdir"
-    return 1
+    exit 1
   }
   git clone --depth=1 https://github.com/sharkdp/bat
   cd bat || {
     echo "failed to cd into ~/bat"
-    return 1
+    exit 1
   }
   cargo install --path . --locked
 fi
