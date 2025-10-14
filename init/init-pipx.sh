@@ -91,6 +91,7 @@ pipx inject llm howdoi --pip-args="--upgrade"
 pipx inject llm httpx --pip-args="--upgrade"
 pipx inject llm psutils --pip-args="--upgrade"
 pipx inject llm beautifulsoup4 --pip-args="--upgrade"
+pipx inject llm certifi --pip-args="--upgrade"
 
 pipx inject \
   ipython \
@@ -105,6 +106,7 @@ pipx inject \
   pendulum \
   icecream \
   loguru \
+  certifi \
   pydantic \
   httpx \
   pandas \
