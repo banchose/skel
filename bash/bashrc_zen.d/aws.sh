@@ -848,3 +848,19 @@ alseni() {
     --region "${region}" \
     --profile "${profile}" # --filters "Name=vpc-id,Values=vpc-12345678" \
 }
+
+askbed() {
+# Test with the US regional inference profile
+  curl -X POST "https://bedrock-runtime.us-east-1.amazonaws.com/model/us.anthropic.claude-sonnet-4-5-20250929-v1:0/converse" \
+   -H "Content-Type: application/json" \
+   -H "Authorization: Bearer ${BEDROCK_API_KEY}" \
+   -d '{
+     "messages": [
+          {
+              "role": "user",
+              "content": [{"text": "Hello, reply with just OK"}]
+          }
+      ]
+    }'
+
+}
