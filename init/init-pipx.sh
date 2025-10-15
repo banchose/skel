@@ -91,6 +91,7 @@ pipx inject llm howdoi --pip-args="--upgrade"
 pipx inject llm httpx --pip-args="--upgrade"
 pipx inject llm psutils --pip-args="--upgrade"
 pipx inject llm beautifulsoup4 --pip-args="--upgrade"
+pipx inject llm certifi --pip-args="--upgrade"
 
 pipx inject \
   ipython \
@@ -105,6 +106,7 @@ pipx inject \
   pendulum \
   icecream \
   loguru \
+  certifi \
   pydantic \
   httpx \
   pandas \
@@ -134,12 +136,12 @@ if ! command -v bat &>/dev/null; then
   mkdir -p ~/gitdir
   cd ~/gitdir || {
     echo "failed to cd into ~/gitdir"
-    return 1
+    exit 1
   }
   git clone --depth=1 https://github.com/sharkdp/bat
   cd bat || {
     echo "failed to cd into ~/bat"
-    return 1
+    exit 1
   }
   cargo install --path . --locked
 fi
