@@ -78,6 +78,7 @@ pipx install speedtest-cli
 pipx install twisted
 pipx install visidata
 pipx install psutils
+pipx install uv
 
 pipx inject llm llm-tools-exa --pip-args="--upgrade"
 pipx inject llm llm-openrouter --pip-args="--upgrade"
@@ -92,6 +93,7 @@ pipx inject llm httpx --pip-args="--upgrade"
 pipx inject llm psutils --pip-args="--upgrade"
 pipx inject llm beautifulsoup4 --pip-args="--upgrade"
 pipx inject llm certifi --pip-args="--upgrade"
+pipx inject llm uv --pip-args="--upgrade"
 
 pipx inject \
   ipython \
@@ -120,6 +122,7 @@ pipx inject \
   llm-anthropic \
   llm-tools-simpleeval \
   httpie \
+  uv \
   --pip-args="--upgrade"
 
 pipx ensurepath
