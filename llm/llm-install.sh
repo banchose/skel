@@ -3,6 +3,12 @@
 #
 # llm chat -f my_doc.txt
 
+## To use bedrock with llm
+# export AWS_PROFILE=test
+# aws sso login --profile test
+# MODEL=us.anthropic.claude-sonnet-4-5-20250929-v1
+# llm --model "${MODEL}" "test"
+
 pipx install llm
 pip install strip-tags
 pipx inject llm llm-tools-exa --pip-args="--upgrade" --force
@@ -19,6 +25,8 @@ pipx inject llm llm-bedrock-anthropic --pip-args="--upgrade" --force
 pipx inject llm llm-fragments-github --pip-args="--upgrade" --force
 pipx inject llm llm-fragments-pdf --pip-args="--upgrade" --force
 pipx inject llm llm-fragments-site-text --pip-args="--upgrade" --force
+pipx inject llm llm-python --pip-args="--upgrade" --force
+pipx inject llm llm-jq --pip-args="--upgrade" --force
 llm keys set anthropic --value "${ANTHROPIC_API_KEY}"
 llm keys set exa --value "${EXA_API_KEY}"
 llm models default anthropic/claude-sonnet-4-0

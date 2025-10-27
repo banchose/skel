@@ -87,6 +87,8 @@ pipx inject llm llm-fragments-github --pip-args="--upgrade"
 pipx inject llm llm-tools-simpleeval --pip-args="--upgrade"
 pipx inject llm llm-cmd-comp --pip-args="--upgrade"
 pipx inject llm llm-cmd --pip-args="--upgrade"
+pipx inject llm llm-python --pip-args="--upgrade" --force
+pipx inject llm llm-jq --pip-args="--upgrade" --force
 pipx inject llm llm-templates-fabric --pip-args="--upgrade"
 pipx inject llm howdoi --pip-args="--upgrade"
 pipx inject llm httpx --pip-args="--upgrade"
@@ -121,6 +123,8 @@ pipx inject \
   llm-fragments-github \
   llm-anthropic \
   llm-tools-simpleeval \
+  llm-python \
+  llm-jq \
   httpie \
   uv \
   --pip-args="--upgrade"
