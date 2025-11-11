@@ -79,6 +79,7 @@ pipx install twisted
 pipx install visidata
 pipx install psutils
 pipx install uv
+pipx install litellm
 
 pipx inject llm llm-tools-exa --pip-args="--upgrade"
 pipx inject llm llm-openrouter --pip-args="--upgrade"
@@ -96,6 +97,7 @@ pipx inject llm psutils --pip-args="--upgrade"
 pipx inject llm beautifulsoup4 --pip-args="--upgrade"
 pipx inject llm certifi --pip-args="--upgrade"
 pipx inject llm uv --pip-args="--upgrade"
+pipx inject llm litellm --pip-args="--upgrade"
 
 pipx inject \
   ipython \
@@ -127,6 +129,7 @@ pipx inject \
   llm-jq \
   httpie \
   uv \
+  litellm \
   --pip-args="--upgrade"
 
 pipx ensurepath
