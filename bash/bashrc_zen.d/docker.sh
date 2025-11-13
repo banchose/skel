@@ -80,6 +80,10 @@ if type docker &>/dev/null; then
     for i in $(docker images | tail -n +2 | awk '{ print $1 }'); do docker pull "$i"; done
   }
 
+  function getshell() {
+
+    docker run -it --rm -v ~/.aws:/root/.aws:ro -v ~/.bashrc:/root/.bashrc:ro -v ~/.inputrc:/root/.inputrc:ro -v ~/.bashrc_zen.d:/root/.bashrc_zen.d:ro -v ~/gitdir/skel:/root/gitdir/skel:ro -v ~/gitdir:/root/gitdir:ro --entrypoint /bin/bash amazon/aws-cli
+  }
 # [[ $HOSTNAME == arc ]] && export DOCKER_HOST="ssh://orb.example.net"
 # [[ $HOSTNAME == arc ]] && export DOCKER_HOST="ssh://star.example.net"
 fi
