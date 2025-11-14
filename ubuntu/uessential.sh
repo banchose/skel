@@ -52,6 +52,7 @@ sudo apt-get -y install software-properties-common
 sudo apt-get -y install build-essential
 sudo apt-get -y install gcc
 sudo apt-get -y install make
+sudo apt-get -y install texlive
 
 # sudo ufw default deny incoming
 # sudo ufw allow SSH
