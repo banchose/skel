@@ -19,6 +19,7 @@ function wood-sync() {
   rsync -rvptgle ssh /home/una/temp/OPENBKDIR* star.xaax.dev:/sync/"${HOSTNAME}"
   rsync --del -rvptgle ssh /home/una/Dropbox star.xaax.dev:/sync/"${HOSTNAME}"
   rsync --del -rvptgle ssh /home/una/.config/ star.xaax.dev:/sync/"${HOSTNAME}"/dotconfig
+  rsync --del -rvptgle ssh /home/una/Downloads star.xaax.dev:/sync/"${HOSTNAME}"
 
 }
 

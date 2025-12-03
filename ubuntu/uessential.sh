@@ -54,6 +54,10 @@ sudo apt-get -y install gcc
 sudo apt-get -y install make
 sudo apt-get -y install texlive
 
+# sudo apt-get -y install docker
+# sudo apt-get -y install docker-buildx
+# sudo apt-get -y install docker-compose
+
 # sudo ufw default deny incoming
 # sudo ufw allow SSH
 # sudo ufw enable

@@ -31,8 +31,9 @@ sudo timedatectl set-ntp true
 # sudo pacman -S qemu-tools
 
 # Docker
-# sudo pacman -S docker --needed --noconfirm
-# sudo pacman -S docker-compose --needed --noconfirm
+sudo pacman -S docker --needed --noconfirm
+sudo pacman -S docker-compose --needed --noconfirm
+sudo pacman -S docker-buildx --needed --noconfirm
 
 # LXD
 
