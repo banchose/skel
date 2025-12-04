@@ -40,6 +40,8 @@ past_days=2&forecast_days=3&timezone=America/New_York" |
 # pipx inject llm llm-cmd-comp --pip-args="--upgrade" --force
 # pipx inject llm llm-cmd --pip-args="--upgrade" --force
 # pipx inject llm llm-templates-fabric --pip-args="--upgrade" --force
+# pipx inject llm llm-python --pip-args="--upgrade" --force
+# pipx inject llm llm-jq --pip-args="--upgrade" --force
 
 # set:
 # export OPENWEATHER_APP_ID="04d5441a8a0215

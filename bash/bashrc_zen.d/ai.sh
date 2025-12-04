@@ -30,9 +30,13 @@ OPENROUTER_ENDPOINT="https://openrouter.ai/api/v1/chat/completions"
 Current_Model="${OR_MODEL}"
 
 # ANTHROPIC OR_MODEL
-# claude-3-7-sonnet-20250219"
-ANTHROPIC_MODEL="claude-sonnet-4-20250514"
 #
+# ANTHROPIC_MODEL="claude-haiku-4-5-20251001"
+#
+HAIKU="claude-haiku-4-5-20251001"
+SONNET="claude-sonnet-4-5-20250929"
+ANTHROPIC_MODEL="claude-sonnet-4-5-20250929"
+
 # Tokens
 #
 Max_Input_Tokens=2048

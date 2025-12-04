@@ -25,6 +25,7 @@ let g:netrw_fastbrowse=0        " ?
 let g:netrw_silent=1            " transfers done silently
 let g:netrw_keepdir= 0          " current dir tracks browse
 autocmd FileType netrw setl bufhidden=delete
+autocmd FileType yaml setlocal tabstop=2 expandtab shiftwidth=2 smarttab
 " This opens netrw by default
 " augroup ProjectDrawer
 "     autocmd!

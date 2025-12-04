@@ -848,3 +848,18 @@ alseni() {
     --region "${region}" \
     --profile "${profile}" # --filters "Name=vpc-id,Values=vpc-12345678" \
 }
+
+# if the us. is missing, you get an inference error - "with on-demand throughput isn’t supported." put the `us.` at the beginning
+askbed() {
+  HAIKU=us.anthropic.claude-haiku-4-5-20251001-v1:0
+  SONNET=us.anthropic.claude-sonnet-4-5-20250929-v1:0
+  MODEL="${SONNET}"
+  curl -X POST "https://bedrock-runtime.us-east-1.amazonaws.com/model/${MODEL}/converse" -H "Content-Type: application/json" -H "Authorization: Bearer $AWS_BEARER_TOKEN_BEDROCK" -d '{
+    "messages": [
+        {
+            "role": "user",
+            "content": [{"text": "This is a test message to see if I have connectivity and access. Please answer with a 'Ok'"}]
+        }
+    ]
+  }'
+}
