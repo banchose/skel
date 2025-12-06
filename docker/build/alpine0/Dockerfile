@@ -1,5 +1,7 @@
 FROM alpine:latest
-WORKDIR /work
+
+USER root
+WORKDIR /root
 # Install additional packages
 # Creates a layer per package - some are big if order modified
 # RUN pip install --no-cache-dir litellm['proxy']
@@ -24,6 +26,8 @@ RUN apk add --no-cache bash-completion
 RUN apk add --no-cache tmux
 RUN adduser -D -s /bin/bash loon
 USER loon
+WORKDIR /home/loon
 COPY inputrc /home/loon/.inputrc
-ENTRYPOINT ["bash"]
+ENTRYPOINT ["/bin/bash"]
+CMD ["-l"]
 # CMD ["-v"]
