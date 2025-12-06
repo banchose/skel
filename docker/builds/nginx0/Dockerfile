@@ -43,13 +43,13 @@ WORKDIR /root
 # RUN apk add --no-cache tshark
 # RUN apk add --no-cache nmap
 RUN apk add --no-cache nginx
-COPY nginx.conf /etc/nginx
+COPY nginx.conf /etc/nginx/nginx.conf
 RUN adduser -D -s /bin/bash nginx-user
 USER nginx-user
 WORKDIR /home/nginx-user/gitdir
 RUN git clone https://github.com/banchose/skel
 WORKDIR /home/nginx-user
 COPY inputrc /home/nginx-user/.inputrc
-ENTRYPOINT ["/bin/bash"]
-CMD ["-l"]
+ENTRYPOINT ["nginx"]
+CMD ["-e", "stderr", "-c", "/etc/nginx/nginx.conf"]
 # CMD ["-v"]
