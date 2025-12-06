@@ -24,6 +24,13 @@ RUN apk add --no-cache iproute2
 RUN apk add --no-cache bash
 RUN apk add --no-cache bash-completion
 RUN apk add --no-cache tmux
+RUN apk add --no-cache procps
+RUN apk add --no-cache findutils     # GNU find
+RUN apk add --no-cache procps-ng     # ps, top, etc.
+RUN apk add --no-cache diffutils     # GNU diff
+RUN apk add --no-cache less
+RUN apk add --no-cache nano
+RUN apk add --no-cache man-pages
 RUN adduser -D -s /bin/bash loon
 USER loon
 WORKDIR /home/loon
