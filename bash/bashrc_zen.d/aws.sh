@@ -27,6 +27,7 @@ alias vaws='nvim ~/gitdir/skel/bash/bashrc_zen.d/aws.sh'
 alias awsssh="aws ssm start-session --target ${MANINSTANCE} --region us-east-1 --profile net"
 alias aslb='aws elbv2 describe-load-balancers --query "LoadBalancers[].DNSName" --region us-east-1'
 alias alswf="aws logs tail aws-waf-logs-HRI-APP-WAF   --follow   --region us-east-1   --profile net"
+alias alscreds='aws configure export-credentials --profile $AWS_PROFILE'
 
 # Function: Get AWS Profile
 #get_aws_context() {
