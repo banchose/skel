@@ -30,8 +30,6 @@ RUN apk add --no-cache procps-ng     # ps, top, etc.
 RUN apk add --no-cache diffutils     # GNU diff
 RUN apk add --no-cache less
 RUN apk add --no-cache nano
-RUN apk add --no-cache man-pages
-RUN apk add --no-cache man-db
 RUN apk add --no-cache ripgrep
 RUN apk add --no-cache fd
 RUN apk add --no-cache bat
