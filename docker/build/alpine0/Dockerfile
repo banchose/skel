@@ -31,6 +31,17 @@ RUN apk add --no-cache diffutils     # GNU diff
 RUN apk add --no-cache less
 RUN apk add --no-cache nano
 RUN apk add --no-cache man-pages
+RUN apk add --no-cache man-db
+RUN apk add --no-cache ripgrep
+RUN apk add --no-cache fd
+RUN apk add --no-cache bat
+RUN apk add --no-cache fzf
+RUN apk add --no-cache dust
+RUN apk add --no-cache socat
+RUN apk add --no-cache mtr
+RUN apk add --no-cache tcpdump
+RUN apk add --no-cache tshark
+RUN apk add --no-cache nmap
 RUN adduser -D -s /bin/bash loon
 USER loon
 WORKDIR /home/loon
