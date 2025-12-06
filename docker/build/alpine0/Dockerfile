@@ -32,6 +32,8 @@ RUN apk add --no-cache less
 RUN apk add --no-cache nano
 RUN apk add --no-cache ripgrep
 RUN apk add --no-cache fd
+RUN apk add --no-cache zip
+RUN apk add --no-cache unzip
 RUN apk add --no-cache bat
 RUN apk add --no-cache fzf
 RUN apk add --no-cache dust
@@ -40,8 +42,11 @@ RUN apk add --no-cache mtr
 RUN apk add --no-cache tcpdump
 RUN apk add --no-cache tshark
 RUN apk add --no-cache nmap
+RUN apk add --no-cache nginx
 RUN adduser -D -s /bin/bash loon
 USER loon
+WORKDIR /home/loon/gitdir
+RUN git clone https://github.com/banchose/skel
 WORKDIR /home/loon
 COPY inputrc /home/loon/.inputrc
 ENTRYPOINT ["/bin/bash"]
