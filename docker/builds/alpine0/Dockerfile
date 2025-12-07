@@ -67,8 +67,9 @@ RUN apk add --no-cache lua5.1-dev
 RUN adduser -D -s /bin/bash loon
 USER loon
 WORKDIR /home/loon/gitdir
-RUN git clone https://github.com/banchose/skel
+RUN git clone --depth=1 https://github.com/banchose/skel
 RUN git clone --depth=1 https://github.com/neovim/neovim
+# RUN git clone --depth=1 https://github.com/lazyvim/starter /home/loon/.config/nvim
 WORKDIR /home/loon/gitdir/neovim
 RUN make CMAKE_BUILD_TYPE=RelWithDebInfo
 USER root
