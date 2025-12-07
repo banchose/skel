@@ -28,6 +28,16 @@ RUN apk add --no-cache procps
 RUN apk add --no-cache findutils     # GNU find
 RUN apk add --no-cache procps-ng     # ps, top, etc.
 RUN apk add --no-cache diffutils     # GNU diff
+RUN apk add --no-cache coreutils     # GNU diff
+RUN apk add --no-cache binutils     # GNU
+RUN apk add --no-cache util-linux     # GNU
+RUN apk add --no-cache file     # GNU
+RUN apk add --no-cache tree     # GNU
+RUN apk add --no-cache tar     # GNU
+RUN apk add --no-cache gzip     # GNU
+RUN apk add --no-cache net-tools
+RUN apk add --no-cache bzip2
+RUN apk add --no-cache xz
 RUN apk add --no-cache less
 RUN apk add --no-cache nano
 RUN apk add --no-cache ripgrep
@@ -49,6 +59,7 @@ WORKDIR /home/loon/gitdir
 RUN git clone https://github.com/banchose/skel
 WORKDIR /home/loon
 COPY inputrc /home/loon/.inputrc
+COPY bashrc-minimal /home/loon/.bashrc
 ENTRYPOINT ["/bin/bash"]
 CMD ["-l"]
 # CMD ["-v"]
