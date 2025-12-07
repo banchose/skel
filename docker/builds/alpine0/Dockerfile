@@ -56,7 +56,12 @@ RUN apk add --no-cache uv
 RUN apk add --no-cache ncurses
 RUN apk add --no-cache openssl
 RUN apk add --no-cache strace
-RUN apk add --no-cache samurai gettext libtool autoconf automake doxygen make cmake g++ gcc
+RUN apk add --no-cache gettext-dev
+RUN apk add --no-cache gettext-static
+RUN apk add --no-cache samurai libtool autoconf automake doxygen make cmake g++ gcc
+RUN apk add --no-cache gperf
+RUN apk add --no-cache luajit-dev
+RUN apk add --no-cache lua5.1-dev
 RUN adduser -D -s /bin/bash loon
 USER loon
 WORKDIR /home/loon/gitdir
