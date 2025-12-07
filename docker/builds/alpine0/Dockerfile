@@ -53,6 +53,7 @@ RUN apk add --no-cache tcpdump
 RUN apk add --no-cache tshark
 RUN apk add --no-cache nmap
 RUN apk add --no-cache nginx
+RUN apk add --no-cache uv
 RUN adduser -D -s /bin/bash loon
 USER loon
 WORKDIR /home/loon/gitdir
