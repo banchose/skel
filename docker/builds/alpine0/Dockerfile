@@ -68,6 +68,12 @@ RUN apk add --no-cache lua5.1-dev
 RUN apk add --no-cache ipython
 RUN apk add --no-cache rust cargo rust-doc
 RUN apk add --no-cache go go-doc
+RUN apk add --no-cache aws-cli aws-cli-bash-completion aws-cli-doc aws-cli-pyc aws-cli-zsh-completion
+RUN apk add --no-cache kubectl kubectl-bash-completion kubectl-zsh-completion
+RUN apk add --no-cache sqlite litecli
+RUN apk add --no-cache pgcli
+#
+#
 RUN adduser -D -s /bin/bash loon
 USER loon
 WORKDIR /home/loon/gitdir
