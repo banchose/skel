@@ -50,6 +50,7 @@ WORKDIR /home/nginx-user/gitdir
 RUN git clone https://github.com/banchose/skel
 WORKDIR /home/nginx-user
 COPY inputrc /home/nginx-user/.inputrc
+COPY index.html /www/data/index.html
 ENTRYPOINT ["nginx"]
-CMD ["-e", "stderr", "-c", "/etc/nginx/nginx.conf"]
+CMD ["-e", "stderr", "-g", "daemon off;", "-c", "/etc/nginx/nginx.conf"]
 # CMD ["-v"]
