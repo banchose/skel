@@ -72,6 +72,8 @@ RUN apk add --no-cache aws-cli aws-cli-bash-completion aws-cli-doc aws-cli-pyc a
 RUN apk add --no-cache kubectl kubectl-bash-completion kubectl-zsh-completion
 RUN apk add --no-cache sqlite litecli
 RUN apk add --no-cache pgcli
+RUN apk add --no-cache py3-boto3
+RUN apk add --no-cache py3-twisted
 #
 #
 RUN adduser -D -s /bin/bash loon
@@ -84,6 +86,33 @@ WORKDIR /home/loon/gitdir/neovim
 RUN make CMAKE_BUILD_TYPE=RelWithDebInfo
 USER root
 RUN make install
+
+RUN apk add --no-cache py3-requests
+RUN apk add --no-cache py3-beautifulsoup4
+RUN apk add --no-cache shellcheck
+RUN apk add --no-cache shellcheck-doc
+RUN apk add --no-cache rust
+RUN apk add --no-cache rust-doc
+RUN pipx install llm --pip-args="--upgrade"
+RUN pipx inject llm llm-anthropic --pip-args="--upgrade"
+RUN pipx inject llm llm-tools-exa --pip-args="--upgrade"
+RUN pipx inject llm llm-openrouter --pip-args="--upgrade"
+RUN pipx inject llm llm-anthropic --pip-args="--upgrade"
+RUN pipx inject llm llm-fragments-github --pip-args="--upgrade"
+RUN pipx inject llm llm-tools-simpleeval --pip-args="--upgrade"
+RUN pipx inject llm llm-cmd-comp --pip-args="--upgrade"
+RUN pipx inject llm llm-cmd --pip-args="--upgrade"
+RUN pipx inject llm llm-python --pip-args="--upgrade"
+RUN pipx inject llm llm-jq --pip-args="--upgrade"
+RUN pipx inject llm llm-templates-fabric --pip-args="--upgrade"
+RUN pipx inject llm howdoi --pip-args="--upgrade"
+RUN pipx inject llm httpx --pip-args="--upgrade"
+RUN pipx inject llm psutils --pip-args="--upgrade"
+RUN pipx inject llm certifi --pip-args="--upgrade"
+RUN pipx inject llm uv --pip-args="--upgrade"
+
+
+
 USER loon
 WORKDIR /home/loon
 COPY inputrc /home/loon/.inputrc
