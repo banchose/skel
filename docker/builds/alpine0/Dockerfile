@@ -15,6 +15,7 @@ RUN apk add --no-cache vim
 RUN apk add --no-cache jq
 RUN apk add --no-cache python3-dev
 RUN apk add --no-cache py3-pip
+RUN apk add --no-cache zsh
 RUN apk add --no-cache pipx
 RUN apk add --no-cache grep
 RUN apk add --no-cache gawk
@@ -72,7 +73,7 @@ USER loon
 WORKDIR /home/loon/gitdir
 RUN git clone --depth=1 https://github.com/banchose/skel
 RUN git clone --depth=1 https://github.com/neovim/neovim
-# RUN git clone --depth=1 https://github.com/lazyvim/starter /home/loon/.config/nvim
+RUN git clone --depth=1 https://github.com/lazyvim/starter
 WORKDIR /home/loon/gitdir/neovim
 RUN make CMAKE_BUILD_TYPE=RelWithDebInfo
 USER root
