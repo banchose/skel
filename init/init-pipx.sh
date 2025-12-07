@@ -85,6 +85,7 @@ pipx install git-filter-repo
 pipx inject llm llm-tools-exa --pip-args="--upgrade"
 pipx inject llm llm-openrouter --pip-args="--upgrade"
 pipx inject llm llm-anthropic --pip-args="--upgrade"
+pipx inject llm llm-gemini --pip-args="--upgrade"
 pipx inject llm llm-fragments-github --pip-args="--upgrade"
 pipx inject llm llm-tools-simpleeval --pip-args="--upgrade"
 pipx inject llm llm-cmd-comp --pip-args="--upgrade"

@@ -93,11 +93,18 @@ RUN apk add --no-cache shellcheck
 RUN apk add --no-cache shellcheck-doc
 RUN apk add --no-cache rust
 RUN apk add --no-cache rust-doc
+
+
+
+USER loon
+WORKDIR /home/loon
 RUN pipx install llm --pip-args="--upgrade"
 RUN pipx inject llm llm-anthropic --pip-args="--upgrade"
 RUN pipx inject llm llm-tools-exa --pip-args="--upgrade"
 RUN pipx inject llm llm-openrouter --pip-args="--upgrade"
 RUN pipx inject llm llm-anthropic --pip-args="--upgrade"
+RUN pipx inject llm llm-gemini --pip-args="--upgrade"
+RUN pipx inject llm llm-ollama --pip-args="--upgrade"
 RUN pipx inject llm llm-fragments-github --pip-args="--upgrade"
 RUN pipx inject llm llm-tools-simpleeval --pip-args="--upgrade"
 RUN pipx inject llm llm-cmd-comp --pip-args="--upgrade"
@@ -110,11 +117,14 @@ RUN pipx inject llm httpx --pip-args="--upgrade"
 RUN pipx inject llm psutils --pip-args="--upgrade"
 RUN pipx inject llm certifi --pip-args="--upgrade"
 RUN pipx inject llm uv --pip-args="--upgrade"
-
-
-
-USER loon
-WORKDIR /home/loon
+RUN pipx install litecli
+RUN pipx install pycowsay
+RUN pipx install flake8
+RUN pipx install pylint
+RUN pipx install black
+RUN pipx install ruff
+RUN pipx install pgcli
+RUN pipx install cfn-lint
 COPY inputrc /home/loon/.inputrc
 COPY bash_profile /home/loon/.bash_profile
 COPY bashrc-minimal /home/loon/.bashrc
