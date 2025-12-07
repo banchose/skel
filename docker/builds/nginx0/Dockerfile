@@ -11,6 +11,7 @@ WORKDIR /root
   RUN apk add --no-cache curl
   RUN apk add --no-cache wget
   RUN apk add --no-cache git
+  RUN apk add --no-cache bind-tools
 # RUN apk add --no-cache vim
 # RUN apk add --no-cache jq
 # RUN apk add --no-cache python3-dev
