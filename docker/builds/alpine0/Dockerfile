@@ -60,6 +60,7 @@ WORKDIR /home/loon/gitdir
 RUN git clone https://github.com/banchose/skel
 WORKDIR /home/loon
 COPY inputrc /home/loon/.inputrc
+COPY bash_profile /home/loon/.bash_profile
 COPY bashrc-minimal /home/loon/.bashrc
 ENTRYPOINT ["/bin/bash"]
 CMD ["-l"]
