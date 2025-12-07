@@ -79,25 +79,6 @@ RUN apk add --no-cache py3-twisted
 RUN adduser -D -s /bin/bash loon
 USER loon
 WORKDIR /home/loon/gitdir
-RUN git clone --depth=1 https://github.com/banchose/skel
-RUN git clone --depth=1 https://github.com/neovim/neovim
-RUN git clone --depth=1 https://github.com/lazyvim/starter
-WORKDIR /home/loon/gitdir/neovim
-RUN make CMAKE_BUILD_TYPE=RelWithDebInfo
-USER root
-RUN make install
-
-RUN apk add --no-cache py3-requests
-RUN apk add --no-cache py3-beautifulsoup4
-RUN apk add --no-cache shellcheck
-RUN apk add --no-cache shellcheck-doc
-RUN apk add --no-cache rust
-RUN apk add --no-cache rust-doc
-
-
-
-USER loon
-WORKDIR /home/loon
 RUN pipx install llm --pip-args="--upgrade"
 RUN pipx inject llm llm-anthropic --pip-args="--upgrade"
 RUN pipx inject llm llm-tools-exa --pip-args="--upgrade"
@@ -125,9 +106,30 @@ RUN pipx install black
 RUN pipx install ruff
 RUN pipx install pgcli
 RUN pipx install cfn-lint
+# RUN pipx install aider-chat
+RUN git clone --depth=1 https://github.com/banchose/skel
+RUN git clone --depth=1 https://github.com/neovim/neovim
+RUN git clone --depth=1 https://github.com/lazyvim/starter
 COPY inputrc /home/loon/.inputrc
 COPY bash_profile /home/loon/.bash_profile
 COPY bashrc-minimal /home/loon/.bashrc
+WORKDIR /home/loon/gitdir/neovim
+RUN make CMAKE_BUILD_TYPE=RelWithDebInfo
+USER root
+RUN make install
+WORKDIR /root
+RUN apk add --no-cache py3-requests
+RUN apk add --no-cache py3-beautifulsoup4
+RUN apk add --no-cache shellcheck
+RUN apk add --no-cache shellcheck-doc
+RUN apk add --no-cache rust
+RUN apk add --no-cache rust-doc
+RUN apk add --no-cache rsync-doc
+RUN apk add --no-cache bash-doc
+RUN apk add --no-cache zsh-doc
+RUN apk add --no-cache jq-doc
+USER loon
+WORKDIR /home/loon
 ENTRYPOINT ["/bin/bash"]
 CMD ["-l"]
 # CMD ["-v"]
