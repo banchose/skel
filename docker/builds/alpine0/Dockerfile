@@ -54,6 +54,9 @@ RUN apk add --no-cache nmap
 RUN apk add --no-cache nginx
 RUN apk add --no-cache uv
 RUN apk add --no-cache ncurses
+RUN apk add --no-cache openssl
+RUN apk add --no-cache strace
+RUN apk add --no-cache samurai gettext libtool autoconf automake doxygen make cmake g++ gcc
 RUN adduser -D -s /bin/bash loon
 USER loon
 WORKDIR /home/loon/gitdir
