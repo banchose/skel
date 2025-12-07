@@ -64,6 +64,8 @@ RUN apk add --no-cache samurai libtool autoconf automake doxygen make cmake g++ 
 RUN apk add --no-cache gperf
 RUN apk add --no-cache luajit-dev
 RUN apk add --no-cache lua5.1-dev
+RUN apk add --no-cache ipython
+RUN apk add --no-cache rust cargo rust-doc
 RUN adduser -D -s /bin/bash loon
 USER loon
 WORKDIR /home/loon/gitdir
