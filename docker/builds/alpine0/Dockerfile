@@ -129,6 +129,9 @@ kubectl kubectl-bash-completion kubectl-zsh-completion \
 sqlite litecli \
 pgcli \
 py3-boto3 \
+py3-pandas \
+py3-scipy \
+py3-networkx \
 py3-twisted
 #
 #
@@ -153,6 +156,10 @@ howdoi \
 httpx \
 psutils \
 certifi \
+pandas \
+uv \
+markitdown \
+scrapy \
 --pip-args="--upgrade" --include-deps
 
 RUN pipx install litecli \
@@ -164,9 +171,12 @@ ruff \
 pgcli \
 cfn-lint \
 icecream \
+markitdown \
+scrapy \
 --pip-args="--upgrade" \
 --include-deps
 # RUN pipx install aider-chat
+# RUN pip install numby scipy sympy pandas
 RUN git clone --depth=1 https://github.com/banchose/skel
 # RUN git clone --depth=1 https://github.com/neovim/neovim
 RUN git clone --depth=1 https://github.com/lazyvim/starter
@@ -211,6 +221,7 @@ lsof-doc \
 file-doc \
 grep-doc \
 netcat-openbsd-doc \
+py3-networkx-doc \
 gnupg-doc \
 go-doc \
 gawk-doc \
