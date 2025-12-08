@@ -135,7 +135,7 @@ py3-twisted
 RUN adduser -D -s /bin/bash loon
 USER loon
 WORKDIR /home/loon/gitdir
-RUN pipx install llm --pip-args="--upgrade"
+RUN pipx install llm --pip-args="--upgrade" --include-deps
 RUN pipx inject llm llm-anthropic \
 llm-tools-exa \
 llm-openrouter \
@@ -153,7 +153,7 @@ howdoi \
 httpx \
 psutils \
 certifi \
---pip-args="--upgrade"
+--pip-args="--upgrade" --include-deps
 
 RUN pipx install litecli \
 pycowsay \
@@ -163,7 +163,9 @@ black \
 ruff \
 pgcli \
 cfn-lint \
---pip-args="--upgrade"
+icecream \
+--pip-args="--upgrade" \
+--include-deps
 # RUN pipx install aider-chat
 RUN git clone --depth=1 https://github.com/banchose/skel
 # RUN git clone --depth=1 https://github.com/neovim/neovim
