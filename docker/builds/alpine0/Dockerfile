@@ -1,6 +1,6 @@
 # docker run -it -v ~/temp:/home/loon/temp --hostname alpine0 --rm alpine0:latest
 
-# docker run -it --rm --hostname alpine0 alpine0:latest
+# docker run -it --rm -v ~/temp:/home/loon/temp --hostname alpine0 alpine0:latest
 
 
 FROM alpine:latest
@@ -33,6 +33,8 @@ lsof \
 gawk \
 sed \
 rsync \
+linux-headers \
+musl-dev \
 btrfs-progs \
 btrfs-progs-extra \
 iproute2 \
@@ -138,6 +140,7 @@ py3-twisted
 #
 RUN adduser -D -s /bin/bash loon
 USER loon
+ENV PATH="/home/loon/.local/bin:${PATH}"
 WORKDIR /home/loon/gitdir
 RUN pipx install llm --pip-args="--upgrade" --include-deps
 RUN pipx inject llm llm-anthropic \
@@ -174,9 +177,11 @@ cfn-lint \
 icecream \
 markitdown \
 scrapy \
+aider-install \
 --pip-args="--upgrade" \
 --include-deps
-# RUN pipx install aider-chat
+# aider
+# RUN aider-install
 # RUN pip install numby scipy sympy pandas
 RUN git clone --depth=1 https://github.com/banchose/skel
 # RUN git clone --depth=1 https://github.com/neovim/neovim
