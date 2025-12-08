@@ -143,7 +143,10 @@ sed-doc \
 bind-doc \
 alpine-doc \
 tar-doc \
+less-doc \
 gzip-doc \
+gcc-doc \
+make-doc \
 iproute2-doc \
 yt-dlp
 
