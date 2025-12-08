@@ -1,4 +1,5 @@
-# docker run -it --hostname alpine0 -v ~/temp:/home/loon/temp --rm alpine0:latest
+# docker run -it -v ~/temp:/home/loon/temp --hostname alpine0 --rm alpine0:latest
+
 
 
 FROM alpine:latest
@@ -17,6 +18,8 @@ curl \
 wget \
 git \
 vim \
+neovim \
+py3-pynvim \
 python3-dev \
 py3-pip \
 7zip \
@@ -31,6 +34,16 @@ rsync \
 iproute2 \
 bash \
 bash-completion \
+yt-dlp-bash-completion \
+yt-dlp-zsh-completion \
+zathura-bash-completion \
+zathura-zsh-completion \
+git-zsh-completion \
+git-bash-completion \
+black-bash-completion \
+black-zsh-completion \
+bat-zsh-completion \
+bat-bash-completion \
 tmux \
 findutils \
 dateutils \
@@ -57,6 +70,8 @@ less \
 ffmpeg \
 nano \
 ripgrep \
+aria2 \
+aria2-bash-completion \
 openssh \
 lazygit \
 lazydocker \
@@ -134,17 +149,17 @@ cfn-lint \
 --pip-args="--upgrade"
 # RUN pipx install aider-chat
 RUN git clone --depth=1 https://github.com/banchose/skel
-RUN git clone --depth=1 https://github.com/neovim/neovim
+# RUN git clone --depth=1 https://github.com/neovim/neovim
 RUN git clone --depth=1 https://github.com/lazyvim/starter
 COPY bash_profile /home/loon/.bash_profile
 COPY bashrc /home/loon/.bashrc
 COPY inputrc /home/loon/.inputrc
 COPY tmux.conf /home/loon/.tmux.conf
 COPY gitconfig /home/loon/.gitconfig
-WORKDIR /home/loon/gitdir/neovim
-RUN make CMAKE_BUILD_TYPE=RelWithDebInfo
+# WORKDIR /home/loon/gitdir/neovim
+# RUN make CMAKE_BUILD_TYPE=RelWithDebInfo
+# RUN make install
 USER root
-RUN make install
 WORKDIR /root
 RUN apk add --no-cache py3-requests \
 py3-beautifulsoup4 \
@@ -182,8 +197,10 @@ go-doc \
 gawk-doc \
 pv-doc \
 ripgrep-doc \
-pwgen \
+pwgen-doc \
 pstree-doc \
+neovim-doc \
+aria2-doc \
 gdb-doc \
 sed-doc \
 openssh-doc \

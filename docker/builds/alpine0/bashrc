@@ -263,8 +263,3 @@ fi
 if command -v aws_completer &>/dev/null; then
   complete -C "$(command -v aws_completer)" aws
 fi
-
-# export OPENWEATHER_LOCATION='{"lat": 42.6, "lon": -73.97}'
-
-source '/home/una/.bash_completions/open-webui.sh'
-
