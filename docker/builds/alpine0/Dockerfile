@@ -27,23 +27,40 @@ py3-pip \
 zsh \
 pipx \
 grep \
+k9s \
 lsof \
 gawk \
 sed \
 rsync \
+btrfs-progs \
+btrfs-progs-extra \
 iproute2 \
 bash \
 bash-completion \
 yt-dlp-bash-completion \
 yt-dlp-zsh-completion \
-zathura-bash-completion \
-zathura-zsh-completion \
 git-zsh-completion \
 git-bash-completion \
 black-bash-completion \
+btrfs-progs-bash-completion \
 black-zsh-completion \
 bat-zsh-completion \
 bat-bash-completion \
+k9s-bash-completion \
+k9s-zsh-completion \
+uv-bash-completion \
+uv-zsh-completion \
+step-cli-bash-completion \
+step-cli-zsh-completion \
+ruff-zsh-completion \
+ruff-bash-completion \
+ripgrep-bash-completion \
+ripgrep-zsh-completion \
+py3-pip-bash-completion \
+py3-pip-zsh-completion \
+mtr-bash-completion \
+fd-bash-completion \
+fd-zsh-completion \
 tmux \
 findutils \
 dateutils \
@@ -53,6 +70,7 @@ coreutils \
 binutils  \
 util-linux \
 file \
+step-cli \
 tree \
 tar  \
 units \
@@ -104,7 +122,7 @@ gperf \
 luajit-dev \
 lua5.1-dev \
 ipython \
-rust cargo rust-doc \
+rust cargo rust-doc cargo-bash-completions \
 go go-doc \
 aws-cli aws-cli-bash-completion aws-cli-doc aws-cli-pyc aws-cli-zsh-completion amazon-ssm-agent \
 kubectl kubectl-bash-completion kubectl-zsh-completion \
@@ -135,7 +153,6 @@ howdoi \
 httpx \
 psutils \
 certifi \
-uv \
 --pip-args="--upgrade"
 
 RUN pipx install litecli \
@@ -164,10 +181,10 @@ WORKDIR /root
 RUN apk add --no-cache py3-requests \
 py3-beautifulsoup4 \
 shellcheck \
+s-tui \
+emacs-nox \
 shellcheck-doc \
 wireshark-doc \
-zathura \
-zathura-doc \
 w3m \
 w3m-doc \
 rust \
@@ -208,12 +225,14 @@ pandoc-cli-doc \
 bind-doc \
 alpine-doc \
 openssl-doc \
+nmap-nping \
 tar-doc \
 less-doc \
 gzip-doc \
 s3cmd \
 gcc-doc \
 make-doc \
+emacs-doc \
 iproute2-doc \
 perl-doc \
 yt-dlp
