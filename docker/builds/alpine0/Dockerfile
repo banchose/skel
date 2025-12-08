@@ -198,6 +198,7 @@ py3-scipy-tests \
 py3-purl \
 py3-numpy \
 py3-numpy-tests \
+py3-boltons \
 py3-twisted \ 
 py3-requests \ 
 py3-beautifulsoup4 \
@@ -205,7 +206,6 @@ py3-pynvim \
 python3-dev \
 py3-pip \
 pipx
-
 
 RUN apk add --no-cache rust rust-doc cargo cargo-bash-completions
 
