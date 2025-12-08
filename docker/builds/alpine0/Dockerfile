@@ -191,7 +191,6 @@ emacs-doc \
 iproute2-doc \
 perl-doc 
 
-RUN apk add --no-cache yq-python yt-dlp-bash-completion yt-dlp-zsh-completion yt-dlp 
 RUN apk add --no-cache rust rust-doc cargo cargo-bash-completions
 
 RUN apk add --no-cache aws-cli aws-cli-bash-completion aws-cli-doc aws-cli-pyc aws-cli-zsh-completion amazon-ssm-agent
@@ -204,13 +203,36 @@ RUN ARCH=amd64 && \
     rm eksctl_$PLATFORM.tar.gz && \
     install -m 0755 /tmp/eksctl /usr/local/bin && \
     rm /tmp/eksctl
-#
+
+RUN apk add --no-cache yq-python yt-dlp-bash-completion yt-dlp-zsh-completion yt-dlp 
+
+# Add loon user
 RUN adduser -D -s /bin/bash loon
 
 USER loon
 ENV PATH="/home/loon/.local/bin:${PATH}"
+
+RUN pipx install \
+litecli \
+pycowsay \
+flake8 \
+pylint \
+black \
+ruff \
+pgcli \
+cfn-lint \
+icecream \
+markitdown \
+scrapy \
+--pip-args="--upgrade" \
+--include-deps
+
+# llm 
 RUN pipx install llm --pip-args="--upgrade" --include-deps
-RUN pipx inject llm llm-anthropic \
+
+# llm inject
+RUN pipx inject llm \
+llm-anthropic \
 llm-tools-exa \
 llm-openrouter \
 llm-anthropic \
@@ -223,38 +245,23 @@ llm-cmd \
 llm-python \
 llm-jq \
 llm-templates-fabric \
-howdoi \
-httpx \
-psutils \
-certifi \
-pandas \
 uv \
-markitdown \
-scrapy \
 --pip-args="--upgrade" --include-deps
 
-RUN pipx install litecli \
-pycowsay \
-flake8 \
-pylint \
-black \
-ruff \
-pgcli \
-cfn-lint \
-icecream \
-markitdown \
-scrapy \
+RUN pipx install \
 aider-install \
 --pip-args="--upgrade" \
 --include-deps
 
 
 WORKDIR /home/loon/gitdir
+
 RUN git clone --depth=1 https://github.com/banchose/skel
 # RUN git clone --depth=1 https://github.com/neovim/neovim
 RUN git clone --depth=1 https://github.com/lazyvim/starter
 
 WORKDIR /home/loon
+
 COPY --chown=loon:loon bash_profile ./.bash_profile
 COPY --chown=loon:loon bashrc ./.bashrc
 COPY --chown=loon:loon inputrc ./.inputrc
