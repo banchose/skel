@@ -16,9 +16,12 @@ git \
 vim \
 python3-dev \
 py3-pip \
+7zip \
+7zip-doc \
 zsh \
 pipx \
 grep \
+lsof \
 gawk \
 sed \
 rsync \
@@ -27,6 +30,7 @@ bash \
 bash-completion \
 tmux \
 findutils \
+dateutils \
 procps-ng \
 diffutils \
 coreutils \
@@ -35,22 +39,35 @@ util-linux \
 file \
 tree \
 tar  \
+units \
+pandoc-cli \
+netcat-openbsd \
 gzip \
 net-tools \
+pstree \
+pv \
+pwgen \
+httpie \
 bzip2 \
 xz \
 less \
+ffmpeg \
 nano \
 ripgrep \
+openssh \
+lazygit \
 fd \
 zip \
 unzip \
 bat \
+go \
 fzf \
 dust \
+s3cmd \
 socat \
 mtr \
 tcpdump \
+ipcalc \
 tshark \
 nmap \
 nginx \
@@ -60,16 +77,17 @@ btop \
 ncurses \
 openssl \
 strace \
+gnupg \
 gettext-dev \
 gettext-static \
-samurai libtool autoconf automake doxygen make cmake g++ gcc \
+samurai libtool autoconf automake doxygen make cmake g++ gcc gdb \
 gperf \
 luajit-dev \
 lua5.1-dev \
 ipython \
 rust cargo rust-doc \
 go go-doc \
-aws-cli aws-cli-bash-completion aws-cli-doc aws-cli-pyc aws-cli-zsh-completion \
+aws-cli aws-cli-bash-completion aws-cli-doc aws-cli-pyc aws-cli-zsh-completion amazon-ssm-agent \
 kubectl kubectl-bash-completion kubectl-zsh-completion \
 sqlite litecli \
 pgcli \
@@ -129,22 +147,48 @@ py3-beautifulsoup4 \
 shellcheck \
 shellcheck-doc \
 wireshark-doc \
+zathura \
+zathura-doc \
+w3m \
+w3m-doc \
 rust \
+dateutils-doc \
+dust-doc \
+httpie-doc \
+units-doc \
 rust-doc \
 mandoc \
+ipcalc-doc \
 bash-doc \
+ffmpeg-doc \
+lazygit-doc \
 zsh-doc \
 jq-doc \
 coreutils-doc \
 findutils-doc \
+fzf-doc \
 diffutils-doc \
+lsof-doc \
+file-doc \
+grep-doc \
+netcat-openbsd-doc \
+gnupg-doc \
+go-doc \
 gawk-doc \
+pv-doc \
+ripgrep-doc \
+pwgen \
+pstree-doc \
+gdb-doc \
 sed-doc \
+openssh-doc \
+pandoc-cli-doc \
 bind-doc \
 alpine-doc \
 tar-doc \
 less-doc \
 gzip-doc \
+s3cmd \
 gcc-doc \
 make-doc \
 iproute2-doc \
