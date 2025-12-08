@@ -5,6 +5,9 @@
 
 FROM alpine:latest
 
+ARG USER_UID=1002
+ARG USER_GID=1002
+
 USER root
 WORKDIR /root
 # Install additional packages
@@ -21,13 +24,9 @@ wget \
 git \
 vim \
 neovim \
-py3-pynvim \
-python3-dev \
-py3-pip \
 7zip \
 7zip-doc \
 zsh \
-pipx \
 grep \
 gawk \
 lsof \
@@ -127,13 +126,6 @@ go go-doc \
 kubectl kubectl-bash-completion kubectl-zsh-completion \
 sqlite litecli \
 pgcli \
-py3-boto3 \
-py3-pandas \
-py3-scipy \
-py3-networkx \
-py3-twisted \
-py3-requests \
-py3-beautifulsoup4 \
 shellcheck \
 s-tui \
 emacs-nox \
@@ -191,6 +183,19 @@ emacs-doc \
 iproute2-doc \
 perl-doc 
 
+RUN apk add py3-boto3 \
+py3-pandas \
+py3-scipy \
+py3-networkx \ 
+py3-twisted \ 
+py3-requests \ 
+py3-beautifulsoup4 \
+py3-pynvim \
+python3-dev \
+py3-pip \
+pipx
+
+
 RUN apk add --no-cache rust rust-doc cargo cargo-bash-completions
 
 RUN apk add --no-cache aws-cli aws-cli-bash-completion aws-cli-doc aws-cli-pyc aws-cli-zsh-completion amazon-ssm-agent
@@ -207,7 +212,8 @@ RUN ARCH=amd64 && \
 RUN apk add --no-cache yq-python yt-dlp-bash-completion yt-dlp-zsh-completion yt-dlp 
 
 # Add loon user
-RUN adduser -D -s /bin/bash loon
+RUN addgroup -g ${USER_GID} loon && \
+    adduser -D -s /bin/bash -u ${USER_UID} -G loon loon
 
 USER loon
 ENV PATH="/home/loon/.local/bin:${PATH}"
