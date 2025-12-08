@@ -14,7 +14,6 @@ WORKDIR /root
 # RUN pip install --no-cache-dir ipython
 RUN apk update
 RUN apk add --no-cache \
-bash \
 jq \
 curl \
 wget \
@@ -29,8 +28,9 @@ py3-pip \
 zsh \
 pipx \
 grep \
-gawk \
+k9s \
 lsof \
+gawk \
 sed \
 rsync \
 linux-headers \
@@ -38,13 +38,15 @@ musl-dev \
 btrfs-progs \
 btrfs-progs-extra \
 iproute2 \
+bash \
 bash-completion \
+yt-dlp-bash-completion \
+yt-dlp-zsh-completion \
 git-zsh-completion \
 git-bash-completion \
 black-bash-completion \
 btrfs-progs-bash-completion \
 black-zsh-completion \
-k9s \
 bat-zsh-completion \
 bat-bash-completion \
 k9s-bash-completion \
@@ -123,7 +125,9 @@ gperf \
 luajit-dev \
 lua5.1-dev \
 ipython \
+rust cargo rust-doc cargo-bash-completions \
 go go-doc \
+aws-cli aws-cli-bash-completion aws-cli-doc aws-cli-pyc aws-cli-zsh-completion amazon-ssm-agent \
 kubectl kubectl-bash-completion kubectl-zsh-completion \
 sqlite litecli \
 pgcli \
@@ -131,8 +135,67 @@ py3-boto3 \
 py3-pandas \
 py3-scipy \
 py3-networkx \
-py3-twisted \
-py3-requests \
+py3-twisted
+#
+#
+RUN adduser -D -s /bin/bash loon
+
+USER loon
+ENV PATH="/home/loon/.local/bin:${PATH}"
+WORKDIR /home/loon/gitdir
+RUN pipx install llm --pip-args="--upgrade" --include-deps
+RUN pipx inject llm llm-anthropic \
+llm-tools-exa \
+llm-openrouter \
+llm-anthropic \
+llm llm-gemini \
+llm-ollama \
+llm-fragments-github \
+llm-tools-simpleeval \
+llm-cmd-comp \
+llm-cmd \
+llm-python \
+llm-jq \
+llm-templates-fabric \
+howdoi \
+httpx \
+psutils \
+certifi \
+pandas \
+uv \
+markitdown \
+scrapy \
+--pip-args="--upgrade" --include-deps
+
+RUN pipx install litecli \
+pycowsay \
+flake8 \
+pylint \
+black \
+ruff \
+pgcli \
+cfn-lint \
+icecream \
+markitdown \
+scrapy \
+aider-install \
+--pip-args="--upgrade" \
+--include-deps
+
+RUN git clone --depth=1 https://github.com/banchose/skel
+# RUN git clone --depth=1 https://github.com/neovim/neovim
+RUN git clone --depth=1 https://github.com/lazyvim/starter
+
+COPY bash_profile /home/loon/.bash_profile
+COPY bashrc /home/loon/.bashrc
+COPY inputrc /home/loon/.inputrc
+COPY tmux.conf /home/loon/.tmux.conf
+COPY gitconfig /home/loon/.gitconfig
+
+USER root
+WORKDIR /root
+
+RUN apk add --no-cache py3-requests \
 py3-beautifulsoup4 \
 shellcheck \
 s-tui \
@@ -189,12 +252,8 @@ gcc-doc \
 make-doc \
 emacs-doc \
 iproute2-doc \
-perl-doc 
-
-RUN apk add --no-cache yq-python yt-dlp-bash-completion yt-dlp-zsh-completion yt-dlp 
-RUN apk add --no-cache rust rust-doc cargo cargo-bash-completions
-
-RUN apk add --no-cache aws-cli aws-cli-bash-completion aws-cli-doc aws-cli-pyc aws-cli-zsh-completion amazon-ssm-agent
+perl-doc \
+yt-dlp
 
 RUN ARCH=amd64 && \
     PLATFORM=$(uname -s)_$ARCH && \
@@ -204,64 +263,12 @@ RUN ARCH=amd64 && \
     rm eksctl_$PLATFORM.tar.gz && \
     install -m 0755 /tmp/eksctl /usr/local/bin && \
     rm /tmp/eksctl
-#
-RUN adduser -D -s /bin/bash loon
+
+RUN apk add --no-cache yq-python
 
 USER loon
-ENV PATH="/home/loon/.local/bin:${PATH}"
-RUN pipx install llm --pip-args="--upgrade" --include-deps
-RUN pipx inject llm llm-anthropic \
-llm-tools-exa \
-llm-openrouter \
-llm-anthropic \
-llm llm-gemini \
-llm-ollama \
-llm-fragments-github \
-llm-tools-simpleeval \
-llm-cmd-comp \
-llm-cmd \
-llm-python \
-llm-jq \
-llm-templates-fabric \
-howdoi \
-httpx \
-psutils \
-certifi \
-pandas \
-uv \
-markitdown \
-scrapy \
---pip-args="--upgrade" --include-deps
-
-RUN pipx install litecli \
-pycowsay \
-flake8 \
-pylint \
-black \
-ruff \
-pgcli \
-cfn-lint \
-icecream \
-markitdown \
-scrapy \
-aider-install \
---pip-args="--upgrade" \
---include-deps
-
-
-WORKDIR /home/loon/gitdir
-RUN git clone --depth=1 https://github.com/banchose/skel
-# RUN git clone --depth=1 https://github.com/neovim/neovim
-RUN git clone --depth=1 https://github.com/lazyvim/starter
-
 WORKDIR /home/loon
-COPY --chown=loon:loon bash_profile ./.bash_profile
-COPY --chown=loon:loon bashrc ./.bashrc
-COPY --chown=loon:loon inputrc ./.inputrc
-COPY --chown=loon:loon tmux.conf ./.tmux.conf
-COPY --chown=loon:loon gitconfig ./.gitconfig
-COPY --chown=loon:loon awsconfig ./.aws/config
-
+COPY awsconfig ./.aws/config
 WORKDIR /home/loon/work
 ENTRYPOINT ["/bin/bash"]
 CMD ["-l"]
