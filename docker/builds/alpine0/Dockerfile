@@ -276,8 +276,8 @@ COPY --chown=loon:loon gitconfig ./.gitconfig
 COPY --chown=loon:loon awsconfig ./.aws/config
 
 WORKDIR /home/loon/work
-ENTRYPOINT ["/bin/sleep"]
-CMD ["100000"]
-# ENTRYPOINT ["/bin/bash"]
-# CMD ["-l"]
+# ENTRYPOINT ["/bin/sleep"]
+# CMD ["100000"]
+ENTRYPOINT ["/bin/bash"]
+CMD ["-l"]
 # CMD ["-v"]
