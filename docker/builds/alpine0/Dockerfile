@@ -1,3 +1,5 @@
+# docker build -t alpine0 .
+
 # docker run -it -v ~/temp:/home/loon/temp --hostname alpine0 --rm alpine0:latest
 
 # docker run -it --rm -v ~/temp:/home/loon/temp --hostname alpine0 alpine0:latest
@@ -40,6 +42,8 @@ iproute2 \
 bash-completion \
 git-zsh-completion \
 git-bash-completion \
+ninja-build \
+meson \
 black-bash-completion \
 btrfs-progs-bash-completion \
 black-zsh-completion \
@@ -194,11 +198,11 @@ py3-pip-bash-completion \
 py3-arrow \
 py3-pip-zsh-completion \
 py3-networkx-doc \
-py3-networkx \ 
-py3-cryptography \ 
+py3-networkx \
+py3-cryptography \
 py3-pytube \
-py3-sympy \ 
-py3-faker \ 
+py3-sympy \
+py3-faker \
 py3-httpx \
 py3-logbook \
 py3-pandas \
@@ -212,9 +216,10 @@ py3-numpy-tests \
 py3-pendulum \
 py3-certifi \
 py3-pydantic \
+py3-jinja2 \
 py3-boltons \
-py3-twisted \ 
-py3-requests \ 
+py3-twisted \
+py3-requests \
 py3-beautifulsoup4 \
 py3-pynvim \
 python3-dev \
