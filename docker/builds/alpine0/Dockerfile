@@ -1,3 +1,6 @@
+# docker run -it --hostname alpine0 -v ~/temp:/home/loon/temp --rm alpine0:latest
+
+
 FROM alpine:latest
 
 USER root
@@ -56,6 +59,7 @@ nano \
 ripgrep \
 openssh \
 lazygit \
+lazydocker \
 fd \
 zip \
 unzip \
@@ -162,6 +166,7 @@ ipcalc-doc \
 bash-doc \
 ffmpeg-doc \
 lazygit-doc \
+lazydocker \
 zsh-doc \
 jq-doc \
 coreutils-doc \
@@ -185,6 +190,7 @@ openssh-doc \
 pandoc-cli-doc \
 bind-doc \
 alpine-doc \
+openssl-doc \
 tar-doc \
 less-doc \
 gzip-doc \
@@ -192,6 +198,7 @@ s3cmd \
 gcc-doc \
 make-doc \
 iproute2-doc \
+perl-doc \
 yt-dlp
 
 USER loon
