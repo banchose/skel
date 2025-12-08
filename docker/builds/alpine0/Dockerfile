@@ -1,5 +1,6 @@
 # docker run -it -v ~/temp:/home/loon/temp --hostname alpine0 --rm alpine0:latest
 
+# docker run -it --rm --hostname alpine0 alpine0:latest
 
 
 FROM alpine:latest
