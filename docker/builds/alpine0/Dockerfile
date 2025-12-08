@@ -56,8 +56,6 @@ ruff-zsh-completion \
 ruff-bash-completion \
 ripgrep-bash-completion \
 ripgrep-zsh-completion \
-py3-pip-bash-completion \
-py3-pip-zsh-completion \
 mtr-bash-completion \
 fd-bash-completion \
 fd-zsh-completion \
@@ -121,7 +119,6 @@ samurai libtool autoconf automake doxygen make cmake g++ gcc gdb \
 gperf \
 luajit-dev \
 lua5.1-dev \
-ipython \
 go go-doc \
 kubectl kubectl-bash-completion kubectl-zsh-completion \
 sqlite litecli \
@@ -155,7 +152,6 @@ lsof-doc \
 file-doc \
 grep-doc \
 netcat-openbsd-doc \
-py3-networkx-doc \
 gnupg-doc \
 go-doc \
 gawk-doc \
@@ -185,8 +181,23 @@ perl-doc
 
 RUN apk add py3-boto3 \
 py3-pandas \
+ipython \
 py3-scipy \
+py3-pip-bash-completion \
+py3-arrow \
+py3-pip-zsh-completion \
+py3-networkx-doc \
 py3-networkx \ 
+py3-httpx \
+py3-logbook \
+py3-pandas \
+py3-pandas-tests \
+py3-loguru \
+py3-scipy \
+py3-scipy-tests \
+py3-purl \
+py3-numpy \
+py3-numpy-tests \
 py3-twisted \ 
 py3-requests \ 
 py3-beautifulsoup4 \
