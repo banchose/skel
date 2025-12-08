@@ -66,6 +66,7 @@ procps-ng \
 diffutils \
 coreutils \
 binutils  \
+speedtest-cli \
 util-linux \
 file \
 step-cli \
@@ -85,6 +86,7 @@ xz \
 less \
 ffmpeg \
 nano \
+glances \
 ripgrep \
 aria2 \
 aria2-bash-completion \
@@ -112,6 +114,7 @@ btop \
 ncurses \
 openssl \
 strace \
+photon \
 gnupg \
 gettext-dev \
 gettext-static \
@@ -127,6 +130,8 @@ shellcheck \
 s-tui \
 emacs-nox \
 shellcheck-doc \
+glances-doc \
+py3-sympy-doc \
 wireshark-doc \
 w3m \
 w3m-doc \
@@ -161,6 +166,7 @@ pwgen-doc \
 pstree-doc \
 neovim-doc \
 aria2-doc \
+photon-doc \
 gdb-doc \
 sed-doc \
 openssh-doc \
@@ -179,7 +185,8 @@ emacs-doc \
 iproute2-doc \
 perl-doc 
 
-RUN apk add py3-boto3 \
+RUN apk add \
+py3-boto3 \
 py3-pandas \
 ipython \
 py3-scipy \
@@ -188,6 +195,10 @@ py3-arrow \
 py3-pip-zsh-completion \
 py3-networkx-doc \
 py3-networkx \ 
+py3-cryptography \ 
+py3-pytube \
+py3-sympy \ 
+py3-faker \ 
 py3-httpx \
 py3-logbook \
 py3-pandas \
@@ -198,6 +209,9 @@ py3-scipy-tests \
 py3-purl \
 py3-numpy \
 py3-numpy-tests \
+py3-pendulum \
+py3-certifi \
+py3-pydantic \
 py3-boltons \
 py3-twisted \ 
 py3-requests \ 
@@ -207,7 +221,6 @@ python3-dev \
 py3-pip \
 pipx
 
-RUN apk add --no-cache rust rust-doc cargo cargo-bash-completions
 
 RUN apk add --no-cache aws-cli aws-cli-bash-completion aws-cli-doc aws-cli-pyc aws-cli-zsh-completion amazon-ssm-agent
 
@@ -221,6 +234,10 @@ RUN ARCH=amd64 && \
     rm /tmp/eksctl
 
 RUN apk add --no-cache yq-python yt-dlp-bash-completion yt-dlp-zsh-completion yt-dlp 
+RUN apk add --no-cache rust rust-doc cargo cargo-bash-completions
+
+RUN apk add --no-cache py3-pypdf
+
 
 # Add loon user
 RUN addgroup -g ${USER_GID} loon && \
@@ -276,6 +293,10 @@ WORKDIR /home/loon/gitdir
 RUN git clone --depth=1 https://github.com/banchose/skel
 # RUN git clone --depth=1 https://github.com/neovim/neovim
 RUN git clone --depth=1 https://github.com/lazyvim/starter
+RUN git clone --depth=1 https://github.com/gto76/python-cheatsheet
+RUN git clone --depth=1 https://github.com/donnemartin/interactive-coding-challenges
+RUN git clone --depth=1 https://github.com/realpython/python-guide
+RUN git clone --depth=1 https://github.com/yidao620c/python3-cookbook
 
 WORKDIR /home/loon
 
