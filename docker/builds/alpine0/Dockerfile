@@ -170,3 +170,46 @@ markitdown \
 scrapy \
 --pip-args="--upgrade" \
 --include-deps
+
+
+
+
+# llm
+RUN pipx install llm \
+--pip-args="--upgrade" \
+--include-deps
+
+RUN llm install \
+llm-anthropic \
+llm-tools-exa \
+llm-openrouter \
+llm-gemini \
+llm-bedrock  \
+llm-bedrock-anthropic  \
+# llm-bedrock-meta  \
+# llm-ollama \
+llm-tools-quickjs \
+llm-tools-sqlite \
+llm-tools-rag \
+# llm-fragments-pdf \
+llm-fragments-site-text \
+llm-templates-github \
+llm-fragments-github \
+llm-tools-simpleeval \
+llm-cmd-comp \
+llm-cmd \
+llm-python \
+llm-jq \
+llm-templates-fabric
+
+
+RUN llm models default anthropic/claude-sonnet-4-5
+
+### LOON ####
+USER loon
+WORKDIR /home/loon
+RUN go install github.com/akavel/up@latest
+RUN go install github.com/charmbracelet/glow/v2@latest
+RUN pipx install visidata 'litellm[proxy]'
+
+
