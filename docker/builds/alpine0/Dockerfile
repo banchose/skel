@@ -284,24 +284,10 @@ scrapy \
 
 # llm
 RUN pipx install llm \
-llm-anthropic \
-llm-tools-exa \
-llm-openrouter \
-llm llm-gemini \
-llm-ollama \
-llm-fragments-github \
-llm-tools-simpleeval \
-llm-cmd-comp \
-llm-cmd \
-llm-python \
-llm-jq \
-llm-templates-fabric \
 --pip-args="--upgrade" \
 --include-deps
 
-# llm inject
-RUN pipx inject \
-llm \
+RUN llm install \
 llm-anthropic \
 llm-tools-exa \
 llm-openrouter \
@@ -313,9 +299,25 @@ llm-cmd-comp \
 llm-cmd \
 llm-python \
 llm-jq \
-llm-templates-fabric \
-uv \
---pip-args="--upgrade" --include-deps
+llm-templates-fabric
+
+# llm inject
+# RUN pipx inject \
+# llm \
+# llm-anthropic \
+# llm-tools-exa \
+# llm-openrouter \
+# llm llm-gemini \
+# llm-ollama \
+# llm-fragments-github \
+# llm-tools-simpleeval \
+# llm-cmd-comp \
+# llm-cmd \
+# llm-python \
+# llm-jq \
+# llm-templates-fabric \
+# uv \
+# --pip-args="--upgrade" --include-deps
 
 RUN pipx install \
 aider-install \
