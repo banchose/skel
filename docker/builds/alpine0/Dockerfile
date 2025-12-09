@@ -1,6 +1,6 @@
 # docker build -t alpine0 .
 
-# docker run -it -v ~/temp:/home/loon/temp --hostname alpine0 --rm alpine0:latest
+# ROOT: docker run -it -v ~/temp:/home/loon/temp --hostname alpine0 --rm -u root alpine0:latest
 
 # docker run -it --rm -v ~/temp:/home/loon/temp --hostname alpine0 alpine0:latest
 
@@ -45,6 +45,8 @@ musl-dev \
 btrfs-progs \
 btrfs-progs-extra \
 iproute2 \
+ncurses-terminfo-base \
+ncurses-terminfo \
 bash-completion \
 git-zsh-completion \
 git-bash-completion \
@@ -259,6 +261,8 @@ RUN mkdir -p /home/loon/gitdir && \
 
 USER loon
 ENV PATH="/home/loon/.local/bin:${PATH}"
+
+RUN pipx install elia-chat
 
 
 RUN pipx install \
