@@ -296,8 +296,17 @@ RUN llm install \
 llm-anthropic \
 llm-tools-exa \
 llm-openrouter \
-llm llm-gemini \
-llm-ollama \
+llm-gemini \
+llm-bedrock  \
+llm-bedrock-anthropic  \
+# llm-bedrock-meta  \
+# llm-ollama \
+llm-tools-quickjs \
+llm-tools-sqlite \
+llm-tools-rag \
+# llm-fragments-pdf \
+llm-fragments-site-text \
+llm-templates-github \
 llm-fragments-github \
 llm-tools-simpleeval \
 llm-cmd-comp \
@@ -306,7 +315,7 @@ llm-python \
 llm-jq \
 llm-templates-fabric
 
-RUN llm models default anthropic/claude-opus-4-5-20251101
+RUN llm models default anthropic/claude-sonnet-4-5
 
 
 WORKDIR /home/loon/gitdir
@@ -329,6 +338,7 @@ COPY --chown=loon:loon gitconfig ./.gitconfig
 COPY --chown=loon:loon awsconfig ./.aws/config
 
 WORKDIR /home/loon/work
+COPY --chown=loon:loon README-alpine0.md ./
 # ENTRYPOINT ["/bin/sleep"]
 # CMD ["100000"]
 ENTRYPOINT ["/bin/bash"]
