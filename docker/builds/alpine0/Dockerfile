@@ -4,6 +4,12 @@
 
 # docker run -it --rm -v ~/temp:/home/loon/temp --hostname alpine0 alpine0:latest
 
+# llm
+# Set anthropic key
+# llm keys set anthropic --value "$ANTHROPIC_API_KEY"
+# Set default model
+# llm models default anthropic/claude-opus-4-5-20251101
+
 
 FROM alpine:latest
 
@@ -275,15 +281,30 @@ scrapy \
 --pip-args="--upgrade" \
 --include-deps
 
-# llm 
-RUN pipx install llm --pip-args="--upgrade" --include-deps
 
-# llm inject
-RUN pipx inject llm \
+# llm
+RUN pipx install llm \
 llm-anthropic \
 llm-tools-exa \
 llm-openrouter \
+llm llm-gemini \
+llm-ollama \
+llm-fragments-github \
+llm-tools-simpleeval \
+llm-cmd-comp \
+llm-cmd \
+llm-python \
+llm-jq \
+llm-templates-fabric \
+--pip-args="--upgrade" \
+--include-deps
+
+# llm inject
+RUN pipx inject \
+llm \
 llm-anthropic \
+llm-tools-exa \
+llm-openrouter \
 llm llm-gemini \
 llm-ollama \
 llm-fragments-github \
@@ -300,7 +321,6 @@ RUN pipx install \
 aider-install \
 --pip-args="--upgrade" \
 --include-deps
-
 
 WORKDIR /home/loon/gitdir
 
