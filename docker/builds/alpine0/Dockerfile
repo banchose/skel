@@ -16,13 +16,11 @@ FROM alpine:latest
 ARG USER_UID=1002
 ARG USER_GID=1002
 
+### ROOT ###
+
 USER root
 WORKDIR /root
-# Install additional packages
-# Creates a layer per package - some are big if order modified
-# RUN pip install --no-cache-dir litellm['proxy']
-# RUN pip install --no-cache-dir boto3
-# RUN pip install --no-cache-dir ipython
+
 RUN apk update
 RUN apk add --no-cache \
 bash \
@@ -262,7 +260,6 @@ RUN mkdir -p /home/loon/gitdir && \
 USER loon
 ENV PATH="/home/loon/.local/bin:${PATH}"
 
-RUN pipx install elia-chat
 
 
 RUN pipx install \
@@ -328,9 +325,10 @@ RUN apk add --no-cache ranger ranger-doc
 ### LOON ####
 USER loon
 WORKDIR /home/loon
-RUN pipx install visidata
 RUN go install github.com/akavel/up@latest
 RUN go install github.com/charmbracelet/glow/v2@latest
+RUN pipx install visidata elia-chat litellm
+
 
 WORKDIR /home/loon/gitdir
 
