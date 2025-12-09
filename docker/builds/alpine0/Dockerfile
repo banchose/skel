@@ -11,39 +11,43 @@ WORKDIR /root
 RUN apt update && apt install -y \
   bash \
   bash-completion  \
-  shellcheck  \
-  zsh  \
-  curl  \
-  wget  \
-  ipcalc  \
-  mtr  \
+  git \
+  iproute2 \
+  lsof \
   vim  \
   neovim  \
-  python3-pynvim \
-  git \
-  tmux \
   zip \
-  unzip \
-  7zip \
   bzip2 \
   xz-utils \
-  ripgrep \
-  fd-find \
   fzf \
-  bat \
-  tree \
-  lsof \
-  iproute2 \
-  netcat-openbsd \
-  btrfs-progs \
-  btrfs-progs-extra \
-  ninja-build \
-  meson \
-  black \
+  unzip \
+  7zip \
+  ipcalc  \
   tshark \
   nmap \
+  mtr  \
+  wget  \
   tcpdump \
-  socat
+  socat \
+  tmux \
+  netcat-openbsd \
+  bat \
+  vim  \
+  ripgrep \
+  fd-find \
+  shellcheck  \
+  zsh  \
+  curl
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+RUN apt update && apt install -y \
+  python3-pynvim \
+  tree \
+  btrfs-progs \
+  ninja-build \
+  meson \
+  black
 
 
 RUN apt update && apt install -y \
@@ -66,7 +70,7 @@ RUN apt update && apt install -y \
   lazygit
 
 RUN apt update && apt install -y \
-  samurai  \
+ # samurai  \
   libtool \
   autoconf \
   automake \
@@ -78,14 +82,13 @@ RUN apt update && apt install -y \
   gdb \
   gperf  \
   golang \
-  rust cargo \
   luajit \
   lua5.1-doc
 
 
 RUN apt update && apt install -y \
   units \
-  sqlit \
+  sqlite3 \
   pgcli \
   pgcli \
   emacs-nox
@@ -102,37 +105,68 @@ RUN apt update && apt install -y \
   awscli
 
 
+RUN ARCH=amd64 && \
+    PLATFORM=$(uname -s)_$ARCH && \
+    curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz" && \
+    curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check && \
+    tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && \
+    rm eksctl_$PLATFORM.tar.gz && \
+    install -m 0755 /tmp/eksctl /usr/local/bin && \
+    rm /tmp/eksctl
+
+
 RUN apt update && apt install -y \
   pip \
   faker \
-  ipython \
+  python3-ipython \
   ptpython \
   pylint \
   python3-networkx \
-  python3-networkx-doc \
   python3-httpx \
-  python3-httpx-doc \
   python3-requests \
-  python3-requests-doc \
   python3-boto3 \
-  python3-boto3-doc \
   python3-arrow  \
-  python3-arrow-doc  \
   python3-cryptography \
-  python3-cryptography-doc \
   python3-loguru \
   python3-icecream \
   python3-scipy \
-  python3-scipy-doc \
   python3-simpy \
-  python3-simpy-doc \
   python3-numpy \
-  python3-numpy-doc \
   python3-purl \
   python3-certifi \
   python3-pydantic \
-  python3-botons \
   python3-twisted \
   twisted-doc \
   python3-jinja2 \
   pipx
+
+
+# Add loon user
+RUN addgroup -g ${USER_GID} loon && \
+    adduser -D -s /bin/bash -u ${USER_UID} -G loon loon
+
+# Create gitdir with proper ownership BEFORE switching users
+RUN mkdir -p /home/loon/gitdir && \
+    chown -R loon:loon /home/loon
+
+USER loon
+ENV PATH="/home/loon/.local/bin:${PATH}"
+
+RUN pipx install \
+pycowsay \
+flake8 \
+pylint \
+black \
+ruff \
+pgcli \
+cfn-lint \
+csvkit \
+s3cmd \
+ptpython \
+posting \
+isort \
+icecream \
+markitdown \
+scrapy \
+--pip-args="--upgrade" \
+--include-deps
