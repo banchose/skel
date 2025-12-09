@@ -1,0 +1,359 @@
+# docker build -t alpine0 .
+
+# ROOT: docker run -it -v ~/temp:/home/loon/temp --hostname alpine0 --rm -u root alpine0:latest
+
+# docker run -it --rm -v ~/temp:/home/loon/temp --hostname alpine0 alpine0:latest
+
+# llm
+# Set anthropic key
+# llm keys set anthropic --value "$ANTHROPIC_API_KEY"
+# Set default model
+# llm models default anthropic/claude-opus-4-5-20251101
+
+
+FROM alpine:latest
+
+ARG USER_UID=1002
+ARG USER_GID=1002
+
+### ROOT ###
+
+USER root
+WORKDIR /root
+
+RUN apk update
+RUN apk add --no-cache \
+bash \
+jq \
+curl \
+wget \
+git \
+vim \
+neovim \
+7zip \
+7zip-doc \
+zsh \
+grep \
+gawk \
+lsof \
+sed \
+rsync \
+linux-headers \
+musl-dev \
+btrfs-progs \
+btrfs-progs-extra \
+iproute2 \
+ncurses-terminfo-base \
+ncurses-terminfo \
+bash-completion \
+git-zsh-completion \
+git-bash-completion \
+ninja-build \
+meson \
+black-bash-completion \
+btrfs-progs-bash-completion \
+black-zsh-completion \
+k9s \
+bat-zsh-completion \
+bat-bash-completion \
+k9s-bash-completion \
+k9s-zsh-completion \
+uv-bash-completion \
+uv-zsh-completion \
+step-cli-bash-completion \
+step-cli-zsh-completion \
+ruff-zsh-completion \
+ruff-bash-completion \
+ripgrep-bash-completion \
+ripgrep-zsh-completion \
+mtr-bash-completion \
+fd-bash-completion \
+fd-zsh-completion \
+tmux \
+findutils \
+dateutils \
+procps-ng \
+diffutils \
+coreutils \
+binutils  \
+speedtest-cli \
+util-linux \
+file \
+step-cli \
+tree \
+tar  \
+units \
+pandoc-cli \
+netcat-openbsd \
+gzip \
+net-tools \
+pstree \
+pv \
+pwgen \
+httpie \
+bzip2 \
+xz \
+less \
+ffmpeg \
+nano \
+glances \
+ripgrep \
+aria2 \
+aria2-bash-completion \
+openssh \
+lazygit \
+lazydocker \
+fd \
+zip \
+unzip \
+bat \
+go \
+fzf \
+dust \
+s3cmd \
+socat \
+mtr \
+tcpdump \
+ipcalc \
+tshark \
+nmap \
+nginx \
+uv \
+htop \
+btop \
+ncurses \
+openssl \
+strace \
+photon \
+gnupg \
+gettext-dev \
+gettext-static \
+samurai libtool autoconf automake doxygen make cmake g++ gcc gdb \
+gperf \
+luajit-dev \
+lua5.1-dev \
+go go-doc \
+kubectl kubectl-bash-completion kubectl-zsh-completion \
+sqlite \
+pgcli \
+shellcheck \
+s-tui \
+emacs-nox \
+shellcheck-doc \
+glances-doc \
+py3-sympy-doc \
+wireshark-doc \
+w3m \
+w3m-doc \
+rust \
+dateutils-doc \
+dust-doc \
+httpie-doc \
+units-doc \
+rust-doc \
+mandoc \
+ipcalc-doc \
+bash-doc \
+ffmpeg-doc \
+lazygit-doc \
+lazydocker \
+zsh-doc \
+jq-doc \
+coreutils-doc \
+findutils-doc \
+fzf-doc \
+diffutils-doc \
+lsof-doc \
+file-doc \
+grep-doc \
+netcat-openbsd-doc \
+gnupg-doc \
+go-doc \
+gawk-doc \
+pv-doc \
+ripgrep-doc \
+pwgen-doc \
+pstree-doc \
+neovim-doc \
+aria2-doc \
+photon-doc \
+gdb-doc \
+sed-doc \
+openssh-doc \
+pandoc-cli-doc \
+bind-doc \
+alpine-doc \
+openssl-doc \
+nmap-nping \
+tar-doc \
+less-doc \
+gzip-doc \
+s3cmd \
+gcc-doc \
+make-doc \
+emacs-doc \
+iproute2-doc \
+perl-doc
+
+RUN apk add \
+py3-boto3 \
+py3-pandas \
+ipython \
+py3-scipy \
+py3-pip-bash-completion \
+py3-arrow \
+py3-pip-zsh-completion \
+py3-networkx-doc \
+py3-networkx \
+py3-cryptography \
+py3-pytube \
+py3-sympy \
+py3-faker \
+py3-httpx \
+py3-logbook \
+py3-pandas \
+py3-pandas-tests \
+py3-loguru \
+py3-scipy \
+py3-scipy-tests \
+py3-purl \
+py3-numpy \
+py3-numpy-tests \
+py3-pendulum \
+py3-certifi \
+py3-pydantic \
+py3-jinja2 \
+py3-boltons \
+py3-twisted \
+py3-requests \
+py3-beautifulsoup4 \
+py3-pynvim \
+python3-dev \
+py3-pip \
+pipx
+
+
+RUN apk add --no-cache aws-cli aws-cli-bash-completion aws-cli-doc aws-cli-pyc aws-cli-zsh-completion amazon-ssm-agent
+
+RUN ARCH=amd64 && \
+    PLATFORM=$(uname -s)_$ARCH && \
+    curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz" && \
+    curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check && \
+    tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && \
+    rm eksctl_$PLATFORM.tar.gz && \
+    install -m 0755 /tmp/eksctl /usr/local/bin && \
+    rm /tmp/eksctl
+
+RUN apk add --no-cache yq-python yt-dlp-bash-completion yt-dlp-zsh-completion yt-dlp 
+RUN apk add --no-cache rust rust-doc cargo cargo-bash-completions
+
+RUN apk add --no-cache py3-pypdf
+
+# Add loon user
+RUN addgroup -g ${USER_GID} loon && \
+    adduser -D -s /bin/bash -u ${USER_UID} -G loon loon
+
+# Create gitdir with proper ownership BEFORE switching users
+RUN mkdir -p /home/loon/gitdir && \
+    chown -R loon:loon /home/loon
+
+USER loon
+ENV PATH="/home/loon/.local/bin:${PATH}"
+
+
+
+RUN pipx install \
+pycowsay \
+flake8 \
+pylint \
+black \
+ruff \
+pgcli \
+cfn-lint \
+csvkit \
+s3cmd \
+ptpython \
+posting \
+isort \
+icecream \
+markitdown \
+scrapy \
+--pip-args="--upgrade" \
+--include-deps
+
+
+RUN pipx install \
+aider-install \
+--pip-args="--upgrade" \
+--include-deps
+
+# llm
+RUN pipx install llm \
+--pip-args="--upgrade" \
+--include-deps
+
+RUN llm install \
+llm-anthropic \
+llm-tools-exa \
+llm-openrouter \
+llm-gemini \
+llm-bedrock  \
+llm-bedrock-anthropic  \
+# llm-bedrock-meta  \
+# llm-ollama \
+llm-tools-quickjs \
+llm-tools-sqlite \
+llm-tools-rag \
+# llm-fragments-pdf \
+llm-fragments-site-text \
+llm-templates-github \
+llm-fragments-github \
+llm-tools-simpleeval \
+llm-cmd-comp \
+llm-cmd \
+llm-python \
+llm-jq \
+llm-templates-fabric
+
+RUN llm models default anthropic/claude-sonnet-4-5
+
+### ROOT ###
+USER root
+RUN apk add --no-cache ranger ranger-doc
+
+### LOON ####
+USER loon
+WORKDIR /home/loon
+RUN go install github.com/akavel/up@latest
+RUN go install github.com/charmbracelet/glow/v2@latest
+RUN pipx install visidata elia-chat 'litellm[proxy]'
+
+
+WORKDIR /home/loon/gitdir
+
+RUN git clone --depth=1 https://github.com/banchose/skel
+# RUN git clone --depth=1 https://github.com/neovim/neovim
+RUN git clone --depth=1 https://github.com/lazyvim/starter
+RUN git clone --depth=1 https://github.com/gto76/python-cheatsheet
+RUN git clone --depth=1 https://github.com/donnemartin/interactive-coding-challenges
+RUN git clone --depth=1 https://github.com/realpython/python-guide
+RUN git clone --depth=1 https://github.com/yidao620c/python3-cookbook
+RUN git clone --depth=1 https://github.com/TheAlgorithms/Python
+RUN git clone --depth=1 https://github.com/simonw/llm
+
+WORKDIR /home/loon
+
+COPY --chown=loon:loon bash_profile ./.bash_profile
+COPY --chown=loon:loon bashrc ./.bashrc
+COPY --chown=loon:loon inputrc ./.inputrc
+COPY --chown=loon:loon tmux.conf ./.tmux.conf
+COPY --chown=loon:loon gitconfig ./.gitconfig
+COPY --chown=loon:loon awsconfig ./.aws/config
+
+WORKDIR /home/loon/work
+COPY --chown=loon:loon README-alpine0.md ./
+# ENTRYPOINT ["/bin/sleep"]
+# CMD ["100000"]
+ENTRYPOINT ["/bin/bash"]
+CMD ["-l"]
+# CMD ["-v"]
