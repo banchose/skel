@@ -187,7 +187,7 @@ gcc-doc \
 make-doc \
 emacs-doc \
 iproute2-doc \
-perl-doc 
+perl-doc
 
 RUN apk add \
 py3-boto3 \
@@ -260,6 +260,11 @@ black \
 ruff \
 pgcli \
 cfn-lint \
+csvkit \
+s3cmd \
+ptpython \
+posting \
+isort \
 icecream \
 markitdown \
 scrapy \
