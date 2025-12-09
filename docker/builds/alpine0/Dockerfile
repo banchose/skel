@@ -243,13 +243,17 @@ RUN apk add --no-cache rust rust-doc cargo cargo-bash-completions
 
 RUN apk add --no-cache py3-pypdf
 
-
 # Add loon user
 RUN addgroup -g ${USER_GID} loon && \
     adduser -D -s /bin/bash -u ${USER_UID} -G loon loon
 
+# Create gitdir with proper ownership BEFORE switching users
+RUN mkdir -p /home/loon/gitdir && \
+    chown -R loon:loon /home/loon
+
 USER loon
 ENV PATH="/home/loon/.local/bin:${PATH}"
+
 
 RUN pipx install \
 litecli \
