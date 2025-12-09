@@ -282,6 +282,11 @@ scrapy \
 --include-deps
 
 
+RUN pipx install \
+aider-install \
+--pip-args="--upgrade" \
+--include-deps
+
 # llm
 RUN pipx install llm \
 --pip-args="--upgrade" \
@@ -301,28 +306,8 @@ llm-python \
 llm-jq \
 llm-templates-fabric
 
-# llm inject
-# RUN pipx inject \
-# llm \
-# llm-anthropic \
-# llm-tools-exa \
-# llm-openrouter \
-# llm llm-gemini \
-# llm-ollama \
-# llm-fragments-github \
-# llm-tools-simpleeval \
-# llm-cmd-comp \
-# llm-cmd \
-# llm-python \
-# llm-jq \
-# llm-templates-fabric \
-# uv \
-# --pip-args="--upgrade" --include-deps
+RUN llm models default anthropic/claude-opus-4-5-20251101
 
-RUN pipx install \
-aider-install \
---pip-args="--upgrade" \
---include-deps
 
 WORKDIR /home/loon/gitdir
 
