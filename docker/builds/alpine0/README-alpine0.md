@@ -1,4 +1,4 @@
-# Readme - alpine0
+# Readme - trixie0
 
 ## 1. Past in ~/.bashrc_zen.d/api_keys_envs.sh
 
@@ -24,6 +24,12 @@ llm -m claude-4-sonnet -T get_answer "What is the capital of France?"
 llm -m claude-4-sonnet -T get_contents "What's on the homepage of nytimes.com
 ```
 
-```
 
+## trixie0
+
+- see alias in ~/gitdir/skel/bash/bashrc/
+
+```sh
+docker build -t trixie0 .
+docker run -it --rm --name trixie0 --hostname trixie0 -v ~/temp:/home/loon/temp trixie0
 ```

@@ -42,6 +42,7 @@ RUN apt update && apt install -y \
 
 RUN apt update && apt install -y \
   python3-pynvim \
+  ipython3 \
   tree \
   btrfs-progs \
   ninja-build \
