@@ -18,6 +18,7 @@ if type docker &>/dev/null; then
   alias dps='docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.RunningFor}}"'
   alias dpsp='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
   alias alpine0='docker run -it --rm --name alpine0 --hostname alpine0 -v ~/temp:/home/loon/temp alpine0:latest'
+  alias trixie0='docker run -it --rm --name trixie0 --hostname trixie0 -v ~/temp:/home/loon/temp trixie0:latest'
 
   function dconnet() {
 

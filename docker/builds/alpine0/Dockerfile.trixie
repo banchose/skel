@@ -140,6 +140,9 @@ RUN apt update && apt install -y \
   python3-jinja2 \
   pipx
 
+RUN apt update && apt install -y \
+  manpages \
+  man-db
 
 # Add loon user
 RUN addgroup --gid ${USER_GID} loon && \
