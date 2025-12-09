@@ -209,6 +209,13 @@ RUN go install github.com/akavel/up@latest
 RUN go install github.com/charmbracelet/glow/v2@latest
 RUN pipx install visidata 'litellm[proxy]'
 
+COPY --chown=loon:loon bash_profile ./.bash_profile
+COPY --chown=loon:loon bashrc ./.bashrc
+COPY --chown=loon:loon inputrc ./.inputrc
+COPY --chown=loon:loon tmux.conf ./.tmux.conf
+COPY --chown=loon:loon gitconfig ./.gitconfig
+COPY --chown=loon:loon awsconfig ./.aws/config
+
 WORKDIR /home/loon/gitdir
 
 RUN git clone --depth=1 https://github.com/banchose/skel
@@ -221,17 +228,21 @@ RUN git clone --depth=1 https://github.com/yidao620c/python3-cookbook
 RUN git clone --depth=1 https://github.com/TheAlgorithms/Python
 RUN git clone --depth=1 https://github.com/simonw/llm
 
-WORKDIR /home/loon
+RUN mkdir -p /home/loon/.bashrc_zen.d && chown -R loon:loon /home/loon/.bashrc_zen.d
+WORKDIR /home/loon/.bashrc_zen.d
 
-COPY --chown=loon:loon bash_profile ./.bash_profile
-COPY --chown=loon:loon bashrc ./.bashrc
-COPY --chown=loon:loon inputrc ./.inputrc
-COPY --chown=loon:loon tmux.conf ./.tmux.conf
-COPY --chown=loon:loon gitconfig ./.gitconfig
-COPY --chown=loon:loon awsconfig ./.aws/config
+RUN ln -s /home/loon/gitdir/skel/bash/bashrc_zen.d/aws.sh
+RUN ln -s /home/loon/gitdir/skel/bash/bashrc_zen.d/nvim_chooser.sh
+RUN ln -s /home/loon/gitdir/skel/bash/bashrc_zen.d/nvim.sh
+RUN ln -s /home/loon/gitdir/skel/bash/bashrc_zen.d/kubernetes.sh
+RUN ln -s /home/loon/gitdir/skel/bash/bashrc_zen.d/docker.sh
+RUN ln -s /home/loon/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh
+RUN ln -s /home/loon/gitdir/skel/bash/bashrc_zen.d/tmux.sh
 
 WORKDIR /home/loon/work
+
 COPY --chown=loon:loon README-trixie0.md ./
+
 # ENTRYPOINT ["/bin/sleep"]
 # CMD ["100000"]
 ENTRYPOINT ["/bin/bash"]
