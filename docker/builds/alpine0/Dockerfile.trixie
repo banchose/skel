@@ -142,8 +142,8 @@ RUN apt update && apt install -y \
 
 
 # Add loon user
-RUN addgroup -g ${USER_GID} loon && \
-    adduser -D -s /bin/bash -u ${USER_UID} -G loon loon
+RUN addgroup --gid ${USER_GID} loon && \
+    adduser --disabled-password --shell /bin/bash --uid ${USER_UID} --ingroup loon --gecos "" loon
 
 # Create gitdir with proper ownership BEFORE switching users
 RUN mkdir -p /home/loon/gitdir && \
