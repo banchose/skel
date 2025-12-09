@@ -213,3 +213,32 @@ RUN go install github.com/charmbracelet/glow/v2@latest
 RUN pipx install visidata 'litellm[proxy]'
 
 
+
+WORKDIR /home/loon/gitdir
+
+RUN git clone --depth=1 https://github.com/banchose/skel
+# RUN git clone --depth=1 https://github.com/neovim/neovim
+RUN git clone --depth=1 https://github.com/lazyvim/starter
+RUN git clone --depth=1 https://github.com/gto76/python-cheatsheet
+RUN git clone --depth=1 https://github.com/donnemartin/interactive-coding-challenges
+RUN git clone --depth=1 https://github.com/realpython/python-guide
+RUN git clone --depth=1 https://github.com/yidao620c/python3-cookbook
+RUN git clone --depth=1 https://github.com/TheAlgorithms/Python
+RUN git clone --depth=1 https://github.com/simonw/llm
+
+WORKDIR /home/loon
+
+COPY --chown=loon:loon bash_profile ./.bash_profile
+COPY --chown=loon:loon bashrc ./.bashrc
+COPY --chown=loon:loon inputrc ./.inputrc
+COPY --chown=loon:loon tmux.conf ./.tmux.conf
+COPY --chown=loon:loon gitconfig ./.gitconfig
+COPY --chown=loon:loon awsconfig ./.aws/config
+
+WORKDIR /home/loon/work
+COPY --chown=loon:loon README-alpine0.md ./
+# ENTRYPOINT ["/bin/sleep"]
+# CMD ["100000"]
+ENTRYPOINT ["/bin/bash"]
+CMD ["-l"]
+# CMD ["-v"]
