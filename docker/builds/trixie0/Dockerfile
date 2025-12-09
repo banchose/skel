@@ -111,6 +111,7 @@ RUN ARCH=amd64 && \
     install -m 0755 /tmp/eksctl /usr/local/bin && \
     rm /tmp/eksctl
 
+# As root
 RUN apt update && apt install -y \
   pip \
   faker \
@@ -148,6 +149,7 @@ RUN addgroup --gid ${USER_GID} loon && \
 RUN mkdir -p /home/loon/gitdir && \
     chown -R loon:loon /home/loon
 
+##################### CHANGE USER ###################################
 USER loon
 ENV PATH="/home/loon/.local/bin:${PATH}"
 
@@ -202,8 +204,6 @@ RUN llm models default anthropic/claude-sonnet-4-5
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
-### LOON ####
-USER loon
 WORKDIR /home/loon
 RUN go install github.com/akavel/up@latest
 RUN go install github.com/charmbracelet/glow/v2@latest
