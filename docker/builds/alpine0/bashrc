@@ -6,6 +6,8 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# export TERM=xterm
+export TERM=xterm-256color
 umask 022
 
 # Unique Bash version check

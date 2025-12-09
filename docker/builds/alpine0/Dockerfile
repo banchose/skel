@@ -321,6 +321,16 @@ llm-templates-fabric
 
 RUN llm models default anthropic/claude-sonnet-4-5
 
+### ROOT ###
+USER root
+RUN apk add --no-cache ranger ranger-doc
+
+### LOON ####
+USER loon
+WORKDIR /home/loon
+RUN pipx install visidata
+RUN go install github.com/akavel/up@latest
+RUN go install github.com/charmbracelet/glow/v2@latest
 
 WORKDIR /home/loon/gitdir
 
