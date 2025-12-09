@@ -134,7 +134,7 @@ luajit-dev \
 lua5.1-dev \
 go go-doc \
 kubectl kubectl-bash-completion kubectl-zsh-completion \
-sqlite litecli \
+sqlite \
 pgcli \
 shellcheck \
 s-tui \
@@ -263,7 +263,6 @@ ENV PATH="/home/loon/.local/bin:${PATH}"
 
 
 RUN pipx install \
-litecli \
 pycowsay \
 flake8 \
 pylint \
@@ -327,7 +326,7 @@ USER loon
 WORKDIR /home/loon
 RUN go install github.com/akavel/up@latest
 RUN go install github.com/charmbracelet/glow/v2@latest
-RUN pipx install visidata elia-chat litellm
+RUN pipx install visidata elia-chat 'litellm[proxy]'
 
 
 WORKDIR /home/loon/gitdir
@@ -339,6 +338,8 @@ RUN git clone --depth=1 https://github.com/gto76/python-cheatsheet
 RUN git clone --depth=1 https://github.com/donnemartin/interactive-coding-challenges
 RUN git clone --depth=1 https://github.com/realpython/python-guide
 RUN git clone --depth=1 https://github.com/yidao620c/python3-cookbook
+RUN git clone --depth=1 https://github.com/TheAlgorithms/Python
+RUN git clone --depth=1 https://github.com/simonw/llm
 
 WORKDIR /home/loon
 
