@@ -39,7 +39,6 @@ RUN apt update && apt install -y \
   zsh  \
   curl
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 RUN apt update && apt install -y \
   python3-pynvim \
@@ -85,14 +84,12 @@ RUN apt update && apt install -y \
   luajit \
   lua5.1-doc
 
-
 RUN apt update && apt install -y \
   units \
   sqlite3 \
   pgcli \
   pgcli \
   emacs-nox
-
 
 RUN apt update && apt install -y \
   units
@@ -104,7 +101,6 @@ RUN apt update && apt install -y \
   s3cmd \
   awscli
 
-
 RUN ARCH=amd64 && \
     PLATFORM=$(uname -s)_$ARCH && \
     curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz" && \
@@ -113,7 +109,6 @@ RUN ARCH=amd64 && \
     rm eksctl_$PLATFORM.tar.gz && \
     install -m 0755 /tmp/eksctl /usr/local/bin && \
     rm /tmp/eksctl
-
 
 RUN apt update && apt install -y \
   pip \
@@ -174,9 +169,6 @@ scrapy \
 --pip-args="--upgrade" \
 --include-deps
 
-
-
-
 # llm
 RUN pipx install llm \
 --pip-args="--upgrade" \
@@ -205,8 +197,9 @@ llm-python \
 llm-jq \
 llm-templates-fabric
 
-
 RUN llm models default anthropic/claude-sonnet-4-5
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 ### LOON ####
 USER loon
@@ -214,8 +207,6 @@ WORKDIR /home/loon
 RUN go install github.com/akavel/up@latest
 RUN go install github.com/charmbracelet/glow/v2@latest
 RUN pipx install visidata 'litellm[proxy]'
-
-
 
 WORKDIR /home/loon/gitdir
 
@@ -239,7 +230,7 @@ COPY --chown=loon:loon gitconfig ./.gitconfig
 COPY --chown=loon:loon awsconfig ./.aws/config
 
 WORKDIR /home/loon/work
-COPY --chown=loon:loon README-alpine0.md ./
+COPY --chown=loon:loon README-trixie0.md ./
 # ENTRYPOINT ["/bin/sleep"]
 # CMD ["100000"]
 ENTRYPOINT ["/bin/bash"]
