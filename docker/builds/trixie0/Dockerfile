@@ -241,6 +241,7 @@ RUN git clone --depth=1 https://github.com/simonw/llm
 
 RUN mkdir -p /home/loon/.bashrc_zen.d
 
+COPY --chown=loon:loon dummy_xxx_.sh /home/loon/.bashrc_zen.d
 RUN ln -s /home/loon/gitdir/skel/bash/bashrc_zen.d/aws.sh /home/loon/.bashrc_zen.d
 RUN ln -s /home/loon/gitdir/skel/bash/bashrc_zen.d/nvim_chooser.sh /home/loon/.bashrc_zen.d
 RUN ln -s /home/loon/gitdir/skel/bash/bashrc_zen.d/nvim.sh /home/loon/.bashrc_zen.d
