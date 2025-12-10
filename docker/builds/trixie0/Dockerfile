@@ -141,7 +141,10 @@ RUN ARCH=amd64 && \
 # RUN addgroup --gid ${USER_GID} loon && \
 #    adduser --disabled-password --shell /bin/bash --uid ${USER_UID} --ingroup loon --gecos "" loon
 #
-RUN useradd -m -s /bin/bash loon
+# RUN useradd -m -s /bin/bash loon
+RUN groupadd -g ${USER_UID} loon && \
+  useradd -m -u ${USER_UID} -g ${USER_GID} -s /bin/bash loon
+
 
 ##################### CHANGE USER ###################################
 USER loon:loon
@@ -203,7 +206,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 WORKDIR /home/loon
 RUN go install github.com/akavel/up@latest
 RUN go install github.com/charmbracelet/glow/v2@latest
-RUN pipx install visidata 'litellm[proxy]'
+RUN pipx install visidata 'litellm[proxy]' --include-deps
 
 COPY --chown=loon:loon bash_profile ./.bash_profile
 COPY --chown=loon:loon bashrc ./.bashrc
