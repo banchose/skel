@@ -252,7 +252,7 @@ RUN ln -s /home/loon/gitdir/skel/bash/bashrc_zen.d/tmux.sh /home/loon/.bashrc_ze
 
 WORKDIR /home/loon/work
 
-RUN pipx install aider-install && aider-install
+RUN pipx install aider-install && pipx inject aider-install boto3 && aider-install
 
 COPY --chown=loon:loon README-trixie0.md ./
 
