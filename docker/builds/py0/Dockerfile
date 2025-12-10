@@ -56,20 +56,6 @@ RUN apt update && apt install -y \
   htop  \
   btop
 
-
-RUN apt update && apt install -y \
-  units \
-  pandoc \
-  pwgen \
-  pv \
-  nano \
-  httpie \
-# ffmpeg \
-# ffmpeg-doc \
-# lazygit \
-  aria2 \
-  rclone
-
 RUN apt update && apt install -y \
  # samurai  \
   libtool \
@@ -78,6 +64,7 @@ RUN apt update && apt install -y \
   doxygen \
   make \
   cmake \
+  rclone \
   gcc \
   g++ \
   gdb \
@@ -88,6 +75,12 @@ RUN apt update && apt install -y \
 
 RUN apt update && apt install -y \
   units \
+  pandoc \
+  pwgen \
+  aria2 \
+  pv \
+  nano \
+  httpie \
   sqlite3 \
   pgcli \
   emacs-nox \
@@ -95,6 +88,10 @@ RUN apt update && apt install -y \
   w3m
 
 RUN curl -v -L -o /usr/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x /usr/bin/kubectl
+
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+unzip awscliv2.zip && \
+./aws/install
 
 RUN ARCH=amd64 && \
     PLATFORM=$(uname -s)_$ARCH && \
@@ -104,7 +101,6 @@ RUN ARCH=amd64 && \
     rm eksctl_$PLATFORM.tar.gz && \
     install -m 0755 /tmp/eksctl /usr/local/bin && \
     rm /tmp/eksctl
-
 
 # As root
 RUN apt update && apt install -y \
@@ -139,7 +135,6 @@ RUN apt update && apt install -y \
 
 RUN apt update && apt install -y \
   s3cmd \
-  awscli \
   texlive \
   hping3 \
 # trippy \
