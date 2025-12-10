@@ -20,6 +20,7 @@ if type docker &>/dev/null; then
   alias alpine0='docker run -it --rm --name alpine0 --hostname alpine0 -v ~/temp:/home/loon/temp alpine0:latest'
   alias trixie0='docker run -it --rm --name trixie0 --hostname trixie0 -v ~/temp:/home/loon/temp trixie0:latest'
   alias trixie0r='docker run -u root -it --rm --name trixie0 --hostname trixie0 -v ~/temp:/home/loon/temp trixie0:latest'
+  alias trixie0bld='docker build --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" -t trixie0:latest .'
 
   function dconnet() {
 

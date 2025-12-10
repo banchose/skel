@@ -1,7 +1,10 @@
 FROM python:trixie
 
-ARG USER_UID=1000
-ARG USER_GID=1000
+# Defined later in the file
+# ARG USER_UID=1000
+# ARG USER_GID=1000
+#
+# docker build --build-arg USER_UID=1002 --build-arg USER_GID=1002 -t alpine0:latest .
 
 ### ROOT ###
 
@@ -63,8 +66,8 @@ RUN apt update && apt install -y \
   httpie \
   aria2 \
   rclone \
-  ffmpeg \
-  ffmpeg-doc \
+# ffmpeg \
+# ffmpeg-doc \
   lazygit
 
 RUN apt update && apt install -y \
@@ -145,6 +148,9 @@ RUN apt update && apt install -y \
   netperf \
   kubectl \
   traceroute
+
+ARG USER_UID=1000
+ARG USER_GID=1000
 
 
 # Add loon user
