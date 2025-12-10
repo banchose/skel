@@ -1,7 +1,7 @@
 FROM python:trixie
 
-ARG USER_UID=1002
-ARG USER_GID=1002
+ARG USER_UID=1000
+ARG USER_GID=1000
 
 ### ROOT ###
 
@@ -91,6 +91,16 @@ RUN apt update && apt install -y \
   units \
   w3m
 
+RUN ARCH=amd64 && \
+    PLATFORM=$(uname -s)_$ARCH && \
+    curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz" && \
+    curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check && \
+    tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && \
+    rm eksctl_$PLATFORM.tar.gz && \
+    install -m 0755 /tmp/eksctl /usr/local/bin && \
+    rm /tmp/eksctl
+
+
 # As root
 RUN apt update && apt install -y \
   pip \
@@ -131,17 +141,10 @@ RUN apt update && apt install -y \
   trippy \
   ngrep \
   dsniff \
+  ranger \
   netperf \
+  kubectl \
   traceroute
-
-RUN ARCH=amd64 && \
-    PLATFORM=$(uname -s)_$ARCH && \
-    curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz" && \
-    curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check && \
-    tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && \
-    rm eksctl_$PLATFORM.tar.gz && \
-    install -m 0755 /tmp/eksctl /usr/local/bin && \
-    rm /tmp/eksctl
 
 
 # Add loon user
