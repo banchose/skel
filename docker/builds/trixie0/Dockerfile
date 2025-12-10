@@ -251,6 +251,8 @@ RUN ln -s /home/loon/gitdir/skel/bash/bashrc_zen.d/tmux.sh /home/loon/.bashrc_ze
 
 WORKDIR /home/loon/work
 
+RUN pipx install aider-install && aider-install
+
 COPY --chown=loon:loon README-trixie0.md ./
 
 # Create gitdir with proper ownership BEFORE switching users
