@@ -24,6 +24,22 @@ llm -m claude-4-sonnet -T get_answer "What is the capital of France?"
 llm -m claude-4-sonnet -T get_contents "What's on the homepage of nytimes.com
 ```
 
+## Aider
+
+```sh
+aider --model sonnet --api-key anthropic="${ANTHROPIC_API_KEY}"
 ```
 
+## docker
+
+```sh
+cd ~/gitdir/skel/docker/builds/trixie0
+docker build -t trixie0 .
+```
+
+## trixie0 alias
+
+```sh
+alias trixie0='docker run -it --rm --name trixie0 --hostname trixie0 -v ~/temp:/home/loon/temp trixie0:latest'
+alias trixie0r='docker run -u root -it --rm --name trixie0 --hostname trixie0 -v ~/temp:/home/loon/temp trixie0:latest'
 ```
