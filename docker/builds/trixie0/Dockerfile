@@ -125,7 +125,14 @@ RUN apt update && apt install -y \
 
 RUN apt update && apt install -y \
   s3cmd \
-  awscli
+  awscli \
+  texlive \
+  hping3 \
+  trippy \
+  ngrep \
+  dsniff \
+  netperf \
+  traceroute
 
 RUN ARCH=amd64 && \
     PLATFORM=$(uname -s)_$ARCH && \
