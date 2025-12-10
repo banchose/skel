@@ -170,7 +170,7 @@ RUN apt remove -y pipx && \
 
 ##################### CHANGE USER ###################################
 USER loon:loon
-ENV PATH="/home/loon/.local/bin:${PATH}"
+ENV PATH="/home/loon/.local/bin:/home/loon/.cargo/bin:/home/loon/go/bin:/usr/local/bin:/usr/bin:/bin"
 
 RUN mkdir -p /home/loon/gitdir /home/loon/work /home/loon/.bashrc_zen.d
 
