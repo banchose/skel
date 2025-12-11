@@ -57,8 +57,12 @@ llm -m us.anthropic.claude-sonnet-4-5-20250929-v1:0  "Test, respond with 'ok'"
 ```sh
 aider --list-models bedrock/
 
+### THIS####
 export AWS_BEARER_TOKEN_BEDROCK=DUMMY-ABSKQmVkcm9ja0FQSUtleS1oejUxLWF0LTQwNTM231MDAwNDQ4Mzp2OS9rWW5MM0RuTHlHdjkxc21SblR0K2UyV29IQys0L0s2eUwyTkFKdTBVOFpHMnl0a2lKSmZEZnVNZz0=
+############
 aider --model bedrock/us.anthropic.claude-sonnet-4-5-20250929-v1:0
+# Should be set in .bashrc
+aider --model "$BEDROCK_MODEL"
 
 
 # aider --model  us.anthropic.claude-3-7-sonnet-20240620-v1:0

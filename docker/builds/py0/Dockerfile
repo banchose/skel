@@ -323,7 +323,8 @@ COPY --chown=loon:loon Dockerfile /home/loon/work/Docker/Dockerfile
 COPY --chown=loon:loon scripts /home/loon/work/scripts
 RUN chmod 755 /home/loon/work/testme.sh
 
-RUN pipx install --include-deps aider-chat
+RUN pipx install --include-deps aider-chat && \
+pipx inject aider-chat boto3
 
 # Create gitdir with proper ownership BEFORE switching users
 # ENTRYPOINT ["/bin/sleep"]
