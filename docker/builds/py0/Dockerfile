@@ -22,19 +22,21 @@ RUN apt update && apt install -y \
   traceroute \
   iperf3 \
   telnet \
+  jq \
   net-tools \
   dnsutils \
   diffutils \
   lsof \
   vim  \
-  neovim  \
   zip \
   bzip2 \
   xz-utils \
   gettext \
+  manpages \
+  man-db \
   fzf \
   unzip \
-  7zip \
+  p7zip-full \
   ipcalc  \
   tshark \
   strace \
@@ -43,30 +45,23 @@ RUN apt update && apt install -y \
   wget  \
   tcpdump \
   socat \
+  htop  \
   tmux \
   netcat-openbsd \
+  tree \
   bat \
   vim  \
   ripgrep \
+  btrfs-progs \
+  apt-utils \
   fd-find \
   shellcheck
-
-
-RUN apt update && apt install -y \
-  tree \
-  btrfs-progs \
-  ninja-build \
-  meson \
-  black
-
-
-RUN apt update && apt install -y \
-  htop  \
-  btop
 
 RUN apt update && apt install -y \
  # samurai  \
   libtool \
+  ninja-build \
+  meson \
   autoconf \
   automake \
   doxygen \
@@ -79,20 +74,6 @@ RUN apt update && apt install -y \
   gperf  \
   luajit \
   lua5.1-doc
-
-RUN apt update && apt install -y \
-  units \
-  pandoc \
-  pwgen \
-  aria2 \
-  pv \
-  nano \
-  httpie \
-  sqlite3 \
-  pgcli \
-  emacs-nox \
-  units \
-  w3m
 
 RUN curl -v -L -o /usr/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x /usr/bin/kubectl
 
@@ -136,11 +117,12 @@ RUN apt update && apt install -y \
   twisted-doc \
   python3-jinja2
 
-RUN apt update && apt install -y \
-  manpages \
-  man-db
 
 RUN apt update && apt install -y \
+  units \
+  pandoc \
+  pwgen \
+  aria2 \
   s3cmd \
   texlive \
   hping3 \
@@ -153,28 +135,27 @@ RUN apt update && apt install -y \
   qalc \
   bc \
   dc \
-  ranger
-
-
-# Install golang go
-#
-ARG USER_UID=1000
-ARG USER_GID=1000
-
-
-# Add loon user
-# RUN addgroup --gid ${USER_GID} loon && \
-#    adduser --disabled-password --shell /bin/bash --uid ${USER_UID} --ingroup loon --gecos "" loon
-#
-# RUN useradd -m -s /bin/bash loon
-RUN groupadd -g ${USER_UID} loon && \
-  useradd -m -u ${USER_UID} -g ${USER_GID} -s /bin/bash loon
+  ranger \
+  pv \
+  nano \
+  httpie \
+  black \
+  sqlite3 \
+  pgcli \
+  btop \
+  emacs-nox \
+  units \
+  w3m
 
 ####### Install a newer pipx supporting multiple arguments
-
 RUN apt remove -y pipx && \
     python3 -m pip install --break-system-packages pipx
 
+ARG USER_UID=1000
+ARG USER_GID=1000
+
+RUN groupadd -g ${USER_UID} loon && \
+  useradd -m -u ${USER_UID} -g ${USER_GID} -s /bin/bash loon
 
 ##################### CHANGE USER ###################################
 USER loon:loon
@@ -235,6 +216,7 @@ RUN llm models default anthropic/claude-sonnet-4-5
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
+# Install golang - go
 RUN wget https://go.dev/dl/go1.23.4.linux-amd64.tar.gz && \
     rm -rf /home/loon/go && \
     tar -C /home/loon -xzf go1.23.4.linux-amd64.tar.gz && \
@@ -245,6 +227,10 @@ ENV PATH=$PATH:/usr/local/go/bin
 RUN go install github.com/akavel/up@latest
 RUN go install github.com/charmbracelet/glow@v1.5.1
 RUN pipx install visidata 'litellm[proxy]' --include-deps
+
+RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz && \
+    tar -C /home/loon/.local --strip-components=1 -xzf nvim-linux-x86_64.tar.gz && \
+    rm nvim-linux-x86_64.tar.gz
 
 COPY --chown=loon:loon bash_profile /home/loon/.bash_profile
 COPY --chown=loon:loon bashrc /home/loon/.bashrc
