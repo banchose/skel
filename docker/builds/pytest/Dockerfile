@@ -319,11 +319,8 @@ WORKDIR /home/loon/work
 COPY --chown=loon:loon README-py0.md /home/loon/work
 COPY --chown=loon:loon aws /home/loon/work/aws
 COPY --chown=loon:loon testme.sh /home/loon/work/testme.sh
-COPY --chown=loon:loon Dockerfile /home/loon/work/Docker/Dockerfile
 COPY --chown=loon:loon scripts /home/loon/work/scripts
 RUN chmod 755 /home/loon/work/testme.sh
-
-RUN pipx install --include-deps aider-chat
 
 # Create gitdir with proper ownership BEFORE switching users
 # ENTRYPOINT ["/bin/sleep"]

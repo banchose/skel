@@ -266,4 +266,7 @@ if command -v aws_completer &>/dev/null; then
   complete -C "$(command -v aws_completer)" aws
 fi
 
+## Appended for py0
 alias ipython=ipython3
+eval "$(register-python-argcomplete pipx)"
+BEDROCK_MODEL='bedrock/us.anthropic.claude-sonnet-4-5-20250929-v1:0'

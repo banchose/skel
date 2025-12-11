@@ -1,0 +1,55 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ealenecho-ingress
+  namespace: default
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS-1-2-Ext-2018-06
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:332522180375:certificate/a64b8472-408e-4158-a56f-7b55b83c29ad
+    alb.ingress.kubernetes.io/actions.fixed-response: >
+      {
+        "type": "fixed-response",
+        "fixedResponseConfig": {
+          "contentType": "text/html",
+          "statusCode": "200",
+          "messageBody": "<!DOCTYPE html><html><head><title>Welcome</title><style>body{font-family:Arial;margin:40px;text-align:center;background:#f5f5f5}div{background:white;padding:20px;border-radius:6px;box-shadow:0 2px 5px rgba(0,0,0,.1)}h1{color:#2973b7}</style></head><body><div><h1>Hello there!</h1><p>Welcome to our application.</p><p>For direct access to services, please use specific paths.</p></div></body></html>"
+        }
+      }
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/success-codes: "200-499"
+    alb.ingress.kubernetes.io/tags: Environment=dev,Team=platform  # Optional: add tags to the ALB
+spec:
+  ingressClassName: alb  # Correctly placed here under spec
+  rules:
+    - http:
+        paths:
+          - path: /ealenecho
+            pathType: Prefix
+            backend:
+              service:
+                name: ealenecho
+                port:
+                  number: 8080
+          - path: /
+            pathType: Exact
+            backend: 
+              service:
+                name: fixed-response
+                port:
+                  name: use-annotation
+          - path: /netshoot
+            pathType: Prefix
+            backend:
+              service:
+                name: netshoot
+                port:
+                  number: 8080
+  # Optional: If you want to add TLS configuration
+  # tls:
+  # - hosts:
+  #   - your-hostname.example.com
+

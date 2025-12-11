@@ -1,0 +1,102 @@
+{
+    "report": {
+        "mtr": {
+            "src": "HAW-WJS04-1",
+            "dst": "www.google.com",
+            "tos": 0,
+            "tests": 10,
+            "psize": "64",
+            "bitpattern": "0x00"
+        },
+        "hubs": [
+            {
+                "count": 1,
+                "host": "_gateway",
+                "Loss%": 0.0,
+                "Snt": 10,
+                "Last": 0.318,
+                "Avg": 0.299,
+                "Best": 0.245,
+                "Wrst": 0.335,
+                "StDev": 0.027
+            },
+            {
+                "count": 2,
+                "host": "10.1.254.1",
+                "Loss%": 0.0,
+                "Snt": 10,
+                "Last": 0.429,
+                "Avg": 0.478,
+                "Best": 0.429,
+                "Wrst": 0.54,
+                "StDev": 0.039
+            },
+            {
+                "count": 3,
+                "host": "4.26.27.33",
+                "Loss%": 0.0,
+                "Snt": 10,
+                "Last": 1.816,
+                "Avg": 2.103,
+                "Best": 1.711,
+                "Wrst": 3.538,
+                "StDev": 0.537
+            },
+            {
+                "count": 4,
+                "host": "ae2.3611.edge2.NewYork6.net.lumen.tech",
+                "Loss%": 0.0,
+                "Snt": 10,
+                "Last": 5.389,
+                "Avg": 7.737,
+                "Best": 4.745,
+                "Wrst": 29.933,
+                "StDev": 7.802
+            },
+            {
+                "count": 5,
+                "host": "15169-3356-nyc.sp.lumen.tech",
+                "Loss%": 0.0,
+                "Snt": 10,
+                "Last": 5.82,
+                "Avg": 5.934,
+                "Best": 5.275,
+                "Wrst": 9.729,
+                "StDev": 1.347
+            },
+            {
+                "count": 6,
+                "host": "108.170.229.101",
+                "Loss%": 0.0,
+                "Snt": 10,
+                "Last": 5.609,
+                "Avg": 5.496,
+                "Best": 5.159,
+                "Wrst": 6.296,
+                "StDev": 0.345
+            },
+            {
+                "count": 7,
+                "host": "142.251.65.111",
+                "Loss%": 0.0,
+                "Snt": 10,
+                "Last": 5.45,
+                "Avg": 5.255,
+                "Best": 4.881,
+                "Wrst": 5.502,
+                "StDev": 0.211
+            },
+            {
+                "count": 8,
+                "host": "lga34s37-in-f4.1e100.net",
+                "Loss%": 0.0,
+                "Snt": 10,
+                "Last": 5.31,
+                "Avg": 5.142,
+                "Best": 4.948,
+                "Wrst": 5.507,
+                "StDev": 0.168
+            }
+        ]
+    }
+}
