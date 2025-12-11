@@ -81,6 +81,10 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 unzip awscliv2.zip && \
 ./aws/install
 
+RUN curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb" && \
+dpkg -i session-manager-plugin.deb
+
+
 RUN ARCH=amd64 && \
     PLATFORM=$(uname -s)_$ARCH && \
     curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz" && \
@@ -234,6 +238,9 @@ RUN go install github.com/charmbracelet/glow@v1.5.1
 RUN pipx install visidata 'litellm[proxy]' --include-deps
 RUN pipx install pudb
 RUN pipx install bpython
+
+
+
 
 COPY --chown=loon:loon bash_profile /home/loon/.bash_profile
 COPY --chown=loon:loon bashrc /home/loon/.bashrc
