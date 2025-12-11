@@ -25,12 +25,17 @@ RUN apt update && apt install -y \
   jq \
   net-tools \
   dnsutils \
+  sed \
+  grep \
+  gawk \
+  coreutils \
   diffutils \
   lsof \
   vim  \
   zip \
   bzip2 \
   xz-utils \
+  inxi \
   gettext \
   manpages \
   man-db \
@@ -66,13 +71,16 @@ RUN apt update && apt install -y \
   autoconf \
   automake \
   doxygen \
+  yasm \
   make \
   cmake \
+  libfuse-dev \
   rclone \
   gcc \
   g++ \
   gdb \
-  gperf  \
+  pigz \
+  nasm \
   luajit \
   lua5.1-doc \
   && rm -rf /var/lib/apt/lists/*
@@ -132,6 +140,7 @@ RUN apt update && apt install -y \
   aria2 \
   s3cmd \
   texlive \
+  texinfo \
   hping3 \
   ngrep \
   asciinema \
@@ -141,6 +150,10 @@ RUN apt update && apt install -y \
   dsniff \
   qalc \
   bc \
+  iftop \
+  silversearcher-ag \
+  openvpn \
+  gperf  \
   dc \
   ranger \
   pv \
@@ -150,10 +163,26 @@ RUN apt update && apt install -y \
   sqlite3 \
   pgcli \
   btop \
+  iftop \
   emacs-nox \
   units \
   w3m \
+  libpcsclite-dev \
   && rm -rf /var/lib/apt/lists/*
+
+
+RUN apt update && apt install -y \
+    build-essential cmake autoconf automake libtool pkg-config \
+    zlib1g-dev libbz2-dev liblzma-dev libzstd-dev \
+    libssl-dev libgcrypt20-dev \
+    libxml2-dev libexpat1-dev \
+    libfuse-dev libpcsclite-dev \
+    libcurl4-openssl-dev \
+    libsqlite3-dev \
+    libncurses-dev \
+    libpcsclite-dev \
+  && rm -rf /var/lib/apt/lists/*
+
 
 ####### Install a newer pipx supporting multiple arguments
 RUN python3 -m pip install --break-system-packages pipx
