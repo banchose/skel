@@ -55,7 +55,8 @@ RUN apt update && apt install -y \
   btrfs-progs \
   apt-utils \
   fd-find \
-  shellcheck
+  shellcheck \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN apt update && apt install -y \
  # samurai  \
@@ -73,7 +74,8 @@ RUN apt update && apt install -y \
   gdb \
   gperf  \
   luajit \
-  lua5.1-doc
+  lua5.1-doc \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN curl -v -L -o /usr/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x /usr/bin/kubectl
 
@@ -119,7 +121,8 @@ RUN apt update && apt install -y \
   python3-pydantic \
   python3-twisted \
   twisted-doc \
-  python3-jinja2
+  python3-jinja2 \
+  && rm -rf /var/lib/apt/lists/*
 
 
 RUN apt update && apt install -y \
@@ -149,11 +152,11 @@ RUN apt update && apt install -y \
   btop \
   emacs-nox \
   units \
-  w3m
+  w3m \
+  && rm -rf /var/lib/apt/lists/*
 
 ####### Install a newer pipx supporting multiple arguments
-RUN apt remove -y pipx && \
-    python3 -m pip install --break-system-packages pipx
+RUN python3 -m pip install --break-system-packages pipx
 
 ARG USER_UID=1000
 ARG USER_GID=1000
