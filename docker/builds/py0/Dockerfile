@@ -285,6 +285,7 @@ RUN pipx install aider-install && pipx inject aider-install boto3 && aider-insta
 RUN pipx install rich-cli --include-deps
 
 COPY --chown=loon:loon README-py0.md /home/loon/work
+COPY --chown=loon:loon aws /home/loon/work/aws
 
 # Create gitdir with proper ownership BEFORE switching users
 # ENTRYPOINT ["/bin/sleep"]
