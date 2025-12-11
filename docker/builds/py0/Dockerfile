@@ -18,6 +18,13 @@ RUN apt update && apt install -y \
   git \
   curl \
   iproute2 \
+  iputils-ping \
+  traceroute \
+  iperf3 \
+  telnet \
+  net-tools \
+  dnsutils \
+  diffutils \
   lsof \
   vim  \
   neovim  \
@@ -30,6 +37,7 @@ RUN apt update && apt install -y \
   7zip \
   ipcalc  \
   tshark \
+  strace \
   nmap \
   mtr  \
   wget  \
@@ -53,7 +61,6 @@ RUN apt update && apt install -y \
 
 
 RUN apt update && apt install -y \
-  strace \
   htop  \
   btop
 
@@ -70,7 +77,6 @@ RUN apt update && apt install -y \
   g++ \
   gdb \
   gperf  \
-  golang \
   luajit \
   lua5.1-doc
 
@@ -138,14 +144,20 @@ RUN apt update && apt install -y \
   s3cmd \
   texlive \
   hping3 \
-# trippy \
-# kubectl \
   ngrep \
+  asciinema \
+  exa \
+  duf \
+  tldr \
   dsniff \
-  ranger \
-# netperf \
-  traceroute
+  qalc \
+  bc \
+  dc \
+  ranger
 
+
+# Install golang go
+#
 ARG USER_UID=1000
 ARG USER_GID=1000
 
@@ -166,9 +178,11 @@ RUN apt remove -y pipx && \
 
 ##################### CHANGE USER ###################################
 USER loon:loon
-ENV PATH="/home/loon/.local/bin:/home/loon/.cargo/bin:/home/loon/go/bin:/usr/local/bin:/usr/bin:/bin"
+ENV PATH="/home/loon/.local/bin:/home/loon/go/bin:/home/loon/.cargo/bin:/home/loon/go/bin:/usr/local/bin:/usr/bin:/bin"
 
 RUN mkdir -p /home/loon/gitdir /home/loon/work /home/loon/.bashrc_zen.d
+
+WORKDIR /home/loon
 
 RUN pipx install \
 pycowsay \
@@ -221,17 +235,23 @@ RUN llm models default anthropic/claude-sonnet-4-5
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
-WORKDIR /home/loon
+RUN wget https://go.dev/dl/go1.23.4.linux-amd64.tar.gz && \
+    rm -rf /home/loon/go && \
+    tar -C /home/loon -xzf go1.23.4.linux-amd64.tar.gz && \
+    rm go1.23.4.linux-amd64.tar.gz
+
+ENV PATH=$PATH:/usr/local/go/bin
+
 RUN go install github.com/akavel/up@latest
 RUN go install github.com/charmbracelet/glow@v1.5.1
 RUN pipx install visidata 'litellm[proxy]' --include-deps
 
-COPY --chown=loon:loon bash_profile ./.bash_profile
-COPY --chown=loon:loon bashrc ./.bashrc
-COPY --chown=loon:loon inputrc ./.inputrc
-COPY --chown=loon:loon tmux.conf ./.tmux.conf
-COPY --chown=loon:loon gitconfig ./.gitconfig
-COPY --chown=loon:loon awsconfig ./.aws/config
+COPY --chown=loon:loon bash_profile /home/loon/.bash_profile
+COPY --chown=loon:loon bashrc /home/loon/.bashrc
+COPY --chown=loon:loon inputrc /home/loon/.inputrc
+COPY --chown=loon:loon tmux.conf /home/loon/.tmux.conf
+COPY --chown=loon:loon gitconfig /home/loon/.gitconfig
+COPY --chown=loon:loon awsconfig /home/loon/.aws/config
 
 
 WORKDIR /home/loon/gitdir
@@ -265,7 +285,7 @@ WORKDIR /home/loon/work
 
 RUN pipx install aider-install && pipx inject aider-install boto3 && aider-install
 
-COPY --chown=loon:loon README-py0.md ./
+COPY --chown=loon:loon README-py0.md /home/loon/work
 
 # Create gitdir with proper ownership BEFORE switching users
 # ENTRYPOINT ["/bin/sleep"]
