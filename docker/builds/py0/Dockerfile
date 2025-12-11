@@ -275,7 +275,7 @@ WORKDIR /home/loon/work
 ## Additional user installs
 #
 RUN pipx install aider-install && pipx inject aider-install boto3 && aider-install
-RUN pipx install rich-cli
+RUN pipx install rich-cli --include-deps
 
 COPY --chown=loon:loon README-py0.md /home/loon/work
 
