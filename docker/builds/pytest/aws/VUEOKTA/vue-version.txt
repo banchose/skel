@@ -1,1 +1,0 @@
-This is Vue Router version 4 (for Vue 3)

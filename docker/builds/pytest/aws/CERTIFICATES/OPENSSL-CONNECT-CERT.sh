@@ -1,1 +1,0 @@
-../OPENSSL-CONNECT-CERT.sh
