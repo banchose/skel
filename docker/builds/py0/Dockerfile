@@ -224,13 +224,16 @@ RUN wget https://go.dev/dl/go1.23.4.linux-amd64.tar.gz && \
 
 ENV PATH=$PATH:/usr/local/go/bin
 
-RUN go install github.com/akavel/up@latest
-RUN go install github.com/charmbracelet/glow@v1.5.1
-RUN pipx install visidata 'litellm[proxy]' --include-deps
-
 RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz && \
     tar -C /home/loon/.local --strip-components=1 -xzf nvim-linux-x86_64.tar.gz && \
     rm nvim-linux-x86_64.tar.gz
+
+
+RUN go install github.com/akavel/up@latest
+RUN go install github.com/charmbracelet/glow@v1.5.1
+RUN pipx install visidata 'litellm[proxy]' --include-deps
+RUN pipx install pudb
+RUN pipx install bpython
 
 COPY --chown=loon:loon bash_profile /home/loon/.bash_profile
 COPY --chown=loon:loon bashrc /home/loon/.bashrc
@@ -269,7 +272,10 @@ RUN ln -s /home/loon/gitdir/skel/bash/bashrc_zen.d/tmux.sh /home/loon/.bashrc_ze
 
 WORKDIR /home/loon/work
 
+## Additional user installs
+#
 RUN pipx install aider-install && pipx inject aider-install boto3 && aider-install
+RUN pipx install rich-cli
 
 COPY --chown=loon:loon README-py0.md /home/loon/work
 
