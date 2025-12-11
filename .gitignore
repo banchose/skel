@@ -4,7 +4,6 @@ mongodb_data/
 privatebin-data/
 homer/
 docker/builds/py0/aws
-
 .aider*
 *.gz
 *.db
