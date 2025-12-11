@@ -24,6 +24,7 @@ RUN apt update && apt install -y \
   zip \
   bzip2 \
   xz-utils \
+  gettext \
   fzf \
   unzip \
   7zip \

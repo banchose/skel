@@ -10,4 +10,4 @@ Default location coordinates:
 - Longitude: -73.755
 - Timezone: America/New_York
 - Location name: Albany, New York
-  UTC ISO Datetime: {{iso_datetime}} . You have access to tavily web search as an agent if you need current information.
+  UTC ISO Datetime: {{iso_datetime}}
