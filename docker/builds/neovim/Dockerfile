@@ -28,12 +28,15 @@ RUN cd neovim && \
   make install && \
   rm -rf ./neovim
 
+RUN useradd -m -s /bin/bash rama
+
+USER rama
+WORKDIR /home/rama
 RUN mkdir ~/gitdir && \
 cd ~/gitdir && \
 git clone https://github.com/lazyvim/starter && \
-mkdir -p /root/.config/neovim && \
-cp -r ~/gitdir/starter/. /root/.config/neovim
-RUN useradd -m -s /bin/bash rama
+mkdir -p /home/rama/.config/nvim && \
+cp -r /home/rama/gitdir/starter/. /home/rama/.config/nvim
 WORKDIR /home/rama
 USER rama
 CMD ["bash", "-l"]
