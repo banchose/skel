@@ -1,13 +1,17 @@
-FROM ubuntu:24.04
+FROM ubuntu:25.04
 RUN apt update
 RUN apt install -y ninja-build \
     gettext \
     cmake \
     unzip \
     autoconf \
+    fd-find \
+    fzf \
+    ripgrep \
     automake \
     pkg-config \
     bash \
+    tmux \
     unzip \
     zip \
     libtool-bin \
@@ -31,12 +35,23 @@ RUN cd neovim && \
 RUN useradd -m -s /bin/bash rama
 
 USER rama
+COPY --chown=rama:rama bashrc /home/rama/.bashrc
+COPY --chown=rama:rama inputrc /home/rama/.inputrc
+COPY --chown=rama:rama tmux.conf /home/rama/.tmux.conf
+COPY --chown=rama:rama tmux /home/rama/.tmux
+
 WORKDIR /home/rama
 RUN mkdir ~/gitdir && \
-cd ~/gitdir && \
-git clone https://github.com/lazyvim/starter && \
-mkdir -p /home/rama/.config/nvim && \
-cp -r /home/rama/gitdir/starter/. /home/rama/.config/nvim
+  cd ~/gitdir && \
+  git clone https://github.com/lazyvim/starter && \
+  mkdir -p /home/rama/.config/nvim && \
+  cp -r /home/rama/gitdir/starter/. /home/rama/.config/nvim
+
+COPY --chown=rama:rama plugins /home/rama/.config/nvim/lua/plugins
+
+RUN nvim --headless "+Lazy! sync" "+sleep 10" +qa
+RUN nvim --headless "+Lazy! sync" "+sleep 10" +qa
+
 WORKDIR /home/rama
-USER rama
+
 CMD ["bash", "-l"]

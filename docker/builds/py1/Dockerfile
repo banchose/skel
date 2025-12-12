@@ -1,8 +1,8 @@
 FROM ubuntu:24.04
 
 # Defined later in the file
-# ARG USER_UID=1000
-# ARG USER_GID=1000
+ARG USER_UID=5999
+ARG USER_GID=5999
 #
 # docker build -t py1:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .
 
@@ -198,8 +198,6 @@ RUN wget https://go.dev/dl/go1.25.5.linux-amd64.tar.gz && \
 ENV PATH=$PATH:/usr/local/go/bin:/home/loon/go/bin
 
 
-ARG USER_UID=1000
-ARG USER_GID=1000
 
 RUN groupadd -g ${USER_UID} loon && \
   useradd -m -u ${USER_UID} -g ${USER_GID} -s /bin/bash loon
