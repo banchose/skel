@@ -1,4 +1,4 @@
-FROM python:3.12.7-bookworm
+FROM ubuntu:24.04
 
 # Defined later in the file
 # ARG USER_UID=1000
@@ -74,7 +74,7 @@ RUN apt update && apt install -y \
   yasm \
   make \
   cmake \
-  libfuse-dev \
+  gfortran \
   rclone \
   gcc \
   g++ \
@@ -106,6 +106,7 @@ RUN ARCH=amd64 && \
 
 # As root
 RUN apt update && apt install -y \
+  python3.12-venv \
   pip \
   faker \
   python3-pynvim \
@@ -144,9 +145,9 @@ RUN apt update && apt install -y \
   hping3 \
   ngrep \
   asciinema \
-  exa \
+  # exa \
   duf \
-  tldr \
+  # tldr \
   dsniff \
   qalc \
   bc \
@@ -180,7 +181,10 @@ RUN apt update && apt install -y \
     libcurl4-openssl-dev \
     libsqlite3-dev \
     libncurses-dev \
+    libopenblas-dev \
     libpcsclite-dev \
+    libopenblas-dev \
+    libfuse-dev \
   && rm -rf /var/lib/apt/lists/*
 
 
