@@ -274,6 +274,17 @@ RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linu
     rm nvim-linux-x86_64.tar.gz
 
 
+RUN mkdir -p /home/loon/.config/nvim
+RUN ln -sf /home/loon/gitdir/starter /home/loon/.config/nvim
+RUN git clone https://github.com/LazyVim/starter ~/.config/nvim && \
+rm -rf ~/.config/nvim/.git
+RUN nvim --headless \
+  "+Lazy! sync" \
+  "+sleep 2" \
+  "+TSUpdate" \
+  +qa
+
+
 RUN go install github.com/akavel/up@latest
 RUN go install github.com/charmbracelet/glow/v2@latest
 RUN pipx install visidata 'litellm[proxy]' --include-deps
@@ -303,11 +314,6 @@ RUN git clone --depth=1 https://github.com/realpython/python-guide
 RUN git clone --depth=1 https://github.com/yidao620c/python3-cookbook
 RUN git clone --depth=1 https://github.com/TheAlgorithms/Python
 RUN git clone --depth=1 https://github.com/simonw/llm
-
-RUN mkdir -p /home/loon/.config/nvim
-RUN ln -sf /home/loon/gitdir/starter /home/loon/.config/nvim
-RUN nvim --headless "+Lazy! sync" "+TSUpdateSync" +qa 2>&1 || true
-
 
 # RUN mkdir -p /home/loon/.bashrc_zen.d && \
 # chown -R loon:loon /home/loon/.bashrc_zen.d
