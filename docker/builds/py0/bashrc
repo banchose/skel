@@ -127,10 +127,6 @@ function vr() { nvim -R "${@}"; }
 
 ## GENERAL OPTIONS ##
 
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/go/bin:$PATH"
-
 set -o noclobber
 
 PROMPT_DIRTRIM=10
@@ -270,3 +266,8 @@ fi
 alias ipython=ipython3
 eval "$(register-python-argcomplete pipx)"
 BEDROCK_MODEL='bedrock/us.anthropic.claude-sonnet-4-5-20250929-v1:0'
+
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+export PATH="/usr/local/go/bin:$PATH"
