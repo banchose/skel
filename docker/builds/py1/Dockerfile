@@ -338,6 +338,7 @@ COPY --chown=loon:loon scripts/testme.sh /home/loon/work/scripts/testme.sh
 RUN chmod 755 /home/loon/work/scripts/testme.sh
 COPY --chown=loon:loon Dockerfile /home/loon/work/Docker/Dockerfile
 COPY --chown=loon:loon scripts /home/loon/work/scripts
+RUN chmod 755 /home/loon/work/scripts/init-lazy.sh
 
 RUN pipx install --include-deps aider-chat && \
 pipx inject aider-chat boto3
