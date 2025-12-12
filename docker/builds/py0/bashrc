@@ -234,16 +234,16 @@ command -v waybar &>/dev/null && alias rway='pkill waybar ; nohup waybar &>/dev/
 # fi
 
 # Check if Bash is running interactively
-if [[ $- == *i* ]]; then
-  # Check if the session is already inside tmux
-  if [[ -z $TMUX ]] && command -v tmux &>/dev/null; then
-    # Check if Bash is running in a TTY or a pseudoterminal (e.g., /dev/pts/*)
-    if [[ "$(tty)" == /dev/tty* || "$(tty)" == /dev/pts/* ]]; then
-      # Start a new tmux session or attach to an existing one
-      tmux new-session
-    fi
-  fi
-fi
+# if [[ $- == *i* ]]; then
+#   # Check if the session is already inside tmux
+#   if [[ -z $TMUX ]] && command -v tmux &>/dev/null; then
+#     # Check if Bash is running in a TTY or a pseudoterminal (e.g., /dev/pts/*)
+#     if [[ "$(tty)" == /dev/tty* || "$(tty)" == /dev/pts/* ]]; then
+#       # Start a new tmux session or attach to an existing one
+#       tmux new-session
+#     fi
+#   fi
+# fi
 
 # Ensure the directory variable is not empty
 home_bashrc_directory=~/.bashrc_zen.d

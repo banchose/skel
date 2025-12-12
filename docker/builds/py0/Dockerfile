@@ -326,6 +326,14 @@ RUN chmod 755 /home/loon/work/testme.sh
 RUN pipx install --include-deps aider-chat && \
 pipx inject aider-chat boto3
 
+RUN curl -fsSL https://claude.ai/install.sh | bash
+
+COPY --chown=loon:loon settings.json /home/loon/.claude/settings.json
+COPY --chown=loon:loon anthropic_keys.sh /home/loon/.claude/anthropic_keys.sh
+RUN chmod 755 /home/loon/.claude/anthropic_keys.sh
+RUN ls -la /home/loon/.claude/anthropic_keys.sh
+RUN cat /home/loon/.claude/anthropic_keys.sh
+
 USER root
 RUN apt update
 USER loon
