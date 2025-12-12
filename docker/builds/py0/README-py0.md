@@ -1,5 +1,16 @@
 # Readme - py0
 
+## Bedrock
+
+### llm
+
+```sh
+export AWS_BEARER_TOKEN_BEDROCK="DUMMY-ABSKQmVkcm9ja0FQSUtleS1oejUxLWF0LTQwNTM231MDAwNDQ4Mzp2OS9rWW5MM0RuTHlHdjkxc21SblR0K2UyV29IQys0L0s2eUwyTkFKdTBVOFpHMnl0a2lKSmZEZnVNZz0="
+
+llm -m bedrock-claude-v4.5-sonnet -o bedrock_model_id us.anthropic.claude-sonnet-4-5-20250929-v1:0 "This is a test. Respond with 'OK'"
+```
+
+
 ## 1. Replace API keys in Env
 
 llm keys set anthropic --value $ANTHROPIC_API_KEY
@@ -23,13 +34,13 @@ llm keys set exa --value $EXA_API_KEY
 ### Works with Bedrock Api key
 
 ```sh
-llm -m bedrock-claude-v4.5-sonnet -o bedrock_model_id us.anthropic.claude-sonnet-4-5-20250929-v1:0 "Remind me how to post a new version to PyPI"# Publishing to PyPI
+llm -m bedrock-claude-v4.5-sonnet -o bedrock_model_id us.anthropic.claude-sonnet-4-5-20250929-v1:0 "This is a test. Respond with 'OK'"
 ```
 
 https://github.com/simonw/llm
 ### With AWS SSO Login
 ```sh
-llm -m bedrock-claude-haiku -o bedrock_model_id anthropic.claude-3-sonnet-20240229-v1:0 "Remind me how to post a new version to PyPI"
+llm -m bedrock-claude-haiku -o bedrock_model_id anthropic.claude-3-sonnet-20240229-v1:0 "This is a test. Respond with 'OK'"
 ```
 
 ## Anthropic

@@ -253,10 +253,10 @@ RUN llm models default anthropic/claude-sonnet-4-5
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # Install golang - go
-RUN wget https://go.dev/dl/go1.23.4.linux-amd64.tar.gz && \
+RUN wget https://go.dev/dl/go1.25.5.linux-amd64.tar.gz && \
     rm -rf /home/loon/go && \
-    tar -C /home/loon -xzf go1.23.4.linux-amd64.tar.gz && \
-    rm go1.23.4.linux-amd64.tar.gz
+    tar -C /home/loon -xzf go1.25.5.linux-amd64.tar.gz && \
+    rm go1.25.5.linux-amd64.tar.gz
 
 ENV PATH=$PATH:/usr/local/go/bin
 
@@ -318,10 +318,10 @@ WORKDIR /home/loon/work
 
 COPY --chown=loon:loon README-py0.md /home/loon/work
 COPY --chown=loon:loon aws /home/loon/work/aws
-COPY --chown=loon:loon testme.sh /home/loon/work/testme.sh
+COPY --chown=loon:loon scripts/testme.sh /home/loon/work/scripts/testme.sh
+RUN chmod 755 /home/loon/work/scripts/testme.sh
 COPY --chown=loon:loon Dockerfile /home/loon/work/Docker/Dockerfile
 COPY --chown=loon:loon scripts /home/loon/work/scripts
-RUN chmod 755 /home/loon/work/testme.sh
 
 RUN pipx install --include-deps aider-chat && \
 pipx inject aider-chat boto3
