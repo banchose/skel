@@ -326,6 +326,11 @@ RUN chmod 755 /home/loon/work/testme.sh
 RUN pipx install --include-deps aider-chat && \
 pipx inject aider-chat boto3
 
+USER root
+RUN apt update
+USER loon
+
+
 # Create gitdir with proper ownership BEFORE switching users
 # ENTRYPOINT ["/bin/sleep"]
 # CMD ["100000"]
