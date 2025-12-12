@@ -1,0 +1,39 @@
+FROM ubuntu:24.04
+RUN apt update
+RUN apt install -y ninja-build \
+    gettext \
+    cmake \
+    unzip \
+    autoconf \
+    automake \
+    pkg-config \
+    bash \
+    unzip \
+    zip \
+    libtool-bin \
+    libtool \
+#   build-essential \
+    git \
+    curl
+
+# Use the latest stable release (v0.11.5)
+# RUN git clone --depth=1 --branch v0.11.5 https://github.com/neovim/neovim
+
+# Or use the stable tag (though this can move to newer versions)
+RUN git clone --depth=1 --branch stable https://github.com/neovim/neovim
+# RUN git clone --depth=1 https://github.com/neovim/neovim
+
+RUN cd neovim && \
+  CFLAGS="-Wno-error=format-truncation" make CMAKE_BUILD_TYPE=Release && \
+  make install && \
+  rm -rf ./neovim
+
+RUN mkdir ~/gitdir && \
+cd ~/gitdir && \
+git clone https://github.com/lazyvim/starter && \
+mkdir -p /root/.config/neovim && \
+cp -r ~/gitdir/starter/. /root/.config/neovim
+RUN useradd -m -s /bin/bash rama
+WORKDIR /home/rama
+USER rama
+CMD ["bash", "-l"]
