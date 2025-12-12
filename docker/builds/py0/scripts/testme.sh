@@ -21,6 +21,7 @@ awk --version
 curl --version | grep -q gnu
 wget --version | grep -q GNU
 go version
+npm version
 ip -br a
 
 ping -c 3 1.1.1.1
