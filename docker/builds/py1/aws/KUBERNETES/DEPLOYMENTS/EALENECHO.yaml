@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ealenecho
+  labels:
+    app: ealenecho
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ealenecho
+  template:
+    metadata:
+      labels:
+        app: ealenecho
+    spec:
+      containers:
+      - name: ealenecho
+        image: ealen/echo-server:latest
+        env:
+        - name: PORT
+          value: "8080"
+        ports:
+        - containerPort: 8080
+          name: alt-web
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ealenecho
+  labels:
+    app: ealenecho
+spec:
+  selector:
+    app: ealenecho
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: alt-web
+

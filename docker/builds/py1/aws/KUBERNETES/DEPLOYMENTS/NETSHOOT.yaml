@@ -1,0 +1,49 @@
+
+#
+# aws eks update-kubeconfig --name rEksCluster --profile test
+# kubectl get pods -o wide
+# kubectl exec -it netshoot-7f9c6957f8-kr8q6 -c netshoot -- /bin/bash
+# curl 172.22.164.13:9001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netshoot
+  labels:
+    app: netshoot
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: netshoot
+  template:
+    metadata:
+      labels:
+        app: netshoot
+    spec:
+      containers:
+      - name: nginx-netshoot
+        image: nginx
+        ports:
+        - containerPort: 80
+          name: web
+      - name: netshoot
+        image: nicolaka/netshoot
+        command: ["/bin/bash"]
+        args: ["-c", "while true; do ping localhost; sleep 60;done"]
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: netshoot
+  labels:
+    app: netshoot
+spec:
+  selector:
+    app: netshoot
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: web
+

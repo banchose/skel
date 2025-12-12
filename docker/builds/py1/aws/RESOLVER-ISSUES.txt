@@ -1,0 +1,74 @@
+# AWS Route53 Resolver Quick Troubleshooting Guide
+
+## Core Resolver Concepts
+
+**Route53 Resolver:** DNS service that handles queries from VPCs, can forward to on-prem DNS or other targets
+
+## Flow of Resolver Rules
+
+1. **Creation:** Rules exist in central "Network" account
+2. **Sharing:** Shared via AWS RAM (Resource Access Manager) to the Organization
+3. **Association:** Each account associates shared rules with their VPCs
+4. **Resolution Flow:** When DNS query matches pattern → forwarded to target IPs in rule
+
+## Common Issues and Troubleshooting Steps
+
+| Issue | Check These | Commands |
+|-------|------------|----------|
+| **DNS not resolving** | 1. Rule exists<br>2. Rule is shared<br>3. Rule is associated<br>4. Target IPs reachable | `aws route53resolver list-resolver-rules`<br>`aws ram list-resources`<br>`aws route53resolver list-resolver-rule-associations` |
+| **Rule exists but not working** | 1. Target IPs correct<br>2. Security Groups allow DNS<br>3. Domain pattern matches | Check rule configuration in Network account |
+| **Can't see shared rule** | 1. RAM sharing setup<br>2. Account is in share list | Check RAM console in Network account |
+| **Cache issues** | 1. TTL settings<br>2. Local DNS cache | Check rule's TTL settings |
+
+## Checking Resolver Path
+
+```
+VPC DNS Query → Route53 Resolver → Match Rule? → Yes → Forward to Target IPs
+                                              → No → Use standard resolution
+```
+
+## Key Resolver Components
+
+- **Inbound Endpoints:** Allow on-prem to query VPC resources (IP addresses in your VPC)
+- **Outbound Endpoints:** Allow VPC resources to query external DNS (like your on-prem DNS)
+- **Resolver Rules:** Define which queries go where
+
+When troubleshooting, start by verifying the rule exists and is associated, then check connectivity to target IPs.
+## The Steps
+
+1. You have a forwarding rule for `corp.healthresearch.org` pointing to `10.1.100.100` and `10.1.100.101`
+2. You have a reverse lookup rule for `1.10.in-addr.arpa`
+3. But no rule for the base domain `healthresearch.org`
+
+# Check resource shares created by networking account
+aws ram list-resource-shares \
+    --resource-owner SELF \
+    --profile net
+```
+
+## Check Shared Resources in the Networking Account
+
+```bash
+# Check which resolver rules are shared
+aws ram list-resources \
+    --resource-owner SELF \
+    --resource-type "route53resolver:ResolverRule" \
+    --profile net
+```
+
+## Check RAM Shares in the Test Account
+
+```bash
+# List resource shares available to the test account
+aws ram list-resource-shares \
+    --resource-owner OTHER-ACCOUNTS
+```
+aws route53resolver associate-resolver-rule \
+    --resolver-rule-id rslvr-rr-4ded99599e8e47228 \
+    --vpc-id vpc-0c4facf35faa61076 \
+    --profile net
+
+aws route53resolver get-resolver-rule \
+    --resolver-rule-id rslvr-rr-4ded99599e8e47228 \
+    --profile net
+

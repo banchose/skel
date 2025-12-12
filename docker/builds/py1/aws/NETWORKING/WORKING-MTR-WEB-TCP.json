@@ -1,0 +1,47 @@
+{
+    "report": {
+        "mtr": {
+            "src": "HAW-WJS04-1",
+            "dst": "web.healthresearch.org",
+            "tos": 0,
+            "tests": 10,
+            "psize": "64",
+            "bitpattern": "0x00"
+        },
+        "hubs": [
+            {
+                "count": 1,
+                "host": "_gateway",
+                "Loss%": 0.0,
+                "Snt": 10,
+                "Last": 0.428,
+                "Avg": 0.372,
+                "Best": 0.303,
+                "Wrst": 0.445,
+                "StDev": 0.047
+            },
+            {
+                "count": 2,
+                "host": "10.1.254.1",
+                "Loss%": 0.0,
+                "Snt": 10,
+                "Last": 0.565,
+                "Avg": 0.614,
+                "Best": 0.487,
+                "Wrst": 1.107,
+                "StDev": 0.175
+            },
+            {
+                "count": 3,
+                "host": "???",
+                "Loss%": 100.0,
+                "Snt": 10,
+                "Last": 0.0,
+                "Avg": 0.0,
+                "Best": 0.0,
+                "Wrst": 0.0,
+                "StDev": 0.0
+            }
+        ]
+    }
+}

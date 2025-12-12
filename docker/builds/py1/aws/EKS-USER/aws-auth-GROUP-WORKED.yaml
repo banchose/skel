@@ -1,0 +1,21 @@
+apiVersion: v1
+data:
+  mapRoles: |
+    - groups:
+      - system:bootstrappers
+      - system:nodes
+      rolearn: arn:aws:iam::405350004483:role/HRI-BIGEKSALB-rEksNodeInstanceRole-SPBSyWhYeoDe
+      username: system:node:{{EC2PrivateDNSName}}
+    - groups:
+      - eks:developer
+      rolearn: arn:aws:iam::405350004483:role/AWSReservedSSO_EKSLogsPermissionSet_641e07934445cd33
+      username: "{{SessionName}}"
+  mapUsers: |
+    []
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2025-03-04T19:11:19Z"
+  name: aws-auth
+  namespace: kube-system
+  resourceVersion: "5906135"
+  uid: 00ab2b9e-0a4d-4adb-a01e-f120e0fdea10

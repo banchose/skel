@@ -1,0 +1,268 @@
+{
+  "version": "orpg.1.0",
+  "characters": {
+    "char-1747956765-PYveJTU9CWGNMrcgvrgS": {
+      "model": "anthropic/claude-opus-4",
+      "modelInfo": {
+        "slug": "anthropic/claude-opus-4",
+        "hf_slug": "",
+        "updated_at": "2025-05-22T17:17:35.862532+00:00",
+        "created_at": "2025-05-22T16:27:25.029961+00:00",
+        "hf_updated_at": null,
+        "name": "Anthropic: Claude Opus 4",
+        "short_name": "Claude Opus 4",
+        "author": "anthropic",
+        "description": "Claude Opus 4 is benchmarked as the world’s best coding model, at time of release, bringing sustained performance on complex, long-running tasks and agent workflows. It sets new benchmarks in software engineering, achieving leading results on SWE-bench (72.5%) and Terminal-bench (43.2%). Opus 4 supports extended, agentic workflows, handling thousands of task steps continuously for hours without degradation. \n\nRead more at the [blog post here](https://www.anthropic.com/news/claude-4)",
+        "model_version_group_id": null,
+        "context_length": 200000,
+        "input_modalities": [
+          "image",
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "has_text_output": true,
+        "group": "Claude",
+        "instruct_type": null,
+        "default_system": null,
+        "default_stops": [],
+        "hidden": false,
+        "router": null,
+        "warning_message": null,
+        "permaslug": "anthropic/claude-4-opus-20250522",
+        "reasoning_config": null,
+        "features": {},
+        "endpoint": {
+          "id": "9ea0cd22-4494-4a94-9199-c83c992bdbe1",
+          "name": "Anthropic | anthropic/claude-4-opus-20250522",
+          "context_length": 200000,
+          "model": {
+            "slug": "anthropic/claude-opus-4",
+            "hf_slug": "",
+            "updated_at": "2025-05-22T17:17:35.862532+00:00",
+            "created_at": "2025-05-22T16:27:25.029961+00:00",
+            "hf_updated_at": null,
+            "name": "Anthropic: Claude Opus 4",
+            "short_name": "Claude Opus 4",
+            "author": "anthropic",
+            "description": "Claude Opus 4 is benchmarked as the world’s best coding model, at time of release, bringing sustained performance on complex, long-running tasks and agent workflows. It sets new benchmarks in software engineering, achieving leading results on SWE-bench (72.5%) and Terminal-bench (43.2%). Opus 4 supports extended, agentic workflows, handling thousands of task steps continuously for hours without degradation. \n\nRead more at the [blog post here](https://www.anthropic.com/news/claude-4)",
+            "model_version_group_id": null,
+            "context_length": 200000,
+            "input_modalities": [
+              "image",
+              "text"
+            ],
+            "output_modalities": [
+              "text"
+            ],
+            "has_text_output": true,
+            "group": "Claude",
+            "instruct_type": null,
+            "default_system": null,
+            "default_stops": [],
+            "hidden": false,
+            "router": null,
+            "warning_message": null,
+            "permaslug": "anthropic/claude-4-opus-20250522",
+            "reasoning_config": null,
+            "features": {}
+          },
+          "model_variant_slug": "anthropic/claude-opus-4",
+          "model_variant_permaslug": "anthropic/claude-4-opus-20250522",
+          "provider_name": "Anthropic",
+          "provider_info": {
+            "name": "Anthropic",
+            "displayName": "Anthropic",
+            "slug": "anthropic",
+            "baseUrl": "url",
+            "dataPolicy": {
+              "termsOfServiceURL": "https://www.anthropic.com/legal/commercial-terms",
+              "privacyPolicyURL": "https://www.anthropic.com/legal/privacy",
+              "paidModels": {
+                "training": false,
+                "retainsPrompts": true,
+                "retentionDays": 30
+              },
+              "requiresUserIDs": true
+            },
+            "headquarters": "US",
+            "hasChatCompletions": true,
+            "hasCompletions": true,
+            "isAbortable": true,
+            "moderationRequired": true,
+            "editors": [],
+            "owners": [],
+            "isMultipartSupported": true,
+            "statusPageUrl": "https://status.anthropic.com/",
+            "byokEnabled": true,
+            "icon": {
+              "url": "/images/icons/Anthropic.svg"
+            }
+          },
+          "provider_display_name": "Anthropic",
+          "provider_slug": "anthropic",
+          "provider_model_id": "claude-opus-4-20250514",
+          "quantization": null,
+          "variant": "standard",
+          "is_free": false,
+          "can_abort": true,
+          "max_prompt_tokens": null,
+          "max_completion_tokens": 32000,
+          "max_prompt_images": null,
+          "max_tokens_per_image": null,
+          "supported_parameters": [
+            "max_tokens",
+            "temperature",
+            "stop",
+            "reasoning",
+            "include_reasoning",
+            "tools",
+            "tool_choice"
+          ],
+          "is_byok": false,
+          "moderation_required": true,
+          "data_policy": {
+            "termsOfServiceURL": "https://www.anthropic.com/legal/commercial-terms",
+            "privacyPolicyURL": "https://www.anthropic.com/legal/privacy",
+            "paidModels": {
+              "training": false,
+              "retainsPrompts": true,
+              "retentionDays": 30
+            },
+            "requiresUserIDs": true,
+            "training": false,
+            "retainsPrompts": true,
+            "retentionDays": 30
+          },
+          "pricing": {
+            "prompt": "0.000015",
+            "completion": "0.000075",
+            "image": "0.024",
+            "request": "0",
+            "input_cache_read": "0.0000015",
+            "input_cache_write": "0.00001875",
+            "web_search": "0",
+            "internal_reasoning": "0",
+            "discount": 0
+          },
+          "variable_pricings": [],
+          "is_hidden": false,
+          "is_deranked": false,
+          "is_disabled": false,
+          "supports_tool_parameters": true,
+          "supports_reasoning": true,
+          "supports_multipart": true,
+          "limit_rpm": 3,
+          "limit_rpd": null,
+          "limit_rpm_cf": null,
+          "has_completions": false,
+          "has_chat_completions": true,
+          "features": {
+            "supported_parameters": {},
+            "supports_document_url": null
+          },
+          "provider_region": null
+        }
+      },
+      "samplingParameters": {},
+      "maxTokens": 0,
+      "chatMemory": 8,
+      "id": "char-1747956765-PYveJTU9CWGNMrcgvrgS",
+      "isDisabled": false,
+      "updatedAt": "2025-05-22T23:35:36.412Z",
+      "plugins": [
+        {
+          "id": "web"
+        }
+      ],
+      "name": "Kubernetes",
+      "description": "You are an expert in kubernetes.  You excel at troubleshooting and using kubectl with --image=curlimages/curl (just as an example, don't feel you need to shoe horn it in because I mentioned it) and other tools to troubleshoot any connectivity issues"
+    }
+  },
+  "messages": {
+    "msg-1747956995-fCNlbgkUvfu7vW0pFogF": {
+      "characterId": "char-1747956765-PYveJTU9CWGNMrcgvrgS",
+      "content": "This is a common and frustrating issue with `kubectl exec` and `kubectl run -it` commands! When the network connection has issues or the command hangs, the terminal can become unresponsive to standard interrupt signals. Based on the search results and my experience, here are the solutions:\n\n## Why This Happens\n\nWhen you run an interactive kubectl command, it establishes a WebSocket connection to the API server, which then proxies to the kubelet on the node running your pod. If there's a network issue or the connection hangs, the terminal can freeze and stop responding to normal interrupt signals like `Ctrl+C`.\n\n## Solutions to Exit a Frozen kubectl Session\n\n### 1. **Force Kill the kubectl Process** (Most Reliable)\nInstead of `Ctrl+C`, use:\n```bash\n# Try this sequence:\nCtrl+Z  # Suspends the process\nkill %1  # Kills the most recent background job\n\n# Or find and kill the specific process:\n# In another terminal:\nps aux | grep kubectl\nkill -9 <PID>\n```\n\n### 2. **Use the Escape Sequence**\nTry this sequence which works in many cases:\n```bash\n# Type this exactly:\n~.\n# That's tilde followed by period\n```\n\n### 3. **Set a Client-Side Timeout**\nPrevent future hangs by adding a timeout to your kubectl commands:\n```bash\nkubectl run --rm -it --tty pingkungcurl1 \\\n  --image=curlimages/curl \\\n  --restart=Never \\\n  --timeout=30s \\\n  -- curl --connect-timeout 10 --max-time 30 10.244.69.251:5001\n```\n\n## Better Approaches for Network Testing\n\n### 1. **Non-Interactive Debugging**\nInstead of interactive sessions, use non-interactive commands that won't hang:\n```bash\n# Run without -it flags\nkubectl run pingkungcurl1 --image=curlimages/curl --restart=Never -- \\\n  curl --connect-timeout 5 --max-time 10 10.244.69.251:5001\n\n# Check the logs\nkubectl logs pingkungcurl1\n\n# Delete when done\nkubectl delete pod pingkungcurl1\n```\n\n### 2. **Use kubectl debug** (Kubernetes 1.18+)\n```bash\n# Debug an existing pod\nkubectl debug <pod-name> -it --image=curlimages/curl -- \\\n  curl --connect-timeout 5 10.244.69.251:5001\n```\n\n### 3. **Create a Debug Pod Manifest**\nFor repeated testing, create a debug pod:\n```yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: network-debug\nspec:\n  containers:\n  - name: curl\n    image: curlimages/curl\n    command: [\"sleep\", \"3600\"]\n```\n\nThen exec into it:\n```bash\nkubectl apply -f debug-pod.yaml\nkubectl exec -it network-debug -- curl --connect-timeout 5 10.244.69.251:5001\nkubectl delete pod network-debug\n```\n\n## Preventing Future Issues\n\nAs noted in the [stackoverflow.com](https://stackoverflow.com/questions/50939668/how-can-i-exit-a-kubectl-exec-command-that-has-frozen-due-to-a-network-error) discussion, network interruptions (VPN changes, WiFi drops, laptop sleep) commonly cause this issue. The [github.com](https://github.com/kubernetes/kubectl/issues/990) issue also mentions that this particularly affects kubectl proxy, port-forward, and log tailing operations.\n\n### Best Practices:\n1. Always use `--connect-timeout` and `--max-time` with curl\n2. Consider using `tmux` or `screen` for long-running kubectl sessions\n3. For network testing, prefer non-interactive commands\n4. Set up proper readiness/liveness probes to detect connectivity issues early\n\nThe key takeaway is that when `Ctrl+C` doesn't work, `Ctrl+Z` followed by `kill %1` is your most reliable escape route!",
+      "id": "msg-1747956995-fCNlbgkUvfu7vW0pFogF",
+      "updatedAt": "2025-05-22T23:37:20.747Z",
+      "isGenerating": false,
+      "metadata": {
+        "plugins": [
+          {
+            "id": "web"
+          }
+        ],
+        "variantSlug": "anthropic/claude-opus-4",
+        "generateDuration": 26555,
+        "latencyDuration": 18795,
+        "duration": 26555,
+        "tokensCount": 967,
+        "tokensPerSecond": 36.41498776125024,
+        "provider": "Anthropic",
+        "cost": "0.13055"
+      },
+      "citations": [
+        {
+          "type": "url_citation",
+          "url_citation": {
+            "end_index": 0,
+            "start_index": 0,
+            "title": "How can I exit a `kubectl exec` command that has frozen due to a network error?",
+            "url": "https://stackoverflow.com/questions/50939668/how-can-i-exit-a-kubectl-exec-command-that-has-frozen-due-to-a-network-error",
+            "content": "When I shut my laptop, turn on my VPN, or just lose Wi-Fi for a second, that terminal can sometimes freeze and leave me unable to exit it without closing the terminal tab or killing the process manually. ## Not the answer you're looking for? Browse other questions tagged - [docker](https://stackoverflow.com/questions/tagged/docker) - [kubernetes](https://stackoverflow.com/questions/tagged/kubernetes) - [kubectl](https://stackoverflow.com/questions/tagged/kubectl) or [ask your own question](https://stackoverflow.com/questions/ask). - [Network devices cannot ping subnetwork devices](https://superuser.com/questions/1845828/network-devices-cannot-ping-subnetwork-devices) - [66: Luftballons](https://puzzling.stackexchange.com/questions/127060/66-luftballons)"
+          }
+        },
+        {
+          "type": "url_citation",
+          "url_citation": {
+            "end_index": 0,
+            "start_index": 0,
+            "title": "kubectl exec commands are all timing out",
+            "url": "https://stackoverflow.com/questions/48186167/kubectl-exec-commands-are-all-timing-out",
+            "content": "## Not the answer you're looking for? Browse other questions tagged - [docker](https://stackoverflow.com/questions/tagged/docker) - [kubernetes](https://stackoverflow.com/questions/tagged/kubernetes) - [gcloud](https://stackoverflow.com/questions/tagged/gcloud) - [google-cloud-platform](https://stackoverflow.com/questions/tagged/google-cloud-platform) - [kubectl](https://stackoverflow.com/questions/tagged/kubectl) or [ask your own question](https://stackoverflow.com/questions/ask). - [Counterexample that Cartesian product is not distributive over Set difference](https://math.stackexchange.com/questions/4933518/counterexample-that-cartesian-product-is-not-distributive-over-set-difference) - [Methods for Detecting outliers in a time series](https://stats.stackexchange.com/questions/649330/methods-for-detecting-outliers-in-a-time-series) - [Orthodox recognition of Reform bar mitzvah](https://judaism.stackexchange.com/questions/143119/orthodox-recognition-of-reform-bar-mitzvah)"
+          }
+        },
+        {
+          "type": "url_citation",
+          "url_citation": {
+            "end_index": 0,
+            "start_index": 0,
+            "title": "Error while proxying request: connection reset by peer · Issue #990 · kubernetes/kubectl",
+            "url": "https://github.com/kubernetes/kubectl/issues/990",
+            "content": "Mentioned in this issue on kubernetes kubernetes/kubernetes#97125 but will give a quick rundown here:   When using kubectl to port-forward, proxy, or tail logs we will eventually get a connection reset by peer issue. This does not seem to impact inter-pod or inter-node communication, only communications via kubectl.  This issue started when I expanded and upgraded my bare-metal kubernetes cluster to 1.19.4 (was previously running 1.18.3)   I've done some deep dives into networking but this issue only seems to appear on our development machines, when doing similar tests on the master nodes themselves they never timeout or get reset."
+          }
+        },
+        {
+          "type": "url_citation",
+          "url_citation": {
+            "end_index": 0,
+            "start_index": 0,
+            "title": "Port-forwarding times out · Issue #19231 · kubernetes/kubernetes",
+            "url": "https://github.com/kubernetes/kubernetes/issues/19231",
+            "content": "| ## Question - Is there something I'm doing wrong? - Is port-forward not meant to be used in this way on GKE? ### What am I doing? I have a pod running on GKE that i'd like to connect to 'privately' (ie without exposing it externally). To do this i'm using the port-forward command."
+          }
+        },
+        {
+          "type": "url_citation",
+          "url_citation": {
+            "end_index": 0,
+            "start_index": 0,
+            "title": "interactive run \"Unrecognized input header\" · Issue #16670 · kubernetes/kubernetes",
+            "url": "https://github.com/kubernetes/kubernetes/issues/16670",
+            "content": "So > > the error message is \"container not found (\"date\")\", because > > container(\"date\") exited: > > — > > Reply to this email directly or view it on GitHub > > [#16670 (comment)](https://github.com/kubernetes/kubernetes/issues/16670#issuecomment-153315237) > > . | | I looked into the error of \"Unrecognized input header\". I tested the following example, and found if we set the field `tty:true` on a container, then used `kubectl logs` on that container, the error \"Unrecognized input header\" occurs whenever the pod is running or completed. And the error is returned from \"/home/src/k8s.io/kubernetes/Godeps/\\_workspace/src/github.com/fsouza/go-dockerclient/external/github.com/docker/docker/pkg/stdcopy.go\" I think this is a bug. Maybe the third party's bug."
+          }
+        }
+      ],
+      "files": []
+    },
+    "msg-1747956995-1HdZ0NTtbq3IaOrC4J4r": {
+      "characterId": "USER",
+      "content": "I am having an issue were sometimes I cant get out of a command like this... I knew it would fail, but I could not for the life of me get out of it and had to wait for it to timeout: kubectl run --rm -it --tty pingkungcurl1 --image=curlimages/curl --restart=Never -- 10.244.69.251:5001\nIf you don't see a command prompt, try pressing enter.\n\n^C^C\n^C^C^C^C^C\n\n^Cadfljas;fkj\n^_^\\^\\^C^C^C^C^C^C^C^C^C^C''\n\n\ncurl: (28) Failed to connect to 10.244.69.251 port 5001 after 135675 ms: Could not connect to server\npod \"pingkungcurl1\" deleted\npod default/pingkungcurl1 terminated (Error)\n",
+      "attachments": [],
+      "isGenerating": false,
+      "id": "msg-1747956995-1HdZ0NTtbq3IaOrC4J4r",
+      "updatedAt": "2025-05-22T23:36:35.394Z"
+    }
+  }
+}

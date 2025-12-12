@@ -1,0 +1,13 @@
+kubectl get nodes
+kubectl describe node node-name | grep "ProviderID"
+aws ec2 describe-instances --instance-ids i-1234567890abcdef0 --query 'Reservations[].Instances[].SecurityGroups' --output json --region us-east-1 --profile test
+# For the first node
+kubectl describe node ip-172-22-242-63.ec2.internal | grep "ProviderID"
+# For the second node
+kubectl describe node ip-172-22-243-253.ec2.internal | grep "ProviderID"
+aws ec2 describe-instances --instance-ids i-03964f42d2208b645 --query 'Reservations[].Instances[].SecurityGroups' --output json --region us-east-1 --profile test
+aws ec2 describe-instances --instance-ids i-066cf0a2b990c5f8b --query 'Reservations[].Instances[].SecurityGroups' --output json --region us-east-1 --profile test
+aws ec2 describe-security-group-rules --filters "Name=group-id,Values=sg-0d0fa5f217f5364ee" --query 'SecurityGroupRules[?IsEgress==`false`]' --region us-east-1 --profile test
+aws ec2 describe-security-group-rules --filters "Name=group-id,Values=sg-0d0fa5f217f5364ee" --query 'SecurityGroupRules[?IsEgress==`false`]' --region us-east-1 --profile test | clip.exe
+aws ec2 authorize-security-group-ingress   --group-id sg-0d0fa5f217f5364ee   --protocol tcp   --port 9001   --source-group sg-0141bf15b5dc217a3   --region us-east-1   --profile test
+kubectl exec -it $(kubectl get pod -l app=pisalapi-awsringotest -o name) -- sh

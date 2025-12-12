@@ -4,7 +4,7 @@ FROM python:3.12.7-bookworm
 # ARG USER_UID=1000
 # ARG USER_GID=1000
 #
-# docker build -t py0:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .
+# docker build -t py1:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .
 
 ### ROOT ###
 
@@ -328,7 +328,7 @@ WORKDIR /home/loon/work
 # RUN pipx install aider-install && pipx inject aider-install boto3 && aider-install
 # RUN pipx install rich-cli --include-deps
 
-COPY --chown=loon:loon README-py0.md /home/loon/work
+COPY --chown=loon:loon README-py1.md /home/loon/work
 COPY --chown=loon:loon aws /home/loon/work/aws
 COPY --chown=loon:loon scripts/testme.sh /home/loon/work/scripts/testme.sh
 RUN chmod 755 /home/loon/work/scripts/testme.sh
