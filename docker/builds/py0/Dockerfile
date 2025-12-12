@@ -187,6 +187,13 @@ RUN apt update && apt install -y \
 ####### Install a newer pipx supporting multiple arguments
 RUN python3 -m pip install --break-system-packages pipx
 
+# Install golang - go
+RUN wget https://go.dev/dl/go1.25.5.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.25.5.linux-amd64.tar.gz && \
+    rm go1.25.5.linux-amd64.tar.gz
+ENV PATH=$PATH:/usr/local/go/bin:/home/loon/go/bin
+
+
 ARG USER_UID=1000
 ARG USER_GID=1000
 
@@ -195,7 +202,7 @@ RUN groupadd -g ${USER_UID} loon && \
 
 ##################### CHANGE USER ###################################
 USER loon:loon
-ENV PATH="/home/loon/.local/bin:/home/loon/go/bin:/home/loon/.cargo/bin:/home/loon/go/bin:/usr/local/bin:/usr/bin:/bin"
+ENV PATH="/home/loon/.local/bin:/home/loon/go/bin:/home/loon/.cargo/bin:/usr/local/go/bin:/usr/local/bin:/usr/bin:/bin"
 
 RUN mkdir -p /home/loon/gitdir /home/loon/work /home/loon/.bashrc_zen.d
 
@@ -253,12 +260,12 @@ RUN llm models default anthropic/claude-sonnet-4-5
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # Install golang - go
-RUN wget https://go.dev/dl/go1.25.5.linux-amd64.tar.gz && \
-    rm -rf /home/loon/go && \
-    tar -C /home/loon -xzf go1.25.5.linux-amd64.tar.gz && \
-    rm go1.25.5.linux-amd64.tar.gz
-
-ENV PATH=$PATH:/usr/local/go/bin
+# RUN wget https://go.dev/dl/go1.25.5.linux-amd64.tar.gz && \
+#     rm -rf /home/loon/go && \
+#     tar -C /home/loon -xzf go1.25.5.linux-amd64.tar.gz && \
+#     rm go1.25.5.linux-amd64.tar.gz
+# 
+# ENV PATH=$PATH:/usr/local/go/bin
 
 RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz && \
     tar -C /home/loon/.local --strip-components=1 -xzf nvim-linux-x86_64.tar.gz && \
@@ -266,10 +273,10 @@ RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linu
 
 
 RUN go install github.com/akavel/up@latest
-RUN go install github.com/charmbracelet/glow@v1.5.1
+RUN go install github.com/charmbracelet/glow/v2@latest
 RUN pipx install visidata 'litellm[proxy]' --include-deps
 RUN pipx install pudb
-RUN pipx install bpython
+RUN pipx install bpython --include-deps
 
 
 
