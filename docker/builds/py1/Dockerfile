@@ -275,15 +275,15 @@ RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linu
 
 
 RUN mkdir -p /home/loon/.config/nvim
-RUN ln -sf /home/loon/gitdir/starter /home/loon/.config/nvim
-RUN git clone https://github.com/LazyVim/starter ~/.config/nvim && \
-rm -rf ~/.config/nvim/.git
+RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
+# First sync LazyVim and install plugins
+# RUN nvim --headless "+Lazy! sync" +qa 2>&1 || true
+# Then update tree-sitter parsers (plugins are now installed)
 RUN nvim --headless \
   "+Lazy! sync" \
   "+sleep 2" \
   "+TSUpdate" \
   +qa
-
 
 RUN go install github.com/akavel/up@latest
 RUN go install github.com/charmbracelet/glow/v2@latest
@@ -291,16 +291,12 @@ RUN pipx install visidata 'litellm[proxy]' --include-deps
 RUN pipx install pudb
 RUN pipx install bpython --include-deps
 
-
-
-
 COPY --chown=loon:loon bash_profile /home/loon/.bash_profile
 COPY --chown=loon:loon bashrc /home/loon/.bashrc
 COPY --chown=loon:loon inputrc /home/loon/.inputrc
 COPY --chown=loon:loon tmux.conf /home/loon/.tmux.conf
 COPY --chown=loon:loon gitconfig /home/loon/.gitconfig
 COPY --chown=loon:loon awsconfig /home/loon/.aws/config
-
 
 WORKDIR /home/loon/gitdir
 RUN ls -ld /home/loon /home/loon/gitdir && id
