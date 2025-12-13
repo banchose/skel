@@ -1,10 +1,10 @@
-FROM python:3.12.7-bookworm
+FROM ubuntu:24.04
 
 # Defined later in the file
-# ARG USER_UID=1000
-# ARG USER_GID=1000
+ARG USER_UID=5999
+ARG USER_GID=5999
 #
-# docker build -t py0:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .
+# docker build -t py1:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .
 
 ### ROOT ###
 
@@ -74,7 +74,7 @@ RUN apt update && apt install -y \
   yasm \
   make \
   cmake \
-  libfuse-dev \
+  gfortran \
   rclone \
   gcc \
   g++ \
@@ -106,6 +106,7 @@ RUN ARCH=amd64 && \
 
 # As root
 RUN apt update && apt install -y \
+  python3.12-venv \
   pip \
   faker \
   python3-pynvim \
@@ -144,9 +145,9 @@ RUN apt update && apt install -y \
   hping3 \
   ngrep \
   asciinema \
-  exa \
+  # exa \
   duf \
-  tldr \
+  # tldr \
   dsniff \
   qalc \
   bc \
@@ -180,7 +181,10 @@ RUN apt update && apt install -y \
     libcurl4-openssl-dev \
     libsqlite3-dev \
     libncurses-dev \
+    libopenblas-dev \
     libpcsclite-dev \
+    libopenblas-dev \
+    libfuse-dev \
   && rm -rf /var/lib/apt/lists/*
 
 
@@ -194,8 +198,6 @@ RUN wget https://go.dev/dl/go1.25.5.linux-amd64.tar.gz && \
 ENV PATH=$PATH:/usr/local/go/bin:/home/loon/go/bin
 
 
-ARG USER_UID=1000
-ARG USER_GID=1000
 
 RUN groupadd -g ${USER_UID} loon && \
   useradd -m -u ${USER_UID} -g ${USER_GID} -s /bin/bash loon
@@ -266,11 +268,22 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 #     rm go1.25.5.linux-amd64.tar.gz
 # 
 # ENV PATH=$PATH:/usr/local/go/bin
-
-RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz && \
-    tar -C /home/loon/.local --strip-components=1 -xzf nvim-linux-x86_64.tar.gz && \
-    rm nvim-linux-x86_64.tar.gz
-
+# 
+# RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz && \
+#     tar -C /home/loon/.local --strip-components=1 -xzf nvim-linux-x86_64.tar.gz && \
+#     rm nvim-linux-x86_64.tar.gz
+# 
+# 
+# RUN mkdir -p /home/loon/.config/nvim
+# RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
+# # First sync LazyVim and install plugins
+# # RUN nvim --headless "+Lazy! sync" +qa 2>&1 || true
+# # Then update tree-sitter parsers (plugins are now installed)
+# RUN nvim --headless \
+#   "+Lazy! sync" \
+#   "+sleep 2" \
+#   "+TSUpdate" \
+#   +qa
 
 RUN go install github.com/akavel/up@latest
 RUN go install github.com/charmbracelet/glow/v2@latest
@@ -278,16 +291,12 @@ RUN pipx install visidata 'litellm[proxy]' --include-deps
 RUN pipx install pudb
 RUN pipx install bpython --include-deps
 
-
-
-
 COPY --chown=loon:loon bash_profile /home/loon/.bash_profile
 COPY --chown=loon:loon bashrc /home/loon/.bashrc
 COPY --chown=loon:loon inputrc /home/loon/.inputrc
 COPY --chown=loon:loon tmux.conf /home/loon/.tmux.conf
 COPY --chown=loon:loon gitconfig /home/loon/.gitconfig
 COPY --chown=loon:loon awsconfig /home/loon/.aws/config
-
 
 WORKDIR /home/loon/gitdir
 RUN ls -ld /home/loon /home/loon/gitdir && id
@@ -301,11 +310,6 @@ RUN git clone --depth=1 https://github.com/realpython/python-guide
 RUN git clone --depth=1 https://github.com/yidao620c/python3-cookbook
 RUN git clone --depth=1 https://github.com/TheAlgorithms/Python
 RUN git clone --depth=1 https://github.com/simonw/llm
-
-RUN mkdir -p /home/loon/.config/nvim
-RUN ln -sf /home/loon/gitdir/starter /home/loon/.config/nvim
-RUN nvim --headless "+Lazy! sync" "+TSUpdateSync" +qa 2>&1 || true
-
 
 # RUN mkdir -p /home/loon/.bashrc_zen.d && \
 # chown -R loon:loon /home/loon/.bashrc_zen.d
@@ -328,17 +332,18 @@ WORKDIR /home/loon/work
 # RUN pipx install aider-install && pipx inject aider-install boto3 && aider-install
 # RUN pipx install rich-cli --include-deps
 
-COPY --chown=loon:loon README-py0.md /home/loon/work
+COPY --chown=loon:loon README-py1.md /home/loon/work
 COPY --chown=loon:loon aws /home/loon/work/aws
 COPY --chown=loon:loon scripts/testme.sh /home/loon/work/scripts/testme.sh
 RUN chmod 755 /home/loon/work/scripts/testme.sh
 COPY --chown=loon:loon Dockerfile /home/loon/work/Docker/Dockerfile
 COPY --chown=loon:loon scripts /home/loon/work/scripts
+RUN chmod 755 /home/loon/work/scripts/init-lazy.sh
 
-RUN pipx install --include-deps aider-chat && \
-pipx inject aider-chat boto3
+# RUN pipx install --include-deps aider-chat && \
+# pipx inject aider-chat boto3
 
-RUN curl -fsSL https://claude.ai/install.sh | bash
+# RUN curl -fsSL https://claude.ai/install.sh | bash
 
 COPY --chown=loon:loon settings.json /home/loon/.claude/settings.json
 COPY --chown=loon:loon anthropic_keys.sh /home/loon/.claude/anthropic_keys.sh
@@ -359,6 +364,39 @@ RUN echo '. "${BASH_ENV}"' >> ~/.bashrc
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | PROFILE="${BASH_ENV}" bash
 RUN echo node > .nvmrc
 RUN nvm install
+
+
+RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz && \
+    tar -C /home/loon/.local --strip-components=1 -xzf nvim-linux-x86_64.tar.gz && \
+    rm nvim-linux-x86_64.tar.gz
+
+RUN mkdir -p /home/loon/.config/nvim
+RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
+# First sync LazyVim and install plugins
+# RUN nvim --headless "+Lazy! sync" +qa 2>&1 || true
+# Then update tree-sitter parsers (plugins are now installed)
+# RUN nvim --headless \
+#   "+Lazy! sync" \
+#   "+sleep 2" \
+#   "+TSInstall all" \
+#   +qa
+# 
+
+# Ensure Node.js is available first
+RUN bash -c "source ${BASH_ENV} && nvim --headless '+Lazy! sync' +qa"
+
+# Install all parsers with sufficient time
+RUN bash -c "source ${BASH_ENV} && nvim --headless '+TSInstall all' +qa" || true
+
+# Wait and verify
+RUN sleep 5
+
+# Check what was actually installed
+RUN bash -c "source ${BASH_ENV} && nvim --headless '+TSInstallInfo' '+sleep 3' +qa" || true
+# After installing LazyVim
+RUN bash -c "source ${BASH_ENV} && nvim --headless '+Lazy! build blink.cmp' +qa" || true
+
+
 
 # Create gitdir with proper ownership BEFORE switching users
 # ENTRYPOINT ["/bin/sleep"]

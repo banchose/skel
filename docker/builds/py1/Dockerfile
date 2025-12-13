@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM debian:trixie
 
 # Defined later in the file
 ARG USER_UID=5999
@@ -106,7 +106,7 @@ RUN ARCH=amd64 && \
 
 # As root
 RUN apt update && apt install -y \
-  python3.12-venv \
+  python3.13-venv \
   pip \
   faker \
   python3-pynvim \
@@ -395,8 +395,6 @@ RUN sleep 5
 RUN bash -c "source ${BASH_ENV} && nvim --headless '+TSInstallInfo' '+sleep 3' +qa" || true
 # After installing LazyVim
 RUN bash -c "source ${BASH_ENV} && nvim --headless '+Lazy! build blink.cmp' +qa" || true
-
-
 
 # Create gitdir with proper ownership BEFORE switching users
 # ENTRYPOINT ["/bin/sleep"]
