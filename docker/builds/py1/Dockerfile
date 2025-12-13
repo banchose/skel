@@ -268,22 +268,22 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 #     rm go1.25.5.linux-amd64.tar.gz
 # 
 # ENV PATH=$PATH:/usr/local/go/bin
-
-RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz && \
-    tar -C /home/loon/.local --strip-components=1 -xzf nvim-linux-x86_64.tar.gz && \
-    rm nvim-linux-x86_64.tar.gz
-
-
-RUN mkdir -p /home/loon/.config/nvim
-RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
-# First sync LazyVim and install plugins
-# RUN nvim --headless "+Lazy! sync" +qa 2>&1 || true
-# Then update tree-sitter parsers (plugins are now installed)
-RUN nvim --headless \
-  "+Lazy! sync" \
-  "+sleep 2" \
-  "+TSUpdate" \
-  +qa
+# 
+# RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz && \
+#     tar -C /home/loon/.local --strip-components=1 -xzf nvim-linux-x86_64.tar.gz && \
+#     rm nvim-linux-x86_64.tar.gz
+# 
+# 
+# RUN mkdir -p /home/loon/.config/nvim
+# RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
+# # First sync LazyVim and install plugins
+# # RUN nvim --headless "+Lazy! sync" +qa 2>&1 || true
+# # Then update tree-sitter parsers (plugins are now installed)
+# RUN nvim --headless \
+#   "+Lazy! sync" \
+#   "+sleep 2" \
+#   "+TSUpdate" \
+#   +qa
 
 RUN go install github.com/akavel/up@latest
 RUN go install github.com/charmbracelet/glow/v2@latest
@@ -340,10 +340,10 @@ COPY --chown=loon:loon Dockerfile /home/loon/work/Docker/Dockerfile
 COPY --chown=loon:loon scripts /home/loon/work/scripts
 RUN chmod 755 /home/loon/work/scripts/init-lazy.sh
 
-RUN pipx install --include-deps aider-chat && \
-pipx inject aider-chat boto3
+# RUN pipx install --include-deps aider-chat && \
+# pipx inject aider-chat boto3
 
-RUN curl -fsSL https://claude.ai/install.sh | bash
+# RUN curl -fsSL https://claude.ai/install.sh | bash
 
 COPY --chown=loon:loon settings.json /home/loon/.claude/settings.json
 COPY --chown=loon:loon anthropic_keys.sh /home/loon/.claude/anthropic_keys.sh
@@ -364,6 +364,39 @@ RUN echo '. "${BASH_ENV}"' >> ~/.bashrc
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | PROFILE="${BASH_ENV}" bash
 RUN echo node > .nvmrc
 RUN nvm install
+
+
+RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz && \
+    tar -C /home/loon/.local --strip-components=1 -xzf nvim-linux-x86_64.tar.gz && \
+    rm nvim-linux-x86_64.tar.gz
+
+RUN mkdir -p /home/loon/.config/nvim
+RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
+# First sync LazyVim and install plugins
+# RUN nvim --headless "+Lazy! sync" +qa 2>&1 || true
+# Then update tree-sitter parsers (plugins are now installed)
+# RUN nvim --headless \
+#   "+Lazy! sync" \
+#   "+sleep 2" \
+#   "+TSInstall all" \
+#   +qa
+# 
+
+# Ensure Node.js is available first
+RUN bash -c "source ${BASH_ENV} && nvim --headless '+Lazy! sync' +qa"
+
+# Install all parsers with sufficient time
+RUN bash -c "source ${BASH_ENV} && nvim --headless '+TSInstall all' +qa" || true
+
+# Wait and verify
+RUN sleep 5
+
+# Check what was actually installed
+RUN bash -c "source ${BASH_ENV} && nvim --headless '+TSInstallInfo' '+sleep 3' +qa" || true
+# After installing LazyVim
+RUN bash -c "source ${BASH_ENV} && nvim --headless '+Lazy! build blink.cmp' +qa" || true
+
+
 
 # Create gitdir with proper ownership BEFORE switching users
 # ENTRYPOINT ["/bin/sleep"]

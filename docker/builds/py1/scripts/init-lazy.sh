@@ -2,6 +2,6 @@
 
 set -xeuo pipefail
 
-mkdir -p -- "${HOME}"/.config/nvim
-cp -r -- "${HOME}"/gitdir/starter/. "${HOME}"/.config/nvim
+# mkdir -p -- "${HOME}"/.config/nvim
+# cp -r -- "${HOME}"/gitdir/starter/. "${HOME}"/.config/nvim
 cp -- "${HOME}"/work/scripts/oil.lua "${HOME}"/.config/nvim/lua/plugins
