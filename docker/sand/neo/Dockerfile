@@ -26,7 +26,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 ###### nvm install ########
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-ENV BASH_ENV /home/luna/.bash_env
+ENV BASH_ENV=home/luna/.bash_env
 RUN touch "${BASH_ENV}"
 RUN echo '. "${BASH_ENV}"' >> ~/.bashrc
 
