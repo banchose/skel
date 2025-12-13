@@ -1,6 +1,19 @@
 # Just a personal .bashrc that maybe renamed and then included in the real ~/.bashrc
 # in ~/.bashrc: [[ -f ~/.bashrc.includeme ]] && source ~/.bashrc.includeme
 
+# XDG base directories.
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_PICTURES_DIR="$HOME/Pictures"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+# Make sure this stuff is in the path.
+# export PATH="$HOME/.nvim/bin:$PATH"  # Neovim
+export PATH="$HOME/.cargo/bin:$PATH" # Cargo
+export PATH="$HOME/.local/bin:$PATH" # Local scripts
+export PATH="$HOME/go/bin:$PATH"     # Go binaries.
+
 # echo "${BASH_SOURCE[0]}"
 
 # If not running interactively, don't do anything
@@ -122,12 +135,6 @@ flf() {
 }
 
 function vr() { nvim -R "${@}"; }
-
-## GENERAL OPTIONS ##
-
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/go/bin:$PATH"
 
 set -o noclobber
 

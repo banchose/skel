@@ -6,8 +6,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# export TERM=xterm
-export TERM=xterm-256color
 umask 022
 
 # Unique Bash version check
@@ -127,6 +125,10 @@ function vr() { nvim -R "${@}"; }
 
 ## GENERAL OPTIONS ##
 
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+
 set -o noclobber
 
 PROMPT_DIRTRIM=10
@@ -230,16 +232,16 @@ command -v waybar &>/dev/null && alias rway='pkill waybar ; nohup waybar &>/dev/
 # fi
 
 # Check if Bash is running interactively
-# if [[ $- == *i* ]]; then
-#   # Check if the session is already inside tmux
-#   if [[ -z $TMUX ]] && command -v tmux &>/dev/null; then
-#     # Check if Bash is running in a TTY or a pseudoterminal (e.g., /dev/pts/*)
-#     if [[ "$(tty)" == /dev/tty* || "$(tty)" == /dev/pts/* ]]; then
-#       # Start a new tmux session or attach to an existing one
-#       tmux new-session
-#     fi
-#   fi
-# fi
+if [[ $- == *i* ]]; then
+  # Check if the session is already inside tmux
+  if [[ -z $TMUX ]] && command -v tmux &>/dev/null; then
+    # Check if Bash is running in a TTY or a pseudoterminal (e.g., /dev/pts/*)
+    if [[ "$(tty)" == /dev/tty* || "$(tty)" == /dev/pts/* ]]; then
+      # Start a new tmux session or attach to an existing one
+      tmux new-session
+    fi
+  fi
+fi
 
 # Ensure the directory variable is not empty
 home_bashrc_directory=~/.bashrc_zen.d
@@ -257,31 +259,3 @@ if [[ -d "${home_bashrc_directory}" ]]; then
 else
   echo "Directory ${home_bashrc_directory} does not exist."
 fi
-
-if command -v aws_completer &>/dev/null; then
-  complete -C "$(command -v aws_completer)" aws
-fi
-
-## Appended for py1
-alias ipython=ipython3
-eval "$(register-python-argcomplete pipx)"
-# BEDROCK_MODEL='bedrock/us.anthropic.claude-sonnet-4-5-20250929-v1:0'
-
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/go/bin:$PATH"
-export PATH="/usr/local/go/bin:$PATH"
-[ -s "$HOME/.nvm/nvm.sh" ] && source "$HOME/.nvm/nvm.sh"
-
-BEDROCK_MODEL='us.anthropic.claude-sonnet-4-5-20250929-v1:0'
-llm() {
-  if [[ -z "${AWS_BEARER_TOKEN_BEDROCK}" ]]; then
-    echo "Error: AWS_BEARER_TOKEN_BEDROCK is not set" >&2
-    return 1
-  elif [[ "${AWS_BEARER_TOKEN_BEDROCK}" == DUMMY* ]]; then
-    echo "Error: AWS_BEARER_TOKEN_BEDROCK contains DUMMY placeholder - replace with real API key" >&2
-    return 1
-  fi
-  PROMPT="The time is: $(date). Please be percise and concise. If you don't know something say so.  If you could produce a better answer with key information I may be able to provide, ask for it"
-  command llm -s "${PROMPT}" -m "${BEDROCK_MODEL}" "$@"
-}
