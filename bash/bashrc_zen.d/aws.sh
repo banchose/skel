@@ -29,6 +29,19 @@ alias aslb='aws elbv2 describe-load-balancers --query "LoadBalancers[].DNSName" 
 alias alswf="aws logs tail aws-waf-logs-HRI-APP-WAF   --follow   --region us-east-1   --profile net"
 alias alscreds='aws configure export-credentials --profile $AWS_PROFILE'
 
+
+alias awlct="aws configure sso  --region $AwsRegion --profile test"
+alias awlcn="aws configure sso  --region $AwsRegion --profile net"
+alias awlcd="aws configure sso  --region $AwsRegion --profile dev"
+alias awlcp="aws configure sso  --region $AwsRegion --profile production"
+alias awlcp="aws configure sso  --region $AwsRegion --profile man"
+
+alias awlt="aws sso login --region $AwsRegion --profile test --no-browser --use-device-code"
+alias awln="aws sso login --region $AwsRegion --profile net --no-browser --use-device-code"
+alias awld="aws sso login --region $AwsRegion --profile dev --no-browser --use-device-code"
+alias awlprod="aws sso login --region $AwsRegion --profile production --no-browser --use-device-code"
+alias awlman="aws sso login --region $AwsRegion --profile man --no-browser --use-device-code"
+
 # Function: Get AWS Profile
 #get_aws_context() {
 #  local profile="$1"
