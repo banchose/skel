@@ -1,0 +1,23 @@
+services:
+  seafile:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.seafile.rule=Host(`seafile.xaax.dev`)"
+      - "traefik.http.routers.seafile.entrypoints=websecure"
+      - "traefik.http.routers.seafile.tls=true"
+      - "traefik.http.services.seafile.loadbalancer.server.port=8000"
+      - "traefik.docker.network=traefik_web"
+    networks:
+      - traefik_web
+      - default
+    healthcheck:
+      test: curl  -f  "http://127.0.0.1:8000"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+networks:
+  traefik_web:
+    external: true
+

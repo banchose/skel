@@ -1,0 +1,52 @@
+
+####################################################### 
+## THIS:  Attach netshoot to your app container
+####################################################### 
+docker run --rm -it --network container:your-app nicolaka/netshoot
+
+
+####################################################### 
+## THIS:  Attach netshoot to your app container
+####################################################### 
+# Run netshoot with host PID namespace access
+docker run --rm -it --privileged --pid=host nicolaka/netshoot
+
+# Find IP
+docker network inspect compose_web | jq '.[].Containers[].IPv4Address'
+
+# Run netshoot with access to host namespaces and processes
+docker run --rm -it --privileged --pid=host --net=host nicolaka/netshoot
+
+# Attach netshoot to your app container
+docker run --rm -it --network container:your-app nicolaka/netshoot
+
+# Then test database connectivity
+nc -zv database-service 5432
+
+docker network ls
+docker run -it --network compose_web nicolaka/netshoot
+
+####################################################### 
+## Other
+####################################################### 
+
+# Check network interfaces
+ifconfig
+
+# View routing table
+route -n
+
+# Test connectivity to another service
+curl service-name:port
+
+# DNS lookup
+nslookup another-service
+
+# Trace network path
+traceroute google.com
+
+# Network connection status
+netstat -tuln
+
+# Check for open ports
+ss -tuln

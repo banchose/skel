@@ -1,0 +1,22 @@
+# Create the ConfigMap with the configuration
+#
+#
+# kubectl create configmap litellm-config  -n openwebui
+#
+#
+#
+# Create the configuration file with your accessible models including Opus 4.1
+# cat > /tmp/litellm-config.yaml << 'EOF'
+#
+# NOTE: anthropic models usually require an inference profile
+#  Newer Claude models (like Claude 4) require an inference profile rather than direct model access.
+# aws bedrock list-inference-profiles --region us-east-1
+model_list:
+  - model_name: claude-4-5-sonnet
+    litellm_params:
+      model: bedrock/us.anthropic.claude-sonnet-4-5-20250929-v1:0
+      aws_region_name: us-east-1
+#  - model_name: claude-opus-4-5
+#    litellm_params:
+#      model: bedrock/us.anthropic.claude-opus-4-5-20251101-v1:0
+#      aws_region_name: us-east-1

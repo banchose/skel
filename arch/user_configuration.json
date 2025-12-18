@@ -1,0 +1,70 @@
+{
+    "additional-repositories": [],
+    "archinstall-language": "English",
+    "bootloader": "Systemd-boot",
+    "config_version": "2.7.1",
+    "debug": false,
+    "disk_config": null,
+    "hostname": "archinstallx",
+    "kernels": [
+        "linux"
+    ],
+    "locale_config": {
+        "kb_layout": "us",
+        "sys_enc": "UTF-8",
+        "sys_lang": "en_US"
+    },
+    "mirror_config": {
+        "custom_mirrors": [
+            {
+                "name": "lkjkl",
+                "sign_check": "Never",
+                "sign_option": "TrustAll",
+                "url": "http://archmirror.example.net/archlinux/$repo/os/$arch"
+            }
+        ],
+        "mirror_regions": {}
+    },
+    "network_config": {
+        "type": "iso"
+    },
+    "no_pkg_lookups": false,
+    "ntp": true,
+    "offline": false,
+    "packages": [
+        "bash-completion",
+        "iproute2",
+        "step-cli",
+        "man-pages",
+        "neovim",
+        "bc",
+        "openssl",
+        "socat",
+        "lsof",
+        "dmidecode",
+        "p7zip",
+        "yq",
+        "less",
+        "man-db",
+        "lshw",
+        "jq",
+        "pcre2",
+        "binutils",
+        "nmap",
+        "wireshark-cli",
+        "w3m",
+        "usbutils",
+        "git",
+        "openssh",
+        "tmux"
+    ],
+    "parallel downloads": 0,
+    "script": "guided",
+    "silent": false,
+    "skip_ntp": false,
+    "skip_version_check": false,
+    "swap": true,
+    "timezone": "America/New_York",
+    "uki": false,
+    "version": "2.7.1"
+}

@@ -1,0 +1,12 @@
+exit 1
+kubectl auth can-i get pods --as=arn:aws:sts::405350004483:assumed-role/AWSReservedSSO_EKSLogsPermissionSet_641e07934445cd33/deleteme1
+wrong path?: eksctl create iamidentitymapping   --cluster rEksCluster   --region us-east-1   --arn arn:aws:iam::405350004483:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_EKSLogsPermissionSet_641e07934445cd33   --username eks-devs-group   --group eks:developer
+kubectl get configmap aws-auth -n kube-system -o yaml
+aws configure sso --profile deletemetoo
+aws eks update-kubeconfig --name rEksCluster --profile deletemetoo
+
+# Enable logging for eks cluster
+aws eks update-cluster-config   --region us-east-1   --name rEksCluster   --logging '{"clusterLogging":[{"types":["authenticator","audit"],"enabled":true}]}'   --profile test
+
+# oddball
+kubectl wait --for=condition=available --timeout=300s deployment/aws-load-balancer-controller -n kube-system

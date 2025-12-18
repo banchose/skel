@@ -1,0 +1,20 @@
+services:
+  filebrowser:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.filebrowser.rule=Host(`files.xaax.dev`)"
+      - "traefik.http.routers.filebrowser.entrypoints=websecure"
+      - "traefik.http.routers.filebrowser.tls=true"
+      - "traefik.http.services.filebrowser.loadbalancer.server.port=8080"
+      - "traefik.docker.network=traefik_web"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:8080"]
+      interval: 10s
+      timeout: 30s
+      start_period: 60s
+    networks:
+      - traefik_web
+
+networks:
+  traefik_web:
+    external: true

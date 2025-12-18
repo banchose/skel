@@ -1,0 +1,71 @@
+services:
+  builder:
+    image: node:latest
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: bash -c "rm -rf node_modules && npm install vite@4 --legacy-peer-deps && npm run build && chown -R 1000:1000 . || true"
+
+  pisal-site:
+    image: nginx:alpine
+    volumes:
+      - ./dist:/usr/share/nginx/html
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pisal.rule=Host(`pisal.xaax.dev`)"
+      - "traefik.http.routers.pisal.entrypoints=websecure"
+      - "traefik.http.routers.pisal.tls=true"
+      - "traefik.http.services.pisal.loadbalancer.server.port=80"
+    networks:
+      - web
+
+  nginx-site:
+    image: nginx:alpine
+    volumes:
+      - ./nginx-content:/usr/share/nginx/html
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx.rule=Host(`nginx.xaax.dev`)"
+      - "traefik.http.routers.nginx.entrypoints=websecure"
+      - "traefik.http.routers.nginx.tls=true"
+      - "traefik.http.services.nginx.loadbalancer.server.port=80"
+    networks:
+      - web
+
+  whoami:
+  # A container that exposes an API to show its IP address
+    image: traefik/whoami
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.xaax.dev`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.services.whoami.loadbalancer.server.port=80"
+    networks:
+      - web
+
+  traefik:
+    image: traefik:v3.0
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./etc/certs:/etc/certs:ro
+      - ./etc/traefik:/etc/traefik
+    networks:
+      - web
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.directory=/etc/traefik"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.http.tls=true"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+networks:
+  web: {}

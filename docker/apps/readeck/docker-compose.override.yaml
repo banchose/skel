@@ -1,0 +1,21 @@
+services:
+  readeck:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.readeck.rule=Host(`readeck.xaax.dev`)"
+      - "traefik.http.routers.readeck.entrypoints=websecure"
+      - "traefik.http.routers.readeck.tls=true"
+      - "traefik.http.services.readeck.loadbalancer.server.port=8000"
+    networks:
+      - traefik_web
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://127.0.0.1:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+networks:
+  traefik_web:
+    external: true
+

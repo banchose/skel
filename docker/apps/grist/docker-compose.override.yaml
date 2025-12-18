@@ -1,0 +1,22 @@
+services:
+  grist:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grist.rule=Host(`grist.xaax.dev`)"
+      - "traefik.http.routers.grist.entrypoints=websecure"
+      - "traefik.http.routers.grist.tls=true"
+      - "traefik.http.services.grist.loadbalancer.server.port=8484"
+      - "traefik.docker.network=traefik_web"
+    networks:
+      - traefik_web
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8484"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+
+networks:
+  traefik_web:
+    external: true

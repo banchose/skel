@@ -1,0 +1,21 @@
+aws cloudformation create-stack --stack-name AcmeHostedPrivateZone --template-body file://./AcmeHostedPrivateZone.yaml --parameters ParameterKey="pAcmeVpcId",ParameterValue="${pAcmeVpcId}" --region us-east-1 --profile lab
+aws cloudformation create-change-set --change-set-name AcmeHostedPrivateZone-AddRec --stack-name AcmeHostedPrivateZone --template-body file://./AcmeHostedPrivateZone.yaml --parameters ParameterKey="pAcmeVpcId",ParameterValue="${pAcmeVpcId}" --region us-east-1 --profile lab
+aws cloudformation create-stack --stack-name AcmeEc2Instance --template-body file://./AcmeEc2Instance.yaml --parameters ParameterKey="pAcmeEc2InstanceProfileId",ParameterValue="${pAcmeEc2InstanceProfileId}" ParameterKey="pAcmeEc2LaunchTemplateId",ParameterValue="${pAcmeEc2LaunchTemplateId}" ParameterKey="pAcmeSubnetId",ParameterValue="${pAcmeSubnetId}" --region us-east-1 --profile lab
+aws cloudformation create-stack --stack-name s3Endpoint --template-body file://./ACMES3GatewayEndpointforEc2Updates.yaml --parameters ParameterKey="pAcmeVpcId",ParameterValue="${pAcmeVpcId}" ParameterKey="pAcmeMainRouteTableId",ParameterValue="${pAcmeMainRouteTableId}" --region us-east-1 --profile lab
+aws cloudformation create-stack --stack-name AcmeSsmVpcEndpoints --template-body file://./AcmeSSMEC2Endpoints.yaml --parameters ParameterKey="pAcmeSubnetId",ParameterValue="${pAcmeSubnetId}" ParameterKey="pAcmeVpcId",ParameterValue="${pAcmeVpcId}" --region us-east-1 --profile lab
+aws cloudformation create-stack --stack-name AcmeLaunchTemplate --template-body file://./AcmeLaunchTemplate.yaml --parameters ParameterKey="pAcmeVpcId",ParameterValue="${pAcmeVpcId}" --capabilities CAPABILITY_IAM --region us-east-1 --profile lab
+aws cloudformation create-stack --stack-name AcmeInstanceProfile --template-body file://./AcmeInstanceProfileSsmRole.yaml --capabilities CAPABILITY_NAMED_IAM --region us-east-1 --profile lab
+aws cloudformation create-stack --stack-name AcmeVpc --template-body file://./AcmeVpc.yaml --region us-east-1 --profile lab
+
+aws cloudformation create-stack --stack-name AcmeDhcpOptionsSet --template-body file://./AcmeDhcpOptionsSet.yaml --parameters ParameterKey="pAcmeVpcId",ParameterValue="${pAcmeVpcId}" --region us-east-1 --profile lab
+
+## START
+# Create the instance profile
+
+aws cloudformation create-stack --stack-name AcmeVpc --template-body file://./AcmeVpc.yaml --region us-east-1 --profile lab
+# Produces these required variables
+export pAcmeVpcId="vpc-080874ae1242bab8b"
+export pAcmeInternetGatewayId="igw-0a4d2f000bde1b0c3"
+
+aws cloudformation create-stack --stack-name AcmeDhcpOptionsSet --template-body file://./AcmeDhcpOptionsSet.yaml --parameters ParameterKey="pAcmeVpcId",ParameterValue="${pAcmeVpcId}" --region us-east-1 --profile lab
+aws cloudformation create-stack --stack-name AcmePrivateSubnet --template-body file://./AcmePrivateSubnet.yaml --parameters ParameterKey="pAcmeVpcId",ParameterValue="${pAcmeVpcId}" ParameterKey="pAcmeInternetGatewayId",ParameterValue="${pAcmeInternetGatewayId}"

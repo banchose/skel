@@ -1,0 +1,97 @@
+# Testing with the IP of nginx ingress controller controller in ingress-nginx namespace
+# kubectl get -n ingress-nginx
+# kubectl exec -it bash-tmp -- curl -v 10.96.38.124
+# kubectl exec -it bash-tmp -- curl -v 10.96.38.124/nginx-beacon
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx-beacon
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-beacon
+  namespace: nginx-beacon
+  labels:
+    app: nginx-beacon
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx-beacon
+  template:
+    metadata:
+      labels:
+        app: nginx-beacon
+    spec:
+      containers:
+        - name: nginx-beacon
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+              name: alt-web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-beacon
+  namespace: nginx-beacon
+  labels:
+    app: nginx-beacon
+spec:
+  selector:
+    app: nginx-beacon
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: alt-web
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  name: nginx-beacon
+  namespace: nginx-beacon
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /nginx-beacon($|/)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: nginx-beacon
+                port:
+                  number: 8080
+---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   annotations:
+#     # nginx.ingress.kubernetes.io/use-regex: "true"
+#     nginx.ingress.kubernetes.io/rewrite-target: /
+#   name: nginx-beacon-rewrite
+#   namespace: nginx-beacon
+#   labels:
+#     app: nginx-beacon
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#     - http:
+#         paths:
+#           - backend:
+#               service:
+#                 name: nginx-beacon
+#                 port:
+#                   number: 8080
+#             #           path: /nginx-beacon($|/)(.*)
+#             path: /nginx-beacon
+#             pathType: ImplementationSpecific
+# Optional: If you want to add TLS configuration
+# tls:
+# - hosts:
+#   - your-hostname.example.com

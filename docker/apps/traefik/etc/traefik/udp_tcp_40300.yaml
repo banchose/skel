@@ -1,0 +1,6 @@
+## Static configuration
+entryPoints:
+  tcpep:
+   address: ":40300"
+  udpep:
+   address: ":40300/udp"

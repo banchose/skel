@@ -1,0 +1,6 @@
+services:
+  grist:
+    image: gristlabs/grist
+    volumes:
+      - $PWD/persist:/persist
+    restart: unless-stopped  

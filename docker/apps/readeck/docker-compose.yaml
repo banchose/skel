@@ -1,0 +1,6 @@
+services:
+  readeck:
+    image: codeberg.org/readeck/readeck:latest
+    volumes:
+      - ./readeck-data:/readeck
+    restart: unless-stopped

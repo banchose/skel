@@ -1,0 +1,67 @@
+version: 1.0.8
+ 
+cache: true
+ 
+endpoints:
+  custom:
+    # OpenRouter.ai
+    - name: "OpenRouter"
+      apiKey: "${OPENROUTER_KEY}"
+      baseURL: "https://openrouter.ai/api/v1"
+      models:
+        default: ["anthropic/claude-sonnet-4-0:online"]
+        fetch: true
+      titleConvo: true
+      titleModel: "anthropic/claude-sonnet-4-0:oneline"
+      dropParams: ["stop"]
+      modelDisplayLabel: "OpenRouter"
+
+mcpServers:
+  open-meteo-weather:
+    type: stdio
+    command: node
+    args:
+      - "./mcp-servers/open-meteo-mcp/server.js"
+    serverInstructions: "Provide comprehensive weather analysis with focus on hazardous conditions and experienced meteorological insights for any location. Uses the same data as the llmwet bash function."
+    timeout: 30000
+    initTimeout: 10000
+
+  aws-knowledge-server:
+    command: npx
+    args:
+      - mcp-remote
+      - "https://knowledge-mcp.global.api.aws"
+
+  exa:
+    command: npx
+    args:
+      - -y
+      - mcp-remote
+      - "https://mcp.exa.ai/mcp?exaApiKey=7ba0437f-b85e-44fe-a697-e1d5f42404f7"
+#   exa:
+#     command: npx
+#     args:
+#       - -y
+#       - exa-mcp-server
+# #     - --tools=web_search_exa,research_paper_search,company_research,crawling,competitor_finder,linkedin_search,wikipedia_search_exa,github_search
+#       - --tools=web_search_exa,crawling,wikipedia_search_exa,github_search
+#     env:
+#       EXA_API_KEY: 7ba0437f-b85e-44fe-a697-e1d5f42404f7
+  
+# k8s-pilot:
+#   type: stdio
+#   command: uv
+#   args:
+#     - "--directory"
+#     - "/app/k8s-pilot"  # Note: /app/ inside container
+#     - "run"
+#     - "--with"
+#     - "mcp[cli]"
+#     - "--link-mode=copy"
+#     - "mcp"
+#     - "run"
+#     - "k8s_pilot.py"
+#   serverInstructions: "Kubernetes multi-cluster management for local KIND cluster. Can create/manage deployments, services, pods, and other k8s resources."
+#   timeout: 30000
+#   initTimeout: 10000
+ 

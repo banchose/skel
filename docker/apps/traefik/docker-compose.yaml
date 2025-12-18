@@ -1,0 +1,102 @@
+# Note any port settings to determine back port
+# remove the ports from the traefik controlled service
+# Change the router name traefik.http.routers.<routername>.... for each
+# Determine for sure what the container port is
+# for loadbalancer.server.port=
+#
+# Required files to function without issues
+# etc
+# ├── certs
+# │   ├── domain.cert.pem
+# │   └── private.key.pem
+# └── traefik
+#     └── tls.yaml
+# nginx-content/
+# └── index.html#
+
+services:
+
+  whoami:
+    # A container that exposes an API to show its IP address
+    image: traefik/whoami
+    user: "${UID}:${GID}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.xaax.dev`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.services.whoami.loadbalancer.server.port=80"
+    #     - "traefik.http.middlewares.test-replacepath.replacepath.path=/foo"
+    #     - "traefik.http.routers.whoami.middlewares=test-replacepath@docker"
+    networks:
+      - web
+
+  traefik:
+    image: traefik
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+      - "8082:8082"
+      - "1704:1704"
+      - "2222:2222"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./etc/certs:/etc/certs:ro
+      - ./etc/traefik:/etc/traefik
+      - '.:/plugins-local/src/github.com/acouvreur/traefik-modsecurity-plugin'
+    networks:
+      - web
+    command:
+      - "--experimental.plugins.traefik-modsecurity-plugin.modulename=github.com/acouvreur/traefik-modsecurity-plugin"
+      - "--experimental.plugins.traefik-modsecurity-plugin.version=v1.3.0"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.directory=/etc/traefik"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.http.tls=true"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--api.debug=true"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entryPoints.ping.address=:8082"
+      - "--ping.entryPoint=ping"
+      - "--log.level=DEBUG"
+      - "--accesslog"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://traefik:8080"]
+      interval: 10s
+      timeout: 30s
+      start_period: 60s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.xaax.dev`)"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.tls=true"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.middlewares.test-auth.basicauth.users=una:$$apr1$$CEw2npT1$$cA69Oyu30LNfwYi4dJcx20"
+      - "traefik.http.routers.dashboard.middlewares=test-auth@docker"
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.waf.plugin.traefik-modsecurity-plugin.modSecurityUrl=http://waf:8080"
+      - "traefik.http.middlewares.waf.plugin.traefik-modsecurity-plugin.maxBodySize=10485760"
+
+  waf:
+    image: owasp/modsecurity-crs:4.2.0-apache-202405220605
+    environment:
+      - PARANOIA=1
+      - ANOMALY_INBOUND=10
+      - ANOMALY_OUTBOUND=5
+      - BACKEND=http://dummy
+
+      #######################################################
+      # ModSecurity ENV Variables
+      #######################################################
+
+      - MODSEC_AUDIT_LOG_FORMAT=JSON
+      - MODSEC_RULE_ENGINE=On
+
+networks:
+  web: {}
+

@@ -1,0 +1,357 @@
+# Note any port settings to determine back port
+# remove the ports from the traefik controlled service
+# Change the router name traefik.http.routers.<routername>.... for each
+# Determine for sure what the container port is
+# for loadbalancer.server.port=
+#
+# Required files to function without issues
+# etc
+# ├── certs
+# │   ├── domain.cert.pem
+# │   └── private.key.pem
+# └── traefik
+#     └── tls.yaml
+# nginx-content/
+# └── index.html#
+
+services:
+  nginx-site:
+    profiles: ["full"]
+#   profiles: ["debug", "full"]
+    image: nginx:alpine
+    user: "${UID}:${GID}"
+    volumes:
+      - ./nginx-content:/usr/share/nginx/html
+      - type: tmpfs
+        target: /var/cache/nginx
+      - type: tmpfs
+        target: /var/run
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://compose-nginx-site-1"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx.rule=Host(`nginx.xaax.dev`)"
+      - "traefik.http.routers.nginx.entrypoints=websecure"
+      - "traefik.http.routers.nginx.tls=true"
+      - "traefik.http.services.nginx.loadbalancer.server.port=80"
+    networks:
+      - web
+
+  nc:
+    profiles: ["debug"]
+    image: busybox
+    user: "${UID}:${GID}"
+    command:
+      [
+        "/bin/sh",
+        "-c",
+        "while true; do { echo -e \"HTTP/1.1 200 OK\\r\\nContent-Type: text/plain\\r\\nContent-Length: 27\\r\\n\\r\\nHello from Kubernetes Pod!\\r\\n\"; } | nc -l -p 8080; echo \"$(date) - Request received\" >> /tmp/requests.log; done",
+      ]
+    # Scaling replicas (equivalent to Kubernetes replicas: 2)
+    deploy:
+      replicas: 1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nc.rule=Host(`nc.xaax.dev`)"
+      - "traefik.http.routers.nc.entrypoints=web"
+      #     - "traefik.http.routers.nc.entrypoints=websecure"
+      #     - "traefik.http.routers.nc.tls=true"
+      - "traefik.http.services.nc.loadbalancer.server.port=8080"
+      - "traefik.docker.network=web"
+    networks:
+      - web
+
+  privatebin:
+    profiles: ["full"]
+    image: privatebin/nginx-fpm-alpine
+    restart: always
+    read_only: true
+    user: "1000:1000" # Run the container with the UID:GID of your Docker user
+    volumes:
+      - ./privatebin-data:/srv/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.privatebin.rule=Host(`privatebin.xaax.dev`)"
+      - "traefik.http.routers.privatebin.entrypoints=websecure"
+      - "traefik.http.routers.privatebin.tls=true"
+      - "traefik.http.services.privatebin.loadbalancer.server.port=8080"
+      - "traefik.docker.network=web"
+    networks:
+      - web
+
+  dashy:
+    profiles: ["full"]
+    #   profiles: ["full"]
+    # To build from source, replace 'image: lissy93/dashy' with 'build: .'
+    # build: .
+    image: lissy93/dashy
+    volumes:
+      - ./dashy/conf.yml:/app/user-data/conf.yml
+    container_name: dashy
+    # Pass in your config file below, by specifying the path on your host machine
+    # volumes:
+    # - /root/my-config.yml:/app/user-data/conf.yml
+    # Set any environmental variables
+    environment:
+      - NODE_ENV=production
+      # Specify your user ID and group ID. You can find this by running `id -u` and `id -g`
+      - UID=1000
+      - GID=1000
+    # Specify restart policy
+    restart: unless-stopped
+    # Configure healthchecks
+    healthcheck :
+      test: ["CMD", "node", "/app/services/healthcheck"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashy.rule=Host(`dashy.xaax.dev`)"
+      - "traefik.http.routers.dashy.entrypoints=websecure"
+      - "traefik.http.routers.dashy.tls=true"
+      - "traefik.http.services.dashy.loadbalancer.server.port=8080"
+      - "traefik.docker.network=web"
+    networks:
+      - web
+
+  it-tools:
+    image: corentinth/it-tools:latest
+    container_name: it-tools
+    restart: unless-stopped
+    healthcheck:
+#      test: ["CMD", "curl", "---fail", "http://it-tools"]
+      test: ["CMD", "curl", "-s", "localhost"]
+      interval: 15s
+      timeout: 10s
+      start_period: 10s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ittools.rule=Host(`ittools.xaax.dev`)"
+      - "traefik.http.routers.ittools.entrypoints=websecure"
+      - "traefik.http.routers.ittools.tls=true"
+      - "traefik.http.services.ittools.loadbalancer.server.port=80"
+      - "traefik.docker.network=web"
+    networks:
+      - web
+
+  dozzle:
+    container_name: dozzle
+    image: amir20/dozzle:latest
+    user: "${UID}:${GID}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dozzle.rule=Host(`dozzle.xaax.dev`)"
+      - "traefik.http.routers.dozzle.entrypoints=websecure"
+      - "traefik.http.routers.dozzle.tls=true"
+      - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
+      - "traefik.docker.network=web"
+    networks:
+      - web
+    healthcheck:
+      test: ["CMD", "/dozzle", "healthcheck"]
+      interval: 13s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+  whoami:
+    # A container that exposes an API to show its IP address
+    image: traefik/whoami
+    user: "${UID}:${GID}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.xaax.dev`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.services.whoami.loadbalancer.server.port=80"
+      - "traefik.docker.network=web"
+    #     - "traefik.http.middlewares.test-replacepath.replacepath.path=/foo"
+    #     - "traefik.http.routers.whoami.middlewares=test-replacepath@docker"
+    networks:
+      - web
+
+  filebrowser:
+    image: hurlenko/filebrowser
+    user: "${UID}:${GID}"
+    volumes:
+      - ./data:/data
+      - ./config:/config
+    environment:
+      - FB_BASEURL=/filebrowser
+    restart: always
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://compose-filebrowser-1:8080"]
+      interval: 10s
+      timeout: 30s
+      start_period: 60s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.filebrowser.rule=Host(`files.xaax.dev`)"
+      - "traefik.http.routers.filebrowser.entrypoints=websecure"
+      - "traefik.http.routers.filebrowser.tls=true"
+      - "traefik.http.services.filebrowser.loadbalancer.server.port=8080"
+      - "traefik.docker.network=web"
+    networks:
+      - web
+
+  traefik:
+    image: traefik
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+      - "8082:8082"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./etc/certs:/etc/certs:ro
+      - ./etc/traefik:/etc/traefik
+    networks:
+      - web
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.directory=/etc/traefik"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.http.tls=true"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entryPoints.ping.address=:8082"
+      - "--ping.entryPoint=ping"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://traefik:8080"]
+      interval: 10s
+      timeout: 30s
+      start_period: 60s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.xaax.dev`)"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.tls=true"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.middlewares.test-auth.basicauth.users=una:$$apr1$$CEw2npT1$$cA69Oyu30LNfwYi4dJcx20"
+      - "traefik.http.routers.dashboard.middlewares=test-auth@docker"
+
+  # LibreChat
+#   api:
+#     container_name: LibreChat
+#     user: "${UID}:${GID}"
+#     depends_on:
+#       mongodb:
+#         condition: service_healthy
+#       meilisearch:
+#         condition: service_healthy
+#     image: ghcr.io/danny-avila/librechat-dev:latest
+#     restart: always
+#     extra_hosts:
+#       - "host.docker.internal:host-gateway"
+#     environment:
+#       - HOST=0.0.0.0
+#       - MONGO_URI=mongodb://mongodb:27017/LibreChat
+#       - MEILI_HOST=http://meilisearch:7700
+#       - RAG_PORT=${RAG_PORT:-8000}
+#       - RAG_API_URL=http://rag_api:${RAG_PORT:-8000}
+#     volumes:
+#       - type: bind
+#         source: ./.env
+#         target: /app/.env
+#       - ./images:/app/client/public/images
+#       - ./uploads:/app/uploads
+#       - ./logs:/app/api/logs
+#       - type: bind
+#         source: ./librechat.yaml
+#         target: /app/librechat.yaml
+#     healthcheck:
+#       test: ["CMD", "wget", "--spider", "http://librechat:3080"]
+#       interval: 10s
+#       timeout: 30s
+#       start_period: 60s
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.librechat-sec.rule=Host(`librechat.xaax.dev`)"
+#       - "traefik.http.routers.librechat-sec.entrypoints=websecure"
+#       - "traefik.http.routers.librechat-sec.tls=true"
+#       - "traefik.http.services.librechat-sec.loadbalancer.server.port=3080"
+#       - "traefik.docker.network=web"
+#     networks:
+#       - web
+#       - default
+# 
+#   mongodb:
+#     container_name: chat-mongodb
+#     user: "${UID}:${GID}"
+#     image: mongo
+#     restart: always
+#     healthcheck:
+#       test: ["CMD", "mongostat", "-n", "1"]
+#       interval: 10s
+#       timeout: 30s
+#       start_period: 60s
+#     volumes:
+#       - ./mongodb_data:/data/db
+#     command: mongod --noauth
+# 
+#   meilisearch:
+#     container_name: chat-meilisearch
+#     user: "${UID}:${GID}"
+#     image: getmeili/meilisearch:v1.12.3
+#     restart: always
+#     environment:
+#       - MEILI_HOST=http://meilisearch:7700
+#       - MEILI_NO_ANALYTICS=true
+#       - MEILI_MASTER_KEY=${MEILI_MASTER_KEY}
+#     healthcheck:
+#       test: ["CMD", "curl", "--fail", "localhost:7700/health"]
+#       interval: 10s
+#       timeout: 30s
+#       start_period: 60s
+#     volumes:
+#       - ./meilisearch_data:/meili_data
+# 
+#   vectordb:
+#     container_name: vectordb
+#     image: ankane/pgvector:latest
+#     environment:
+#       POSTGRES_DB: mydatabase
+#       POSTGRES_USER: myuser
+#       POSTGRES_PASSWORD: mypassword
+#     restart: always
+#     healthcheck:
+#       test: ["CMD-SHELL", "sh", "-c", "pg_isready -q"]
+#       interval: 15s
+#       timeout: 10s
+#       retries: 3
+#       start_period: 10s
+#     volumes:
+#       - pgdata2:/var/lib/postgresql/data
+# 
+#   rag_api:
+#     container_name: rag_api
+#     image: ghcr.io/danny-avila/librechat-rag-api-dev-lite:latest
+#     depends_on:
+#       vectordb:
+#         condition: service_healthy
+#     environment:
+#       - DB_HOST=vectordb
+#       - RAG_PORT=${RAG_PORT:-8000}
+#     restart: always
+#     env_file:
+#       - .env 
+
+networks:
+  web: {}
+
+volumes:
+  dbvol:
+  pgdata2:
+  data:

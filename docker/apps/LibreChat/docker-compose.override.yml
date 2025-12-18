@@ -1,0 +1,68 @@
+services:
+  api:
+    ports: !reset []
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.librechat.rule=Host(`librechat.xaax.dev`)"
+      - "traefik.http.routers.librechat.entrypoints=websecure"
+      - "traefik.http.routers.librechat.tls=true"
+      - "traefik.http.services.librechat.loadbalancer.server.port=3080"
+      - "traefik.docker.network=traefik_web"
+    volumes:
+      - type: bind
+        source: ./librechat.yaml
+        target: /app/librechat.yaml
+      - type: bind
+        source: ./mcp-servers
+        target: /app/mcp-servers
+#     - type: bind
+#       source: ./k8s-pilot
+#       target: /app/k8s-pilot
+#     - ./k8s-pilot/kind-kubeconfig.yaml:/root/.kube/config:ro
+
+    networks:
+      - traefik_web
+      - default
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://127.0.0.1:3080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  meilisearch:
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7700/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  mongodb:
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  rag_api:
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request, json; exit(0 if json.loads(urllib.request.urlopen('http://localhost:8000/health').read().decode()).get('status') == 'UP' else 1)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  vectordb:
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+networks:
+  traefik_web:
+    external: true
+

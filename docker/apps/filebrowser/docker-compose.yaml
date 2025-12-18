@@ -1,0 +1,10 @@
+services:
+  filebrowser:
+    image: hurlenko/filebrowser
+    user: "${UID}:${GID}"
+    volumes:
+      - ./data:/data
+      - ./config:/config
+    environment:
+      - FB_BASEURL=/filebrowser
+    restart: always

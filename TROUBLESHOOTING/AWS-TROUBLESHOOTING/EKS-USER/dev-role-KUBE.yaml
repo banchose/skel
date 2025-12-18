@@ -1,0 +1,10 @@
+# dev-role-kube.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: developer-role
+rules:
+  - apiGroups: ["", "apps", "extensions"]
+    resources: ["pods", "pods/log", "services", "deployments", "replicasets", "configmaps", "secrets"]
+    verbs: ["get", "list", "watch", "create", "update", "delete", "patch"]
+

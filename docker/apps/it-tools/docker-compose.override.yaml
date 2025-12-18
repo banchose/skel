@@ -1,0 +1,21 @@
+services:
+  it-tools:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.it-tools.rule=Host(`ittools.xaax.dev`)"
+      - "traefik.http.routers.it-tools.entrypoints=websecure"
+      - "traefik.http.routers.it-tools.tls=true"
+      - "traefik.http.services.it-tools.loadbalancer.server.port=80"
+      - "traefik.docker.network=traefik_web"
+    healthcheck:
+      test: ["CMD", "curl", "-s", "localhost"]
+      interval: 15s
+      timeout: 10s
+      start_period: 10s
+
+    networks:
+      - traefik_web
+
+networks:
+  traefik_web:
+    external: true

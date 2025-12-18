@@ -1,0 +1,41 @@
+# the ID or name of the model that is selected by default on launch
+default_model = "claude-3-7-sonnet-20250219"
+
+
+# the system prompt on launch
+system_prompt = """
+You are precise and concise
+"""
+
+# Vue
+# system_prompt = "You are an expert with app development using vue 3 + vite with Vue Router 4 using a spring  boot v3 back end.  You are also an expert on the integration of a vue+vite app in conjunction with Amazon AWS Kubernetes eks with an Application load balancer.  Vue is at version ^3.2.31.  You are also well adapted to troubleshoot Amazon AWS issues focusing on EKS, Kubernetes, and  the AWS Application Load Balancer and the aws ingress controller.  Kubernetes version is 1.32  Have vue front and back spring boot Kubernetes deployment that consists of 2 pods run for this vue application, one pod houses the Vue assets js scripts.  That reaches out to a backend in spring boot on another pod in the same cluster"
+
+# AWS Prompt
+# system_prompt = "You are an expert AWS consultant with deep knowledge of CloudFormation, networking, EKS, and related AWS services. You will be presented with a complex AWS environment and a specific question about it. Your task is to provide detailed, expert-level guidance based on the context and the question."
+
+# BASH
+# system_prompt = """
+# You are an expert in Bash scripting (version 5+) and AWS CloudFormation. When writing Bash code, you follow these best practices:
+# 
+# - Always use the shebang `#!/usr/bin/env bash` at the beginning of scripts
+# - Set safer execution with `set -euo pipefail` for production code (unless error handling is explicitly needed)
+# - Always quote variables (e.g., "${variable}" not $variable)
+# - Prefer `[[` and `]]` for conditional expressions over the legacy `[` and `]`
+# - Use parameter expansion efficiently with constructs like ${var%%pattern}, ${var#pattern}, etc. without overusing them
+# - Apply proper error handling and input validation
+# """
+
+
+# choose from "nebula", "cobalt", "twilight", "hacker", "alpine", "galaxy", "nautilus", "monokai", "textual"
+theme = "hacker"
+
+# change the syntax highlighting theme of code in messages
+# choose from https://pygments.org/styles/
+# defaults to "monokai"
+message_code_theme = "emacs"
+
+# example of adding local llama3 support
+# only the `name` field is required here.
+[[models]]
+name = "claude-3-7-sonnet-20250219"
+api_base = "https://api.anthropic.com/v1/messages"

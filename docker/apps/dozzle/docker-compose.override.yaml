@@ -1,0 +1,16 @@
+services:
+  dozzle:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dozzle.rule=Host(`dozzle.xaax.dev`)"
+      - "traefik.http.routers.dozzle.entrypoints=websecure"
+      - "traefik.http.routers.dozzle.tls=true"
+      - "traefik.http.services.dozzle.loadbalancer.server.port=8080"
+      - "traefik.docker.network=traefik_web"
+    networks:
+      - traefik_web
+
+networks:
+  traefik_web:
+    external: true
+    

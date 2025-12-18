@@ -1,0 +1,46 @@
+services:
+  openwebui:
+    ports: !reset []
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.openwebui.rule=Host(`openwebui.xaax.dev`)"
+      - "traefik.http.routers.openwebui.entrypoints=websecure"
+      - "traefik.http.routers.openwebui.tls=true"
+      - "traefik.http.services.openwebui.loadbalancer.server.port=8080"
+      - "traefik.docker.network=traefik_web"
+    networks:
+      - traefik_web
+
+
+#####
+  mcpo-timeserver:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.mcpo.timeserver
+    networks:
+      - traefik_web
+    restart: unless-stopped
+
+  mcpo-awsdoc:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.mcpo.awsdoc
+    networks:
+      - traefik_web
+    restart: unless-stopped
+    environment:
+      - FASTMCP_LOG_LEVEL=ERROR
+      - AWS_DOCUMENTATION_PARTITION=aws
+
+  mcpo-aws-knowledge:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.mcpo.aws-know
+    networks:
+      - traefik_web
+    restart: unless-stopped
+#####
+
+networks:
+  traefik_web:
+    external: true

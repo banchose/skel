@@ -1,0 +1,9 @@
+http:
+  middlewares:
+    testHeader:
+      headers:
+        customRequestHeaders:
+          X-Script-Name: "test" # Adds
+          X-Custom-Request-Header: "" # Removes
+        customResponseHeaders:
+          X-Custom-Response-Header: "" # Removes
