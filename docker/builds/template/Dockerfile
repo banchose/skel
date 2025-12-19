@@ -4,6 +4,10 @@ FROM python:latest
 #
 # Mind 'docker build -t x . --progress=plan'
 
+ENV TZ=America/New_York
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
 
 ## LOCALE UTF-8
 RUN apt update && apt install -y locales && \
@@ -11,10 +15,6 @@ RUN apt update && apt install -y locales && \
     locale-gen && \
     rm -rf /var/lib/apt/lists/* && \
     apt-get clean
-
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US:en
-ENV LC_ALL=en_US.UTF-8
 
 RUN apt-get update && apt-get install -y \
     curl \

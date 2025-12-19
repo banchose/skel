@@ -1,3 +1,6 @@
+[[ -z $ANTHROPIC_API_KEY ]] && echo "***** ANTHROPIC_API_KEY not set *****"
+[[ -z $AWS_BEARER_TOKEN_BEDROCK ]] && echo "***** $AWS_BEARER_TOKEN_BEDROCK not set *****"
+
 alias llms='llm -s "It is currently $(date). Please be accurate and concise." -u -m anthropic/claude-sonnet-4-0 -T web_search -T simple_eval'
 alias llmo='llm -s "It is currently $(date). Please be accurate and concise." -u -m anthropic/claude-opus-4-0 -T web_search -T simple_eval'
 alias llmbed='llm -s "It is currently $(date). Please be accurate and concise." -m bedrock-claude-v4.5-sonnet -o bedrock_model_id us.anthropic.claude-sonnet-4-5-20250929-v1:0'
