@@ -30,7 +30,8 @@ if type docker &>/dev/null; then
   alias py0b='cd ~/gitdir/skel/docker/builds/py0 && docker build -t py0:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
 
   # py1
-  alias py1='docker run -it --rm --name py1 --hostname py1 -v ~/temp:/home/loon/temp py1:latest' alias py1r='docker run --name py1 -u root -it --rm --hostname py1 -v ~/temp:/home/loon/temp py1:latest'
+  alias py1='docker run -it --rm --name py1 --hostname py1 -v ~/temp:/home/loon/temp py1:latest'
+  alias py1r='docker run --name py1 -u root -it --rm --hostname py1 -v ~/temp:/home/loon/temp py1:latest'
   # alias py1b='cd ~/gitdir/skel/docker/builds/py1 && docker build -t py1:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
   alias py1b='cd ~/gitdir/skel/docker/builds/py1 && docker build -t py1:latest .'
 
