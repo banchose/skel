@@ -1,28 +1,15 @@
-# syntax=docker/dockerfile:1
+FROM python:trixie
 
-# Build stage - compile/build your application
-FROM node:18 AS build
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-# Outputs to /app/dist (or your build output directory)
+# RUN apt update && apt install -y shadow
 
-# HTTP server stage - serve the built files
-FROM node:16-alpine AS production
-VOLUME /public
-WORKDIR /srv/http-server
+ARG USER=lulu
+ARG USERHOME=/home/${USER}
 
-# Copy http-server dependencies
-COPY package.json package-lock.json ./
-RUN npm install --production
+RUN useradd -ms /bin/bash ${USER}
 
-# Copy the http-server code
-COPY ./bin ./bin
+USER ${USER}
 
-# Copy the built static files from the build stage
-COPY --from=build /app/dist ./public
+WORKDIR ${USERHOME}
 
-EXPOSE 8080
-ENTRYPOINT ["node", "./bin/http-server"]
+CMD ["ls -alF"]
+
