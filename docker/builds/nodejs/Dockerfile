@@ -103,15 +103,15 @@ RUN <<EOL
 EOL
 
 
-####################################################
-# USER
-####################################################
 
 ENV USERNAME=foo
 ENV USERHOME=/home/${USERNAME}
 
 RUN useradd -ms /bin/bash ${USERNAME}
 
+####################################################
+# SWITCH USER
+####################################################
 USER ${USERNAME}
 
 WORKDIR ${USERHOME}
@@ -136,3 +136,18 @@ ENV PATH="${USERHOME}/.nvim/bin:$PATH \
 ENV EDITOR=nvim \
     VISUAL=nvim
 
+################################################3
+
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
+    export NVM_DIR="$HOME/.config/nvm" && \
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
+    nvm install 24 && \
+    node -v && \
+    npm -v
+
+
+COPY --chown="${USERNAME}":"${USERNAME}" bashrc .bashrc
+COPY --chown="${USERNAME}":"${USERNAME}" inputrc .inputrc
+
+ENTRYPOINT ["bash"]
+CMD ["-l"]
