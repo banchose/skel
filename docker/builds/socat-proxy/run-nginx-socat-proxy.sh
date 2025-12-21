@@ -2,6 +2,13 @@
 
 set -xeuo pipefail
 
+# An example of port forwarding and docker custom networks
+#
+# This sets up 2 docker custom networks
+# It puts an nginx server on one of them
+# The other runs a proxy called socat-proxy99 or similar
+# The socat-proxy99 container runs socat to proxy it's port 80 to the nginx server on the other docker custom network
+
 IMAGE=nicolaka/netshoot:latest
 # NAME="${IMAGE%:*}0"
 NAME0="socat-proxy99"
@@ -14,11 +21,12 @@ docker rm -f "${NAME0}" || true
 docker rm -f "${NAME1}" || true
 
 docker network create "${NET0}" || true
-sleep 2
+sleep 1
 docker network create "${NET1}" || true
-sleep 2
+sleep 1
 docker run -d --rm --hostname "${NAME1}" --network "${NET1}" --name "${NAME1}" nginx:latest
-sleep 2
-docker run -d --rm --hostname "${NAME0}" --name "${NAME0}" --network "${NET0}" --network "${NET1}" "${IMAGE}" ${COMMAND}
-sleep 2
-docker run --rm --network "${NET0}" curlimages/curl -v "${NAME0}"
+sleep 1
+docker run -d --rm -p 8080:80 --hostname "${NAME0}" --name "${NAME0}" --network "${NET0}" --network "${NET1}" "${IMAGE}" ${COMMAND}
+sleep 1
+# docker run --rm --network "${NET0}" curlimages/curl -v localhost:8080
+curl -v localhost:8080
