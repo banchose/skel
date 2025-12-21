@@ -1,0 +1,485 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Parameters:
+  pLatestAL2023ArmAMI:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-arm64
+
+  pLabxVpcCIDR:
+    Description: pLabxVpcCIDR
+    Type: String
+    Default: 172.66.0.0/20
+
+  pLabxPublicSubnetCIDR:
+    Description: pLabxPublicSubnetCIDR
+    Type: String
+    Default: 172.66.0.0/24
+
+  pLabxPrivateSubnetCIDR:
+    Description: pLabxPrivateSubnetCIDR
+    Type: String
+    Default: 172.66.1.0/24
+
+  #   pLabvEc2InstanceType:
+  #     Description: Amazon EC2 instance type for the Labx vMX instances
+  #     Type: String
+  #     Default: c5.large
+  #     AllowedValues:
+  #       - c5.large
+  #       - c5.xlarge
+  #       - m4.large
+  #     ConstraintDescription: must be a valid EC2 instance type.
+
+  pLabxSshKeyPair:
+    Description: Name of an existing EC2 KeyPair
+      this key pair
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: Acme3
+
+# Mappings:
+#   AWSVMXAMI:
+#     us-east-1:
+#       AMI: ami-033cdc7addc34de7b
+#     us-east-2:
+#       AMI: ami-0682f3ca733136feb
+#     us-west-1:
+#       AMI: ami-09db17cd0ae68ce37
+#     us-west-2:
+#       AMI: ami-094d363fc83c2d454
+#     ca-central-1:
+#       AMI: ami-03b6bff67c18fe1a7
+#     eu-central-1:
+#       AMI: ami-05c87da57bef918fe
+#     eu-west-1:
+#       AMI: ami-041a9105a7428881e
+#     eu-west-2:
+#       AMI: ami-07455b0098ec1a0af
+#     eu-west-3:
+#       AMI: ami-06d223edb947e06f8
+#     eu-north-1:
+#       AMI: ami-0c47910d707d3d8ff
+#     eu-south-1:
+#       AMI: ami-03dce7b6bb7e4632d
+#     ap-east-1:
+#       AMI: ami-07fe0d5e3622aaee0
+#     ap-southeast-1:
+#       AMI: ami-0649b3dd335cbd849
+#     ap-southeast-2:
+#       AMI: ami-0e866deec1c0966ce
+#     ap-northeast-2:
+#       AMI: ami-0eb9c16d27f4ffd0c
+#     ap-northeast-1:
+#       AMI: ami-08b3370eb3656af21
+#     ap-south-1:
+#       AMI: ami-00841fc124240e830
+#     sa-east-1:
+#       AMI: ami-06f0baada2ea0cf76
+#     me-south-1:
+#       AMI: ami-0bb55407d5a52914e
+#     af-south-1:
+#       AMI: ami-044eae2d8e3fb2188
+
+### RESOURCES ###
+
+Resources:
+  rLabxEc2LaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: "LabxEc2LaunchTemplate"
+      LaunchTemplateData:
+        InstanceType: "t4g.micro" # Default instance type
+        ImageId: !Ref pLatestAL2023ArmAMI
+        KeyName: !Ref pLabxSshKeyPair
+        IamInstanceProfile:
+          Arn: !GetAtt rSubnetAInstanceProfile.Arn
+        SecurityGroupIds:
+          - !Ref rLabxEc2SubnetSecurityGroup
+        UserData:
+          Fn::Base64: |
+            #!/bin/bash
+            # Install baseline apps
+            yum -y update
+            yum install -y wireshark-cli
+            yum install -y tmux
+            yum install -y jq
+            yum install -y cowsay
+            yum install -y p7zip
+            yum install -y git
+            yum install -y ninja-build
+            yum install -y cmake
+            yum install -y gcc
+            yum install -y unzip
+            yum install -y gettext
+            yum install -y make
+            yum install -y nmap
+
+            localectl set-locale LANG=en_US.UTF-8
+            timedatectl set-timezone America/New_York
+
+            # Set the hostname
+            hostnamectl set-hostname "axe"
+
+            # Add a new user
+            useradd -m -G wheel -U una
+
+            # Configure SSH for the new user
+            mkdir -p /home/una/.ssh
+            echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdlYdAWgMiZSLquruc/zbj2PvXEk0CUTBJJsLGTMuhQ83pZUTEmD/ZU6k2LlfQeYoDhGZOAQKtSoUuclMy9BcGYN2dHnlB59ZtXZGjmdjAsTKlHWfqg2fCdke6Ofzs5mgflMeI1YR1UALHXjBhQI10PCZq3/sMKD49yeH3mZj60umwitz/zqqQkxDrlfTJlw494oD8gfXJLmvacoU78T3eP7J7e3A2qR1QXLlHZCsFCcNBUyYkXuddvkNWxV4Z70VPq+Wi5d/KIW7JVqE55oMQiXwq4zgtfPDKquCuUB0kMk3VidM9nQqcPaQT8Zuqgzr3jML9re5Ypnp5OOQYiYJv /home/una/.ssh/id_rsa" >> /home/una/.ssh/authorized_keys
+            echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC36sMOnSRyTjcwM8Vh3SXzLoYe5IxLGi5TIXQ9CtAjl9LTkyMMmfLA8v990jzpAjHOSThT1//vNHXGIfKLt+6922yOc995p1ySIoHXFHDY4fE9Q2fKFedKTQU3fNqFxVeNDMrW1oKsxYQxONA8THfJ+HM1+vi6eYU2a/10asAxVDv2/OFM2p07KbLHr+F/ctIMGEzoo1ZrM///v45kdZ5Hr9lg5f24zhID6YX/4K/DnwN1JszHW536vjsgl64KwnINpmqzzwWxrz5OtH43JAgp9oX8cesp2TcFUGXOP5rVDFp68fhJy2LHkoJcCxsqw6xEhvNRecVRD44hmGpyqd9eQ/nCvV2rq6VQXZCi+qhtkMvD0f8BaErXiQNkM7RxAy35KEDZzjKG+LxzvnZpqVkHbUNi1wfWmmtf+5dWIKQxiZW/DRC8GaP+C5zEvYdc/ATCd1e0OkTb4HDpwLEWmefCQl3sU1AVIy4JJhg7+rsMBxNiPmwKzHcQ1RTa1r1oqE0R3GA1MEVazIqZh4OiE/SApRVI3EpFYtU7kA6sh/WucS+5Fre2AAxDyMJ4i9R9ToS7X2ehIWo6K9rrKJToJAj4tpu+DAeOCJdmNfAiPBaIdUfUxdwSVRsfEP0QwzsK5E61C1jB5QOBy9HRcid0QrltPtAwJ1Awx0wAGTBq9i6wuQ== test@local.none"  >> /home/una/.ssh/authorized_keys
+            chown -R una:una /home/una/.ssh
+            chmod 700 /home/una/.ssh
+            chmod 600 /home/una/.ssh/authorized_keys
+
+            # Add a new user
+            useradd -m -G wheel -U wjs04
+
+            # Configure SSH for the new user
+            mkdir -p /home/wjs04/.ssh
+            echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdlYdAWgMiZSLquruc/zbj2PvXEk0CUTBJJsLGTMuhQ83pZUTEmD/ZU6k2LlfQeYoDhGZOAQKtSoUuclMy9BcGYN2dHnlB59ZtXZGjmdjAsTKlHWfqg2fCdke6Ofzs5mgflMeI1YR1UALHXjBhQI10PCZq3/sMKD49yeH3mZj60umwitz/zqqQkxDrlfTJlw494oD8gfXJLmvacoU78T3eP7J7e3A2qR1QXLlHZCsFCcNBUyYkXuddvkNWxV4Z70VPq+Wi5d/KIW7JVqE55oMQiXwq4zgtfPDKquCuUB0kMk3VidM9nQqcPaQT8Zuqgzr3jML9re5Ypnp5OOQYiYJv una@ubuntu" >> /home/wjs04/.ssh/authorized_keys
+            chown -R wjs04:wjs04 /home/wjs04/.ssh
+            chmod 700 /home/wjs04/.ssh
+            chmod 600 /home/wjs04/.ssh/authorized_keys
+
+            # Add additonal dns search
+            #
+            # mkdir -p /etc/systemd/resolved.conf.d
+            # cat <<EOF > /etc/systemd/resolved.conf.d/custom-dns.conf
+            # [Resolve]
+            # Domains=aws.example.dev
+            # EOF
+            # systemctl restart systemd-resolved
+
+
+            # neovim
+            # mkdir /BUILD
+            # cd /BUILD
+            # git clone https://github.com/neovim/neovim.git > /dev/null
+            # cd neovim
+            # make CMAKE_BUILD_TYPE=RelWithDebInfo > /dev/null
+            # sudo make install
+
+            # Add the user to the wireshark group
+            usermod -a -G wireshark una
+
+            # create a .inputrc
+            mkdir -p /home/ssm-user
+            cat > /home/ssm-user/.inputrc <<EOF
+            set bell-style none
+
+            "\C-p":history-search-backward
+            "\C-n":history-search-forward
+            set editing-mode vi
+            \$if mode=vi
+                set keymap vi-command
+                "G": end-of-history
+                set keymap vi-insert
+                "jj": vi-movement-mode
+                "\C-o": operate-and-get-next
+                set show-mode-in-prompt on
+                \$if term=linux
+                    set vi-ins-mode-string \1\e[?0c\2
+                    set vi-cmd-mode-string \1\e[?8c\2
+                \$else
+                    set vi-ins-mode-string \1\e[6 q\2
+                    set vi-cmd-mode-string \1\e[2 q\2
+                \$endif
+            \$endif
+            set show-all-if-ambiguous on
+            set show-all-if-unmodified on
+            set completion-ignore-case on
+            "\t": menu-complete
+            "\e[Z": menu-complete-backward
+            set colored-stats On
+            set visible-stats On
+            set mark-symlinked-directories On
+            set mark-directories on
+            set colored-completion-prefix On
+            set menu-complete-display-prefix On
+            EOF
+
+            cat > /home/wjs04/.bashrc <<EOF
+            set -o noclobber
+            PROMPT_DIRTRIM=10
+            shopt -s globstar 2>/dev/null
+            shopt -s checkwinsize
+            shopt -s nocaseglob
+            shopt -s histverify
+            shopt -s histappend
+            shopt -s cmdhist
+            shopt -s autocd 2>/dev/null
+            shopt -s dirspell 2>/dev/null
+            shopt -s cdspell 2>/dev/null
+            shopt -s cdable_vars
+            shopt -s lithist
+            alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,pidns,utsns,ipcns,mntns,netns,cmd'
+            alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
+            alias nps='ps -N --ppid 2 -o pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
+            alias chown='chown --preserve-root'
+            alias iptables='iptables -v'
+            alias wget='wget -c'
+            alias bc='bc -l'
+            alias dmesg='dmesg --color=always'
+            alias chmod='chmod --preserve-root'
+            alias chgrp='chgrp --preserve-root'
+            alias cp='cp -i -v'
+            alias grep='grep -i --color=auto'
+            alias mv='mv -i -v'
+            alias rm='rm -v -I --preserve-root'
+            alias df='df -H'
+            alias du='du -ch'
+            alias ls='ls -F -h --color=always --time-style=long-iso'
+            alias ag='ag --hidden --ignore gitdir'
+            alias l='ls -l -aF'
+            alias ll='ls -AFlSrh --color=auto --group-directories-first'
+            alias ltr='ls -AFltrh --color=auto'
+            alias lt='ls -AFlth --color=auto'
+            alias g='grep'
+            alias pg="pcre2grep -i"
+            alias path='echo -e ${PATH//:/\\n}'
+            alias now='date +"%T"'
+            alias j='jobs -l'
+            EOF
+
+            mkdir /labx
+        TagSpecifications:
+          - ResourceType: instance
+            Tags:
+              - Key: Application
+                Value: !Ref AWS::StackId
+              - Key: Name
+                Value: "LaunchTemplate"
+
+  rLabxVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref pLabxVpcCIDR
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Application
+          Value: !Ref AWS::StackId
+        - Key: Name
+          Value: LabxVPC
+
+  # IGW
+
+  rLabxInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Application
+          Value: !Ref AWS::StackId
+        - Key: Name
+          Value: LabxInternetGateway
+
+  # IGW Attach
+  #
+  rLabxVpcGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref rLabxVpc
+      InternetGatewayId: !Ref rLabxInternetGateway
+
+  # Labx Public Subnet
+
+  rLabxPublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref rLabxVpc
+      AvailabilityZone: !Select
+        - 0
+        - !GetAZs ""
+      CidrBlock: !Ref pLabxPublicSubnetCIDR
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Application
+          Value: !Ref AWS::StackId
+        - Key: Name
+          Value: LabxPublicSubnet
+
+  # Private Subnet
+
+  rLabxPrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref rLabxVpc
+      AvailabilityZone: !Select
+        - 0
+        - !GetAZs ""
+      CidrBlock: !Ref pLabxPrivateSubnetCIDR
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: Application
+          Value: !Ref AWS::StackId
+        - Key: Name
+          Value: rLabxPrivateSubnet
+
+  # Labx Public Route Table
+
+  rLabxPublicSubnetRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref rLabxVpc
+      Tags:
+        - Key: Name
+          Value: LabxPublicSubnetRouteTable
+        - Key: Application
+          Value: !Ref AWS::StackId
+
+  rLabxPublicSubnetRouteTableAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref rLabxPublicSubnetRouteTable
+      SubnetId: !Ref rLabxPublicSubnet
+
+  # Public Subnet Routes
+
+  rLabxPublicRoute:
+    Type: AWS::EC2::Route
+    DependsOn: rLabxVpcGatewayAttachment
+    Properties:
+      RouteTableId: !Ref rLabxPublicSubnetRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref rLabxInternetGateway
+
+  rLabxPrivateSubnetRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref rLabxVpc
+      Tags:
+        - Key: Name
+          Value: rLabxPrivateSubnetRouteTable
+        - Key: Application
+          Value: !Ref AWS::StackId
+
+  rLabxPrivateSubnetRouteTableAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref rLabxPrivateSubnetRouteTable
+      SubnetId: !Ref rLabxPrivateSubnet
+
+  rVPCBEndpointSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow instances to get to SSM Systems Manager
+      VpcId: !Ref rLabxVpc
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: !Ref pLabxVpcCIDR
+
+  rVPCBSSMEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      SecurityGroupIds:
+        - !Ref rVPCBEndpointSecurityGroup
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.ssm"
+      SubnetIds:
+        - !Ref rLabxPrivateSubnet
+      VpcEndpointType: Interface
+      VpcId: !Ref rLabxVpc
+
+  rVPCAEC2MessagesEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      SecurityGroupIds:
+        - !Ref rVPCBEndpointSecurityGroup
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.ec2messages"
+      SubnetIds:
+        - !Ref rLabxPrivateSubnet
+      VpcEndpointType: Interface
+      VpcId: !Ref rLabxVpc
+
+  rVPCASSMMessagesEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      PrivateDnsEnabled: true
+      SecurityGroupIds:
+        - !Ref rVPCBEndpointSecurityGroup
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.ssmmessages"
+      SubnetIds:
+        - !Ref rLabxPrivateSubnet
+      VpcEndpointType: Interface
+      VpcId: !Ref rLabxVpc
+
+  rSsmEc2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "subnet-a-role-${AWS::StackName}"
+      Path: "/"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+
+  rLabxEc2SubnetSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref rLabxVpc
+      GroupName: LabxEc2SecurityGroup-sg
+      GroupDescription: Allow HTTP/HTTPS and SSH inbound and outbound traffic
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !Ref pLabxVpcCIDR
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: !Ref pLabxVpcCIDR
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref pLabxVpcCIDR
+        - IpProtocol: icmp
+          FromPort: -1
+          ToPort: -1
+          CidrIp: !Ref pLabxVpcCIDR
+
+  rSubnetAInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+        - !Ref rSsmEc2Role
+
+  rEC2PrivateSubnetInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      LaunchTemplate:
+        LaunchTemplateId: !Ref rLabxEc2LaunchTemplate
+        Version: !GetAtt rLabxEc2LaunchTemplate.LatestVersionNumber
+      SubnetId: !Ref rLabxPrivateSubnet
+      Tags:
+        - Key: Name
+          Value: EC2PrivateSubnetInstance
+
+  rEC2PublicSubnetInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      LaunchTemplate:
+        LaunchTemplateId: !Ref rLabxEc2LaunchTemplate
+        Version: !GetAtt rLabxEc2LaunchTemplate.LatestVersionNumber
+      SubnetId: !Ref rLabxPublicSubnet
+      Tags:
+        - Key: Name
+          Value: EC2PublicSubnetInstance
+
+  rVPCGatewayS3Endpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.s3"
+      VpcId: !Ref rLabxVpc
+      RouteTableIds:
+        - !Ref rLabxPrivateSubnetRouteTable
+        - !Ref rLabxPublicSubnetRouteTable
+
