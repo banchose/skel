@@ -1,5 +1,0 @@
-FROM nicolaka/netshoot:latest
-
-
-
-
