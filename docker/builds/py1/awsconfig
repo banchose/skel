@@ -1,0 +1,50 @@
+[profile lab]
+sso_session = Lab
+sso_account_id = 265444910489
+sso_role_name = AWSAdministratorAccess
+region = us-east-1
+output = yaml
+[sso-session Lab]
+sso_start_url = https://d-9067806dc9.awsapps.com/start/#
+sso_region = us-east-1
+sso_registration_scopes = sso:account:access
+[profile net]
+sso_session = Net
+sso_account_id = 211262586138
+sso_role_name = AWSAdministratorAccess
+region = us-east-1
+output = yaml
+[sso-session Net]
+sso_start_url = https://d-9067806dc9.awsapps.com/start/#
+sso_region = us-east-1
+sso_registration_scopes = sso:account:access
+[profile dev]
+sso_session = Dev
+sso_account_id = 332522180375
+sso_role_name = AWSAdministratorAccess
+region = us-east-1
+output = yaml
+[sso-session Dev]
+sso_start_url = https://d-9067806dc9.awsapps.com/start/#
+sso_region = us-east-1
+sso_registration_scopes = sso:account:access
+[profile test]
+sso_session = Test
+sso_account_id = 405350004483
+sso_role_name = AWSAdministratorAccess
+region = us-east-1
+output = yaml
+[sso-session Test]
+sso_start_url = https://d-9067806dc9.awsapps.com/start/#
+sso_region = us-east-1
+sso_registration_scopes = sso:account:access
+[profile production]
+sso_session = PRODUCTION
+sso_account_id = 315633532929
+sso_role_name = AWSAdministratorAccess
+region = us-east-1
+output = yaml
+[sso-session PRODUCTION]
+sso_start_url = https://d-9067806dc9.awsapps.com/start/#
+sso_region = us-east-1
+sso_registration_scopes = sso:account:access

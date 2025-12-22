@@ -3,7 +3,6 @@ meilisearch_data/
 mongodb_data/
 privatebin-data/
 homer/
-docker/builds/py*
 .aider*
 *.gz
 *.db
