@@ -124,7 +124,6 @@ RUN apt update && apt install -y \
   python3.13-venv \
   pip \
   faker \
-  python3-pynvim \
   ipython3 \
   python3-ipython \
   ptpython \
@@ -274,6 +273,7 @@ pycowsay \
 flake8 \
 pylint \
 black \
+pynvim \
 ruff \
 pgcli \
 cfn-lint \
@@ -434,6 +434,9 @@ RUN ls -la ${USER_HOME}/.claude/anthropic_keys.sh
 RUN cat ${USER_HOME}/.claude/anthropic_keys.sh
 
 RUN llm models default anthropic/claude-sonnet-4-5
+
+RUN npm install neovim
+
 
 RUN echo $SHELL
 
