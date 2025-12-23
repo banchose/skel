@@ -268,7 +268,7 @@ RUN mkdir -p ${USER_HOME}/gitdir ${USER_HOME}/work ${USER_HOME}/.bashrc_zen.d
 
 WORKDIR ${USER_HOME}
 
-RUN pipx install \
+RUN python3 -m pipx install \
 pycowsay \
 flake8 \
 pylint \
@@ -298,18 +298,23 @@ RUN wget https://go.dev/dl/go1.25.5.linux-amd64.tar.gz && \
     tar -C ${USER_HOME} -xzf go1.25.5.linux-amd64.tar.gz && \
     rm go1.25.5.linux-amd64.tar.gz
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-ENV BASH_ENV=${USER_HOME}/.bash_env
-RUN touch "${BASH_ENV}"
-RUN echo '. "${BASH_ENV}"' >> ~/.bashrc
+USER root
+# Install Node.js from NodeSource
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get clean
 
-# Download and install nvm
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | PROFILE="${BASH_ENV}" bash
-RUN echo node > .nvmrc
-RUN nvm install
+# Verify installation
+RUN node --version && npm --version
+
+# Install npm packages globally
+RUN npm install -g neovim bash-language-server
+
+USER ${USER_NAME}:${USER_NAME}
 
 # llm
-RUN pipx install llm \
+RUN python3 -m pipx install llm \
 --pip-args="--upgrade" \
 --include-deps
 
@@ -339,9 +344,9 @@ llm-templates-fabric
 ENV PATH=$PATH:/usr/local/go/bin
 RUN go install github.com/akavel/up@latest
 RUN go install github.com/charmbracelet/glow/v2@latest
-RUN pipx install visidata 'litellm[proxy]' --include-deps
-RUN pipx install pudb
-RUN pipx install bpython --include-deps
+RUN python3 -m pipx install visidata 'litellm[proxy]' --include-deps
+RUN python3 -m pipx install pudb
+RUN python3 -m pipx install bpython --include-deps
 
 
 RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz && \
