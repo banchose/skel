@@ -27,13 +27,23 @@ if type docker &>/dev/null; then
   # py0
   alias py0='docker run -it --rm --name py0 --hostname py0 -v ~/temp:/home/loon/temp py0:latest'
   alias py0r='docker run --name py0 -u root -it --rm --hostname py0 -v ~/temp:/home/loon/temp py0:latest'
-  alias py0b='cd ~/gitdir/skel/docker/builds/py0 && docker build -t py0:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
+  # alias py0b='cd ~/gitdir/skel/docker/builds/py0 && docker build -t py0:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
+  # functin
 
   # py1
   alias py1='docker run -it --rm --name py1 --hostname py1 -v ~/temp:/home/loon/temp py1:latest'
   alias py1r='docker run --name py1 -u root -it --rm --hostname py1 -v ~/temp:/home/loon/temp py1:latest'
   # alias py1b='cd ~/gitdir/skel/docker/builds/py1 && docker build -t py1:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
   alias py1b='cd ~/gitdir/skel/docker/builds/py1 && docker build -t py1:latest .'
+
+  py0() {
+    local mount_args=()
+
+    [[ -d ~/gitdir/skel ]] && mount_args+=(-v "$HOME/gitdir/skel:/home/loon/gitdir/skel")
+    [[ -d ~/temp ]] && mount_args+=(-v "$HOME/temp:/home/loon/temp:ro")
+
+    docker run -it --rm --name py0 --hostname py0 "${mount_args[@]}" py0:latest
+  }
 
   function dconnet() {
 
