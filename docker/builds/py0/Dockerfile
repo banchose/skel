@@ -397,21 +397,21 @@ WORKDIR ${USER_HOME}
 
 COPY --chown=${USER_NAME}:${USER_NAME} bash_profile ${USER_HOME}/.bash_profile
 COPY --chown=${USER_NAME}:${USER_NAME} bashrc ${USER_HOME}/.bashrc
-COPY --chown=${USER_NAME}:${USER_NAME} inputrc ${USER_HOME}/.inputrc
-COPY --chown=${USER_NAME}:${USER_NAME} tmux.conf ${USER_HOME}/.tmux.conf
-COPY --chown=${USER_NAME}:${USER_NAME} gitconfig ${USER_HOME}/.gitconfig
-COPY --chown=${USER_NAME}:${USER_NAME} awsconfig ${USER_HOME}/.aws/config
+# COPY --chown=${USER_NAME}:${USER_NAME} inputrc ${USER_HOME}/.inputrc
+# COPY --chown=${USER_NAME}:${USER_NAME} tmux.conf ${USER_HOME}/.tmux.conf
+# COPY --chown=${USER_NAME}:${USER_NAME} gitconfig ${USER_HOME}/.gitconfig
+# COPY --chown=${USER_NAME}:${USER_NAME} awsconfig ${USER_HOME}/.aws/config
 
-RUN mkdir -p ${USER_HOME}/.bashrc_zen.d
+# RUN mkdir -p ${USER_HOME}/.bashrc_zen.d
 
-COPY --chown=${USER_NAME}:${USER_NAME} dummy_xxx_.sh ${USER_HOME}/.bashrc_zen.d
-RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/aws.sh ${USER_HOME}/.bashrc_zen.d
-RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/nvim_chooser.sh ${USER_HOME}/.bashrc_zen.d
-RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/nvim.sh ${USER_HOME}/.bashrc_zen.d
-RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/kubernetes.sh ${USER_HOME}/.bashrc_zen.d
-RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/docker.sh ${USER_HOME}/.bashrc_zen.d
-RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh ${USER_HOME}/.bashrc_zen.d
-RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/tmux.sh ${USER_HOME}/.bashrc_zen.d
+# COPY --chown=${USER_NAME}:${USER_NAME} dummy_xxx_.sh ${USER_HOME}/.bashrc_zen.d
+# RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/aws.sh ${USER_HOME}/.bashrc_zen.d
+# RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/nvim_chooser.sh ${USER_HOME}/.bashrc_zen.d
+# RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/nvim.sh ${USER_HOME}/.bashrc_zen.d
+# RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/kubernetes.sh ${USER_HOME}/.bashrc_zen.d
+# RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/docker.sh ${USER_HOME}/.bashrc_zen.d
+# RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh ${USER_HOME}/.bashrc_zen.d
+# RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/tmux.sh ${USER_HOME}/.bashrc_zen.d
 
 WORKDIR ${USER_HOME}/work
 

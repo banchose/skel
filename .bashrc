@@ -26,26 +26,6 @@ if ((BASH_VERSINFO[0] < 4)); then
   echo "You may be running an older version of Bash: ${BASH_VERSINFO[0]}."
 fi
 
-###
-# SSH Agent
-###
-
-loadAgent2() {
-
-  # This is already defined in ~/.bashrc_zen.d/ssh.sh as loadAgent
-  # But good to have
-
-  if ! pgrep -u "$USER" ssh-agent >/dev/null; then
-    ssh-agent -t 1h >"$XDG_RUNTIME_DIR/ssh-agent.env"
-  fi
-  if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
-  fi
-}
-
-# Then call it
-# loadAgent2
-
 ######################################
 # Set the editor and editor alias
 ######################################
@@ -87,7 +67,6 @@ export IGNOREEOF=4
 # the git broke sudo bash export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\[$(tput setaf 9)\]\$(parse_git_branch)\[$(tput setaf 7)\]][\v]\$ \[$(tput sgr0)\]"
 PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?]\[$(tput setaf 7)\][\v]\$ \[$(tput sgr0)\]"
 # Make info friendly
-minfo() { info "$1" --subnodes -o - 2>/dev/null | "$PAGER"; }
 
 # Functions
 psnk() {
@@ -136,10 +115,9 @@ flf() {
 
 function vr() { nvim -R "${@}"; }
 
-set -o noclobber
-
 PROMPT_DIRTRIM=10
 
+set -o noclobber
 shopt -s globstar 2>/dev/null
 shopt -s checkwinsize
 shopt -s nocaseglob
@@ -169,23 +147,23 @@ alias nps='ps -N --ppid 2 -o pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,c
 
 # Existing
 alias chown='chown --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
+alias rm='rm -v -I --preserve-root'
 alias iptables='iptables -v'
 alias wget='wget -c'
 alias bc='bc -l'
 alias dmesg='dmesg --color=always'
-alias chmod='chmod --preserve-root'
-alias chgrp='chgrp --preserve-root'
 alias cp='cp -i -v'
 alias grep='grep -i --color=auto'
 alias mv='mv -i -v'
-alias rm='rm -v -I --preserve-root'
 alias df='df -H'
 alias du='du -ch'
 alias ls='ls -F -h --color=always --time-style=long-iso'
 #
 #
 #
-alias l='ls -l -aF'
+alias l='ls -F'
 alias ll='ls -AFlSrh --color=auto --group-directories-first'
 alias ltr='ls -AFltrh --color=auto'
 alias lt='ls -AFlth --color=auto'
@@ -225,32 +203,6 @@ alias loada='cat /proc/loadavg | cut -c 1-4 | echo "scale=2; ($(</dev/stdin)/`np
 alias cpuinfo='lscpu'
 alias xlsblk='lsblk -o name,mountpoint,fstype,size,fsused,pttype,model,vendor,serial,uuid,partuuid'
 
-command -v waybar &>/dev/null && alias rway='pkill waybar ; nohup waybar &>/dev/null &'
-
-###### A directory of bash init files
-
-# if [[ -d ${home_bashrc_directory} ]]; then
-# 	echo "Running ${home_bashrc_directory} scripts"
-# 	for profile in "${home_bashrc_directory:-/dev/null}/"*.sh; do
-# 		echo "PROFILE-LOOP: $profile"
-# 		[[ -r "$profile" ]] && . "$profile"
-# 	done
-# 	unset profile
-# fi
-
-# Check if Bash is running interactively
-if [[ $- == *i* ]]; then
-  # Check if the session is already inside tmux
-  if [[ -z $TMUX ]] && command -v tmux &>/dev/null; then
-    # Check if Bash is running in a TTY or a pseudoterminal (e.g., /dev/pts/*)
-    if [[ "$(tty)" == /dev/tty* || "$(tty)" == /dev/pts/* ]]; then
-      # Start a new tmux session or attach to an existing one
-      tmux new-session
-    fi
-  fi
-fi
-
-# Ensure the directory variable is not empty
 home_bashrc_directory=~/.bashrc_zen.d
 
 if [[ -d "${home_bashrc_directory}" ]]; then

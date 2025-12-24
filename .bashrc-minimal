@@ -1,5 +1,23 @@
+# Just a personal .bashrc that maybe renamed and then included in the real ~/.bashrc
+# in ~/.bashrc: [[ -f ~/.bashrc.includeme ]] && source ~/.bashrc.includeme
+
+# XDG base directories.
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_PICTURES_DIR="$HOME/Pictures"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+# Make sure this stuff is in the path.
+# export PATH="$HOME/.nvim/bin:$PATH"  # Neovim
+export PATH="$HOME/.cargo/bin:$PATH" # Cargo
+export PATH="$HOME/.local/bin:$PATH" # Local scripts
+export PATH="$HOME/go/bin:$PATH"     # Go binaries.
+
+# echo "${BASH_SOURCE[0]}"
+
 # If not running interactively, don't do anything
-# [[ $- != *i* ]] && return
+[[ $- != *i* ]] && return
 
 umask 022
 
@@ -7,6 +25,7 @@ umask 022
 if ((BASH_VERSINFO[0] < 4)); then
   echo "You may be running an older version of Bash: ${BASH_VERSINFO[0]}."
 fi
+
 ######################################
 # Set the editor and editor alias
 ######################################
@@ -32,6 +51,8 @@ fi
 
 export LESS="-iMFXRj4Q"
 
+# Since switching to set -o vi... Control D logs me out so now have to do 4 times
+
 set -o vi
 bind -m vi-command ".":yank-last-arg # or insert-last-argument
 bind '"jj":vi-movement-mode'
@@ -40,16 +61,8 @@ export IGNOREEOF=4
 # export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\v]\$ \[$(tput sgr0)\]"
 # the git broke sudo bash export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\[$(tput setaf 9)\]\$(parse_git_branch)\[$(tput setaf 7)\]][\v]\$ \[$(tput sgr0)\]"
 PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?]\[$(tput setaf 7)\][\v]\$ \[$(tput sgr0)\]"
+# Make info friendly
 
-# Functions
-psnk() {
-  ps --ppid 2 -p 2 --deselect
-}
-
-tcolors() {
-
-  for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done
-}
 
 checkip() {
   exec 3<>/dev/tcp/checkip.amazonaws.com/80
@@ -57,46 +70,9 @@ checkip() {
   tail -n1 <&3
 }
 
-sleep1() { while :; do
-  "$@"
-  sleep 1
-done; }
-
-sleep5() { while :; do
-  "$@"
-  sleep 5
-done; }
-
-sleep10() { while :; do
-  "$@"
-  sleep 10
-done; }
-
-function xgetx {
-  printf "%d args:" $#
-  printf "<%s>" "$@"
-  echo
-}
-
-ff() {
-  find / -mount -iname "*$1*" -type f 2>/dev/null
-}
-
-flf() {
-  find ./ -mount -iname "*$1*" -type f 2>/dev/null
-}
-
-
-## GENERAL OPTIONS ##
-
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/go/bin:$PATH"
-
-set -o noclobber
-
 PROMPT_DIRTRIM=10
 
+set -o noclobber
 shopt -s globstar 2>/dev/null
 shopt -s checkwinsize
 shopt -s nocaseglob
@@ -116,9 +92,6 @@ export HISTTIMEFORMAT='%F %T '
 
 CDPATH=".:~:"
 
-# Allows aliases to work with sudo
-# alias sudo='sudo '
-
 alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,pidns,utsns,ipcns,mntns,netns,cmd'
 alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
 alias nps='ps -N --ppid 2 -o pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
@@ -127,6 +100,7 @@ alias nps='ps -N --ppid 2 -o pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,c
 alias chown='chown --preserve-root'
 alias iptables='iptables -v'
 alias wget='wget -c'
+alias bc='bc -l'
 alias dmesg='dmesg --color=always'
 alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
@@ -179,3 +153,4 @@ alias jlb='journalctl --list-boots'
 alias loada='cat /proc/loadavg | cut -c 1-4 | echo "scale=2; ($(</dev/stdin)/`nproc`)*100" | bc -l'
 alias cpuinfo='lscpu'
 alias xlsblk='lsblk -o name,mountpoint,fstype,size,fsused,pttype,model,vendor,serial,uuid,partuuid'
+
