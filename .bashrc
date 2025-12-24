@@ -63,7 +63,6 @@ export IGNOREEOF=4
 PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?]\[$(tput setaf 7)\][\v]\$ \[$(tput sgr0)\]"
 # Make info friendly
 
-
 checkip() {
   exec 3<>/dev/tcp/checkip.amazonaws.com/80
   printf "GET / HTTP/1.1\r\nHost: checkip.amazonaws.com\r\nConnection: close\r\n\r\n" >&3
@@ -154,3 +153,19 @@ alias loada='cat /proc/loadavg | cut -c 1-4 | echo "scale=2; ($(</dev/stdin)/`np
 alias cpuinfo='lscpu'
 alias xlsblk='lsblk -o name,mountpoint,fstype,size,fsused,pttype,model,vendor,serial,uuid,partuuid'
 
+# Ensure the directory variable is not empty
+home_bashrc_directory=~/.bashrc_zen.d
+
+if [[ -d "${home_bashrc_directory}" ]]; then
+  echo "Running scripts in ${home_bashrc_directory}"
+  for profile in "${home_bashrc_directory}/"*.sh; do
+    if [[ -r "$profile" ]]; then
+      echo "Sourcing: $profile"
+      . "$profile"
+    else
+      echo "Cannot read $profile, skipping..."
+    fi
+  done
+else
+  echo "Directory ${home_bashrc_directory} does not exist."
+fi
