@@ -49,15 +49,10 @@ else
   echo "NO EDITOR FOUND"
 fi
 
-export BC_ENV_ARGS=~/.bcrc
 export LESS="-iMFXRj4Q"
 
-parse_git_branch() {
-  # command_exists git && git rev-parse --abbrev-ref HEAD 2>/dev/null
-  command_exists git && git rev-parse --abbrev-ref HEAD 2>/dev/null
-}
-
 # Since switching to set -o vi... Control D logs me out so now have to do 4 times
+
 set -o vi
 bind -m vi-command ".":yank-last-arg # or insert-last-argument
 bind '"jj":vi-movement-mode'
@@ -68,52 +63,12 @@ export IGNOREEOF=4
 PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?]\[$(tput setaf 7)\][\v]\$ \[$(tput sgr0)\]"
 # Make info friendly
 
-# Functions
-psnk() {
-  ps --ppid 2 -p 2 --deselect
-}
-
-tcolors() {
-
-  for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done
-}
 
 checkip() {
   exec 3<>/dev/tcp/checkip.amazonaws.com/80
   printf "GET / HTTP/1.1\r\nHost: checkip.amazonaws.com\r\nConnection: close\r\n\r\n" >&3
   tail -n1 <&3
 }
-
-sleep1() { while :; do
-  "$@"
-  sleep 1
-done; }
-
-sleep5() { while :; do
-  "$@"
-  sleep 5
-done; }
-
-sleep10() { while :; do
-  "$@"
-  sleep 10
-done; }
-
-function xgetx {
-  printf "%d args:" $#
-  printf "<%s>" "$@"
-  echo
-}
-
-ff() {
-  find / -mount -iname "*$1*" -type f 2>/dev/null
-}
-
-flf() {
-  find ./ -mount -iname "*$1*" -type f 2>/dev/null
-}
-
-function vr() { nvim -R "${@}"; }
 
 PROMPT_DIRTRIM=10
 
@@ -129,7 +84,6 @@ shopt -s dirspell 2>/dev/null
 shopt -s cdspell 2>/dev/null
 shopt -s cdable_vars
 shopt -s lithist
-PROMPT_COMMAND='history -a; history -n'
 export HISTSIZE=50000
 export HISTFILESIZE=10000
 export HISTCONTROL="ignorespace:erasedups"
@@ -138,32 +92,29 @@ export HISTTIMEFORMAT='%F %T '
 
 CDPATH=".:~:"
 
-# Allows aliases to work with sudo
-# alias sudo='sudo '
-
 alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,pidns,utsns,ipcns,mntns,netns,cmd'
 alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
 alias nps='ps -N --ppid 2 -o pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
 
 # Existing
 alias chown='chown --preserve-root'
-alias chmod='chmod --preserve-root'
-alias chgrp='chgrp --preserve-root'
-alias rm='rm -v -I --preserve-root'
 alias iptables='iptables -v'
 alias wget='wget -c'
 alias bc='bc -l'
 alias dmesg='dmesg --color=always'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
 alias cp='cp -i -v'
 alias grep='grep -i --color=auto'
 alias mv='mv -i -v'
+alias rm='rm -v -I --preserve-root'
 alias df='df -H'
 alias du='du -ch'
 alias ls='ls -F -h --color=always --time-style=long-iso'
 #
 #
 #
-alias l='ls -F'
+alias l='ls -l -aF'
 alias ll='ls -AFlSrh --color=auto --group-directories-first'
 alias ltr='ls -AFltrh --color=auto'
 alias lt='ls -AFlth --color=auto'
@@ -203,18 +154,3 @@ alias loada='cat /proc/loadavg | cut -c 1-4 | echo "scale=2; ($(</dev/stdin)/`np
 alias cpuinfo='lscpu'
 alias xlsblk='lsblk -o name,mountpoint,fstype,size,fsused,pttype,model,vendor,serial,uuid,partuuid'
 
-home_bashrc_directory=~/.bashrc_zen.d
-
-if [[ -d "${home_bashrc_directory}" ]]; then
-  echo "Running scripts in ${home_bashrc_directory}"
-  for profile in "${home_bashrc_directory}/"*.sh; do
-    if [[ -r "$profile" ]]; then
-      echo "Sourcing: $profile"
-      . "$profile"
-    else
-      echo "Cannot read $profile, skipping..."
-    fi
-  done
-else
-  echo "Directory ${home_bashrc_directory} does not exist."
-fi
