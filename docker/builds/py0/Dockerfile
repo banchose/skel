@@ -442,13 +442,11 @@ RUN llm models default anthropic/claude-sonnet-4-5
 
 RUN npm install neovim
 
-RUN echo $SHELL
-
 USER ${USER_NAME}
 
 WORKDIR ${USER_HOME}/.bashrc_zen.d
 
-COPY  --chown=${USER_NAME}:${USER_NAME} ./dummy_xxx_.sh .
+COPY --chown=${USER_NAME}:${USER_NAME} ./dummy_xxx_.sh .
 RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/aws.sh && \
     ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/nvim_chooser.sh && \
     ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/docker.sh
