@@ -26,9 +26,9 @@ ip -br a
 
 ping -c 3 1.1.1.1
 
-aws sso login --no-browser --use-device-code
-aws s3 ls
-aws sso login --no-browser --use-device-code --profile net
+# aws configure sso --region us-east-1 --profile test --no-browser --use-device-code
+aws configure sso --region us-east-1 --profile net --no-browser --use-device-code
+aws s3 ls --region us-east-1 --profile net
 aws s3 ls --profile net
 echo "########################################"
 echo "#"

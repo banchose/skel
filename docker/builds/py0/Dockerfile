@@ -397,10 +397,10 @@ WORKDIR ${USER_HOME}
 
 COPY --chown=${USER_NAME}:${USER_NAME} bash_profile ${USER_HOME}/.bash_profile
 COPY --chown=${USER_NAME}:${USER_NAME} bashrc ${USER_HOME}/.bashrc
-# COPY --chown=${USER_NAME}:${USER_NAME} inputrc ${USER_HOME}/.inputrc
-# COPY --chown=${USER_NAME}:${USER_NAME} tmux.conf ${USER_HOME}/.tmux.conf
-# COPY --chown=${USER_NAME}:${USER_NAME} gitconfig ${USER_HOME}/.gitconfig
-# COPY --chown=${USER_NAME}:${USER_NAME} awsconfig ${USER_HOME}/.aws/config
+COPY --chown=${USER_NAME}:${USER_NAME} inputrc ${USER_HOME}/.inputrc
+COPY --chown=${USER_NAME}:${USER_NAME} tmux.conf ${USER_HOME}/.tmux.conf
+COPY --chown=${USER_NAME}:${USER_NAME} gitconfig ${USER_HOME}/.gitconfig
+COPY --chown=${USER_NAME}:${USER_NAME} awsconfig ${USER_HOME}/.aws/config
 
 # RUN mkdir -p ${USER_HOME}/.bashrc_zen.d
 
@@ -442,10 +442,17 @@ RUN llm models default anthropic/claude-sonnet-4-5
 
 RUN npm install neovim
 
-
 RUN echo $SHELL
 
 USER ${USER_NAME}
+
+WORKDIR ${USER_HOME}/.bashrc_zen.d
+
+COPY  --chown=${USER_NAME}:${USER_NAME} ./dummy_xxx_.sh .
+RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/aws.sh && \
+    ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/nvim_chooser.sh && \
+    ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/docker.sh
+
 WORKDIR ${USER_HOME}
 
 # Create gitdir with proper ownership BEFORE switching users
