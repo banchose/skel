@@ -133,12 +133,16 @@ sudo pacman -S iperf3 --needed --noconfirm
 sudo pacman -S ncftp --needed --noconfirm
 sudo pacman -S httpie --needed --noconfirm
 sudo pacman -S dos2unix --needed --noconfirm
+# python
 sudo pacman -S python --needed --noconfirm
 sudo pacman -S python-pip --needed --noconfirm
 sudo pacman -S python-pipx --needed --noconfirm
 sudo pacman -S python-pynvim --needed --noconfirm
 sudo pacman -S python-pdftotext --needed --noconfirm
 sudo pacman -S python-pyusb --needed --noconfirm
+sudo pacman -S python-redis --needed --noconfirm
+sudo pacman -S python-beautifultable4 --needed --noconfirm
+#
 sudo pacman -S argparse --needed --noconfirm
 sudo pacman -S libqalculate --needed --noconfirm
 # New arch are missing these
