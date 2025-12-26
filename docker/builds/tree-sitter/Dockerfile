@@ -1,6 +1,5 @@
 # syntax=docker/dockerfile:1
-# docker buildx build -t tree-sitter:latest .
-FROM rust:slim AS builder
+FROM rust:1-slim-bookworm AS builder
 
 RUN apt-get update && apt-get install -y \
     git \
