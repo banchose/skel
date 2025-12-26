@@ -15,9 +15,9 @@ services:
 
   backend:
     image: nginx:latest
+    volumes:
+      - ./nginx-backend.conf:/etc/nginx/nginx.conf
 
-    expose:
-      - "8080"
     networks:
       - back-tier
 

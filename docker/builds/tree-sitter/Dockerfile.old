@@ -1,0 +1,22 @@
+FROM rust:alpine AS builder
+
+RUN apk add --no-cache musl-dev git clang-dev clang-static clang-libs llvm-dev llvm-libs
+
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/usr/local/cargo/git \
+    cargo install --locked tree-sitter-cli
+
+FROM alpine:3.19 AS final
+
+# Install bash and shadow (provides useradd)
+RUN apk add --no-cache bash shadow
+
+# Create user with useradd
+RUN useradd -ms /bin/bash user0
+
+USER user0
+
+COPY --from=builder /usr/local/cargo/bin/tree-sitter /usr/local/bin/tree-sitter
+
+ENTRYPOINT ["tree-sitter"]
+CMD ["--help"]
