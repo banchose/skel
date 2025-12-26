@@ -20,22 +20,20 @@ if type docker &>/dev/null; then
   alias dps='docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.RunningFor}}"'
   alias dpsp='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
   alias alpine0='docker run -it --rm --name alpine0 --hostname alpine0 -v ~/temp:/home/loon/temp alpine0:latest'
-  alias trixie0='docker run -it --rm --name trixie0 --hostname trixie0 -v ~/temp:/home/loon/temp trixie0:latest'
-  alias trixie0r='docker run -u root -it --rm --name trixie0 --hostname trixie0 -v ~/temp:/home/loon/temp trixie0:latest'
-  alias trixie0bld='docker build -t trixie0:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
-
-  # py0
-  # a function alias py0='docker run -it --rm --name py0 --hostname py0 -v ~/temp:/home/loon/temp  -v ~/gitdir:/home/loon/gitdir:ro  py0:latest'
-  # alias py0='docker run -it --rm --name py0 --hostname py0 -v ~/temp:/home/loon/temp py0:latest'
-  alias py0r='docker run --name py0 -u root -it --rm --hostname py0 -v ~/temp:/home/loon/temp py0:latest'
-  alias py0b='cd ~/gitdir/skel/docker/builds/py0 && docker build -t py0:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
-  # functin
 
   # py1
   alias py1='docker run -it --rm --name py1 --hostname py1 -v ~/temp:/home/loon/temp py1:latest'
   alias py1r='docker run --name py1 -u root -it --rm --hostname py1 -v ~/temp:/home/loon/temp py1:latest'
   # alias py1b='cd ~/gitdir/skel/docker/builds/py1 && docker build -t py1:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
   alias py1b='cd ~/gitdir/skel/docker/builds/py1 && docker build -t py1:latest .'
+
+  # py0 ######################
+
+  # alias py0='docker run -it --rm --name py0 --hostname py0 -v ~/temp:/home/loon/temp py0:latest'
+
+  alias cdpy0='cd -- ~/skel/docker/builds/py0'
+  alias py0r='docker run --name py0 -u root -it --rm --hostname py0 -v ~/temp:/home/loon/temp py0:latest'
+  alias py0b='cd ~/gitdir/skel/docker/builds/py0 && docker build -t py0:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
 
   py0() {
     local mount_args=()
@@ -45,6 +43,22 @@ if type docker &>/dev/null; then
     [[ -d ~/gitdir ]] && mount_args+=(-v "$HOME/gitdir:/home/loon/gitdir:ro")
 
     docker run -it --rm --name py0 --hostname py0 "${mount_args[@]}" py0:latest
+  }
+
+  # py1 ######################
+
+  alias cdpy1='cd -- ~/skel/docker/builds/py1'
+  alias py1r='docker run --name py1 -u root -it --rm --hostname py1 -v ~/temp:/home/loon/temp py1:latest'
+  alias py1b='cd ~/gitdir/skel/docker/builds/py1 && docker build -t py1:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
+
+  py1() {
+    local mount_args=()
+
+    [[ -d ~/gitdir/skel ]] && mount_args+=(-v "$HOME/gitdir/skel:/home/loon/gitdir/skel")
+    [[ -d ~/temp ]] && mount_args+=(-v "$HOME/temp:/home/loon/temp:ro")
+    [[ -d ~/gitdir ]] && mount_args+=(-v "$HOME/gitdir:/home/loon/gitdir:ro")
+
+    docker run -it --rm --name py1 --hostname py1 "${mount_args[@]}" py1:latest
   }
 
   function dconnet() {
