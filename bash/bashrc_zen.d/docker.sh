@@ -38,7 +38,7 @@ if type docker &>/dev/null; then
   py0() {
     local mount_args=()
 
-    [[ -d ~/gitdir/skel ]] && mount_args+=(-v "$HOME/gitdir/skel:/home/loon/gitdir/skel")
+    #   [[ -d ~/gitdir/skel ]] && mount_args+=(-v "$HOME/gitdir/skel:/home/loon/gitdir/skel")
     [[ -d ~/temp ]] && mount_args+=(-v "$HOME/temp:/home/loon/temp:ro")
     [[ -d ~/gitdir ]] && mount_args+=(-v "$HOME/gitdir:/home/loon/gitdir:ro")
 
