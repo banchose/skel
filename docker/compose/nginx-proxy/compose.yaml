@@ -8,16 +8,18 @@ services:
     #     - ./frontend:/var/www
     #     - ./logs:/var/log/nginx
     depends_on:
-      - back-tier
+      - backend
     networks:
       - front-tier
       - back-tier
 
-  back-tier:
+  backend:
     image: nginx:latest
 
     expose:
       - "8080"
+    networks:
+      - back-tier
 
 networks:
   front-tier:
