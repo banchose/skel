@@ -10,21 +10,23 @@ ENV LC_ALL=en_US.UTF-8
 ## LOCALE UTF-8
 RUN apt update && apt install -y locales && \
     sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
-    locale-gen && \
+    locale-gen \
+    bash \
+    bash-completion && \
     rm -rf /var/lib/apt/lists/* && \
     apt-get clean
 
 
 RUN apt update && apt install -y \
-bash \
-bash-completion \
+git \
 bind9-dnsutils \
 iproute2 \
-git \
 vim-nox \
 emacs-nox \
 ripgrep \
+jq \
 fd-find \
+fzf \
 mtr-tiny \
 vim \
 gawk \
@@ -135,10 +137,6 @@ alias cp='cp --preserve-root -v'
 alias mv='mv --preserve-root -v'
 alias v='vim'
 EOF
-
-RUN mkdir -p ${USERHOME}/.config
-RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ${USERHOME}/.config/emacs
-RUN ${USERHOME}/.config/emacs/bin/doom install --no-env
 
 
 CMD ["bash", "-l"]
