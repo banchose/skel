@@ -9,6 +9,10 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
+USER root
+ENV USERNAME=root
+ENV USERHOME=/${USERNAME}
+
 ## LOCALE UTF-8
 RUN apt update && apt install -y locales && \
     sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
@@ -30,6 +34,7 @@ RUN apt-get update && apt-get install -y \
     bind9-dnsutils \
     mtr-tiny \
     zip \
+    hexedit \
     unzip \
     fd-find \
     git \
@@ -82,27 +87,6 @@ RUN apt-get update && apt-get install -y \
 
 RUN ln -s /usr/bin/batcat /usr/bin/bat
 
-## FOR ROOT ONLY
-RUN <<EOL
-        # Basic image setup
-        ## Basic aliases
-        echo "alias ll='ls -lha --color'" >> /root/.bashrc
-        echo "alias l='ls -ltrhaF --color'" >> /root/.bashrc
-        echo "alias g='grep -i'" >> /root/.bashrc
-        echo "alias mv='mv -i'" >> /root/.bashrc
-        echo "alias rm='rm -i'" >> /root/.bashrc
-        echo "alias cp='cp -i'" >> /root/.bashrc
-        echo "alias vi='vim'" >> /root/.bashrc
-        echo "set -o vi'" >> /root/.bashrc
-
-        ## Access4 docker prompt
-        echo "PS1=\"\[\\e[1;32m\][\h \w] >>>>> \[\\e[0m\]\"" >> /root/.bashrc
-
-        ## Stop annoying visual mouse in vim (in debian systems)
-        echo "set mouse-=a" > /root/.vimrc
-EOL
-
-
 ####################################################
 # USER
 ####################################################
@@ -132,7 +116,14 @@ ENV PATH="${USERHOME}/.nvim/bin:$PATH \
     ${USERHOME}/go/bin:$PATH \
     $PATH"
 
+COPY --chown=${USERNAME}:${USERNAME} bashrc ${USERHOME}/.bashrc
+COPY --chown=${USERNAME}:${USERNAME} inputrc ${USERHOME}/.inputrc
+
+RUN python3 -m pip install --user pipx
+
 # Use neovim as the default editor.
 ENV EDITOR=nvim \
     VISUAL=nvim
 
+ENTRYPOINT ["bash"]
+CMD ["-l"]

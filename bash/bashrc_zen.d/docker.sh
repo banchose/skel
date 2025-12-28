@@ -1,10 +1,10 @@
-export DOCKER_BUILDKIT=1
 # Don't source if not a hint of Docker
 if type docker &>/dev/null; then
   # export UID=$(id -u)
   # export GID=$(id -g)
 
   export BUILDKIT_PROGRESS=plain
+  export DOCKER_BUILDKIT=1
 
   alias rdp='docker -H ssh://una@s1 ps --all'
   alias rdr='docker -H ssh://una@s1 ps'
