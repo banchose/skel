@@ -87,9 +87,9 @@ COPY <<EOF .bash_profile
 EOF
 
 COPY <<EOF ${USERHOME}/.bashrc
-# export PATH="${USERHOME}/.local/bin:${USERHOME}/go/bin:${USERHOME}/.cargo/bin:${USERHOME}/.nvim/bin:/usr/local/bin:/usr/bin:/bin"
 set -o vi
 alias l='ls -alF --color=auto'
+alias ltr='ls -altrF --color=auto'
 alias v='vim'
 alias g='grep -i'
 bind 'set show-all-if-ambiguous on'
