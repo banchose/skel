@@ -78,7 +78,7 @@ ENV XDG_CACHE_HOME="${USERHOME}/.cache" \
     XDG_DATA_HOME="${USERHOME}/.local/share"
 
 # Make sure this stuff is in the path.
-ENV PATH="${USERHOME}/.cargo/bin:${USERHOME}/.local/bin:${USERHOME}/go/bin:$PATH:${USERHOME}/.nvim/bin:$PATH"
+# ENV PATH="${USERHOME}/.cargo/bin:${USERHOME}/.local/bin:${USERHOME}/go/bin:$PATH:${USERHOME}/.nvim/bin"
 
 RUN python3 -m pip install --user pipx
 
@@ -86,27 +86,7 @@ COPY <<EOF .bash_profile
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 EOF
 
-COPY <<EOF ${USERHOME}/.bashrc
-# export PATH="${USERHOME}/.local/bin:${USERHOME}/go/bin:${USERHOME}/.cargo/bin:${USERHOME}/.nvim/bin:/usr/local/bin:/usr/bin:/bin"
-set -o vi
-alias l='ls -alF --color=auto'
-alias v='vim'
-alias g='grep -i'
-bind 'set show-all-if-ambiguous on'
-bind 'set show-all-if-unmodified on'
-bind 'set completion-ignore-case on'
-bind '"jj": vi-movement-mode'
-bind '"\\t": menu-complete'
-bind -m vi-command ".":yank-last-arg
-bind 'set show-mode-in-prompt on'
-bind 'set bell-style none'
-bind 'set colored-stats On'
-bind 'set menu-complete-display-prefix On'
-bind 'set colored-completion-prefix On'
-bind 'set mark-directories on'
-bind 'set mark-symlinked-directories On'
-bind 'set visible-stats On'
-EOF
+COPY bashrc ${USERHOME}/.bashrc
 
 ENV EDITOR=vim
 
