@@ -9,10 +9,6 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
-USER root
-ENV USERNAME=root
-ENV USERHOME=/${USERNAME}
-
 ## LOCALE UTF-8
 RUN apt update && apt install -y locales && \
     sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
@@ -30,6 +26,7 @@ RUN apt-get update && apt-get install -y \
     sed \
     iproute2 \
     iputils-ping \
+    net-tools \
     traceroute \
     bind9-dnsutils \
     mtr-tiny \
@@ -51,13 +48,6 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
-
-RUN apt-get update && apt-get install -y \
-      net-tools \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
-
-
 RUN apt-get update && apt-get install -y \
       nmap \
       socat \
@@ -65,7 +55,6 @@ RUN apt-get update && apt-get install -y \
       tcpdump \
       && rm -rf /var/lib/apt/lists/* \
       && apt-get clean
-    
 
 RUN apt-get update && apt-get install -y \
       bat \
@@ -79,7 +68,6 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
-
 RUN apt-get update && apt-get install -y \
     dnstracer \
     && rm -rf /var/lib/apt/lists/* \
@@ -91,16 +79,13 @@ RUN ln -s /usr/bin/batcat /usr/bin/bat
 # USER
 ####################################################
 
-ENV USERNAME=foo
-ENV USERHOME=/home/${USERNAME}
+ARG USERNAME=foo
+ARG USERHOME=/home/${USERNAME}
 
 RUN useradd -ms /bin/bash ${USERNAME}
 
 USER ${USERNAME}
-
 WORKDIR ${USERHOME}
-
-ENV HOME=${USERHOME}
 
 # XDG base directories.
 ENV XDG_CACHE_HOME="${USERHOME}/.cache" \
@@ -116,14 +101,34 @@ ENV PATH="${USERHOME}/.nvim/bin:$PATH \
     ${USERHOME}/go/bin:$PATH \
     $PATH"
 
-COPY --chown=${USERNAME}:${USERNAME} bashrc ${USERHOME}/.bashrc
-COPY --chown=${USERNAME}:${USERNAME} inputrc ${USERHOME}/.inputrc
-
 RUN python3 -m pip install --user pipx
 
-# Use neovim as the default editor.
-ENV EDITOR=nvim \
-    VISUAL=nvim
+COPY <<EOF .bash_profile
+[[ -f ~/.bashrc ]] && . ~/.bashrc
+EOF
+
+COPY <<EOF ${USERHOME}/.bashrc
+set -o vi
+alias l='ls -alF --color=auto'
+alias v='vim'
+alias g='grep -i'
+bind 'set show-all-if-ambiguous on'
+bind 'set show-all-if-unmodified on'
+bind 'set completion-ignore-case on'
+bind '"jj": vi-movement-mode'
+bind '"\\t": menu-complete'
+bind -m vi-command ".":yank-last-arg
+bind 'set show-mode-in-prompt on'
+bind 'set bell-style none'
+bind 'set colored-stats On'
+bind 'set menu-complete-display-prefix On'
+bind 'set colored-completion-prefix On'
+bind 'set mark-directories on'
+bind 'set mark-symlinked-directories On'
+bind 'set visible-stats On'
+EOF
+
+ENV EDITOR=vim
 
 ENTRYPOINT ["bash"]
 CMD ["-l"]

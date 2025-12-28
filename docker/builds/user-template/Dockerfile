@@ -77,6 +77,7 @@ ENV PATH="${USERHOME}/.nvim/bin:$PATH \
     ${USERHOME}/go/bin:$PATH \
     $PATH"
 
+COPY --chown=${USERNAME}:${USERNAME} bash_profile ${USERHOME}/.bash_profile
 COPY --chown=${USERNAME}:${USERNAME} bashrc ${USERHOME}/.bashrc
 COPY --chown=${USERNAME}:${USERNAME} inputrc ${USERHOME}/.inputrc
 

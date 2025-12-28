@@ -1,30 +1,10 @@
 # Just a personal .bashrc that maybe renamed and then included in the real ~/.bashrc
 # in ~/.bashrc: [[ -f ~/.bashrc.includeme ]] && source ~/.bashrc.includeme
 
-# XDG base directories.
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_PICTURES_DIR="$HOME/Pictures"
-export XDG_STATE_HOME="$HOME/.local/state"
-
-# Make sure this stuff is in the path.
-# export PATH="$HOME/.nvim/bin:$PATH"  # Neovim
-export PATH="$HOME/.cargo/bin:$PATH" # Cargo
-export PATH="$HOME/.local/bin:$PATH" # Local scripts
-export PATH="$HOME/go/bin:$PATH"     # Go binaries.
-
 # echo "${BASH_SOURCE[0]}"
 
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
-
-umask 022
-
-# Unique Bash version check
-if ((BASH_VERSINFO[0] < 4)); then
-  echo "You may be running an older version of Bash: ${BASH_VERSINFO[0]}."
-fi
+# export TERM=xterm
+export TERM=xterm-256color
 
 ######################################
 # Set the editor and editor alias
@@ -53,13 +33,16 @@ export LESS="-iMFXRj4Q"
 
 # Since switching to set -o vi... Control D logs me out so now have to do 4 times
 
-set -o vi
-bind -m vi-command ".":yank-last-arg # or insert-last-argument
-bind '"jj":vi-movement-mode'
+# set -o vi
+# bind -m vi-command ".":yank-last-arg # or insert-last-argument
+# bind '"jj":vi-movement-mode'
 
 export IGNOREEOF=4
-
+# export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\v]\$ \[$(tput sgr0)\]"
+# the git broke sudo bash export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\[$(tput setaf 9)\]\$(parse_git_branch)\[$(tput setaf 7)\]][\v]\$ \[$(tput sgr0)\]"
 PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?]\[$(tput setaf 7)\][\v]\$ \[$(tput sgr0)\]"
+# Make info friendly
+minfo() { info "$1" --subnodes -o - 2>/dev/null | "$PAGER"; }
 
 checkip() {
   exec 3<>/dev/tcp/checkip.amazonaws.com/80
@@ -67,9 +50,10 @@ checkip() {
   tail -n1 <&3
 }
 
+set -o noclobber
+
 PROMPT_DIRTRIM=10
 
-set -o noclobber
 shopt -s globstar 2>/dev/null
 shopt -s checkwinsize
 shopt -s nocaseglob
@@ -89,68 +73,37 @@ export HISTTIMEFORMAT='%F %T '
 
 CDPATH=".:~:"
 
-alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,pidns,utsns,ipcns,mntns,netns,cmd'
-alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
-alias nps='ps -N --ppid 2 -o pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
-
-# Existing
 alias chown='chown --preserve-root'
 alias iptables='iptables -v'
 alias wget='wget -c'
 alias bc='bc -l'
+alias path='echo -e ${PATH//:/\\n}'
 alias dmesg='dmesg --color=always'
 alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
-alias rm='rm -v -I --preserve-root'
+alias now='date +"%T"'
 alias cp='cp -i -v'
 alias grep='grep -i --color=auto'
 alias mv='mv -i -v'
+alias rm='rm -v -I --preserve-root'
 alias df='df -H'
+alias g='grep'
 alias du='du -ch'
-alias ls='ls -F -h --color=always --time-style=long-iso'
-#
-#
-#
+alias ls='ls -ltrFh --color=auto'
 alias l='ls -l -aF'
 alias ll='ls -AFlSrh --color=auto --group-directories-first'
-alias ltr='ls -AFltrh --color=auto'
-alias lt='ls -AFlth --color=auto'
-alias g='grep'
-alias pg="pcre2grep -i"
-alias path='echo -e ${PATH//:/\\n}'
-alias now='date +"%T"'
 alias j='jobs -l'
+alias ltr='ls -AFltrh --color=auto'
+
 # Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:139.0) Gecko/20100101 Firefox/139.0
 alias acurl='curl -L -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:139.0) Gecko/20100101 Firefox/139.0"'
-## shortcut  for iptables and pass it via sudo#
-alias ipt='sudo /sbin/iptables'
-# display all rules #
-alias iptlist='sudo /sbin/iptables -L -n -v --line-numbers'
-alias iptlistin='sudo /sbin/iptables -L INPUT -n -v --line-numbers'
-alias iptlistout='sudo /sbin/iptables -L OUTPUT -n -v --line-numbers'
-alias iptlistfw='sudo /sbin/iptables -L FORWARD -n -v --line-numbers'
-alias firewall=iptlist
-## pass options to free ##
-alias meminfo='free -m -l -t'
-# 0:emerg, 1:alert, 2:crit, 3:err, 4:warning, 5:notice, 6:info, 7:debug
-alias j5m='journalctl --since "5 min ago"'
-alias j1h='journalctl --since "1 hour ago"'
-alias j5h='journalctl --since "5 hour ago"'
-alias jd='journalctl --since "1 day ago"'
-alias jb='journalctl -b'
-alias ju='journalctl -u'
-alias je='journalctl -p "emerg..err"'
-alias jw='journalctl -p "emerg..warning"'
-alias jn='journalctl -p "emerg..notice"'
-alias jbe='journalctl -p "emerg..err" -b'
-alias jbw='journalctl -p "emerg..warning" -b'
-alias jbn='journalctl -p "emerg..notice" -b'
-alias jlb='journalctl --list-boots'
-# A load average of multi cpu system
-alias loada='cat /proc/loadavg | cut -c 1-4 | echo "scale=2; ($(</dev/stdin)/`nproc`)*100" | bc -l'
-alias cpuinfo='lscpu'
 alias xlsblk='lsblk -o name,mountpoint,fstype,size,fsused,pttype,model,vendor,serial,uuid,partuuid'
 
+alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,pidns,utsns,ipcns,mntns,netns,cmd'
+alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
+alias nps='ps -N --ppid 2 -o pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
+
+# Ensure the directory variable is not empty
 home_bashrc_directory=~/.bashrc_zen.d
 
 if [[ -d "${home_bashrc_directory}" ]]; then
@@ -166,3 +119,34 @@ if [[ -d "${home_bashrc_directory}" ]]; then
 else
   echo "Directory ${home_bashrc_directory} does not exist."
 fi
+
+#if command -v aws_completer &>/dev/null; then
+# complete -C "$(command -v aws_completer)" aws
+#fi
+
+## Appended for py1
+# alias ipython=ipython3
+# eval "$(register-python-argcomplete pipx)"
+# BEDROCK_MODEL='bedrock/us.anthropic.claude-sonnet-4-5-20250929-v1:0'
+
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+export PATH="/usr/local/go/bin:$PATH"
+[ -s "$HOME/.nvm/nvm.sh" ] && source "$HOME/.nvm/nvm.sh"
+
+BEDROCK_MODEL='us.anthropic.claude-sonnet-4-5-20250929-v1:0'
+llm() {
+  if [[ -z "${AWS_BEARER_TOKEN_BEDROCK}" ]]; then
+    echo "Error: AWS_BEARER_TOKEN_BEDROCK is not set" >&2
+    return 1
+  elif [[ "${AWS_BEARER_TOKEN_BEDROCK}" == DUMMY* ]]; then
+    echo "Error: AWS_BEARER_TOKEN_BEDROCK contains DUMMY placeholder - replace with real API key" >&2
+    return 1
+  fi
+  PROMPT="The time is: $(date). Please be percise and concise. If you don't know something say so.  If you could produce a better answer with key information I may be able to provide, ask for it"
+  command llm -s "${PROMPT}" -m "${BEDROCK_MODEL}" "$@"
+}
+
+# export MANPAGER='nvim +Man!'
+eval "$(register-python-argcomplete pipx)"

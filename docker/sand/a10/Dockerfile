@@ -9,7 +9,6 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
-
 ## LOCALE UTF-8
 RUN apt update && apt install -y locales && \
     sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
@@ -77,6 +76,7 @@ ENV PATH="${USERHOME}/.nvim/bin:$PATH \
     ${USERHOME}/go/bin:$PATH \
     $PATH"
 
+COPY --chown=${USERNAME}:${USERNAME} bash_profile ${USERHOME}/.bash_profile
 COPY --chown=${USERNAME}:${USERNAME} bashrc ${USERHOME}/.bashrc
 COPY --chown=${USERNAME}:${USERNAME} inputrc ${USERHOME}/.inputrc
 
