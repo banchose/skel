@@ -48,7 +48,6 @@ RUN apt update && apt install -y \
   gettext \
   manpages \
   man-db \
-  fzf \
   unzip \
   p7zip-full \
   ipcalc  \
@@ -442,7 +441,9 @@ RUN llm models default anthropic/claude-sonnet-4-5
 
 RUN npm install neovim
 
-USER ${USER_NAME}
+WORKDIR ${USER_HOME}/gitdir
+RUN git clone --depth 1 https://github.com/junegunn/fzf.git ${USER_HOME}/.fzf && \
+${USER_HOME}/.fzf/install
 
 WORKDIR ${USER_HOME}/.bashrc_zen.d
 

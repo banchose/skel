@@ -2,6 +2,12 @@
 
 # Global settings
 
+# Check if fzf is installed, exit if not
+type aws &>/dev/null || {
+  echo "awscli NOT FOUND. Skipping awscli configuration."
+  return 0
+}
+
 export AWS_PROFILE=lab
 export AWS_DEFAULT_REGION=us-east-1
 export AwsRegion=us-east-1 # needed to set region for aliases when they expand. This will always be set in the current shell if this file loads

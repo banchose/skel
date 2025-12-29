@@ -51,3 +51,57 @@ up-k9s() {
     return 1
   fi
 }
+
+up-gen() {
+  local latest_version current_version
+  local app=fzf
+  # Check if "${app}" exists
+  if ! command -v "${app}" &>/dev/null; then
+    echo "${app} not found. Install it first." >&2
+    return 1
+  fi
+
+  # Get current version - pure bash, reads first line and extracts second field
+  read -r _ current_version _ < <("${app}" version -s 2>/dev/null)
+
+  # Fallback if version detection fails
+  if [[ -z "${current_version}" ]]; then
+    current_version="v0.0.0"
+    echo "Warning: Could not detect current version" >&2
+  fi
+
+  # Get latest version from GitHub
+  latest_version=$(curl -s https://api.github.com/repos/derailed/"${app}"/releases/latest |
+    grep '"tag_name"' |
+    sed -E 's/.*"([^"]+)".*/\1/')
+
+  if [[ -z "${latest_version}" ]]; then
+    echo "Failed to fetch latest version" >&2
+    return 1
+  fi
+
+  echo "Current version: ${current_version}"
+  echo "Latest version:  ${latest_version}"
+
+  # Compare versions
+  if [[ "${current_version}" == "${latest_version}" ]]; then
+    echo "Already on latest version. Nothing to do."
+    return 0
+  fi
+
+  if [[ "${current_version}" > "${latest_version}" ]]; then
+    echo "Current version is newer than released version. Skipping."
+    return 0
+  fi
+
+  echo "Upgrading from ${current_version} to ${latest_version}..."
+
+  if curl -sL "https://github.com/derailed/${app}/releases/download/${latest_version}/${app}_Linux_amd64.tar.gz" |
+    tar xvz -C ~/.local/bin "${app}"; then
+    echo "Successfully upgraded ${app} to ${latest_version}"
+    "${app}" version
+  else
+    echo "Failed to upgrade ${app}" >&2
+    return 1
+  fi
+}
