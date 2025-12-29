@@ -40,7 +40,7 @@ USER "${USER_NAME}"
 COPY --chown="${USER_NAME}":"${USER_NAME}" bashrc "${USER_HOME}"/.bashrc
 COPY --chown="${USER_NAME}":"${USER_NAME}" inputrc "${USER_HOME}"/.inputrc
 COPY --chown="${USER_NAME}":"${USER_NAME}" tmux.conf "${USER_HOME}"/.tmux.conf
-COPY --chown="${USER_NAME}":"${USER_NAME}" tmux "${USER_HOME}"/.tmux
+# COPY --chown="${USER_NAME}":"${USER_NAME}" tmux "${USER_HOME}"/.tmux
 
 WORKDIR "${USER_HOME}"
 
