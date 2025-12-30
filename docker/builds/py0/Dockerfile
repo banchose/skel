@@ -123,7 +123,6 @@ RUN apt update && apt install -y \
   python3.13-venv \
   pip \
   faker \
-  ipython3 \
   python3-ipython \
   ptpython \
   pylint \
@@ -222,9 +221,9 @@ RUN apt update && apt install -y  \
 
 
 # Install golang - go
-RUN wget https://go.dev/dl/go1.25.5.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go1.25.5.linux-amd64.tar.gz && \
-    rm go1.25.5.linux-amd64.tar.gz
+# RUN wget https://go.dev/dl/go1.25.5.linux-amd64.tar.gz && \
+#     tar -C /usr/local -xzf go1.25.5.linux-amd64.tar.gz && \
+#     rm go1.25.5.linux-amd64.tar.gz
 
 RUN cd /tmp && \
 wget https://luarocks.org/releases/luarocks-3.12.2.tar.gz && \
@@ -249,6 +248,18 @@ RUN curl -L https://github.com/tree-sitter/tree-sitter/releases/download/v0.26.3
   | gunzip > /usr/local/bin/tree-sitter && \
   chmod +x /usr/local/bin/tree-sitter
 
+# Install Node.js from NodeSource
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get clean
+
+# Verify installation
+RUN node --version && npm --version
+
+# Install npm packages globally
+RUN npm install -g neovim bash-language-server
+
 ##
 ##
 ##
@@ -267,8 +278,19 @@ RUN mkdir -p ${USER_HOME}/gitdir ${USER_HOME}/work ${USER_HOME}/.bashrc_zen.d
 
 WORKDIR ${USER_HOME}
 
+RUN curl -fsSL https://claude.ai/install.sh | bash
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+# Install golang - go
+RUN wget https://go.dev/dl/go1.25.5.linux-amd64.tar.gz && \
+    rm -rf ${USER_HOME}/go && \
+    tar -C ${USER_HOME} -xzf go1.25.5.linux-amd64.tar.gz && \
+    rm go1.25.5.linux-amd64.tar.gz
+
 RUN python3 -m pipx install \
 pycowsay \
+ipython \
 flake8 \
 pylint \
 black \
@@ -287,28 +309,15 @@ scrapy \
 --pip-args="--upgrade" \
 --include-deps
 
-RUN curl -fsSL https://claude.ai/install.sh | bash
-
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-# Install golang - go
-RUN wget https://go.dev/dl/go1.25.5.linux-amd64.tar.gz && \
-    rm -rf ${USER_HOME}/go && \
-    tar -C ${USER_HOME} -xzf go1.25.5.linux-amd64.tar.gz && \
-    rm go1.25.5.linux-amd64.tar.gz
-
-USER root
-# Install Node.js from NodeSource
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs && \
-    rm -rf /var/lib/apt/lists/* && \
-    apt-get clean
-
-# Verify installation
-RUN node --version && npm --version
-
-# Install npm packages globally
-RUN npm install -g neovim bash-language-server
+# RUN curl -fsSL https://claude.ai/install.sh | bash
+# 
+# RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+# 
+# # Install golang - go
+# RUN wget https://go.dev/dl/go1.25.5.linux-amd64.tar.gz && \
+#     rm -rf ${USER_HOME}/go && \
+#     tar -C ${USER_HOME} -xzf go1.25.5.linux-amd64.tar.gz && \
+#     rm go1.25.5.linux-amd64.tar.gz
 
 USER ${USER_NAME}:${USER_NAME}
 
@@ -456,7 +465,6 @@ WORKDIR ${USER_HOME}
 
 # Create gitdir with proper ownership BEFORE switching users
 # ENTRYPOINT ["/bin/sleep"]
+# CMD ["-l"]
 # CMD ["100000"]
-ENTRYPOINT ["/bin/bash"]
-CMD ["-l"]
-# CMD ["-v"]
+CMD ["/bin/bash"]

@@ -12,9 +12,12 @@ lsof -v
 kubectl --client=true version
 aws --version
 cmake --version
+claude --version
 gcc --version
 make --version
 rustc --version
+ipython --version
+python3 --version
 dig -v
 jq --version
 awk --version
@@ -25,6 +28,8 @@ npm version
 ip -br a
 
 ping -c 3 1.1.1.1
+curl -I www.google.com
+curl -I www.cnn.com
 
 # aws configure sso --region us-east-1 --profile test --no-browser --use-device-code
 aws configure sso --region us-east-1 --profile net --no-browser --use-device-code
