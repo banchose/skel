@@ -2,14 +2,20 @@
 
 # Global settings
 
+# Check if fzf is installed, exit if not
+type aws &>/dev/null || {
+  echo "awscli NOT FOUND. Skipping awscli configuration."
+  return 0
+}
+
 export AWS_PROFILE=lab
 export AWS_DEFAULT_REGION=us-east-1
-export AwsRegion=us-east-1
+export AwsRegion=us-east-1 # needed to set region for aliases when they expand. This will always be set in the current shell if this file loads
 export MANINSTANCE=i-0a495644db9737bf6
 #
 # AWS Regions to check
 REGIONS=("us-east-1" "us-west-2")
-PROFILES=("net" "test" "dev" "production")
+PROFILES=("net" "test" "dev" "production") # there is a 'man' for management
 
 echo "$AWS_PROFILE"
 echo "Region: $AWS_DEFAULT_REGION"
@@ -21,22 +27,24 @@ if command -v aws_completer &>/dev/null; then
   complete -C "$(command -v aws_completer)" aws
 fi
 
+alias awcd='cd ~/gitdir/aws'
 alias cdaws='cd ~/gitdir/aws'
-alias cdeks='cd ~/gitdir/aws/PHRIBIGNETWORK/EKSALB/'
-alias vaws='nvim ~/gitdir/skel/bash/bashrc_zen.d/aws.sh'
-alias awsssh="aws ssm start-session --target ${MANINSTANCE} --region us-east-1 --profile net"
-alias aslb='aws elbv2 describe-load-balancers --query "LoadBalancers[].DNSName" --region us-east-1'
-alias alswf="aws logs tail aws-waf-logs-HRI-APP-WAF   --follow   --region us-east-1   --profile net"
-alias alscreds='aws configure export-credentials --profile $AWS_PROFILE'
+alias awcdskel='cd ~/gitdir/skel/bash/bashrc_zen.d/'
+alias awcdeks='cd ~/gitdir/aws/PHRIBIGNETWORK/EKSALB/'
+alias awvaws='nvim ~/gitdir/skel/bash/bashrc_zen.d/aws.sh'
+alias awssh="aws ssm start-session --target ${MANINSTANCE} --region us-east-1 --profile net"
+alias awdlb='aws elbv2 describe-load-balancers --query "LoadBalancers[].DNSName" --region us-east-1'
+alias awlswaf="aws logs tail aws-waf-logs-HRI-APP-WAF   --follow   --region us-east-1   --profile net"
+alias awlscreds='aws configure export-credentials --profile $AWS_PROFILE'
 
 
-alias awlct="aws configure sso  --region $AwsRegion --profile test"
+alias awlct="aws configure sso  --region ${AwsRegion:-us-east-1} --profile test"
 alias awlcn="aws configure sso  --region $AwsRegion --profile net"
 alias awlcd="aws configure sso  --region $AwsRegion --profile dev"
 alias awlcp="aws configure sso  --region $AwsRegion --profile production"
 alias awlcp="aws configure sso  --region $AwsRegion --profile man"
 
-alias awlt="aws sso login --region $AwsRegion --profile test --no-browser --use-device-code"
+alias awlt="aws sso login --region ${AwsRegion:-us-east-1} --profile test --no-browser --use-device-code"
 alias awltc="aws configure sso --region $AwsRegion --profile test --no-browser --use-device-code"
 alias awln="aws sso login --region $AwsRegion --profile net --no-browser --use-device-code"
 alias awlnc="aws configure sso --region $AwsRegion --profile net --no-browser --use-device-code"

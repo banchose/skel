@@ -58,10 +58,8 @@ bind -m vi-command ".":yank-last-arg # or insert-last-argument
 bind '"jj":vi-movement-mode'
 
 export IGNOREEOF=4
-# export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\v]\$ \[$(tput sgr0)\]"
-# the git broke sudo bash export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\[$(tput setaf 9)\]\$(parse_git_branch)\[$(tput setaf 7)\]][\v]\$ \[$(tput sgr0)\]"
+
 PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?]\[$(tput setaf 7)\][\v]\$ \[$(tput sgr0)\]"
-# Make info friendly
 
 checkip() {
   exec 3<>/dev/tcp/checkip.amazonaws.com/80
@@ -103,10 +101,10 @@ alias bc='bc -l'
 alias dmesg='dmesg --color=always'
 alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
+alias rm='rm -v -I --preserve-root'
 alias cp='cp -i -v'
 alias grep='grep -i --color=auto'
 alias mv='mv -i -v'
-alias rm='rm -v -I --preserve-root'
 alias df='df -H'
 alias du='du -ch'
 alias ls='ls -F -h --color=always --time-style=long-iso'

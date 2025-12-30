@@ -1,0 +1,26 @@
+services:
+  mock-service:
+    image: nicolaka/netshoot # or any image with nc installed
+    command: nc -l -k -p 8080
+    ports:
+      - "8080:8080"
+    networks:
+      - red-net
+      - blue-net
+      - orange-net
+
+  nginx-1:
+    image: nginx:latest
+    networks:
+      - red-net
+
+  nginx-2:
+    image: nginx:latest
+    networks:
+      - blue-net
+      - orange-net
+
+networks:
+  red-net:
+  blue-net:
+  orange-net:

@@ -1,39 +1,27 @@
-# Just a personal .bashrc that maybe renamed and then included in the real ~/.bashrc
-# in ~/.bashrc: [[ -f ~/.bashrc.includeme ]] && source ~/.bashrc.includeme
+# XDG base directories.
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_PICTURES_DIR="$HOME/Pictures"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+# Make sure this stuff is in the path.
+export PATH="$HOME/.nvim/bin:$PATH"  # Neovim
+export PATH="$HOME/.cargo/bin:$PATH" # Cargo
+export PATH="$HOME/.local/bin:$PATH" # Local scripts
+export PATH="$HOME/go/bin:$PATH"     # Go binaries.
 
 # echo "${BASH_SOURCE[0]}"
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# export TERM=xterm
-export TERM=xterm-256color
 umask 022
 
 # Unique Bash version check
 if ((BASH_VERSINFO[0] < 4)); then
   echo "You may be running an older version of Bash: ${BASH_VERSINFO[0]}."
 fi
-
-###
-# SSH Agent
-###
-
-loadAgent2() {
-
-  # This is already defined in ~/.bashrc_zen.d/ssh.sh as loadAgent
-  # But good to have
-
-  if ! pgrep -u "$USER" ssh-agent >/dev/null; then
-    ssh-agent -t 1h >"$XDG_RUNTIME_DIR/ssh-agent.env"
-  fi
-  if [[ ! -f "$SSH_AUTH_SOCK" ]]; then
-    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
-  fi
-}
-
-# Then call it
-# loadAgent2
 
 ######################################
 # Set the editor and editor alias
@@ -58,35 +46,21 @@ else
   echo "NO EDITOR FOUND"
 fi
 
-export BC_ENV_ARGS=~/.bcrc
 export LESS="-iMFXRj4Q"
 
-parse_git_branch() {
-  # command_exists git && git rev-parse --abbrev-ref HEAD 2>/dev/null
-  command_exists git && git rev-parse --abbrev-ref HEAD 2>/dev/null
-}
-
 # Since switching to set -o vi... Control D logs me out so now have to do 4 times
+
 set -o vi
 bind -m vi-command ".":yank-last-arg # or insert-last-argument
 bind '"jj":vi-movement-mode'
+bind 'set show-all-if-ambiguous on'
+bind 'set show-all-if-unmodified on'
+bind 'set completion-ignore-case on'
+bind 'set show-mode-in-prompt on'
 
 export IGNOREEOF=4
-# export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\v]\$ \[$(tput sgr0)\]"
-# the git broke sudo bash export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\[$(tput setaf 9)\]\$(parse_git_branch)\[$(tput setaf 7)\]][\v]\$ \[$(tput sgr0)\]"
+
 PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?]\[$(tput setaf 7)\][\v]\$ \[$(tput sgr0)\]"
-# Make info friendly
-minfo() { info "$1" --subnodes -o - 2>/dev/null | "$PAGER"; }
-
-# Functions
-psnk() {
-  ps --ppid 2 -p 2 --deselect
-}
-
-tcolors() {
-
-  for code in {0..255}; do echo -e "\e[38;05;${code}m $code: Test"; done
-}
 
 checkip() {
   exec 3<>/dev/tcp/checkip.amazonaws.com/80
@@ -94,47 +68,9 @@ checkip() {
   tail -n1 <&3
 }
 
-sleep1() { while :; do
-  "$@"
-  sleep 1
-done; }
-
-sleep5() { while :; do
-  "$@"
-  sleep 5
-done; }
-
-sleep10() { while :; do
-  "$@"
-  sleep 10
-done; }
-
-function xgetx {
-  printf "%d args:" $#
-  printf "<%s>" "$@"
-  echo
-}
-
-ff() {
-  find / -mount -iname "*$1*" -type f 2>/dev/null
-}
-
-flf() {
-  find ./ -mount -iname "*$1*" -type f 2>/dev/null
-}
-
-function vr() { nvim -R "${@}"; }
-
-## GENERAL OPTIONS ##
-
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/go/bin:$PATH"
-
-set -o noclobber
-
 PROMPT_DIRTRIM=10
 
+set -o noclobber
 shopt -s globstar 2>/dev/null
 shopt -s checkwinsize
 shopt -s nocaseglob
@@ -146,7 +82,6 @@ shopt -s dirspell 2>/dev/null
 shopt -s cdspell 2>/dev/null
 shopt -s cdable_vars
 shopt -s lithist
-PROMPT_COMMAND='history -a; history -n'
 export HISTSIZE=50000
 export HISTFILESIZE=10000
 export HISTCONTROL="ignorespace:erasedups"
@@ -154,9 +89,6 @@ export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 export HISTTIMEFORMAT='%F %T '
 
 CDPATH=".:~:"
-
-# Allows aliases to work with sudo
-# alias sudo='sudo '
 
 alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,pidns,utsns,ipcns,mntns,netns,cmd'
 alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
@@ -170,10 +102,10 @@ alias bc='bc -l'
 alias dmesg='dmesg --color=always'
 alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
+alias rm='rm -v -I --preserve-root'
 alias cp='cp -i -v'
 alias grep='grep -i --color=auto'
 alias mv='mv -i -v'
-alias rm='rm -v -I --preserve-root'
 alias df='df -H'
 alias du='du -ch'
 alias ls='ls -F -h --color=always --time-style=long-iso'
@@ -220,32 +152,6 @@ alias loada='cat /proc/loadavg | cut -c 1-4 | echo "scale=2; ($(</dev/stdin)/`np
 alias cpuinfo='lscpu'
 alias xlsblk='lsblk -o name,mountpoint,fstype,size,fsused,pttype,model,vendor,serial,uuid,partuuid'
 
-command -v waybar &>/dev/null && alias rway='pkill waybar ; nohup waybar &>/dev/null &'
-
-###### A directory of bash init files
-
-# if [[ -d ${home_bashrc_directory} ]]; then
-# 	echo "Running ${home_bashrc_directory} scripts"
-# 	for profile in "${home_bashrc_directory:-/dev/null}/"*.sh; do
-# 		echo "PROFILE-LOOP: $profile"
-# 		[[ -r "$profile" ]] && . "$profile"
-# 	done
-# 	unset profile
-# fi
-
-# Check if Bash is running interactively
-# if [[ $- == *i* ]]; then
-#   # Check if the session is already inside tmux
-#   if [[ -z $TMUX ]] && command -v tmux &>/dev/null; then
-#     # Check if Bash is running in a TTY or a pseudoterminal (e.g., /dev/pts/*)
-#     if [[ "$(tty)" == /dev/tty* || "$(tty)" == /dev/pts/* ]]; then
-#       # Start a new tmux session or attach to an existing one
-#       tmux new-session
-#     fi
-#   fi
-# fi
-
-# Ensure the directory variable is not empty
 home_bashrc_directory=~/.bashrc_zen.d
 
 if [[ -d "${home_bashrc_directory}" ]]; then
@@ -261,12 +167,3 @@ if [[ -d "${home_bashrc_directory}" ]]; then
 else
   echo "Directory ${home_bashrc_directory} does not exist."
 fi
-
-if command -v aws_completer &>/dev/null; then
-  complete -C "$(command -v aws_completer)" aws
-fi
-
-## Appended for py0
-alias ipython=ipython3
-command_exists pipx && eval "$(register-python-argcomplete pipx)"
-BEDROCK_MODEL='bedrock/us.anthropic.claude-sonnet-4-5-20250929-v1:0'

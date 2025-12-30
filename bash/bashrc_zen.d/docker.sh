@@ -4,6 +4,7 @@ if type docker &>/dev/null; then
   # export GID=$(id -g)
 
   export BUILDKIT_PROGRESS=plain
+  export DOCKER_BUILDKIT=1
 
   alias rdp='docker -H ssh://una@s1 ps --all'
   alias rdr='docker -H ssh://una@s1 ps'
@@ -39,7 +40,7 @@ if type docker &>/dev/null; then
     local mount_args=()
 
     #   [[ -d ~/gitdir/skel ]] && mount_args+=(-v "$HOME/gitdir/skel:/home/loon/gitdir/skel")
-    [[ -d ~/temp ]] && mount_args+=(-v "$HOME/temp:/home/loon/temp:ro")
+    [[ -d ~/temp ]] && mount_args+=(-v "$HOME/temp:/home/loon/temp")
     [[ -d ~/gitdir ]] && mount_args+=(-v "$HOME/gitdir:/home/loon/gitdir:ro")
 
     docker run -it --rm --name py0 --hostname py0 "${mount_args[@]}" py0:latest

@@ -2,7 +2,7 @@
 
 set -xeuo pipefail
 
-IMAGE=bash:latest
+IMAGE=template:latest
 NAME="${IMAGE%:*}0"
 
 #!/usr/bin/env bash
@@ -49,4 +49,4 @@ fi
 # Run the container
 echo "Running container ${NAME} ..."
 set -x # Re-enable command echo for the run command
-docker run -it -d --rm --hostname "${NAME}" --name "${NAME}" --network "${NAME}" "${IMAGE}"
+docker run -it --rm --hostname "${NAME}" --name "${NAME}" --network "${NAME}" "${IMAGE}"

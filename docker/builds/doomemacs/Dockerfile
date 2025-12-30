@@ -141,4 +141,4 @@ RUN git clone --depth 1 https://github.com/doomemacs/doomemacs ${USERHOME}/.conf
 RUN ${USERHOME}/.config/emacs/bin/doom install --no-env
 
 
-CMD ["bash", "-l"]
+CMD ["emacs"]
