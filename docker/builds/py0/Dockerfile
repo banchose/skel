@@ -459,7 +459,9 @@ WORKDIR ${USER_HOME}/.bashrc_zen.d
 COPY --chown=${USER_NAME}:${USER_NAME} ./dummy_xxx_.sh .
 RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/aws.sh && \
     ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/nvim_chooser.sh && \
-    ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/docker.sh
+    ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/docker.sh && \
+    ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh
+ 
 
 WORKDIR ${USER_HOME}
 

@@ -1,0 +1,66 @@
+# docker run -d --name it-tools --restart unless-stopped -p 8080:80 ghcr.io/corentinth/it-tools:latest
+# docker run -d --name it-tools --restart unless-stopped -p 8080:80 corentinth/it-tools:latest
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: it-tools
+  namespace: default
+  labels:
+    app: it-tools
+spec:
+  selector:
+    matchLabels:
+      app: it-tools
+  replicas: 2
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container:  it-tools
+      labels:
+        app: it-tools
+    spec:
+      containers:
+      - name: it-tools
+        image: docker-repository.healthresearch.org:8443/it-tools:newpath  
+       # image: corentinth/it-tools:latest
+        ports:
+        - containerPort: 80
+          name: it-tools
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: it-tools
+spec:
+  selector:
+    app: it-tools
+  type: 
+  ports:
+  - name: it-tools
+    protocol: 
+    port: 8080
+    targetPort: it-tools
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  labels:
+    app: it-tools
+  name: it-tools
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: it-tools
+            port:
+              number: 8080
+        path: /it-tools(/|$)(.*)
+        pathType: ImplementationSpecific
