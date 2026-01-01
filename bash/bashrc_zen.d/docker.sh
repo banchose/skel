@@ -33,15 +33,15 @@ if type docker &>/dev/null; then
   # alias py0='docker run -it --rm --name py0 --hostname py0 -v ~/temp:/home/loon/temp py0:latest'
 
   alias cdpy0='cd -- ~/skel/docker/builds/py0'
-  alias py0r='docker run --name py0 -u root -it --rm --hostname py0 -v ~/temp:/home/loon/temp py0:latest'
+  alias py0r='docker run --name py0 -u root -it --rm --hostname py0 -v ~/temp:/home/loon/temp2 py0:latest'
   alias py0b='cd ~/gitdir/skel/docker/builds/py0 && docker build -t py0:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
-  alias py0t='docker run --name py0  -it --rm --hostname py0 -v ~/temp:/home/loon/temp py0:latest tmux'
+  alias py0t='docker run --name py0  -it --rm --hostname py0 -v ~/temp:/home/loon/temp2 py0:latest tmux'
 
   py0() {
     local mount_args=()
 
     #   [[ -d ~/gitdir/skel ]] && mount_args+=(-v "$HOME/gitdir/skel:/home/loon/gitdir/skel")
-    [[ -d ~/temp ]] && mount_args+=(-v "$HOME/temp:/home/loon/temp")
+    [[ -d ~/temp ]] && mount_args+=(-v "$HOME/temp:/home/loon/temp2:ro")
     [[ -d ~/gitdir ]] && mount_args+=(-v "$HOME/gitdir:/home/loon/gitdir:ro")
 
     docker run -it --rm --name py0 --hostname py0 "${mount_args[@]}" py0:latest

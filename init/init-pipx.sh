@@ -53,6 +53,7 @@ pipx install esptool
 pipx install litecli
 pipx install ruff
 pipx install black
+pipx install feedparser --include-deps
 pipx install flake8
 pipx install pylint
 pipx install cfn-lint

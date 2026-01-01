@@ -274,7 +274,7 @@ ENV PATH="${USER_HOME}/.local/bin:${USER_HOME}/go/bin:${USER_HOME}/.cargo/bin:/u
 ####### Install a newer pipx supporting multiple arguments
 RUN python3 -m pip install --break-system-packages pipx
 
-RUN mkdir -p ${USER_HOME}/gitdir ${USER_HOME}/work ${USER_HOME}/.bashrc_zen.d
+RUN mkdir -p ${USER_HOME}/gitdir ${USER_HOME}/temp ${USER_HOME}/work ${USER_HOME}/.bashrc_zen.d
 
 WORKDIR ${USER_HOME}
 

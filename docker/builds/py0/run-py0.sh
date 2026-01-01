@@ -24,5 +24,5 @@ if [[ "${build_only}" == true ]]; then
   docker build -t "${name}" .
 else
   # Run by default (assumes image already exists)
-  docker run -it -v "$HOME"/temp:/temp:ro --hostname "${name}" --name "${name}" --rm "${name}":latest
+  docker run -it -v "$HOME"/temp:/htemp:ro --hostname "${name}" --name "${name}" --rm "${name}":latest
 fi
