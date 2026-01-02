@@ -26,7 +26,7 @@ if type docker &>/dev/null; then
   alias py1='docker run -it --rm --name py1 --hostname py1 -v ~/temp:/home/loon/temp py1:latest'
   alias py1r='docker run --name py1 -u root -it --rm --hostname py1 -v ~/temp:/home/loon/temp py1:latest'
   # alias py1b='cd ~/gitdir/skel/docker/builds/py1 && docker build -t py1:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
-  alias py1b='cd ~/gitdir/skel/docker/builds/py1 && docker build -t py1:latest .'
+  alias py1b='cd ~/gitdir/skel/docker/builds/py1 && docker buildx build -t py1:latest .'
 
   # py0 ######################
 
@@ -34,7 +34,7 @@ if type docker &>/dev/null; then
 
   alias cdpy0='cd -- ~/skel/docker/builds/py0'
   alias py0r='docker run --name py0 -u root -it --rm --hostname py0 -v ~/temp:/home/loon/temp2 py0:latest'
-  alias py0b='cd ~/gitdir/skel/docker/builds/py0 && docker build -t py0:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
+  alias py0b='cd ~/gitdir/skel/docker/builds/py0 && docker buildx build -t py0:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
   alias py0t='docker run --name py0  -it --rm --hostname py0 -v ~/temp:/home/loon/temp2 py0:latest tmux'
 
   py0() {
@@ -51,7 +51,7 @@ if type docker &>/dev/null; then
 
   alias cdpy1='cd -- ~/skel/docker/builds/py1'
   alias py1r='docker run --name py1 -u root -it --rm --hostname py1 -v ~/temp:/home/loon/temp py1:latest'
-  alias py1b='cd ~/gitdir/skel/docker/builds/py1 && docker build -t py1:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
+  alias py1b='cd ~/gitdir/skel/docker/builds/py1 && docker buildx build -t py1:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
 
   py1() {
     local mount_args=()
