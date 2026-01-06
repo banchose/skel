@@ -27,6 +27,18 @@ if command -v aws_completer &>/dev/null; then
   complete -C "$(command -v aws_completer)" aws
 fi
 
+
+# alias awbedck="aws logs filter-log-events   --log-group-name /aws/bedrock/model-invocations   --start-time $(($(date +%s) - 3600))000   --region us-east-1   --profile test   --query 'events[].message'   --output json | jq -r '.[] | fromjson | .modelId' | sort | uniq -c"
+alias awbedck="aws logs filter-log-events \
+  --log-group-name /aws/bedrock/model-invocations \
+  --start-time $(($(date +%s) - 3600))000 \
+  --region us-east-1 \
+  --profile test \
+  --query 'events[].message' \
+  --output json | jq -r '.[] | fromjson | .modelId' | sort | uniq -c
+     56 us.anthropic.claude-sonnet-4-5-20250929-v1:0"
+
+
 alias awcd='cd ~/gitdir/aws'
 alias cdaws='cd ~/gitdir/aws'
 alias awcdskel='cd ~/gitdir/skel/bash/bashrc_zen.d/'
@@ -879,3 +891,4 @@ askbed() {
     ]
   }'
 }
+
