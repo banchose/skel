@@ -35,8 +35,7 @@ alias awbedck="aws logs filter-log-events \
   --region us-east-1 \
   --profile test \
   --query 'events[].message' \
-  --output json | jq -r '.[] | fromjson | .modelId' | sort | uniq -c
-     56 us.anthropic.claude-sonnet-4-5-20250929-v1:0"
+  --output json | jq -r '.[] | fromjson | .modelId' | sort | uniq -c"
 
 
 alias awcd='cd ~/gitdir/aws'
