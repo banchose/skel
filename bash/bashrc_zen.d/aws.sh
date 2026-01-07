@@ -63,6 +63,15 @@ alias awld="aws sso login --region $AwsRegion --profile dev --no-browser --use-d
 alias awlprod="aws sso login --region $AwsRegion --profile production --no-browser --use-device-code"
 alias awlman="aws sso login --region $AwsRegion --profile man --no-browser --use-device-code"
 
+alias bedtokens="aws cloudwatch get-metric-statistics   --namespace AWS/Bedrock   --metric-name InputTokenCount   --dimensions Name=ModelId,Value=us.anthropic.claude-sonnet-4-5-20250929-v1:0   --start-time $(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%S)   --end-time $(date -u +%Y-%m-%dT%H:%M:%S)   --period 300   --statistics Sum   --region us-east-1 --query 'Datapoints | sort_by(@, &Timestamp)'   --output table --profile test"
+alias bedlogs='aws cloudtrail lookup-events \
+  --lookup-attributes AttributeKey=EventName,AttributeValue=Converse \
+  --start-time $(date -u -d "24 hours ago" +%Y-%m-%dT%H:%M:%S) \
+  --max-results 50 \
+  --region us-east-1 \
+  --profile test \
+  --output json | jq -r '\''.Events | sort_by(.EventTime) | .[] | {time: .EventTime, event: .EventName, user: .Username, ip: (.CloudTrailEvent | fromjson | .sourceIPAddress), userAgent: (.CloudTrailEvent | fromjson | .userAgent)}'\'''
+
 # Function: Get AWS Profile
 #get_aws_context() {
 #  local profile="$1"
