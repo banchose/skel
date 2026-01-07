@@ -52,6 +52,17 @@ yta() {
   )
 }
 
+ytastern() {
+  # get best audio any format
+  (
+    cd "$VidDir"/stern || {
+      echo "missing $VidDir"
+      return 1
+    }
+    yt-dlp --user-agent "$UserAgent" --ignore-errors --format bestaudio --extract-audio --output "%(title)s.%(ext)s" "$1"
+  )
+}
+
 ytam() {
   (
     # get best mp3 audio
