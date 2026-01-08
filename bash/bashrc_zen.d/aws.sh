@@ -63,7 +63,19 @@ alias awld="aws sso login --region $AwsRegion --profile dev --no-browser --use-d
 alias awlprod="aws sso login --region $AwsRegion --profile production --no-browser --use-device-code"
 alias awlman="aws sso login --region $AwsRegion --profile man --no-browser --use-device-code"
 
-alias bedtokens="aws cloudwatch get-metric-statistics   --namespace AWS/Bedrock   --metric-name InputTokenCount   --dimensions Name=ModelId,Value=us.anthropic.claude-sonnet-4-5-20250929-v1:0   --start-time $(date -u -d '24 hours ago' +%Y-%m-%dT%H:%M:%S)   --end-time $(date -u +%Y-%m-%dT%H:%M:%S)   --period 300   --statistics Sum   --region us-east-1 --query 'Datapoints | sort_by(@, &Timestamp)'   --output table --profile test"
+
+alias bedtokens='aws cloudwatch get-metric-statistics \
+  --namespace AWS/Bedrock \
+  --metric-name InputTokenCount \
+  --dimensions Name=ModelId,Value=us.anthropic.claude-sonnet-4-5-20250929-v1:0 \
+  --start-time $(date -u -d "24 hours ago" +%Y-%m-%dT%H:%M:%S) \
+  --end-time $(date -u +%Y-%m-%dT%H:%M:%S) \
+  --period 300 \
+  --statistics Sum \
+  --region us-east-1 \
+  --profile test \
+  --output json | jq -r ".Datapoints | sort_by(.Timestamp) | .[] | [.Sum, (.Timestamp | sub(\"\\\\+00:00$\"; \"Z\") | fromdateiso8601 | strflocaltime(\"%Y-%m-%d %H:%M:%S\")), .Unit] | @tsv" | column -t'
+
 alias bedlogs='aws cloudtrail lookup-events \
   --lookup-attributes AttributeKey=EventName,AttributeValue=Converse \
   --start-time $(date -u -d "24 hours ago" +%Y-%m-%dT%H:%M:%S) \
