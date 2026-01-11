@@ -68,6 +68,7 @@ sudo pacman -S lm_sensors --needed --noconfirm
 
 # Extra
 sudo pacman -S emacs-nox --needed --noconfirm
+sudo pacman -S bun --needed --noconfirm
 
 ## The Bases
 sudo pacman -S base --needed --noconfirm
