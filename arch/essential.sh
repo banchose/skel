@@ -127,7 +127,7 @@ sudo pacman -S httping --needed --noconfirm
 sudo pacman -S minicom --needed --noconfirm
 sudo pacman -S pigz --needed --noconfirm
 # sudo pacman -S ntfs-3g --needed --noconfirm
-sudo pacman -S mlocate --needed --noconfirm
+# sudo pacman -S mlocate --needed --noconfirm
 sudo pacman -S micro --needed --noconfirm
 sudo pacman -S iperf3 --needed --noconfirm
 sudo pacman -S ncftp --needed --noconfirm
@@ -409,6 +409,11 @@ fi
 # sudo pacman -S foot --needed --noconfirm
 # sudo pacman -S wev --needed --noconfirm
 # sudo pacman -S waybar --needed --noconfirm
+# sudo pacman -S waypaper --needed --noconfirm
+# sudo pacman -S swaybg --needed --noconfirm
+# sudo pacman -S kanshi --needed --noconfirm
+# sudo yay -S wdisplays --needed --noconfirm
+# sudo pacman -S python-pywayland python-pywlroots xorg-wayland --needed --noconfirm
 # # Image viewers
 # sudo pacman -S imv --needed --noconfirm # wayland image viewer
 # sudo pacman -S feh --needed --noconfirm # wayland image viewer
