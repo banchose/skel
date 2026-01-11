@@ -118,6 +118,7 @@ pipx inject \
   certifi \
   pydantic \
   httpx \
+  networkx \
   pandas \
   esptool \
   numpy \

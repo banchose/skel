@@ -325,25 +325,25 @@ USER ${USER_NAME}:${USER_NAME}
 RUN pipx inject ipython \
   boto3 \
   httpx \
+  networkx \
+  twisted \
+  numpy \
   pydantic \
+  pandas \
   icecream \
   scrapy \
   requests \
-  twisted \
   posting \
   boltons \
   beautifulsoup4 \
   psutils \
   howdoi \
-  pydantic \
   cryptography \
   black \
   pendulum \
   loguru \
   certifi \
-  pandas \
   esptool \
-  numpy \
   ipython-extensions \
   llm \
   llm-tools-exa \
