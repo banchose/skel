@@ -297,6 +297,7 @@ black \
 pynvim \
 ruff \
 pgcli \
+requests \
 cfn-lint \
 csvkit \
 s3cmd \
@@ -320,6 +321,43 @@ scrapy \
 #     rm go1.25.5.linux-amd64.tar.gz
 
 USER ${USER_NAME}:${USER_NAME}
+
+RUN pipx inject ipython \
+  boto3 \
+  httpx \
+  pydantic \
+  icecream \
+  scrapy \
+  requests \
+  twisted \
+  posting \
+  boltons \
+  beautifulsoup4 \
+  psutils \
+  howdoi \
+  pydantic \
+  cryptography \
+  black \
+  pendulum \
+  loguru \
+  certifi \
+  pandas \
+  esptool \
+  numpy \
+  ipython-extensions \
+  llm \
+  llm-tools-exa \
+  llm-openrouter \
+  llm-fragments-github \
+  llm-anthropic \
+  llm-tools-simpleeval \
+  llm-python \
+  llm-jq \
+  httpie \
+  uv \
+  'litellm[proxy]'
+# --pip-args="--upgrade" \
+# --include-deps
 
 # llm
 RUN python3 -m pipx install llm \
