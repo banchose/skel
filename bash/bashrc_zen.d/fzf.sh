@@ -6,5 +6,4 @@ type fzf &>/dev/null || {
   return 0
 }
 
-eval $(fzf --bash)
 alias prev='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
