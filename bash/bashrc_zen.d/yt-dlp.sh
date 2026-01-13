@@ -9,7 +9,7 @@ mm() {
   cd ~/y/youtube-down/ || return
 
   local file
-  file=$(find . -maxdepth 1 -type f -printf "%T@ %p\n" |
+  file=$(find . -maxdepth 2 -type f -printf "%T@ %p\n" |
     sort -nr |
     cut -d' ' -f2- |
     sed 's#\./##' |
@@ -27,7 +27,7 @@ mmv() {
   cd ~/y/youtube-down/ || return
 
   local file
-  file=$(find . -maxdepth 1 -type f -printf "%T@ %p\n" |
+  file=$(find . -maxdepth 2 -type f -printf "%T@ %p\n" |
     sort -nr |
     cut -d' ' -f2- |
     sed 's#\./##' |
