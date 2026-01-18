@@ -44,6 +44,7 @@ pipx install ipython --include-deps
 pipx install flask --include-deps
 pipx install django --include-deps
 pipx install pandas --include-deps
+pipx install chromadb --include-deps
 pipx install speedtest --include-deps
 pipx install httpie --include-deps
 pipx install pgcli
