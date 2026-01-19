@@ -1,5 +1,90 @@
 # bash notes
 
+## parameter
+
+- A named space in memory
+- Usually stores strings
+- Can store integers, indexed and associative arrays
+- 2 flavors: variables and 'special parameters'
+- letter, digit, underscore (can't begin with digit)
+
+## patterns
+
+- `*`: Matches any string, including the null string.
+
+- `?`: Matches any single character.
+
+`[...]`: Matches **any one** of the enclosed characters.
+
+## Parameter Expansion
+
+```bash
+for file in *.JPG *.jpeg
+do mv -- "$file" "${file%.*}.jpg"
+done
+```
+
+```
+
+```
+
+## read (pipe to read)
+
+- the pipe causes a subshell and no vars survive it
+
+```bash
+# read useless
+echo "hello" | read
+```
+
+### read and subshell
+
+```bash
+# read working
+echo "hello" | while read -r line;do echo "${line}";echo "bash pid: ${BASHPID}";done
+```
+
+## Printing control characters
+
+```bash
+echo $'hello\n'
+# or
+printf 'one\ttwo\nthree\n'
+# or
+echo -e 'one\ttwo\nthree'
+echo -ne 'one\ttwo\nthree\n'
+```
+
+## math
+
+### Command on its own
+
+```bash
+i=1
+((i++))
+echo "$i"
+#=> 2
+```
+
+### Exponentiation
+
+```bash
+((5**2))
+echo $((5**2))
+#=> 25
+```
+
+```
+
+```
+
+## Redirect both stdout/stderr
+
+```bash
+>& or &>
+|&
+```
+
 ## glob
 
 Patterns that can be used to match filenames or other strings. Implicitly anchored at both ends
