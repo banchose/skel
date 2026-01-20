@@ -8,6 +8,29 @@
 - 2 flavors: variables and 'special parameters'
 - letter, digit, underscore (can't begin with digit)
 
+## error log
+
+```bash
+exec 2>/var/log/foo.log
+```
+
+## Read lines from a file
+
+- Use `while read`
+- Not `for`
+
+```bash
+while IFS= read -r line; do
+printf '%s\n' "$line"
+done < "$file"
+```
+
+### one line
+
+```bash
+read -r first last junk <<< 'Bob Smith 123 Main Street Elk Grove Iowa 123-555-6789'
+```
+
 ## patterns
 
 - `*`: Matches any string, including the null string.
@@ -15,6 +38,14 @@
 - `?`: Matches any single character.
 
 `[...]`: Matches **any one** of the enclosed characters.
+
+## Testing
+
+- mind the quotes to test the **string** - not a pattern
+
+```bash
+[[ [string] = "[string]" ]], [[ [string] = [glob pattern] ]], or [[ [string] =~ [regular expression] ]]:
+```
 
 ## Parameter Expansion
 
@@ -24,8 +55,13 @@ do mv -- "$file" "${file%.*}.jpg"
 done
 ```
 
-```
+### Default value
 
+```bash
+unset boo
+x="hello"
+echo "${boo:-$x}" # us '=' instead of `-` to also assign
+#=> hello
 ```
 
 ## read (pipe to read)
@@ -34,14 +70,15 @@ done
 
 ```bash
 # read useless
-echo "hello" | read
+echo "hello" | read # No, uselss, vars get lost
+echo "hello" | while IFS= -r line ... # while loop 'environment'
 ```
 
 ### read and subshell
 
 ```bash
 # read working
-echo "hello" | while read -r line;do echo "${line}";echo "bash pid: ${BASHPID}";done
+echo "hello" | while IFS= read -r line;do echo "${line}";echo "bash pid: ${BASHPID}";done
 ```
 
 ## Printing control characters
@@ -74,10 +111,6 @@ echo $((5**2))
 #=> 25
 ```
 
-```
-
-```
-
 ## Redirect both stdout/stderr
 
 ```bash
@@ -92,6 +125,12 @@ Patterns that can be used to match filenames or other strings. Implicitly anchor
 - `*`: Matches any string, including the null string.
 - `?`: Match any single character
 - `[...]`: Matches any one of the enclosed characters
+
+### Odd example
+
+```bash
+[[ $var = *$substing* ]]
+```
 
 ## Word splitting
 
@@ -323,3 +362,26 @@ Tests exclusive to [ (and test):
 
     EXPR -o EXPR: True if either expression is true (logical OR).
 ```
+
+## Braces
+
+```bash
+echo {1,3,4}
+#=> 1 3 4
+
+echo {1..5}
+#=> 1 2 3 4 5
+```
+
+## trap
+
+```bash
+trap 'echo "you are trapped...";rm /tmp/some_temp_file' TERM EXIT
+```
+
+- **HUP**: 1
+- **INT**: 2
+- **QUIT**: 3
+- **KILL**: 9
+- **TERM**: 15
+- **EXIT**: 0
