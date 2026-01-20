@@ -70,7 +70,7 @@ echo "${boo:-$x}" # us '=' instead of `-` to also assign
 
 ```bash
 # read useless
-echo "hello" | read # No, uselss, vars get lost
+echo "hello" | read # No, useless, vars get lost
 echo "hello" | while IFS= -r line ... # while loop 'environment'
 ```
 
