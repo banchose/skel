@@ -64,7 +64,7 @@ alias awlprod="aws sso login --region $AwsRegion --profile production --no-brows
 alias awlman="aws sso login --region $AwsRegion --profile man --no-browser --use-device-code"
 
 # OWUI PG
-alias awpg='echo "Backslash \\q to quit";kubectl run psql-client   --image=postgres:17   --rm -it   -n openwebui   -- psql "postgresql://owui_user:${OWUI_PASSWORD}@${RDS_ENDPOINT}:5432/owuivector?sslmode=require"'
+alias awpg='echo "1. Backslash \\q to quit";echo "2. ENV PASSWORD in aws secrets";kubectl run psql-client   --image=postgres:17   --rm -it   -n openwebui   -- psql "postgresql://owui_user:${OWUI_PASSWORD}@${RDS_ENDPOINT}:5432/owuivector?sslmode=require"'
 
 alias bedtokens='aws cloudwatch get-metric-statistics \
   --namespace AWS/Bedrock \
