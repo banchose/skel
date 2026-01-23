@@ -39,7 +39,7 @@ kwhoami() {
 kbash() {
 
   if kubectl get pods | grep kbash; then
-    kubectl exec -it kbash
+    kubectl exec -it kbash -- bash
   else
     kubectl run -it --tty --restart=Always --image=bash:latest kbash
   fi
