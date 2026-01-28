@@ -82,6 +82,7 @@ pipx install psutils
 pipx install uv
 pipx install --force 'litellm[proxy]'
 pipx install git-filter-repo
+# pipx install pyprland
 
 pipx inject llm llm-tools-exa --pip-args="--upgrade"
 pipx inject llm llm-openrouter --pip-args="--upgrade"
