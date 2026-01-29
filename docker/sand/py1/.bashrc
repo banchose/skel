@@ -1,0 +1,1 @@
+/home/una/gitdir/skel/.bashrc
