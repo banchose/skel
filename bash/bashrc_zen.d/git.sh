@@ -10,14 +10,40 @@ alias cdhzen='cd ~/.bashrc_zen.d'
 alias cdconfigs='cd ~/gitdir/configs'
 alias cdhzen='cd ~/.bashrc_zen.d'
 
+gitcheck() {
+  for i in ~/gitdir/{aws,skel,configs}; do
+    cd "${i}" || return 1
+    git status
+    cd ..
+  done
+}
+
 gitroll() {
   (
     cd ~/gitdir || return 1
-    for i in aws configs skel awscfts; do
+    for i in aws configs skel; do
       cd "$i" || return 1
       git fetch
       git status
       git pull
+      cd ..
+    done
+  )
+}
+
+gitseal() {
+  (
+    cd ~/gitdir || return 1
+    for i in aws configs skel; do
+      cd "$i" || return 1
+      git fetch
+      git status
+      git pull
+      git status
+      git add .
+      git commit -m "gitseal"
+      echo "pushing a seal"
+      git push
       cd ..
     done
   )
