@@ -34,9 +34,9 @@ gitroll() {
 gitseal() {
   (
     cd ~/gitdir || return 1
-    for i in aws configs skel; do
+    for i in ~/gitdir/{configs,aws,skel}; do
       cd "$i" || return 1
-      git fetch
+      git fetch --prune
       git status
       git pull
       git status
