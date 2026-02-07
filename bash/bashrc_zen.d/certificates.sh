@@ -29,6 +29,13 @@
 #   -servername www.feistyduck.com
 #
 #
+
+update_jellyfin_cert() {
+
+  openssl pkcs12 -export -out jellyfin.pfx -inkey private.key.pem -in domain.cert.pem &&
+    scp ./jellyfin.pfx star:/apps/jellyfin/config
+}
+
 getcn() {
 
   local AHOST
