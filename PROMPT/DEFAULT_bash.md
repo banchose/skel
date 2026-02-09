@@ -73,3 +73,14 @@ SUBPROCESS_MANAGEMENT:
 - Process groups: ( cmd1; cmd2 ) & # subshell grouping
 - File descriptors: exec 3< file; read -u 3 var; exec 3<&- # explicit FD management
 
+```
+
+This consolidation:
+1. **Groups related concepts** for faster LLM pattern recognition
+2. **Uses consistent formatting** (CAPS for sections, bullets for items)
+3. **Shows wrong→correct patterns** for common mistakes
+4. **Focuses on modern Bash 5 features** over legacy compatibility
+5. **Emphasizes security implications** (quoting, validation, eval dangers)
+6. **Provides templates** for common operations rather than just rules
+```
+
