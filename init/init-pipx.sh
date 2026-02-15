@@ -46,6 +46,7 @@ pipx install django --include-deps
 pipx install pandas --include-deps
 pipx install speedtest --include-deps
 pipx install httpie --include-deps
+pipx install tinfoil --include-deps
 pipx install pgcli
 # pipx install mycli
 pipx install pycowsay
@@ -80,7 +81,7 @@ pipx install twisted
 pipx install visidata
 pipx install psutils
 pipx install uv
-pipx install --force 'litellm[proxy]'
+pipx install 'litellm[proxy]'
 pipx install git-filter-repo
 # pipx install pyprland
 
@@ -101,7 +102,8 @@ pipx inject llm psutils --pip-args="--upgrade"
 pipx inject llm beautifulsoup4 --pip-args="--upgrade"
 pipx inject llm certifi --pip-args="--upgrade"
 pipx inject llm uv --pip-args="--upgrade"
-pipx inject llm 'litellm[proxy]' --pip-args="--upgrade" --force
+pipx inject llm 'litellm[proxy]' --pip-args="--upgrade"
+pipx inject llm tinfoil --include-deps --pip-args="--upgrade"
 
 pipx inject \
   ipython \
@@ -135,7 +137,8 @@ pipx inject \
   httpie \
   uv \
   'litellm[proxy]' \
-  --pip-args="--upgrade"
+  --pip-args="--upgrade" \
+  --include-deps
 
 pipx ensurepath
 
