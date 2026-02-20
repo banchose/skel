@@ -1,5 +1,14 @@
 # source me
-#
+
+# Set the https credential username
+
+## In the pisal repo (same org, same account)
+# cd ~/hrigit/Kubernetes/pisal
+# git config credential.https://github.com.username wjs04-hri
+
+## In the banchose repo
+# cd ~/gitdir/aws
+# git config credential.https://github.com.username banchose
 
 alias gitb='git branch -vv' # show detailed branch info
 alias gitr='git branch -r'  # show remote branches
