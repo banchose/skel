@@ -1,0 +1,218 @@
+[core]
+    editor = vim
+    autocrlf = input
+    excludesfile = ~/.gitignore
+[user]
+    email = a_gitmail@ownmail.net
+    name = banchose
+
+[credential]
+    # https://github.com/GitCredentialManager/git-credential-manager/blob/main/docs/configuration.md
+    # git config credential.helper to see what is being used
+    # git config --global credential.helper manager-core
+    #
+    # If using Wayland or X, use libsecret
+    # If using terminal, user cache --timeout=4800
+    # If using windows, manager-core (?? I think)
+    # helper = libsecret
+    # helper = cache --timeout=4800
+    # helper = manager-core
+    # Command below worked on Windows
+    helper = "/mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe"
+
+[pull]
+    rebase = true
+
+[column]
+    ui = auto
+
+[help]
+    autocorrect = prompt
+
+[commit]
+    verbose = true
+
+[rerere]
+    enabled = true
+    autoupdate = true
+
+[rebase]
+    autoSquash = true
+    autoStash = true
+    updateRefs = true
+
+[branch]
+    sort = -committerdate
+
+[tag]
+    sort = version:refname
+
+[init]
+    defaultBranch = main
+
+[diff]
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
+
+[push]
+    autoSetupRemote = true
+    followTags = true
+
+[fetch]
+    prune = true
+    pruneTags = true
+    all = true
+
+[merge]
+    conflictstyle = zdiff3
+    tool = vimdiff
+
+[mergetool "nvim"]
+    cmd = nvim -f -c \"Gdiff\" \"$MERGED\"
+[mergetool]
+    path = nvim
+[mergetool "vimdiff"]
+    path = nvim
+
+[alias]
+    a = add --all
+    ai = add -i
+    #############
+    ap = apply
+    as = apply --stat
+    ac = apply --check
+    #############
+    ama = am --abort
+    amr = am --resolved
+    ams = am --skip
+    #############
+    b = branch
+    ba = branch -a
+    bd = branch -d
+    bdd = branch -D
+    br = branch -r
+    bc = rev-parse --abbrev-ref HEAD
+    #############
+    c = commit
+    ca = commit -a
+    cm = commit -m
+    cam = commit -am
+    cem = commit --allow-empty -m
+    cd = commit --amend
+    cad = commit -a --amend
+    ced = commit --allow-empty --amend
+    #############
+    cl = clone
+    cld = clone --depth 1
+    #############
+    cp = cherry-pick
+    cpa = cherry-pick --abort
+    cpc = cherry-pick --continue
+    #############
+    d = diff
+    dc = diff --cached
+    dk = diff --check
+    dck = diff --cached --check
+    dt = difftool
+    dct = difftool --cached
+    #############
+    f = fetch
+    fo = fetch origin
+    fu = fetch upstream
+    #############
+    fp = format-patch
+    #############
+    fk = fsck
+    #############
+    g = grep -p
+    #############
+    l = log --oneline
+    lg = log --oneline --graph --decorate
+    ll = log --oneline --graph --decorate -30
+    #############
+    ls = ls-files
+    lsf = !git ls-files | grep -i
+    #############
+    m = merge
+    ma = merge --abort
+    mc = merge --continue
+    ms = merge --skip
+    #############
+    o = checkout
+    ob = checkout -b
+    #############
+    pr = prune -v
+    #############
+    ps = push
+    psf = push -f
+    #############
+    pso = push origin
+    psao = push --all origin
+    psfo = push -f origin
+    #############
+    psom = push origin master
+    psaom = push --all origin master
+    psfom = push -f origin master
+    psoc = !git push origin $(git bc)
+    psaoc = !git push --all origin $(git bc)
+    psfoc = !git push -f origin $(git bc)
+    psdc = !git push origin :$(git bc)
+    #############
+    pl = pull
+    #############
+    plo = pull origin
+    #############
+    plu = pull upstream
+    plum = pull upstream master
+    pluc = !git pull upstream $(git bc)
+    #############
+    rb = rebase
+    rba = rebase --abort
+    rbc = rebase --continue
+    rbi = rebase --interactive
+    rbs = rebase --skip
+    #############
+    re = reset
+    rh = reset HEAD
+    reh = reset --hard
+    rem = reset --mixed
+    res = reset --soft
+    rehh = reset --hard HEAD
+    remh = reset --mixed HEAD
+    resh = reset --soft HEAD
+    #############
+    r = remote
+    ra = remote add
+    rr = remote rm
+    rv = remote -v
+    rn = remote rename
+    rp = remote prune
+    rs = remote show
+    rao = remote add origin
+    rau = remote add upstream
+    rro = remote remove origin
+    rru = remote remove upstream
+    rso = remote show origin
+    rsu = remote show upstream
+    rpo = remote prune origin
+    rpu = remote prune upstream
+    #############
+    s = status
+    sb = status -s -b
+    #############
+    sa = stash apply
+    sc = stash clear
+    sd = stash drop
+    sl = stash list
+    sp = stash pop
+    ss = stash save
+    sw = stash show
+    #############
+    t = tag
+    td = tag -d
+    #############
+    w = show
+    wp = show -p
+    wr = show -p --no-color
