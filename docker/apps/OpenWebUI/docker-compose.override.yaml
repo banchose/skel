@@ -11,7 +11,18 @@ services:
     networks:
       - traefik_web
 
-
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    volumes:
+      - ./litellm_config.yaml:/app/config.yaml
+    networks:
+      - traefik_web
+    restart: unless-stopped
+    environment:
+      - LITELLM_MASTER_KEY=sk-V10bVpxeOssR3id0
+      - AWS_BEARER_TOKEN_BEDROCK=${AWS_BEARER_TOKEN_BEDROCK}
+  
 #####
   mcpo-timeserver:
     build:
