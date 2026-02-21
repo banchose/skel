@@ -15,9 +15,8 @@ alias gitr='git branch -r'  # show remote branches
 alias cdskel='cd ~/gitdir/skel'
 alias cdskelb='cd ~/gitdir/skel/bash/bashrc_zen.d'
 alias cdzen='cd ~/gitdir/skel/bash/bashrc_zen.d'
-alias cdhzen='cd ~/.bashrc_zen.d'
 alias cdconfigs='cd ~/gitdir/configs'
-alias cdhzen='cd ~/.bashrc_zen.d'
+alias cdzend='cd ~/.bashrc_zen.d'
 
 gitcheck() {
   for i in ~/gitdir/{aws,skel,configs}; do
@@ -82,6 +81,7 @@ gitwho() {
   git config --get user.name
   git config --get user.email
   git config --get credential.helper
+  git config credential.https://github.com.username
 
 }
 
@@ -92,6 +92,7 @@ set-hri-git() {
   git config user.name "wjs04-hri"
   git config user.email "william.stewart"
   git config credential.helper "cache --timeout=7000"
+  git config credential.https://github.com.username wjs04-hri
 
 }
 
@@ -99,6 +100,7 @@ set-own-git() {
 
   git config --unset credential.helper
   git config user.name "banchose"
+  git config credential.https://github.com.username banchose
   git config user.email "a_gitmail@ownmail.net"
   git config credential.helper "libsecret"
 

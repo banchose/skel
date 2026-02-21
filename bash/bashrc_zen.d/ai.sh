@@ -35,7 +35,8 @@ Current_Model="${OR_MODEL}"
 #
 HAIKU="claude-haiku-4-5-20251001"
 SONNET="claude-sonnet-4-5-20250929"
-ANTHROPIC_MODEL="claude-sonnet-4-5-20250929"
+# ANTHROPIC_MODEL="claude-sonnet-4-5-20250929"
+# ANTHROPIC_MODEL="us.anthropic.claude-opus-4-6-v1"
 
 # Tokens
 #
