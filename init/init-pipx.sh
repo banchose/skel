@@ -85,10 +85,13 @@ pipx install 'litellm[proxy]'
 pipx install git-filter-repo
 # pipx install pyprland
 
+pipx inject ptpython requests pendulum httpx uv --pip-args="--upgrade"
+
 pipx inject llm llm-tools-exa --pip-args="--upgrade"
 pipx inject llm llm-openrouter --pip-args="--upgrade"
 pipx inject llm llm-anthropic --pip-args="--upgrade"
 pipx inject llm llm-gemini --pip-args="--upgrade"
+pipx inject llm pymupdf-layout --pip-args="--upgrade"
 pipx inject llm llm-fragments-github --pip-args="--upgrade"
 pipx inject llm llm-tools-simpleeval --pip-args="--upgrade"
 pipx inject llm llm-cmd-comp --pip-args="--upgrade"

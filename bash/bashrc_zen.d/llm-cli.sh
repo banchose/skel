@@ -1,11 +1,32 @@
 [[ -z $ANTHROPIC_API_KEY ]] && echo "***** ANTHROPIC_API_KEY not set *****"
-[[ -z $AWS_BEARER_TOKEN_BEDROCK ]] && echo "***** $AWS_BEARER_TOKEN_BEDROCK not set *****"
+[[ -z $AWS_BEARER_TOKEN_BEDROCK ]] && echo "*****  AWS_BEARER_TOKEN_BEDROCK not set *****"
+[[ -z $AWS_BEDROCK_DEFAULT_MODEL ]] && echo "***** AWS_BEDROCK_DEFAULT_MODEL is not set"
 
-alias llms='llm -s "It is currently $(date). Please be accurate and concise." -u -m anthropic/claude-sonnet-4-0 -T web_search -T simple_eval'
-alias llmo='llm -s "It is currently $(date). Please be accurate and concise." -u -m anthropic/claude-opus-4-0 -T web_search -T simple_eval'
-alias llmbed='llm -s "It is currently $(date). Please be accurate and concise." -m bedrock-claude-v4.5-sonnet -o bedrock_model_id us.anthropic.claude-sonnet-4-5-20250929-v1:0'
+# alias llms='llm -s "It is currently $(date). Please be accurate and concise." -u -m anthropic/claude-sonnet-4-0 -T web_search -T simple_eval'
+# alias llmo='llm -s "It is currently $(date). Please be accurate and concise." -u -m anthropic/claude-opus-4-0 -T web_search -T simple_eval'
 
-export llmok="This is just a test message. Reply only with 'OK'"
+# AWS Bedrock
+alias llmtestbed='llm "This is just a test.  Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL}"'
+
+alias llmbed='llm -s "It is currently $(date). Please be accurate and concise." -m "${AWS_BEDROCK_DEFAULT_MODEL}"'
+
+llmsetbedrock() {
+  if [[ -z "${AWS_BEARER_TOKEN_BEDROCK+x}" ]]; then
+    printf 'WARNING: AWS_BEARER_TOKEN_BEDROCK is not set\n' >&2
+  else
+    local token="${AWS_BEARER_TOKEN_BEDROCK}"
+    local len="${#token}"
+    if ((len > 16)); then
+      printf 'AWS_BEARER_TOKEN_BEDROCK: %s…%s (len=%d)\n' \
+        "${token:0:8}" "${token: -8}" "${len}" >&2
+    else
+      printf 'AWS_BEARER_TOKEN_BEDROCK: [token too short to truncate] (len=%d)\n' \
+        "${len}" >&2
+    fi
+  fi
+
+  llm models default "${AWS_BEDROCK_DEFAULT_MODEL}"
+}
 
 llmwet() {
   curl -s "https://api.open-meteo.com/v1/forecast?\
