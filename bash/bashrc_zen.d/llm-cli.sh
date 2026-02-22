@@ -6,14 +6,24 @@
 # AWS Bedrock
 alias llmtestbed='llm "This is just a test. Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL}"'
 
-# Use a function instead of alias to capture date once
-# llmbed() {
-#   local current_date
-#   current_date=$(date)
-#   llm -s "It is currently ${current_date}. Please be accurate and concise." -m "${AWS_BEDROCK_DEFAULT_MODEL}" "$@"
-# }
+llm-test-bedrock() {
 
-llmsetbedrock() {
+  echo "checking llm default model"
+  llm models default
+  echo "AWS_BEARER_TOKEN_BEDROCK is set to ${AWS_BEARER_TOKEN_BEDROCK:0:8}"
+  echo "AWS_BEDROCK_DEFAULT_MODEL is set to ${AWS_BEDROCK_DEFAULT_MODEL}"
+  llm "This is just a test. Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL}"
+
+}
+
+# Use a function instead of alias to capture date once
+llmbed() {
+  local current_date
+  current_date=$(date)
+  llm -s "It is currently ${current_date}. Please be accurate and concise." -m "${AWS_BEDROCK_DEFAULT_MODEL}" "$@"
+}
+
+llm-set-bedrock() {
   if [[ -z "${AWS_BEARER_TOKEN_BEDROCK+x}" ]]; then
     printf 'WARNING: AWS_BEARER_TOKEN_BEDROCK is not set\n' >&2
     return 1
