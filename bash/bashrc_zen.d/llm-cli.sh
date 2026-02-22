@@ -1,109 +1,66 @@
-[[ -z $ANTHROPIC_API_KEY ]] && echo "***** ANTHROPIC_API_KEY not set *****"
-[[ -z $AWS_BEARER_TOKEN_BEDROCK ]] && echo "*****  AWS_BEARER_TOKEN_BEDROCK not set *****"
-[[ -z $AWS_BEDROCK_DEFAULT_MODEL ]] && echo "***** AWS_BEDROCK_DEFAULT_MODEL is not set"
-
-# alias llms='llm -s "It is currently $(date). Please be accurate and concise." -u -m anthropic/claude-sonnet-4-0 -T web_search -T simple_eval'
-# alias llmo='llm -s "It is currently $(date). Please be accurate and concise." -u -m anthropic/claude-opus-4-0 -T web_search -T simple_eval'
+# Check for required environment variables
+[[ -z $ANTHROPIC_API_KEY ]] && echo "***** ANTHROPIC_API_KEY not set *****" >&2
+[[ -z $AWS_BEARER_TOKEN_BEDROCK ]] && echo "***** AWS_BEARER_TOKEN_BEDROCK not set *****" >&2
+[[ -z $AWS_BEDROCK_DEFAULT_MODEL ]] && echo "***** AWS_BEDROCK_DEFAULT_MODEL is not set *****" >&2
 
 # AWS Bedrock
-alias llmtestbed='llm "This is just a test.  Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL}"'
+alias llmtestbed='llm "This is just a test. Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL}"'
 
-alias llmbed='llm -s "It is currently $(date). Please be accurate and concise." -m "${AWS_BEDROCK_DEFAULT_MODEL}"'
+# Use a function instead of alias to capture date once
+# llmbed() {
+#   local current_date
+#   current_date=$(date)
+#   llm -s "It is currently ${current_date}. Please be accurate and concise." -m "${AWS_BEDROCK_DEFAULT_MODEL}" "$@"
+# }
 
 llmsetbedrock() {
   if [[ -z "${AWS_BEARER_TOKEN_BEDROCK+x}" ]]; then
     printf 'WARNING: AWS_BEARER_TOKEN_BEDROCK is not set\n' >&2
+    return 1
+  fi
+
+  local token="${AWS_BEARER_TOKEN_BEDROCK}"
+  local len="${#token}"
+
+  if ((len > 16)); then
+    printf 'AWS_BEARER_TOKEN_BEDROCK: %s…%s (len=%d)\n' \
+      "${token:0:8}" "${token: -8}" "${len}" >&2
   else
-    local token="${AWS_BEARER_TOKEN_BEDROCK}"
-    local len="${#token}"
-    if ((len > 16)); then
-      printf 'AWS_BEARER_TOKEN_BEDROCK: %s…%s (len=%d)\n' \
-        "${token:0:8}" "${token: -8}" "${len}" >&2
-    else
-      printf 'AWS_BEARER_TOKEN_BEDROCK: [token too short to truncate] (len=%d)\n' \
-        "${len}" >&2
-    fi
+    printf 'AWS_BEARER_TOKEN_BEDROCK: [token too short to truncate] (len=%d)\n' \
+      "${len}" >&2
   fi
 
   llm models default "${AWS_BEDROCK_DEFAULT_MODEL}"
 }
 
+# DRY principle - extract common weather function
+_llm_weather_common() {
+  local mode="$1" # "chat" or regular
+  local current_date
+  current_date=$(date)
+
+  local weather_url="https://api.open-meteo.com/v1/forecast"
+  weather_url+="?latitude=42.742830&longitude=-73.801163"
+  weather_url+="&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,weather_code,cloud_cover,visibility"
+  weather_url+="&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation,precipitation_probability,rain,showers,snowfall,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,visibility,cape"
+  weather_url+="&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant"
+  weather_url+="&past_days=2&forecast_days=3&timezone=America/New_York"
+
+  local system_prompt="You are a very experienced and cool Weatherman. You have an aged style and grace. You specialize in using your vast knowledge and experience providing weather insights from patterns in the data that some weatherman might miss. You specialize in predicting hazardous conditions for the general Albany, NY area either current or near future. The current date is ${current_date}. Please indicate the current date as given and indicate the date of the forecast as provided in the json weather information. I want you to be working with only the most up to date information and to be aware when you are not. I would like you to first give the detailed current conditions including dew point. Then provide a section for future forecast, and last a section on alerts or notable conditions."
+
+  if [[ "$mode" == "chat" ]]; then
+    curl -s "$weather_url" |
+      llm chat -s "$system_prompt" -o temperature 0.6
+  else
+    curl -s "$weather_url" |
+      llm -s "$system_prompt" -o temperature 0.6
+  fi
+}
+
 llmwet() {
-  curl -s "https://api.open-meteo.com/v1/forecast?\
-latitude=42.742830&longitude=-73.801163&\
-current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,weather_code,cloud_cover,visibility&\
-hourly=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation,precipitation_probability,rain,showers,snowfall,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,visibility,cape&\
-daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant&\
-past_days=2&forecast_days=3&timezone=America/New_York" |
-    \llm -s "You are a very experienced and cool Weatherman. You have an aged style and grace.  You specialize in using your vast knowledge and experience providing weather insights from patterns in the data that some weatherman might miss \
-  You specialize in predicting hazardous conditions for the general Albany, NY \
-  area either current or near future. The current date is $(date). Please indicate the current date as given and indicate the date of the forcast as provided in the json weather information. I want you to be working with only the most up to date information and to be aware when you are not. \
-  I would like you to first give the detailed current contions including dew point. \
-  Then provide a section for future forcast, and last a section on alerts or notable conditions" \
-      -o temperature 0.6
+  _llm_weather_common "regular"
 }
 
 llmwetc() {
-  curl -s "https://api.open-meteo.com/v1/forecast?\
-latitude=42.742830&longitude=-73.801163&\
-current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,weather_code,cloud_cover,visibility&\
-hourly=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation,precipitation_probability,rain,showers,snowfall,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,visibility,cape&\
-daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant&\
-past_days=2&forecast_days=3&timezone=America/New_York" |
-    \llm chat -s "You are a very experienced and cool Weatherman. You have an aged style and grace.  You specialize in using your vast knowledge and experience providing weather insights from patterns in the data that some weatherman might miss \
-  You specialize in predicting hazardous conditions for the general Albany, NY \
-  area either current or near future. The current date is $(date). Please indicate the current date as given and indicate the date of the forcast as provided in the json weather information. I want you to be working with only the most up to date information and to be aware when you are not. \
-  I would like you to first give the detailed current contions including dew point. \
-  Then provide a section for future forcast, and last a section on alerts or notable conditions" \
-      -o temperature 0.6
+  _llm_weather_common "chat"
 }
-
-# pipx install llm
-# pipx inject llm llm-tools-exa --pip-args="--upgrade" --force
-# pipx inject llm llm-openrouter --pip-args="--upgrade"
-# pipx inject llm llm-anthropic --pip-args="--upgrade" --force
-# pipx inject llm llm-fragments-github --pip-args="--upgrade" --force
-# pipx inject llm llm-tools-simpleeval --pip-args="--upgrade" --force
-# pipx inject llm llm-cmd-comp --pip-args="--upgrade" --force
-# pipx inject llm llm-cmd --pip-args="--upgrade" --force
-# pipx inject llm llm-templates-fabric --pip-args="--upgrade" --force
-# pipx inject llm llm-python --pip-args="--upgrade" --force
-# pipx inject llm llm-jq --pip-args="--upgrade" --force
-
-# set:
-# export OPENWEATHER_APP_ID="04d5441a8a0215
-# export OPENWEATHER_LOCATION='{"lat": 42.742830, "lon": -73.801163}'
-# export LAT=42.742830
-# export LON=-73.801163
-# export OPENROUTER_API_KEY="sk-or-v1-996d
-# export OPENROUTER_KEY="sk-or-v1-996da36
-# export ANTHROPIC_API_KEY="sk-ant-api03
-# export PORKBUN_API_KEY="pk1_319fdfca7
-# export PORKBUN_SECRET_KEY="sk1_22b89
-# export CERTBOT_DOMAIN="xaax.dev"
-# export WOLFRAMALPHA_API_KEY=3P72KK-
-# export JINA_API_KEY=jina_fe32f2144a
-# export TAVILY_API_KEY=tvly-dev-mnhZ
-# export EXTRA_openrouter_aws_service_cli="sk-or-v1-248bd21f2
-# export EXA_API_KEY=7ba0437f-b8
-# set:
-# llm keys set openai
-# llm keys set gemini
-# llm keys set anthropic
-# llm keys set exa  # web search
-
-##################################################
-# Example commands
-##################################################
-# llm -m claude-4-sonnet -s "It is currently $(date)" -T web_search "search the web to get today's weather in nyc"
-#
-# # Summarize a webpage
-# llm -t fabric:summarize -f https://example.com
-
-# Explain code from a file
-# llm -t fabric:explain_code < script.py
-# llm -t fabric:create_flash_cards
-# Extract wisdom from a document
-# llm -t fabric:extract_wisdom < document.txt
-
-# https://llm.datasette.io
