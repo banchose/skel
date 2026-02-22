@@ -13,3 +13,11 @@ myclaude() {
     claude "$@"
   )
 }
+
+get-prompt-default() {
+
+  local prompt=~/gitdir/skel/PROMPT/DEFAULT_PROMPT_strict.txt
+
+  [[ -f ${prompt} ]] && cat "${prompt}"
+
+}
