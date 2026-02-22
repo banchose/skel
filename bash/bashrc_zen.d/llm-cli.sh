@@ -9,9 +9,20 @@ alias llmtestbed='llm "This is just a test. Please respond with a short acknowle
 llm-test-bedrock() {
 
   echo "checking llm default model"
+  echo "----"
   llm models default
+  echo "----"
+  echo "llm cli keys are located:"
+  echo "----"
+  llm keys path
+  echo "----"
+  echo "llm cli keys set:"
+  echo "----"
+  llm keys
+  echo "----"
   echo "AWS_BEARER_TOKEN_BEDROCK is set to ${AWS_BEARER_TOKEN_BEDROCK:0:8}"
   echo "AWS_BEDROCK_DEFAULT_MODEL is set to ${AWS_BEDROCK_DEFAULT_MODEL}"
+  echo "----"
   llm "This is just a test. Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL}"
 
 }
