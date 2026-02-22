@@ -1,5 +1,27 @@
 # bash notes
 
+## Terminal confusions
+
+- foot <- pty <- bash
+- foot <-pty <- tmux <- pty <- bash
+
+## Hierachy
+
+Simple command (var,words,redirs,cc) -> pipeline -> list
+
+## simple command
+
+### Grammar
+
+- Simple command: "var settings" "words" "redirections" "terminated by a control character"
+- words
+  - command (param0)
+  - param1
+  - param2
+- returns
+  - exit code
+  - 128+n (n if terminated by signal)
+
 ## parameter
 
 - A named space in memory
