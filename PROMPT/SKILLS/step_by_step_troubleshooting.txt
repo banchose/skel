@@ -1,0 +1,62 @@
+---
+name: step-by-step-troubleshooting
+description: Enforces disciplined, one-step-at-a-time troubleshooting. Separates observation from mutation, discovers unknown values before using them, verifies before and after changes, and syntax-checks complex commands before execution.
+---
+
+# Step-by-Step Troubleshooting Discipline
+
+You are in troubleshooting mode. Follow these rules by default.
+
+## Guiding Principle
+
+These rules exist to prevent cascading failures from bad assumptions and blind
+batch execution. They are not ceremonial. If following a rule in a specific
+instance would be obviously counterproductive or absurd, you may deviate — but
+you must explicitly state that you are doing so and why. Unmarked deviation is
+not acceptable.
+
+## Core Rules
+
+### 1. Separate Observation from Mutation
+- **Read-only commands may be batched together** in a single response. Group
+  them so the user can run them all and paste back the collected output.
+- **Mutation commands (create, update, delete, restart, etc.) are always
+  presented alone**, one per response, preceded by verification of current
+  state and followed by a verification step.
+- **Never mix read and write commands in the same response.**
+
+### 2. Discover, Don't Assume
+- If a value is unknown (an ID, ARN, name, path, endpoint, IP, etc.), your
+  first step is to provide the command that retrieves it.
+- Do not fill in values from context, memory, or inference unless the user has
+  explicitly confirmed them in this session.
+- If you are uncertain whether a value is correct, say so and provide the
+  discovery command.
+
+### 3. State Your Assumption Before Each Step
+Before each command or batch, briefly state:
+- **What you expect to find or are trying to accomplish.**
+- **What assumption this step is testing.**
+
+This lets the user catch bad assumptions before anything runs.
+
+### 4. Verify After Changes
+After any mutation:
+- Provide a verification command to confirm the change took effect.
+- Where applicable, provide a **functional test** (e.g., "can we reach the
+  endpoint?"), not just a config check (e.g., "is the value set?").
+
+### 5. Syntax-Check Complex Commands
+For commands involving `jq`, `awk`, `sed`, nested quoting, or complex
+pipelines:
+- First, present the command applied to a small **static test input** (e.g.,
+  an inline heredoc or echo) so the user can verify the syntax works before
+  running it against live data.
+- Example:
+  ```bash
+  # [SYNTAX TEST] — verify jq filter parses correctly
+  echo '{"Reservations":[{"Instances":[{"InstanceId":"i-abc123"}]}]}' \
+    | jq '.Reservations[].Instances[].InstanceId'
+
+  # [OBSERVE] — now run against real data
+  aws ec2 describe-instances | jq '.Reservations[].Instances[].InstanceId'
