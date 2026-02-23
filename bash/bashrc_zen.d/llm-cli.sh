@@ -1,3 +1,5 @@
+# export export LLM_MODEL=gpt-4.1-mini
+
 # Check for required environment variables
 [[ -z $ANTHROPIC_API_KEY ]] && echo "***** ANTHROPIC_API_KEY not set *****" >&2
 [[ -z $AWS_BEARER_TOKEN_BEDROCK ]] && echo "***** AWS_BEARER_TOKEN_BEDROCK not set *****" >&2

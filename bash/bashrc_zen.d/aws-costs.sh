@@ -1,4 +1,4 @@
-awlcost() {
+awlcostj() {
   aws ce get-cost-and-usage \
     --profile man \
     --region us-east-1 \
@@ -7,7 +7,7 @@ awlcost() {
     --metrics "UnblendedCost" \
     --group-by '[{"Type": "DIMENSION", "Key": "SERVICE"}]'
 }
-awlcostj() {
+awlcost() {
   local START=$(date -d "$(date +%Y-%m-01)" +%Y-%m-%d)
   local END=$(date +%Y-%m-%d)
   aws ce get-cost-and-usage \
