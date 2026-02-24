@@ -1,5 +1,3 @@
-# export export LLM_MODEL=gpt-4.1-mini
-
 # Check for required environment variables
 [[ -z $ANTHROPIC_API_KEY ]] && echo "***** ANTHROPIC_API_KEY not set *****" >&2
 [[ -z $OPENROUTER_API_KEY ]] && echo "***** OPENROUTER_API_KEY not set *****" >&2
@@ -10,17 +8,27 @@ export OPENROUTER_DEFAULT_MODEL=openrouter/anthropic/claude-sonnet-4.6
 echo "EXPORTING OPENROUTER_DEFAULT_MODEL: ${OPENROUTER_DEFAULT_MODEL}"
 
 # AWS Bedrock
-# alias llm-test-bedrock='llm "This is just a test. Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL}"'
+
 alias llm_png='wl-paste | llm --at - image/png'
 alias llm_or_srch='llm -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
 
 llm_set_openrouter_key() {
-
-  llm keys set openrouter --value "${OPENROUTER_API_KEY}"
-
+  [[ -z "${OPENROUTER_API_KEY}" ]] && {
+    printf 'WARNING: OPENROUTER_API_KEY is not set\n' >&2
+    return 1
+  }
+  printf '%s' "${OPENROUTER_API_KEY}" | llm keys set openrouter
 }
 
-llm_test_bedrrock() {
+llm_set_anthropic_key() {
+  [[ -z "${ANTHROPIC_API_KEY}" ]] && {
+    printf 'WARNING: ANTHROPIC_API_KEY is not set\n' >&2
+    return 1
+  }
+  printf '%s' "${ANTHROPIC_API_KEY}" | llm keys set anthropic
+}
+
+llm_test_bedrock() {
 
   echo "checking llm default model"
   echo "----"
@@ -43,21 +51,30 @@ llm_test_bedrrock() {
 
 llm_help() {
 
-  echo "llm keys list"
-  echo "llm keys path"
-  echo "llm keys get"
-  echo "llm keys set"
-  echo "llm logs status"
-  echo "llm logs on/off/list"
-  echo "llm models options"
-  echo "llm models list"
-  echo "llm models default # show the default model"
-  echo "llm models default MODEL # to set default model"
-  echo "llm -c # to continue chat"
-  echo "llm prompt --help"
-  echo 'cat ml_script.py | llm "Walk through this file and explain how it works. Start with a summary, then go line-by-line for the most difficult sections."'
-  echo "find . -name '*.py' | xargs -I {} sh -c 'echo \"\n=== {} ===\n\"; cat {}'"
-  echo "find . -name '*.py' | xargs -I {} sh -c 'echo \"\n=== {} ===\n\"; cat {}' | llm \"Explain this project and summarize the key components.\""
+  cat <<'EOF'
+llm keys set anthropic --value <env var>
+llm keys set openrouter --value <env var>
+llm keys list
+llm keys path
+llm keys get
+llm keys set
+llm logs status
+llm logs          #  find conversation IDs
+llm --cid <id>
+llm logs on/off/list
+llm models options
+llm models list
+llm models default # show the default model
+llm models default MODEL # to set default model
+llm -c # to continue chat
+llm prompt --help
+  --- custom functions ---
+llmbed <prompt>               # prompt via Bedrock with date context
+llm_set_bedrock_model         # set llm default model to AWS_BEDROCK_DEFAULT_MODEL
+llm_set_openrouter_key        # load OPENROUTER_API_KEY into llm keys
+llm_set_anthropic_key         # load ANTHROPIC_API_KEY into llm keys
+llm_test_bedrock              # run diagnostics + test prompt via Bedrock
+EOF
 
 }
 
@@ -68,7 +85,8 @@ llmbed() {
   llm -s "It is currently ${current_date}. Please be accurate and concise." -m "${AWS_BEDROCK_DEFAULT_MODEL}" "$@"
 }
 
-llm-set-bedrock() {
+llm_set_bedrock_model() {
+
   if [[ -z "${AWS_BEARER_TOKEN_BEDROCK+x}" ]]; then
     printf 'WARNING: AWS_BEARER_TOKEN_BEDROCK is not set\n' >&2
     return 1
@@ -86,36 +104,4 @@ llm-set-bedrock() {
   fi
 
   llm models default "${AWS_BEDROCK_DEFAULT_MODEL}"
-}
-
-# DRY principle - extract common weather function
-_llm_weather_common() {
-  local mode="$1" # "chat" or regular
-  local current_date
-  current_date=$(date)
-
-  local weather_url="https://api.open-meteo.com/v1/forecast"
-  weather_url+="?latitude=42.742830&longitude=-73.801163"
-  weather_url+="&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,weather_code,cloud_cover,visibility"
-  weather_url+="&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,dew_point_2m,precipitation,precipitation_probability,rain,showers,snowfall,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,visibility,cape"
-  weather_url+="&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant"
-  weather_url+="&past_days=2&forecast_days=3&timezone=America/New_York"
-
-  local system_prompt="You are a very experienced and cool Weatherman. You have an aged style and grace. You specialize in using your vast knowledge and experience providing weather insights from patterns in the data that some weatherman might miss. You specialize in predicting hazardous conditions for the general Albany, NY area either current or near future. The current date is ${current_date}. Please indicate the current date as given and indicate the date of the forecast as provided in the json weather information. I want you to be working with only the most up to date information and to be aware when you are not. I would like you to first give the detailed current conditions including dew point. Then provide a section for future forecast, and last a section on alerts or notable conditions."
-
-  if [[ "$mode" == "chat" ]]; then
-    curl -s "$weather_url" |
-      llm chat -s "$system_prompt" -o temperature 0.6
-  else
-    curl -s "$weather_url" |
-      llm -s "$system_prompt" -o temperature 0.6
-  fi
-}
-
-llmwet() {
-  _llm_weather_common "regular"
-}
-
-llmwetc() {
-  _llm_weather_common "chat"
 }
