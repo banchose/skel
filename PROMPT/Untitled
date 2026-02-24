@@ -1,0 +1,58 @@
+[4653][HAL-WJS04-2][una][2026-02-24 16:25:50][~/gitdir/skel/PROMPT]
+[0][5.2]$ llm models list | grep -E '(opus|sonnet)'
+BedrockClaude: anthropic.claude-3-sonnet-20240229-v1:0 (aliases: bedrock-claude-v3-sonnet)
+BedrockClaude: us.anthropic.claude-3-5-sonnet-20241022-v2:0 (aliases: bedrock-claude-v3.5-sonnet-v2, bedrock-claude-sonnet-v2)
+BedrockClaude: anthropic.claude-3-5-sonnet-20240620-v1:0 (aliases: bedrock-claude-v3.5-sonnet, bedrock-claude-sonnet, bedrock-sonnet, bedrock-claude, bc)
+BedrockClaude: anthropic.claude-3-opus-20240229-v1:0 (aliases: bedrock-claude-v3-opus, bedrock-claude-opus, bedrock-opus, bo)
+BedrockClaude: us.anthropic.claude-3-7-sonnet-20250219-v1:0 (aliases: bedrock-claude-v3.7-sonnet, bedrock-claude-sonnet-v3.7, bc-v3.7)
+BedrockClaude: anthropic.claude-sonnet-4-20250514-v1:0 (aliases: bedrock-claude-v4-sonnet, bedrock-claude-sonnet-v4, bc-v4)
+BedrockClaude: anthropic.claude-opus-4-20250514-v1:0 (aliases: bedrock-claude-v4-opus, bedrock-claude-opus-v4, bo-v4)
+BedrockClaude: anthropic.claude-opus-4-1-20250805-v1:0 (aliases: bedrock-claude-v4.1-opus, bedrock-claude-opus-v4.1, bo-v4.1)
+BedrockClaude: anthropic.claude-sonnet-4-5-20250929-v1:0 (aliases: bedrock-claude-v4.5-sonnet, bedrock-claude-sonnet-v4.5, bc-v4.5)
+BedrockClaude: us.anthropic.claude-opus-4-1-20250805-v1:0 (aliases: bedrock-claude-v4.1-opus-us, bedrock-claude-opus-v4.1-us, bo-v4.1-us)
+BedrockClaude: us.anthropic.claude-sonnet-4-5-20250929-v1:0 (aliases: bedrock-claude-v4.5-sonnet-us, bedrock-claude-sonnet-v4.5-us, bc-v4.5-us)
+BedrockClaude: global.anthropic.claude-sonnet-4-20250514-v1:0 (aliases: bedrock-claude-v4-sonnet-global, bedrock-claude-sonnet-v4-global, bc-v4-global)
+BedrockClaude: global.anthropic.claude-sonnet-4-5-20250929-v1:0 (aliases: bedrock-claude-v4.5-sonnet-global, bedrock-claude-sonnet-v4.5-global, bc-v4.5-global)
+Anthropic Messages: anthropic/claude-3-opus-20240229
+Anthropic Messages: anthropic/claude-3-opus-latest (aliases: claude-3-opus)
+Anthropic Messages: anthropic/claude-3-sonnet-20240229 (aliases: claude-3-sonnet)
+Anthropic Messages: anthropic/claude-3-5-sonnet-20240620
+Anthropic Messages: anthropic/claude-3-5-sonnet-20241022
+Anthropic Messages: anthropic/claude-3-5-sonnet-latest (aliases: claude-3.5-sonnet, claude-3.5-sonnet-latest)
+Anthropic Messages: anthropic/claude-3-7-sonnet-20250219
+Anthropic Messages: anthropic/claude-3-7-sonnet-latest (aliases: claude-3.7-sonnet, claude-3.7-sonnet-latest)
+Anthropic Messages: anthropic/claude-opus-4-0 (aliases: claude-4-opus)
+Anthropic Messages: anthropic/claude-sonnet-4-0 (aliases: claude-4-sonnet)
+Anthropic Messages: anthropic/claude-opus-4-1-20250805 (aliases: claude-opus-4.1)
+Anthropic Messages: anthropic/claude-sonnet-4-5 (aliases: claude-sonnet-4.5)
+Anthropic Messages: anthropic/claude-opus-4-5-20251101 (aliases: claude-opus-4.5)
+Anthropic Messages: anthropic/claude-opus-4-6 (aliases: claude-opus-4.6)
+Anthropic Messages: anthropic/claude-sonnet-4-6 (aliases: claude-sonnet-4.6)
+OpenRouter: openrouter/anthropic/claude-sonnet-4.6
+OpenRouter: openrouter/anthropic/claude-opus-4.6
+OpenRouter: openrouter/anthropic/claude-opus-4.5
+OpenRouter: openrouter/anthropic/claude-sonnet-4.5
+OpenRouter: openrouter/anthropic/claude-opus-4.1
+OpenRouter: openrouter/anthropic/claude-opus-4
+OpenRouter: openrouter/anthropic/claude-sonnet-4
+OpenRouter: openrouter/anthropic/claude-3.7-sonnet
+OpenRouter: openrouter/anthropic/claude-3.7-sonnet:thinking
+OpenRouter: openrouter/anthropic/claude-3.5-sonnet
+Default: us.anthropic.claude-sonnet-4-5-20250929-v1:0
+[4654][HAL-WJS04-2][una][2026-02-24 16:26:08][~/gitdir/skel/PROMPT]
+[0][5.2]$ llm -m openrouter/anthropic/claude-sonnet-4.6 -o online 1 'what happened in the news today'
+Error: Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}
+[4655][HAL-WJS04-2][una][2026-02-24 16:26:44][~/gitdir/skel/PROMPT]
+[1][5.2]$ llm keys
+anthropic
+exa
+openrouter
+[4655][HAL-WJS04-2][una][2026-02-24 16:26:58][~/gitdir/skel/PROMPT]
+[0][5.2]$ llm keys set openrouter
+Enter key:
+[4656][HAL-WJS04-2][una][2026-02-24 16:27:35][~/gitdir/skel/PROMPT]
+[0][5.2]$ llm -m openrouter/anthropic/claude-sonnet-4.6 -o online 1 'what happened in the news today'
+Error: Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}
+[4656][HAL-WJS04-2][una][2026-02-24 16:27:44][~/gitdir/skel/PROMPT]
+[1][5.2]$
+

@@ -2,14 +2,25 @@
 
 # Check for required environment variables
 [[ -z $ANTHROPIC_API_KEY ]] && echo "***** ANTHROPIC_API_KEY not set *****" >&2
+[[ -z $OPENROUTER_API_KEY ]] && echo "***** OPENROUTER_API_KEY not set *****" >&2
 [[ -z $AWS_BEARER_TOKEN_BEDROCK ]] && echo "***** AWS_BEARER_TOKEN_BEDROCK not set *****" >&2
 [[ -z $AWS_BEDROCK_DEFAULT_MODEL ]] && echo "***** AWS_BEDROCK_DEFAULT_MODEL is not set *****" >&2
 
+export OPENROUTER_DEFAULT_MODEL=openrouter/anthropic/claude-sonnet-4.6
+echo "EXPORTING OPENROUTER_DEFAULT_MODEL: ${OPENROUTER_DEFAULT_MODEL}"
+
 # AWS Bedrock
 # alias llm-test-bedrock='llm "This is just a test. Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL}"'
-alias llm-png='wl-paste | llm --at - image/png'
+alias llm_png='wl-paste | llm --at - image/png'
+alias llm_or_srch='llm -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
 
-llm-test-bedrrock() {
+llm_set_openrouter_key() {
+
+  llm keys set openrouter --value "${OPENROUTER_API_KEY}"
+
+}
+
+llm_test_bedrrock() {
 
   echo "checking llm default model"
   echo "----"
@@ -30,7 +41,7 @@ llm-test-bedrrock() {
 
 }
 
-llm-help() {
+llm_help() {
 
   echo "llm keys list"
   echo "llm keys path"
