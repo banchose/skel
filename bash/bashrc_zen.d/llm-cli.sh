@@ -7,8 +7,6 @@
 export OPENROUTER_DEFAULT_MODEL=openrouter/anthropic/claude-sonnet-4.6
 echo "EXPORTING OPENROUTER_DEFAULT_MODEL: ${OPENROUTER_DEFAULT_MODEL}"
 
-# AWS Bedrock
-
 alias llm_png='wl-paste | llm --at - image/png'
 alias llm_or_srch='llm -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
 
@@ -52,8 +50,7 @@ llm_test_bedrock() {
 llm_help() {
 
   cat <<'EOF'
-llm keys set anthropic --value <env var>
-llm keys set openrouter --value <env var>
+printf '%s' "${ANTHROPIC_API_KEY}" | llm keys set anthropic  # secure pattern
 llm keys list
 llm keys path
 llm keys get
@@ -61,7 +58,9 @@ llm keys set
 llm logs status
 llm logs          #  find conversation IDs
 llm --cid <id>
-llm logs on/off/list
+llm logs list
+llm logs on
+llm logs off
 llm models options
 llm models list
 llm models default # show the default model
