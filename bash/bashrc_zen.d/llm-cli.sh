@@ -6,9 +6,10 @@
 [[ -z $AWS_BEDROCK_DEFAULT_MODEL ]] && echo "***** AWS_BEDROCK_DEFAULT_MODEL is not set *****" >&2
 
 # AWS Bedrock
-alias llmtestbed='llm "This is just a test. Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL}"'
+# alias llm-test-bedrock='llm "This is just a test. Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL}"'
+alias llm-png='wl-paste | llm --at - image/png'
 
-llm-test-bedrock() {
+llm-test-bedrrock() {
 
   echo "checking llm default model"
   echo "----"
@@ -26,6 +27,26 @@ llm-test-bedrock() {
   echo "AWS_BEDROCK_DEFAULT_MODEL is set to ${AWS_BEDROCK_DEFAULT_MODEL}"
   echo "----"
   llm "This is just a test. Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL}"
+
+}
+
+llm-help() {
+
+  echo "llm keys list"
+  echo "llm keys path"
+  echo "llm keys get"
+  echo "llm keys set"
+  echo "llm logs status"
+  echo "llm logs on/off/list"
+  echo "llm models options"
+  echo "llm models list"
+  echo "llm models default # show the default model"
+  echo "llm models default MODEL # to set default model"
+  echo "llm -c # to continue chat"
+  echo "llm prompt --help"
+  echo 'cat ml_script.py | llm "Walk through this file and explain how it works. Start with a summary, then go line-by-line for the most difficult sections."'
+  echo "find . -name '*.py' | xargs -I {} sh -c 'echo \"\n=== {} ===\n\"; cat {}'"
+  echo "find . -name '*.py' | xargs -I {} sh -c 'echo \"\n=== {} ===\n\"; cat {}' | llm \"Explain this project and summarize the key components.\""
 
 }
 
