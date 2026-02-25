@@ -15,7 +15,7 @@ llm_set_openrouter_key() {
     printf 'WARNING: OPENROUTER_API_KEY is not set\n' >&2
     return 1
   }
-  printf '%s' "${OPENROUTER_API_KEY}" | llm keys set openrouter
+  llm keys set openrouter --value "${OPENROUTER_API_KEY}"
 }
 
 llm_set_anthropic_key() {
@@ -23,7 +23,7 @@ llm_set_anthropic_key() {
     printf 'WARNING: ANTHROPIC_API_KEY is not set\n' >&2
     return 1
   }
-  printf '%s' "${ANTHROPIC_API_KEY}" | llm keys set anthropic
+  llm keys set anthropic --value "${ANTHROPIC_API_KEY}"
 }
 
 llm_test_bedrock() {
