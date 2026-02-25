@@ -87,18 +87,24 @@ pipx install git-filter-repo
 
 pipx inject ptpython requests pendulum httpx uv --pip-args="--upgrade"
 
+# pipx inject llm xxxxx --pip-args="--upgrade"
+
 pipx inject llm llm-tools-exa --pip-args="--upgrade"
 pipx inject llm llm-openrouter --pip-args="--upgrade"
 pipx inject llm llm-anthropic --pip-args="--upgrade"
 pipx inject llm llm-gemini --pip-args="--upgrade"
 pipx inject llm pymupdf-layout --pip-args="--upgrade"
+pipx inject llm llm-templates-github --pip-args="--upgrade"
+pipx inject llm llm-templates-fabric --pip-args="--upgrade"
 pipx inject llm llm-fragments-github --pip-args="--upgrade"
+pipx inject llm llm-fragments-pdf --pip-args="--upgrade"
+pipx inject llm llm-fragments-site-text --pip-args="--upgrade"
 pipx inject llm llm-tools-simpleeval --pip-args="--upgrade"
 pipx inject llm llm-cmd-comp --pip-args="--upgrade"
 pipx inject llm llm-cmd --pip-args="--upgrade"
 pipx inject llm llm-python --pip-args="--upgrade" --force
 pipx inject llm llm-jq --pip-args="--upgrade" --force
-pipx inject llm llm-templates-fabric --pip-args="--upgrade"
+pipx inject llm lm-sentence-transformers --pip-args="--upgrade"
 pipx inject llm howdoi --pip-args="--upgrade"
 pipx inject llm httpx --pip-args="--upgrade"
 pipx inject llm psutils --pip-args="--upgrade"
