@@ -52,6 +52,15 @@ llm_set_anthropic_key() {
   command llm keys set anthropic --value "${ANTHROPIC_API_KEY}"
 }
 
+llm_set_default_template() {
+
+  echo "Finding the templates path"
+  local tpath="$(llm templates path)"
+  echo "${tpath}"
+
+  cp ~/gitdir/skel/llm/TEMPLATES/*.yaml "${tpath}"
+}
+
 llm_test_bedrock() {
 
   echo "checking llm default model"
