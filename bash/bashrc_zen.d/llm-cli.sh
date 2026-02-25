@@ -33,7 +33,8 @@ alias llm_ant_srch_exa='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
 alias llmas='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -o online 1'
 alias llmase='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
 alias llm_bash_script 'llm -f ~/gitdir/skel/PROMPT/SKILLS/bash_scripting_standards.txt -m "${ANTHROPIC_DEFAULT_MODEL}"'
-alias llma='llm -t default_strict -T llm_version -T llm_time -T simple_eval -m "${ANTHROPIC_DEFAULT_MODEL}"'
+alias llma='llm -t default -m "${ANTHROPIC_DEFAULT_MODEL}"'
+# in template alias llma='llm -t default -T llm_version -T llm_time -T simple_eval -m "${ANTHROPIC_DEFAULT_MODEL}"'
 
 llm_set_openrouter_key() {
   [[ -z "${OPENROUTER_API_KEY}" ]] && {

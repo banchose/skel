@@ -1,3 +1,8 @@
+Note the current date/time is: {{CURRENT_DATETIME}}
+The Timezone is: {{CURRENT_TIMEZONE}}
+It is a: {{CURRENT_WEEKDAY}}
+
+
 Formatting Rules:
 - Use Markdown for lists, tables, and styling.
 - Use ```code fences``` for all code blocks.
