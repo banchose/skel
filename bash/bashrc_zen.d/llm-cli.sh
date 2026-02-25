@@ -13,6 +13,7 @@
 # llm models list
 # llm keys set anthropic -v
 # llm keys set openrouter -v
+# llm -f github:https://github.com/banchose/skel/blob/main/awk/awk.md "can you see this little awk snippet?"
 
 export OPENROUTER_DEFAULT_MODEL=openrouter/anthropic/claude-sonnet-4.6
 echo "EXPORTING OPENROUTER_DEFAULT_MODEL: ${OPENROUTER_DEFAULT_MODEL}"
@@ -32,6 +33,7 @@ alias llm_ant_srch_exa='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
 alias llmas='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -o online 1'
 alias llmase='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
 alias llm_bash_script 'llm -f ~/gitdir/skel/PROMPT/SKILLS/bash_scripting_standards.txt -m "${ANTHROPIC_DEFAULT_MODEL}"'
+alias llma='llm -t default_strict -T llm_version -T llm_time -T simple_eval -m "${ANTHROPIC_DEFAULT_MODEL}"'
 
 llm_set_openrouter_key() {
   [[ -z "${OPENROUTER_API_KEY}" ]] && {
@@ -83,17 +85,24 @@ llm --cid <id>
 llm logs list
 llm logs on
 llm logs off
+llm logs -c --json --expand
 llm models options
 llm models list
 llm models default # show the default model
 llm models default MODEL # to set default model
+llm chat -f my_doc.txt
 llm -c # to continue chat
 llm -f https://llm.datasette.io/robots.txt 'explain this'
 llm -f cli.py 'a short snappy poem inspired by this code'
 llm -f cli.py --sf explain_code.txt     # system prompt
+llm fragments loaders         # github:
+llm -f github:https://github.com/banchose/skel/blob/main/awk/awk.md "can you see this little awk snippet?"
+llm -t fabric:summarize -f https://...
+llm -f pdf:some.pdf
 llm fragments
 llm fragments -q pytest -q asyncio
 llm fragments remove cli
+llm -f fragment:
 llm prompt --help
   --- custom functions ---
 llmbed <prompt>                   # prompt via Bedrock with date context
