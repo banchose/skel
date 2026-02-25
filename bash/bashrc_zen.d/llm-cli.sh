@@ -4,11 +4,17 @@
 [[ -z $AWS_BEARER_TOKEN_BEDROCK ]] && echo "***** AWS_BEARER_TOKEN_BEDROCK not set *****" >&2
 [[ -z $AWS_BEDROCK_DEFAULT_MODEL ]] && echo "***** AWS_BEDROCK_DEFAULT_MODEL is not set *****" >&2
 
+# llm install llm-openrouter
+# llm models list
+# llm keys set anthropic -v
+# llm keys set openrouter -v
+
 export OPENROUTER_DEFAULT_MODEL=openrouter/anthropic/claude-sonnet-4.6
 echo "EXPORTING OPENROUTER_DEFAULT_MODEL: ${OPENROUTER_DEFAULT_MODEL}"
 
 alias llm_png='wl-paste | llm --at - image/png'
 alias llm_or_srch='llm -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
+alias llm_or_srch_exa='llm -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
 
 llm_set_openrouter_key() {
   [[ -z "${OPENROUTER_API_KEY}" ]] && {
