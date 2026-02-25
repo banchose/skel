@@ -16,6 +16,8 @@
 # llm keys set openrouter --value
 # llm -f github:https://github.com/banchose/skel/blob/main/awk/awk.md "can you see this little awk snippet?"
 
+alias llmedit='nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh'
+
 echo "ENV: Setting CLAUDE_CODE_USE_BEDROCK=1"
 export CLAUDE_CODE_USE_BEDROCK=1
 
