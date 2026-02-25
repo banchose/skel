@@ -3,6 +3,7 @@
 [[ -z $OPENROUTER_API_KEY ]] && echo "***** OPENROUTER_API_KEY not set *****" >&2
 [[ -z $AWS_BEARER_TOKEN_BEDROCK ]] && echo "***** AWS_BEARER_TOKEN_BEDROCK not set *****" >&2
 [[ -z $AWS_BEDROCK_DEFAULT_MODEL ]] && echo "***** AWS_BEDROCK_DEFAULT_MODEL is not set *****" >&2
+[[ -z $EXA_API_KEY ]] && echo "***** EXA_API_KEY not set *****" >&2
 
 # llm install llm-openrouter
 # llm install llm-anthropic
@@ -11,14 +12,14 @@
 # llm install llm-tools-sqlite
 # llm install llm-tools-rag
 # llm models list
-# llm keys set anthropic -v
-# llm keys set openrouter -v
+# llm keys set anthropic --value
+# llm keys set openrouter --value
 # llm -f github:https://github.com/banchose/skel/blob/main/awk/awk.md "can you see this little awk snippet?"
 
 export OPENROUTER_DEFAULT_MODEL=openrouter/anthropic/claude-sonnet-4.6
 echo "EXPORTING OPENROUTER_DEFAULT_MODEL: ${OPENROUTER_DEFAULT_MODEL}"
 
-export ANTHROPIC_DEFAULT_MODEL=anthropic/claude-sonnet-4-6
+export ANTHROPIC_DEFAULT_MODEL=anthropic/claude-sonnet-4-5
 echo "EXPORTING ANTHROPIC_DEFAULT_MODEL: ${ANTHROPIC_DEFAULT_MODEL}"
 
 alias llm_png='wl-paste | llm --at - image/png'
@@ -28,11 +29,9 @@ alias llmos='llm -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
 alias llmose='llm -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
 
 # Anthropic
-alias llm_ant_srch='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -o online 1'
 alias llm_ant_srch_exa='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
-alias llmas='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -o online 1'
 alias llmase='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
-alias llm_bash_script 'llm -f ~/gitdir/skel/PROMPT/SKILLS/bash_scripting_standards.txt -m "${ANTHROPIC_DEFAULT_MODEL}"'
+alias llm_bash_script='llm -f ~/gitdir/skel/PROMPT/SKILLS/bash_scripting_standards.txt -m "${ANTHROPIC_DEFAULT_MODEL}"'
 alias llma='llm -t default -m "${ANTHROPIC_DEFAULT_MODEL}"'
 # in template alias llma='llm -t default -T llm_version -T llm_time -T simple_eval -m "${ANTHROPIC_DEFAULT_MODEL}"'
 
@@ -119,6 +118,7 @@ llmbed <prompt>                   # prompt via Bedrock with date context
 ===> llm_set_bedrock_model        # set llm default model to AWS_BEDROCK_DEFAULT_MODEL
 ===> llm_set_openrouter_key       # load OPENROUTER_API_KEY into llm keys
 ===> llm_set_anthropic_key        # load ANTHROPIC_API_KEY into llm keys
+===> llm_set_exa_key              # load EXA_API_KEY into llm keys
 llm_test_bedrock                  # run diagnostics + test prompt via Bedrock
 llm_status                        # Orienting what model and what keys are set 
 EOF
@@ -153,6 +153,14 @@ llm_set_bedrock_model() {
   command llm models default "${AWS_BEDROCK_DEFAULT_MODEL}"
 }
 
+llm_set_exa_key() {
+  [[ -z "${EXA_API_KEY}" ]] && {
+    printf 'WARNING: EXA_API_KEY is not set\n' >&2
+    return 1
+  }
+  command llm keys set exa --value "${EXA_API_KEY}"
+}
+
 llm_status() {
   printf '=== default model ===\n'
   command llm models default
@@ -163,4 +171,16 @@ llm_status() {
   printf 'OPENROUTER_API_KEY:      %s\n' "${OPENROUTER_API_KEY:0:15}"
   printf 'AWS_BEARER_TOKEN_BEDROCK:%s\n' "${AWS_BEARER_TOKEN_BEDROCK:0:15}"
   printf 'AWS_BEDROCK_DEFAULT_MODEL:%s\n' "${AWS_BEDROCK_DEFAULT_MODEL:-not set}"
+  printf 'EXA_API_KEY:             %s\n' "${EXA_API_KEY:0:15}"
 }
+
+echo "ENV: Setting 'llm cli' ANTHROPIC_API_KEY"
+llm_set_anthropic_key
+printf 'ANTHROPIC_API_KEY:       %s\n' "${ANTHROPIC_API_KEY:0:15}"
+echo "ENV: Setting 'Openrouter' OPENROUTER_API_KEY"
+llm_set_openrouter_key
+printf 'OPENROUTER_API_KEY:      %s\n' "${OPENROUTER_API_KEY:0:15}"
+export llmtst="this is just a test, can you search the web?"
+echo "ENV: Setting 'Exa' EXA_API_KEY"
+llm_set_exa_key
+printf 'EXA_API_KEY:             %s\n' "${EXA_API_KEY:0:15}"

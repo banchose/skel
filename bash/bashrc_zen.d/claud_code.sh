@@ -1,0 +1,1 @@
+export CLAUDE_CODE_USE_BEDROCK=1

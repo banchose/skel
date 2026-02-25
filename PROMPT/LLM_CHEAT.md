@@ -8,7 +8,7 @@ llm models default openrouter/anthropic/claude-sonnet-4
 
 ## Help
 
-## Pettern
+## Pattern
 
 ```sh
 llm –help
