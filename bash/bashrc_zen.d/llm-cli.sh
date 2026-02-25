@@ -23,17 +23,22 @@ echo "EXPORTING ANTHROPIC_DEFAULT_MODEL: ${ANTHROPIC_DEFAULT_MODEL}"
 alias llm_png='wl-paste | llm --at - image/png'
 alias llm_ort_srch='llm -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
 alias llm_ort_srch_exa='llm -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
-alias llm='llm -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
+alias llmos='llm -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
+alias llmose='llm -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
 
+# Anthropic
 alias llm_ant_srch='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -o online 1'
 alias llm_ant_srch_exa='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
+alias llmas='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -o online 1'
+alias llmase='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
+alias llm_bash_script 'llm -f ~/gitdir/skel/PROMPT/SKILLS/bash_scripting_standards.txt -m "${ANTHROPIC_DEFAULT_MODEL}"'
 
 llm_set_openrouter_key() {
   [[ -z "${OPENROUTER_API_KEY}" ]] && {
     printf 'WARNING: OPENROUTER_API_KEY is not set\n' >&2
     return 1
   }
-  llm keys set openrouter --value "${OPENROUTER_API_KEY}"
+  command llm keys set openrouter --value "${OPENROUTER_API_KEY}"
 }
 
 llm_set_anthropic_key() {
@@ -41,34 +46,33 @@ llm_set_anthropic_key() {
     printf 'WARNING: ANTHROPIC_API_KEY is not set\n' >&2
     return 1
   }
-  llm keys set anthropic --value "${ANTHROPIC_API_KEY}"
+  command llm keys set anthropic --value "${ANTHROPIC_API_KEY}"
 }
 
 llm_test_bedrock() {
 
   echo "checking llm default model"
   echo "----"
-  llm models default
+  command llm models default
   echo "----"
   echo "llm cli keys are located:"
   echo "----"
-  llm keys path
+  command llm keys path
   echo "----"
   echo "llm cli keys set:"
   echo "----"
-  llm keys
+  command llm keys
   echo "----"
   echo "AWS_BEARER_TOKEN_BEDROCK is set to ${AWS_BEARER_TOKEN_BEDROCK:0:15}"
   echo "AWS_BEDROCK_DEFAULT_MODEL is set to ${AWS_BEDROCK_DEFAULT_MODEL}"
   echo "----"
-  llm "This is just a test. Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL}"
+  command llm "This is just a test. Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL}"
 
 }
 
 llm_help() {
 
   cat <<'EOF'
-printf '%s' "${ANTHROPIC_API_KEY}" | llm keys set anthropic  # secure pattern
 llm keys list
 llm keys path
 llm keys get
@@ -84,14 +88,20 @@ llm models list
 llm models default # show the default model
 llm models default MODEL # to set default model
 llm -c # to continue chat
+llm -f https://llm.datasette.io/robots.txt 'explain this'
+llm -f cli.py 'a short snappy poem inspired by this code'
+llm -f cli.py --sf explain_code.txt     # system prompt
+llm fragments
+llm fragments -q pytest -q asyncio
+llm fragments remove cli
 llm prompt --help
   --- custom functions ---
-llmbed <prompt>               # prompt via Bedrock with date context
-===> llm_set_bedrock_model         # set llm default model to AWS_BEDROCK_DEFAULT_MODEL
-===> llm_set_openrouter_key        # load OPENROUTER_API_KEY into llm keys
-===> llm_set_anthropic_key         # load ANTHROPIC_API_KEY into llm keys
-llm_test_bedrock              # run diagnostics + test prompt via Bedrock
-llm_status                    # Orienting what model and what keys are set 
+llmbed <prompt>                   # prompt via Bedrock with date context
+===> llm_set_bedrock_model        # set llm default model to AWS_BEDROCK_DEFAULT_MODEL
+===> llm_set_openrouter_key       # load OPENROUTER_API_KEY into llm keys
+===> llm_set_anthropic_key        # load ANTHROPIC_API_KEY into llm keys
+llm_test_bedrock                  # run diagnostics + test prompt via Bedrock
+llm_status                        # Orienting what model and what keys are set 
 EOF
 
 }
@@ -100,7 +110,7 @@ EOF
 llmbed() {
   local current_date
   current_date=$(date)
-  llm -s "It is currently ${current_date}. Please be accurate and concise." -m "${AWS_BEDROCK_DEFAULT_MODEL}" "$@"
+  command llm -s "It is currently ${current_date}. Please be accurate and concise." -m "${AWS_BEDROCK_DEFAULT_MODEL}" "$@"
 }
 
 llm_set_bedrock_model() {
@@ -121,14 +131,14 @@ llm_set_bedrock_model() {
       "${len}" >&2
   fi
 
-  llm models default "${AWS_BEDROCK_DEFAULT_MODEL}"
+  command llm models default "${AWS_BEDROCK_DEFAULT_MODEL}"
 }
 
 llm_status() {
   printf '=== default model ===\n'
-  llm models default
+  command llm models default
   printf '=== stored keys ===\n'
-  llm keys
+  command llm keys
   printf '=== env vars ===\n'
   printf 'ANTHROPIC_API_KEY:       %s\n' "${ANTHROPIC_API_KEY:0:15}"
   printf 'OPENROUTER_API_KEY:      %s\n' "${OPENROUTER_API_KEY:0:15}"
