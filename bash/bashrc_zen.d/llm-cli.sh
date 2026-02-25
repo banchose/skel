@@ -16,11 +16,26 @@
 # llm keys set openrouter --value
 # llm -f github:https://github.com/banchose/skel/blob/main/awk/awk.md "can you see this little awk snippet?"
 
+echo "ENV: Setting CLAUDE_CODE_USE_BEDROCK=1"
+export CLAUDE_CODE_USE_BEDROCK=1
+
 export OPENROUTER_DEFAULT_MODEL=openrouter/anthropic/claude-sonnet-4.6
 echo "EXPORTING OPENROUTER_DEFAULT_MODEL: ${OPENROUTER_DEFAULT_MODEL}"
 
 export ANTHROPIC_DEFAULT_MODEL=anthropic/claude-sonnet-4-5
 echo "EXPORTING ANTHROPIC_DEFAULT_MODEL: ${ANTHROPIC_DEFAULT_MODEL}"
+
+export AWS_BEDROCK_DEFAULT_SONNET_MODEL=us.anthropic.claude-sonnet-4-5-20250929-v1:0
+echo "EXPORTING AWS_BEDROCK_DEFAULT_SONNET_MODEL: ${AWS_BEDROCK_DEFAULT_SONNET_MODEL}"
+
+export AWS_BEDROCK_DEFAULT_OPUS_MODEL=us.anthropic.claude-opus-4-1-20250805-v1:0
+echo "EXPORTING AWS_BEDROCK_DEFAULT_OPUS_MODEL: ${AWS_BEDROCK_DEFAULT_OPUS_MODEL}"
+
+export OPENROUTER_DEFAULT_SONNET_MODEL=openrouter/anthropic/claude-sonnet-4.6
+echo "EXPORTING OPENROUTER_DEFAULT_SONNET_MODEL: ${OPENROUTER_DEFAULT_SONNET_MODEL}"
+
+export OPENROUTER_DEFAULT_OPUS_MODEL=openrouter/anthropic/claude-opus-4.6
+echo "EXPORTING OPENROUTER_DEFAULT_OPUS_MODEL: ${OPENROUTER_DEFAULT_OPUS_MODEL}"
 
 alias llm_png='wl-paste | llm --at - image/png'
 alias llm_ort_srch='llm -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
