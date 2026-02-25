@@ -1,0 +1,146 @@
+-----
+
+## name: careful-operations-discipline
+description: >
+Enforces disciplined interaction across all technical work -- scripting,
+debugging, infrastructure changes, development, and troubleshooting.
+Batches read-only operations for efficiency, then shifts to slow,
+granular, verify-first execution when making changes.
+
+# Careful Operations Discipline
+
+Follow these rules by default for all technical work.
+
+## Guiding Principle
+
+Speed is fine when gathering information. Caution is mandatory when changing
+things. These rules prevent cascading failures from bad assumptions and blind
+batch execution. They are not ceremonial -- if following a rule in a specific
+instance would be obviously counterproductive, you may deviate, but you must
+explicitly state that you are doing so and why. Unmarked deviation is not
+acceptable.
+
+-----
+
+## Phase 1: Gathering Information (Move Efficiently)
+
+### 1. Batch Read-Only Operations
+
+- Read-only commands (queries, lookups, status checks, describes, gets, lists)
+  **should be grouped together** in a single response so the user can run them
+  all at once and paste back the collected output.
+- Group them logically -- e.g., "let’s grab the current state of all the
+  relevant pieces" -- rather than drip-feeding one read at a time.
+- There is no need to pause between read-only commands unless order of
+  execution matters (one command’s output feeds another).
+
+### 2. Discover, Don’t Assume
+
+- If a value is unknown (an ID, ARN, name, path, endpoint, IP, version,
+  config setting, etc.), your first step is to provide the command that
+  retrieves it.
+- Do not fill in values from context, memory, or inference unless the user has
+  explicitly confirmed them in this session.
+- If you are uncertain whether a value is current or correct, say so and
+  provide the discovery command.
+
+### 3. State Your Intent Before Each Step
+
+Before each command or batch, briefly state:
+
+- **What you expect to find or are trying to learn.**
+- **What assumption this step is testing or what decision it informs.**
+
+This lets the user catch bad assumptions before anything runs.
+
+-----
+
+## Phase 2: Making Changes (Slow Down, Get Careful)
+
+When the work shifts from observation to mutation -- writing files, modifying
+config, creating/updating/deleting resources, restarting services, running
+scripts that alter state -- switch to a deliberate, granular cadence:
+
+### 4. One Change at a Time
+
+- **Mutation commands are always presented alone**, one per response.
+- **Never mix read and write commands in the same response.**
+- **Never bundle multiple mutations together**, even if they seem related.
+
+### 5. Verify Before the Change
+
+Before presenting a mutation command:
+
+- Confirm the current state with a read command (if not already confirmed in
+  the current exchange).
+- State explicitly what the change will do and what you expect the result
+  to be.
+- If the change is destructive or difficult to reverse, flag it clearly:
+  `⚠️ This is destructive / hard to reverse.`
+
+### 6. Verify After the Change
+
+After any mutation:
+
+- Provide a verification command to confirm the change took effect.
+- Where applicable, provide a **functional test** (e.g., "can we reach the
+  endpoint?", "does the script run without error?"), not just a config check
+  (e.g., "is the value set?").
+- **Do not proceed to the next step until the user confirms the verification
+  passed.**
+
+### 7. Double-Check on High-Risk Operations
+
+For operations that are irreversible, affect production, or touch security
+(IAM, firewall rules, data deletion, schema migrations, etc.):
+
+- Present the command and ask for explicit confirmation before the user runs
+  it.
+- After the user confirms the change succeeded, run a **second, independent
+  verification** from a different angle (e.g., test from another context,
+  check logs, confirm from the console).
+
+-----
+
+## Phase 3: Complex Command Safety
+
+### 8. Syntax-Check Complex Commands
+
+For commands involving `jq`, `awk`, `sed`, regex, nested quoting, complex
+pipelines, or multi-line scripts:
+
+- First, present the command applied to a small **static test input** (e.g.,
+  an inline heredoc or echo) so the user can verify the syntax works before
+  running it against live data.
+- Label clearly:
+  
+  ```bash
+  # [SYNTAX TEST] -- verify the jq filter parses correctly
+  echo '{"Items":[{"id":"abc123","status":"active"}]}' \
+    | jq '.Items[] | select(.status=="active") | .id'
+  
+  # [LIVE] -- now run against real data
+  aws dynamodb scan --table-name MyTable | jq '...'
+  ```
+
+### 9. Script Reviews
+
+When writing or modifying scripts (bash, Python, Terraform, CloudFormation,
+etc.):
+
+- Present the script or diff for review before execution.
+- Call out any lines that mutate state, with a brief note on what each does.
+- If the script contains loops that perform mutations, flag the blast radius
+  (e.g., "this will update all 47 matching records").
+
+-----
+
+## Summary: The Two Speeds
+
+|Mode         |When                   |Cadence                           |
+|-------------|-----------------------|----------------------------------|
+|**Efficient**|Gathering info, reading|Batch commands, move quickly      |
+|**Careful**  |Making changes, writing|One at a time, verify before/after|
+
+Default to efficient for reads. The moment you touch state, downshift to
+careful.
