@@ -40,7 +40,7 @@ llm_test_bedrock() {
   echo "----"
   llm keys
   echo "----"
-  echo "AWS_BEARER_TOKEN_BEDROCK is set to ${AWS_BEARER_TOKEN_BEDROCK:0:8}"
+  echo "AWS_BEARER_TOKEN_BEDROCK is set to ${AWS_BEARER_TOKEN_BEDROCK:0:15}"
   echo "AWS_BEDROCK_DEFAULT_MODEL is set to ${AWS_BEDROCK_DEFAULT_MODEL}"
   echo "----"
   llm "This is just a test. Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL}"
@@ -69,10 +69,11 @@ llm -c # to continue chat
 llm prompt --help
   --- custom functions ---
 llmbed <prompt>               # prompt via Bedrock with date context
-llm_set_bedrock_model         # set llm default model to AWS_BEDROCK_DEFAULT_MODEL
-llm_set_openrouter_key        # load OPENROUTER_API_KEY into llm keys
-llm_set_anthropic_key         # load ANTHROPIC_API_KEY into llm keys
+===> llm_set_bedrock_model         # set llm default model to AWS_BEDROCK_DEFAULT_MODEL
+===> llm_set_openrouter_key        # load OPENROUTER_API_KEY into llm keys
+===> llm_set_anthropic_key         # load ANTHROPIC_API_KEY into llm keys
 llm_test_bedrock              # run diagnostics + test prompt via Bedrock
+llm_status                    # Orienting what model and what keys are set 
 EOF
 
 }
@@ -103,4 +104,16 @@ llm_set_bedrock_model() {
   fi
 
   llm models default "${AWS_BEDROCK_DEFAULT_MODEL}"
+}
+
+llm_status() {
+  printf '=== default model ===\n'
+  llm models default
+  printf '=== stored keys ===\n'
+  llm keys
+  printf '=== env vars ===\n'
+  printf 'ANTHROPIC_API_KEY:       %s\n' "${ANTHROPIC_API_KEY:0:15}"
+  printf 'OPENROUTER_API_KEY:      %s\n' "${OPENROUTER_API_KEY:0:15}"
+  printf 'AWS_BEARER_TOKEN_BEDROCK:%s\n' "${AWS_BEARER_TOKEN_BEDROCK:0:15}"
+  printf 'AWS_BEDROCK_DEFAULT_MODEL:%s\n' "${AWS_BEDROCK_DEFAULT_MODEL:-not set}"
 }
