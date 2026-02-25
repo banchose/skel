@@ -27,13 +27,22 @@ alias llm_ort_srch='llm -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
 alias llm_ort_srch_exa='llm -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
 alias llmos='llm -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
 alias llmose='llm -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
+alias orts='llm -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
+alias orte='llm -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
+alias ort='llm -m "${OPENROUTER_DEFAULT_MODEL}"'
 
 # Anthropic
-alias llm_ant_srch_exa='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
-alias llmase='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
+alias llm_ant_srch='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
 alias llm_bash_script='llm -f ~/gitdir/skel/PROMPT/SKILLS/bash_scripting_standards.txt -m "${ANTHROPIC_DEFAULT_MODEL}"'
 alias llma='llm -t default -m "${ANTHROPIC_DEFAULT_MODEL}"'
+alias antx='llm -m "${ANTHROPIC_DEFAULT_MODEL}"'
+alias antxs='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
+alias ant='llm -t default_anthropic_sonnet'
+
 # in template alias llma='llm -t default -T llm_version -T llm_time -T simple_eval -m "${ANTHROPIC_DEFAULT_MODEL}"'
+#
+alias llm_what_tools='llm -t default_anthropic_sonnet "What tools to you have access to?"'
+alias llm_what_version='llm -t default_anthropic_sonnet "What LLM model version are you?"'
 
 llm_set_openrouter_key() {
   [[ -z "${OPENROUTER_API_KEY}" ]] && {
