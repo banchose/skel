@@ -84,12 +84,17 @@ alias llm_what_version='llm -t default_anthropic_sonnet "What LLM model version 
 # That contains yaml of a model_id: 'bro' (llm -m bro), and the connecting bedrock-sonnet (litellm)
 # listening on the local host
 # litellm -c /home/una/gitdir/skel/llm/litellm/litellm.conf --port 4000
-alias broT='llm -m bro -T Exa "This is just a test, respond with short acknowledgment"'
-alias broTs='llm -m bro -T Exa "This is just a test, Could you please test if you can search the web with a trivial seearch.Respond with short result message"'
-alias brsT='llm -m brs -T Exa "This is just a test, respond with short acknowledgment"'
-alias brsTs='llm -m brs -T Exa "This is just a test, Could you please test if you can search the web with a trivial seearch.Respond with short result message"'
-alias brhT='llm -m brh -T Exa "This is just a test, respond with short acknowledgment"'
-alias brhTs='llm -m brh -T Exa "This is just a test, Could you please test if you can search the web with a trivial seearch.Respond with short result message"'
+alias broT='llm -m bro "This is just a test, respond with short acknowledgment"'
+alias bron='llm -m bro'
+alias bro='llm -m bro -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+
+alias brsT='llm -m brs "This is just a test, respond with short acknowledgment"'
+alias brsn='llm -m brs'
+alias brs='llm -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+
+alias brhT='llm -m brh "This is just a test, respond with short acknowledgment"'
+alias brhn='llm -m brh'
+alias brh='llm -m brh -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 
 llm_set_openrouter_key() {
   [[ -z "${OPENROUTER_API_KEY:-}" ]] && {
