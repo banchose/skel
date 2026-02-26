@@ -293,43 +293,63 @@ START_LOCAL_LITELLM() {
 
   litellm -c "${LITELLM_CONFIG_DIR}/${LITELLM_CONFIG}" --port "${LITELLM_PORT}"
 }
-
 llm_status() {
   local -i issues=0
   local var val http_code
+  local -a issue_msgs=()
 
-  printf 'model:   %s\n' "$(command llm models default)"
-  printf 'logging: %s\n' "$(command llm logs status)"
+  printf '=== default model ===\n'
+  command llm models default
 
+  printf '=== logging ===\n'
+  command llm logs status
+
+  printf '=== stored keys ===\n'
+  command llm keys
+
+  printf '=== installed plugins ===\n'
+  command llm plugins | python3 -c "
+import sys, json
+for p in json.load(sys.stdin):
+    print(f\"  {p['name']:30s} {p.get('version', '?')}\")" 2>/dev/null ||
+    printf '  (could not parse)\n'
+
+  printf '=== env vars ===\n'
   for var in ANTHROPIC_API_KEY OPENROUTER_API_KEY AWS_BEARER_TOKEN_BEDROCK \
     AWS_BEDROCK_DEFAULT_MODEL EXA_API_KEY; do
     val="${!var:-}"
     if [[ -z "${val}" ]]; then
-      printf '  ⛌  %s not set\n' "${var}"
+      printf '==> %-26s %s\n' "${var}:" "NOT SET"
+      issue_msgs+=("${var} not set")
       ((issues++)) || true
+    elif [[ "${#val}" -gt 20 ]]; then
+      printf '    %-26s(%s…)\n' "${var}:" "${val:0:15}"
+    else
+      printf '    %-26s%s\n' "${var}:" "${val}"
     fi
   done
-  # ... rest unchanged
-  # ── Stored keys (one line) ──
-  printf 'keys:    %s\n' "$(command llm keys | paste -sd', ' -)"
 
-  # ── LiteLLM proxy ──
+  printf '=== litellm proxy ===\n'
   http_code=$(curl -s -o /dev/null -w '%{http_code}' \
     --connect-timeout 2 --max-time 3 \
     http://localhost:4000/health 2>/dev/null) || true
 
   if [[ "${http_code}" == "200" ]]; then
-    printf 'litellm: UP (localhost:4000)\n'
+    printf '    localhost:4000 — UP\n'
   else
-    printf 'litellm: DOWN\n'
-    printf '  start: litellm -c ~/gitdir/skel/llm/litellm/litellm.conf --port 4000\n'
-    printf '  or:    ~/gitdir/skel/llm/litellm/START_LOCAL_LITELLM.sh\n'
+    printf '==> localhost:4000 — DOWN\n'
+    printf '    start: ~/gitdir/skel/llm/litellm/START_LOCAL_LITELLM.sh\n'
+    printf '    or:    litellm -c ~/gitdir/skel/llm/litellm/litellm.conf --port 4000\n'
+    issue_msgs+=("litellm proxy not running")
     ((issues++)) || true
   fi
 
-  # ── Summary ──
   if ((issues > 0)); then
-    printf '\n⚠  %d issue(s)\n' "${issues}"
+    printf '\n%d issue(s):\n' "${issues}"
+    local msg
+    for msg in "${issue_msgs[@]}"; do
+      printf '  ==> %s\n' "${msg}"
+    done
     return 1
   fi
   return 0
