@@ -41,20 +41,20 @@ export OPENROUTER_DEFAULT_OPUS_MODEL=openrouter/anthropic/claude-opus-4.6
 echo "EXPORTING OPENROUTER_DEFAULT_OPUS_MODEL: ${OPENROUTER_DEFAULT_OPUS_MODEL}"
 
 alias llm_png='wl-paste | llm --at - image/png'
-alias llm_ort_srch='llm -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
-alias llm_ort_srch_exa='llm -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
-alias llmos='llm -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
-alias llmose='llm -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
-alias orts='llm -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
-alias orte='llm -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
-alias ort='llm -m "${OPENROUTER_DEFAULT_MODEL}"'
+alias llm_ort_srch='llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
+alias llm_ort_srch_exa='llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
+alias llmos='llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
+alias llmose='llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
+alias orts='llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
+alias orte='llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
+alias ort='llm -u -m "${OPENROUTER_DEFAULT_MODEL}"'
 
 # Anthropic
-alias llm_ant_srch='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
-alias llm_bash_script='llm -f ~/gitdir/skel/PROMPT/SKILLS/bash_scripting_standards.txt -m "${ANTHROPIC_DEFAULT_MODEL}"'
+alias llm_ant_srch='llm -u -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
+alias llm_bash_script='llm -u -f ~/gitdir/skel/PROMPT/SKILLS/bash_scripting_standards.txt -m "${ANTHROPIC_DEFAULT_MODEL}"'
 alias llma='llm -t default -m "${ANTHROPIC_DEFAULT_MODEL}"'
-alias antx='llm -m "${ANTHROPIC_DEFAULT_MODEL}"'
-alias antxs='llm -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
+alias antx='llm -u -m "${ANTHROPIC_DEFAULT_MODEL}"'
+alias antxs='llm -u -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
 alias ant='llm -t default_anthropic_sonnet'
 
 # in template alias llma='llm -t default -T llm_version -T llm_time -T simple_eval -m "${ANTHROPIC_DEFAULT_MODEL}"'
@@ -84,20 +84,20 @@ alias llm_what_version='llm -t default_anthropic_sonnet "What LLM model version 
 # That contains yaml of a model_id: 'bro' (llm -m bro), and the connecting bedrock-sonnet (litellm)
 # listening on the local host
 # litellm -c /home/una/gitdir/skel/llm/litellm/litellm.conf --port 4000
-alias broT='llm -m bro "This is just a test, respond with short acknowledgment"'
-alias bron='llm -m bro'
-alias bros='llm -m bro -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
-alias bro='llm -m bro -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+alias broT='llm -u -m bro "This is just a test, respond with short acknowledgment"'
+alias bron='llm -u -m bro'
+alias bros='llm -u -m bro -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+alias bro='llm -u -m bro -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 
-alias brsT='llm -m brs "This is just a test, respond with short acknowledgment"'
-alias brsn='llm -m brs'
-alias brss='llm -m brs -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
-alias brs='llm -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+alias brsT='llm -u -m brs "This is just a test, respond with short acknowledgment"'
+alias brsn='llm -u -m brs'
+alias brss='llm -u -m brs -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+alias brs='llm -u -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 
-alias brhT='llm -m brh "This is just a test, respond with short acknowledgment"'
-alias brhn='llm -m brh'
-alias brhs='llm -m brh -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
-alias brh='llm -m brh -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+alias brhT='llm -u -m brh "This is just a test, respond with short acknowledgment"'
+alias brhn='llm -u -m brh'
+alias brhs='llm -u -m brh -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+alias brh='llm -u -m brh -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 
 llm_set_openrouter_key() {
   [[ -z "${OPENROUTER_API_KEY:-}" ]] && {
@@ -141,14 +141,15 @@ llm_test_bedrock() {
   echo "AWS_BEARER_TOKEN_BEDROCK is set to ${AWS_BEARER_TOKEN_BEDROCK:+(${AWS_BEARER_TOKEN_BEDROCK:0:15}…)}"
   echo "AWS_BEDROCK_DEFAULT_MODEL is set to ${AWS_BEDROCK_DEFAULT_MODEL:-(not set)}"
   echo "----"
-  command llm "This is just a test. Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL:?AWS_BEDROCK_DEFAULT_MODEL is not set}"
+  command llm -u "This is just a test. Please respond with a short acknowledgement" -m "${AWS_BEDROCK_DEFAULT_MODEL:?AWS_BEDROCK_DEFAULT_MODEL is not set}"
 
 }
 
 llm_help() {
 
   cat <<'EOF'
-**The model name (provider) drives the keys used**
+llm prompt --help    # Help on the flags
+alias brs='llm -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 --td, --tool-debug
 --ta, --tool-approve
 -u, --usage
@@ -203,6 +204,7 @@ llmbed <prompt>                   # prompt via Bedrock with date context
 ===> llm_set_exa_key              # load EXA_API_KEY into llm keys
 llm_test_bedrock                  # run diagnostics + test prompt via Bedrock
 llm_status                        # Orienting what model and what keys are set 
+**The model name (-m,--model) drives the keys used**
 EOF
 
 }
