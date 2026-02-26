@@ -40,6 +40,8 @@ echo "EXPORTING OPENROUTER_DEFAULT_SONNET_MODEL: ${OPENROUTER_DEFAULT_SONNET_MOD
 export OPENROUTER_DEFAULT_OPUS_MODEL=openrouter/anthropic/claude-opus-4.6
 echo "EXPORTING OPENROUTER_DEFAULT_OPUS_MODEL: ${OPENROUTER_DEFAULT_OPUS_MODEL}"
 
+alias llm_symlink_templates='cd ~/.config/io.datasette.llm/templates/ && for i in ~/gitdir/skel/llm/TEMPLATES/*;do echo "${i}";[[ -f "${i}" ]] || ln -s "${i}";done'
+
 alias llm_png='wl-paste | llm --at - image/png'
 alias llm_ort_srch='llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
 alias llm_ort_srch_exa='llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
@@ -215,6 +217,8 @@ aws bedrock list-inference-profiles --region us-east-1 --profile test | grep us[
 ### TEST/TROUBLEHSOOT
 llm_test_bedrock                  # run diagnostics + test prompt via Bedrock
 llm_status                        # Orienting what model and what keys are set 
+nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh     # llmedit alias
+---------------
 **The model name (-m,--model) drives the keys used**
 EOF
 
