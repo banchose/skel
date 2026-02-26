@@ -197,6 +197,16 @@ llm fragments loaders         # github:
 llm fragments -q pytest -q asyncio
 llm fragments remove cli
 llm -f fragment:
+### FABRIC
+llm -f fabric:expain_code
+llm -f fabric:extract_wisdom
+llm -f fabric:summarize
+llm -f fabric:review_code
+llm -f fabric:improve_writing
+llm -f fabric:extract_main_idea
+llm -f fabric:create_mermaid_visualization
+llm -f fabric:analyze_logs
+llm -f fabric:summarize_git_diff
 ### Test (simple eval)
 llm -T simple_eval "12345 * 12345" --td  # --td tool-debug
 llm prompt --help
