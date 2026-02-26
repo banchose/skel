@@ -140,7 +140,10 @@ llm fragments -q pytest -q asyncio
 llm fragments remove cli
 llm -f fragment:
 llm prompt --help
-  --- custom functions ---
+cat image.jpg | llm "describe this image" -a -
+cat myfile | llm "describe this image" --at - image/jpeg # --attachment-type
+cat myfile | llm "describe this image" --at - image/png # --attachment-type
+  --- custom functions --- 
 llmbed <prompt>                   # prompt via Bedrock with date context
 ===> llm_set_bedrock_model        # set llm default model to AWS_BEDROCK_DEFAULT_MODEL
 ===> llm_set_openrouter_key       # load OPENROUTER_API_KEY into llm keys
