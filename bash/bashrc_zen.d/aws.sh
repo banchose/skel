@@ -925,3 +925,11 @@ askbed() {
   }'
 }
 
+awlcheck() {
+
+for awsprofile in $(aws configure list-profiles)
+  do
+    echo "Checking AWS Profile: ${awsprofile}"
+    aws sts get-caller-identity --region us-east-1 --profile "${awsprofile}"
+  done
+}
