@@ -63,7 +63,6 @@ alias llm_what_tools='llm -t default_anthropic_sonnet "What tools to you have ac
 alias llm_what_version='llm -t default_anthropic_sonnet "What LLM model version are you?"'
 
 ## AWS Bedrock aliases
-alias broT='llm -m bro -T Exa "This is just a test, respond with short acknowledgment"'
 # -T tool because llm-exa or some such was installed: see llm tools list
 # llm install llm-tools-exa
 # llm install llm-tools-simpleeval
@@ -85,7 +84,12 @@ alias broT='llm -m bro -T Exa "This is just a test, respond with short acknowled
 # That contains yaml of a model_id: 'bro' (llm -m bro), and the connecting bedrock-sonnet (litellm)
 # listening on the local host
 # litellm -c /home/una/gitdir/skel/llm/litellm/litellm.conf --port 4000
+alias broT='llm -m bro -T Exa "This is just a test, respond with short acknowledgment"'
 alias broTs='llm -m bro -T Exa "This is just a test, Could you please test if you can search the web with a trivial seearch.Respond with short result message"'
+alias brsT='llm -m brs -T Exa "This is just a test, respond with short acknowledgment"'
+alias brsTs='llm -m brs -T Exa "This is just a test, Could you please test if you can search the web with a trivial seearch.Respond with short result message"'
+alias brhT='llm -m brh -T Exa "This is just a test, respond with short acknowledgment"'
+alias brhTs='llm -m brh -T Exa "This is just a test, Could you please test if you can search the web with a trivial seearch.Respond with short result message"'
 
 llm_set_openrouter_key() {
   [[ -z "${OPENROUTER_API_KEY:-}" ]] && {
@@ -136,6 +140,17 @@ llm_test_bedrock() {
 llm_help() {
 
   cat <<'EOF'
+**The model name (provider) drives the keys used**
+--td, --tool-debug
+--ta, --tool-approve
+-u, --usage
+-T, --tool
+-sf, --system-fragment
+-f, --fragment
+-t, --template
+--key
+--save TEMPLATE
+--extract-last # fenced code
 llm keys list
 llm keys path
 llm keys get
@@ -156,15 +171,19 @@ llm -c # to continue chat
 llm -f https://llm.datasette.io/robots.txt 'explain this'
 llm -f cli.py 'a short snappy poem inspired by this code'
 llm -f cli.py --sf explain_code.txt     # system prompt
-llm fragments loaders         # github:
 llm -f github:https://github.com/banchose/skel/blob/main/awk/awk.md "can you see this little awk snippet?"
 llm -t fabric:summarize -f https://...
 llm -f pdf:some.pdf
+### Fragments
 llm fragments
+llm fragments loaders         # github:
 llm fragments -q pytest -q asyncio
 llm fragments remove cli
 llm -f fragment:
+### Test (simple eval)
+llm -T simple_eval "12345 * 12345" --td  # --td tool-debug
 llm prompt --help
+### Append Images
 cat image.jpg | llm "describe this image" -a -
 cat myfile | llm "describe this image" --at - image/jpeg # --attachment-type
 cat myfile | llm "describe this image" --at - image/png # --attachment-type
