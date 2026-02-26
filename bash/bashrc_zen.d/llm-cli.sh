@@ -17,6 +17,7 @@
 # llm -f github:https://github.com/banchose/skel/blob/main/awk/awk.md "can you see this little awk snippet?"
 
 alias llmedit='nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh'
+export llmtst="this is just a test, can you search the web?"
 
 echo "ENV: Setting CLAUDE_CODE_USE_BEDROCK=1"
 export CLAUDE_CODE_USE_BEDROCK=1
@@ -200,13 +201,12 @@ llm_status() {
   printf 'EXA_API_KEY:             %s\n' "${EXA_API_KEY:0:15}"
 }
 
-echo "ENV: Setting 'llm cli' ANTHROPIC_API_KEY"
-llm_set_anthropic_key
+echo "NOT SETTTING: Setting 'llm cli' API KEYs"
+# llm_set_anthropic_key
 printf 'ANTHROPIC_API_KEY:       %s\n' "${ANTHROPIC_API_KEY:0:15}"
-echo "ENV: Setting 'Openrouter' OPENROUTER_API_KEY"
-llm_set_openrouter_key
+# echo "ENV: Setting 'Openrouter' OPENROUTER_API_KEY"
+# llm_set_openrouter_key
 printf 'OPENROUTER_API_KEY:      %s\n' "${OPENROUTER_API_KEY:0:15}"
-export llmtst="this is just a test, can you search the web?"
-echo "ENV: Setting 'Exa' EXA_API_KEY"
-llm_set_exa_key
+# echo "ENV: Setting 'Exa' EXA_API_KEY"
+# llm_set_exa_key
 printf 'EXA_API_KEY:             %s\n' "${EXA_API_KEY:0:15}"
