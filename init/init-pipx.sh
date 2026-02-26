@@ -48,6 +48,7 @@ pipx install speedtest --include-deps
 pipx install httpie --include-deps
 pipx install tinfoil --include-deps
 pipx install pgcli
+pipx install ftfy
 # pipx install mycli
 pipx install pycowsay
 pipx install esptool
@@ -110,6 +111,7 @@ pipx inject llm httpx --pip-args="--upgrade"
 pipx inject llm psutils --pip-args="--upgrade"
 pipx inject llm beautifulsoup4 --pip-args="--upgrade"
 pipx inject llm certifi --pip-args="--upgrade"
+pipx inject llm ftfy --pip-args="--upgrade"
 pipx inject llm uv --pip-args="--upgrade"
 pipx inject llm 'litellm[proxy]' --pip-args="--upgrade"
 pipx inject llm tinfoil --include-deps --pip-args="--upgrade"
@@ -125,6 +127,7 @@ pipx inject \
   cryptography \
   black \
   pendulum \
+  ftfy \
   icecream \
   loguru \
   certifi \

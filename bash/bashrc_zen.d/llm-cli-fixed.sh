@@ -62,31 +62,6 @@ alias ant='llm -t default_anthropic_sonnet'
 alias llm_what_tools='llm -t default_anthropic_sonnet "What tools to you have access to?"'
 alias llm_what_version='llm -t default_anthropic_sonnet "What LLM model version are you?"'
 
-## AWS Bedrock aliases
-alias broT='llm -m bro -T Exa "This is just a test, respond with short acknowledgment"'
-# -T tool because llm-exa or some such was installed: see llm tools list
-# llm install llm-tools-exa
-# llm install llm-tools-simpleeval
-# llm install sqlite
-# llm install llm-anthropic
-# llm install llm-bedrock
-# llm install llm-bedrock-anthropic
-# llm install llm-templates-github
-# llm install llm-templates-fabric
-# llm install llm-fragments-github
-# llm install llm-fragments-pdf
-# llm install llm-fragments-site-text
-# llm install llm-python
-# llm install llm-jq
-# llm install llm-cmd
-# llm install llm-cmd-comp
-# -m bro because bro is a config in ~/.config/io.datasette.llm/extra-openai-models.yaml
-# symlinked to ~/skel/llm/litellm/extra-openai-models.yaml
-# That contains yaml of a model_id: 'bro' (llm -m bro), and the connecting bedrock-sonnet (litellm)
-# listening on the local host
-# litellm -c /home/una/gitdir/skel/llm/litellm/litellm.conf --port 4000
-alias broTs='llm -m bro -T Exa "This is just a test, Could you please test if you can search the web with a trivial seearch.Respond with short result message"'
-
 llm_set_openrouter_key() {
   [[ -z "${OPENROUTER_API_KEY:-}" ]] && {
     printf 'WARNING: OPENROUTER_API_KEY is not set\n' >&2
