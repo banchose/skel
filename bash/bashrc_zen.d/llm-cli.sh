@@ -40,6 +40,7 @@ echo "EXPORTING OPENROUTER_DEFAULT_SONNET_MODEL: ${OPENROUTER_DEFAULT_SONNET_MOD
 export OPENROUTER_DEFAULT_OPUS_MODEL=openrouter/anthropic/claude-opus-4.6
 echo "EXPORTING OPENROUTER_DEFAULT_OPUS_MODEL: ${OPENROUTER_DEFAULT_OPUS_MODEL}"
 
+alias llm_start_litellm='litellm --config ~/gitdir/skel/llm/litellm/litellm.conf --port 4000 >/tmp/litellm-log-'"$(date '+%s')"' 2>&1 &'
 alias llm_symlink_templates='cd ~/.config/io.datasette.llm/templates/ && for i in ~/gitdir/skel/llm/TEMPLATES/*;do echo "${i}";[[ -f "${i}" ]] || ln -s "${i}";done'
 
 alias llm_png='wl-paste | llm --at - image/png'
