@@ -1,17 +1,21 @@
-- model_id: brs # in llm models list
-  model_name: bedrock-sonnet # passed to litellm (openai)
+- model_id: brs
+  model_name: bedrock-sonnet
   api_base: "http://localhost:4000"
   aliases: ["bedrock-sonnet-proxy"]
   supports_tools: true
-
+  supports_schema: true
+  vision: true
 - model_id: brh
   model_name: bedrock-haiku
   api_base: "http://localhost:4000"
   aliases: ["bedrock-haiku-proxy"]
   supports_tools: true
-
+  supports_schema: true
+  vision: true
 - model_id: bro
   model_name: bedrock-opus
   api_base: "http://localhost:4000"
   aliases: ["bedrock-opus-proxy"]
   supports_tools: true
+  supports_schema: true
+  vision: true
