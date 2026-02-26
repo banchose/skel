@@ -86,14 +86,17 @@ alias llm_what_version='llm -t default_anthropic_sonnet "What LLM model version 
 # litellm -c /home/una/gitdir/skel/llm/litellm/litellm.conf --port 4000
 alias broT='llm -m bro "This is just a test, respond with short acknowledgment"'
 alias bron='llm -m bro'
+alias bros='llm -m bro -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 alias bro='llm -m bro -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 
 alias brsT='llm -m brs "This is just a test, respond with short acknowledgment"'
 alias brsn='llm -m brs'
+alias brss='llm -m brs -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 alias brs='llm -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 
 alias brhT='llm -m brh "This is just a test, respond with short acknowledgment"'
 alias brhn='llm -m brh'
+alias brhs='llm -m brh -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 alias brh='llm -m brh -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 
 llm_set_openrouter_key() {
