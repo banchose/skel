@@ -90,18 +90,21 @@ alias broT='llm -u -m bro "This is just a test, respond with short acknowledgmen
 alias bron='llm -u -m bro'
 alias bros='llm -u -m bro -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # alias bro='llm -u -m bro -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+alias broc='llm chat -t bro'
 alias bro='llm -u -t bro'
 
 alias brsT='llm -u -m brs "This is just a test, respond with short acknowledgment"'
 alias brsn='llm -u -m brs'
 alias brss='llm -u -m brs -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # alias brs='llm -u -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+alias brsc='llm chat -t brs'
 alias brs='llm -u -t brs'
 
 alias brhT='llm -u -m brh "This is just a test, respond with short acknowledgment"'
 alias brhn='llm -u -m brh'
 alias brhs='llm -u -m brh -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # alias brh='llm -u -m brh -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+alias brhc='llm chat -t brh'
 alias brh='llm -u -t brh'
 
 llm_set_openrouter_key() {
@@ -292,7 +295,7 @@ START_LOCAL_LITELLM() {
   # Check port not already in use
   if ss -tlnp 2>/dev/null | grep -q ":${LITELLM_PORT} "; then
     echo "WARNING: Port ${LITELLM_PORT} already in use. LiteLLM may already be running."
-    echo "         Check with: curl -s http://localhost:${LITELLM_PORT}/health"
+    echo "         Check with: curl -s http://127.0.0.1:${LITELLM_PORT}/health"
     return 1
   fi
 
@@ -322,6 +325,9 @@ llm_status() {
   printf '=== stored keys ===\n'
   command llm keys
 
+  printf '=== stored templates ===\n'
+  command llm templates
+
   printf '=== installed plugins ===\n'
   command llm plugins | python3 -c "
 import sys, json
@@ -347,12 +353,12 @@ for p in json.load(sys.stdin):
   printf '=== litellm proxy ===\n'
   http_code=$(curl -s -o /dev/null -w '%{http_code}' \
     --connect-timeout 2 --max-time 3 \
-    http://localhost:4000/health 2>/dev/null) || true
-
+    http://127.0.0.1:4000/health 2>/dev/null) || true
+  printf 'DEBUG: http_code=[%s]\n' "${http_code}" >&2
   if [[ "${http_code}" == "200" ]]; then
-    printf '    localhost:4000 — UP\n'
+    printf '    127.0.0.1:4000 — UP\n'
   else
-    printf '==> localhost:4000 — DOWN\n'
+    printf '==> 127.0.0.1:4000 — DOWN\n'
     printf '    start: ~/gitdir/skel/llm/litellm/START_LOCAL_LITELLM.sh\n'
     printf '    or:    litellm -c ~/gitdir/skel/llm/litellm/litellm.conf --port 4000\n'
     issue_msgs+=("litellm proxy not running")
