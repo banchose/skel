@@ -87,17 +87,20 @@ alias llm_what_version='llm -t default_anthropic_sonnet "What LLM model version 
 alias broT='llm -u -m bro "This is just a test, respond with short acknowledgment"'
 alias bron='llm -u -m bro'
 alias bros='llm -u -m bro -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
-alias bro='llm -u -m bro -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+# alias bro='llm -u -m bro -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+alias bro='llm -u -t bro'
 
 alias brsT='llm -u -m brs "This is just a test, respond with short acknowledgment"'
 alias brsn='llm -u -m brs'
 alias brss='llm -u -m brs -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
-alias brs='llm -u -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+# alias brs='llm -u -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+alias brs='llm -u -t brs'
 
 alias brhT='llm -u -m brh "This is just a test, respond with short acknowledgment"'
 alias brhn='llm -u -m brh'
 alias brhs='llm -u -m brh -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
-alias brh='llm -u -m brh -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+# alias brh='llm -u -m brh -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+alias brh='llm -u -t brh'
 
 llm_set_openrouter_key() {
   [[ -z "${OPENROUTER_API_KEY:-}" ]] && {
@@ -198,10 +201,18 @@ cat myfile | llm "describe this image" --at - image/jpeg # --attachment-type
 cat myfile | llm "describe this image" --at - image/png # --attachment-type
   --- custom functions --- 
 llmbed <prompt>                   # prompt via Bedrock with date context
+### AWS
+aws sso login --region us-east-1 --profile test # test has bedrock
+aws bedrock list-inference-profiles --region us-east-1 --profile test | grep us[.]anthropic 
+### IMPORTANT
 ===> llm_set_bedrock_model        # set llm default model to AWS_BEDROCK_DEFAULT_MODEL
 ===> llm_set_openrouter_key       # load OPENROUTER_API_KEY into llm keys
 ===> llm_set_anthropic_key        # load ANTHROPIC_API_KEY into llm keys
 ===> llm_set_exa_key              # load EXA_API_KEY into llm keys
+### TEMPLATES
+#### CREATE SYMLINKS to git repo templates
+#### cd ~/.config/io.datasette.llm/templates/ && for i in ~/gitdir/skel/llm/TEMPLATES/*;do echo "${i}";ln -s "${i}";done
+### TEST/TROUBLEHSOOT
 llm_test_bedrock                  # run diagnostics + test prompt via Bedrock
 llm_status                        # Orienting what model and what keys are set 
 **The model name (-m,--model) drives the keys used**
