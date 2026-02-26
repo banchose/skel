@@ -9,6 +9,9 @@ echo "AWS_BEDROCK_OPUS_MODEL shell env set to ${AWS_BEDROCK_OPUS_MODEL}"
 export AWS_BEDROCK_DEFAULT_MODEL="${AWS_BEDROCK_SONNET_MODEL}"
 echo "AWS_BEDROCK_DEFAULT_MODEL shell env set to ${AWS_BEDROCK_DEFAULT_MODEL}"
 
+alias awlfmodels='aws bedrock list-foundation-models --region us-east-1 --profile test'
+alias awlmodels='aws bedrock list-inference-profiles --region us-east-1 --profile test | grep inferenceProfileId:'
+
 myclaude() {
   (
     if [[ -z "${AWS_BEARER_TOKEN_BEDROCK}" ]]; then
