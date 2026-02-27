@@ -108,7 +108,7 @@ alias brsn='llm -u -m brs'
 alias brss='llm -u -m brs -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # alias brs='llm -u -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 alias brsc='llm chat -t brs'
-alias brs='llm -u -t brs'
+# function now alias brs='llm -u -t brs'
 
 alias brhT='llm -u -m brh "This is just a test, respond with short acknowledgment"'
 alias brhn='llm -u -m brh'
@@ -116,6 +116,48 @@ alias brhs='llm -u -m brh -T web_search -T simple_eval -T llm_version -T llm_tim
 # alias brh='llm -u -m brh -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 alias brhc='llm chat -t brh'
 alias brh='llm -u -t brh'
+
+brs() {
+  local http_code
+
+  # 1. Check litellm proxy
+  http_code=$(curl -s -o /dev/null -w '%{http_code}' \
+    --connect-timeout 2 --max-time 3 \
+    http://127.0.0.1:4000/health 2>/dev/null) || true
+
+  if [[ "${http_code}" != "200" ]]; then
+    printf 'brs: litellm proxy is not running on :4000\n' >&2
+    printf '     start: llm_start_litellm\n' >&2
+    return 1
+  fi
+
+  # 2. Check AWS SSO session
+  if ! aws sts get-caller-identity --profile test &>/dev/null; then
+    printf 'brs: AWS SSO session expired or not logged in\n' >&2
+    printf '     run:   aws sso login --profile test\n' >&2
+    return 1
+  fi
+
+  # 3. All clear — run it
+  command llm -m brs "$@"
+}
+
+llm_bootstrap() {
+  local config_dir="${HOME}/.config/io.datasette.llm"
+  local skel_dir="${HOME}/gitdir/skel/llm"
+
+  mkdir -p "${config_dir}/templates"
+
+  local f="extra-openai-models.yaml"
+  if [[ -e "${config_dir}/${f}" || -L "${config_dir}/${f}" ]]; then
+    printf 'skip: %s\n' "${f}"
+  else
+    printf 'link: %s\n' "${f}"
+    ln -s "${skel_dir}/litellm/${f}" "${config_dir}/${f}"
+  fi
+
+  llm_symlink_templates
+}
 
 llm_symlink_templates() {
   cd ~/.config/io.datasette.llm/templates/ || return 1
