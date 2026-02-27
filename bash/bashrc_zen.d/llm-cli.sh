@@ -268,6 +268,10 @@ llm logs --schema-multi 'name, ten_word_bio' --data-key items --data-ids
 llm_test_bedrock                  # run diagnostics + test prompt via Bedrock
 llm_status                        # Orienting what model and what keys are set 
 nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh     # llmedit alias
+
+### Odd Ball
+# it will inspect the table for schema so no doc needed
+llm chat -t brh -T 'SQLite("/home/una/temp/OPENBKDIR/webui.db")'
 ---------------
 
 **The model name (-m,--model) drives the keys used**
