@@ -42,6 +42,8 @@ echo "EXPORTING OPENROUTER_DEFAULT_OPUS_MODEL: ${OPENROUTER_DEFAULT_OPUS_MODEL}"
 
 alias llm_start_litellm='litellm --config ~/gitdir/skel/llm/litellm/litellm.conf --port 4000 >/tmp/litellm-log-'"$(date '+%s')"' 2>&1 &'
 alias llm_symlink_templates='cd ~/.config/io.datasette.llm/templates/ && for i in ~/gitdir/skel/llm/TEMPLATES/*;do echo "${i}";[[ -f "${i}" ]] || ln -s "${i}";done'
+alias cdllm='cd ~/.config/io.datasette.llm/'
+alias cdllmT='cd ~/.config/io.datasette.llm/templates/'
 
 alias llm_png='wl-paste | llm --at - image/png'
 alias llm_ort_srch='llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
