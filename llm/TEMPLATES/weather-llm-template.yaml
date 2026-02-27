@@ -1,3 +1,0 @@
-model: anthropic/claude-sonnet-4-0
-system_fragments:
-- /home/una/gitdir/skel/PROMPT/the_weatherman.md
