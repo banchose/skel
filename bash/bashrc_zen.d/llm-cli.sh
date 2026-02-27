@@ -240,6 +240,7 @@ cat myfile | llm "describe this image" --at - image/jpeg # --attachment-type
 cat myfile | llm "describe this image" --at - image/png # --attachment-type
   --- custom functions --- 
 llmbed <prompt>                   # prompt via Bedrock with date context
+
 ### AWS
 aws sso login --region us-east-1 --profile test # test has bedrock
 aws bedrock list-inference-profiles --region us-east-1 --profile test | grep us[.]anthropic 
@@ -248,9 +249,19 @@ aws bedrock list-inference-profiles --region us-east-1 --profile test | grep us[
 ===> llm_set_openrouter_key       # load OPENROUTER_API_KEY into llm keys
 ===> llm_set_anthropic_key        # load ANTHROPIC_API_KEY into llm keys
 ===> llm_set_exa_key              # load EXA_API_KEY into llm keys
+
 ### TEMPLATES
 #### CREATE SYMLINKS to git repo templates
 #### cd ~/.config/io.datasette.llm/templates/ && for i in ~/gitdir/skel/llm/TEMPLATES/*;do echo "${i}";ln -s "${i}";done
+
+### SCHEMA
+llm --schema 'name, age int, one_sentence_bio' 'invent a cool dog'
+llm --schema-multi 'name, age int, one_sentence_bio' 'invent 3 really cool dogs'
+llm logs --schema-multi 'name, age int, one_sentence_bio' --data
+llm logs --schema-multi 'name, ten_word_bio' --data-key items
+llm logs --schema-multi 'name, ten_word_bio' --data-key items --data-array
+llm logs --schema-multi 'name, ten_word_bio' --data-key items --data-ids
+
 ### TEST/TROUBLEHSOOT
 llm_test_bedrock                  # run diagnostics + test prompt via Bedrock
 llm_status                        # Orienting what model and what keys are set 
@@ -258,7 +269,6 @@ nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh     # llmedit alias
 ---------------
 **The model name (-m,--model) drives the keys used**
 EOF
-
 }
 
 # Use a function instead of alias to capture date once
