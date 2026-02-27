@@ -16,6 +16,14 @@
 # llm keys set openrouter --value
 # llm -f github:https://github.com/banchose/skel/blob/main/awk/awk.md "can you see this little awk snippet?"
 
+### PATH llm cli to litellm to bedrock
+# broT → llm -m bro → extra-openai-models.yaml → LiteLLM (:4000) → Bedrock (via aws_profile_name: test)
+# litellm runs locally 127.0.0.1:4000
+# litellm.conf has
+#       aws_region_name: us-east-1
+#       aws_profile_name: test
+# it can authenticate via logged in aws account
+
 alias llmedit='nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh'
 export llmtst="this is just a test, can you search the web?"
 
@@ -41,7 +49,6 @@ export OPENROUTER_DEFAULT_OPUS_MODEL=openrouter/anthropic/claude-opus-4.6
 echo "EXPORTING OPENROUTER_DEFAULT_OPUS_MODEL: ${OPENROUTER_DEFAULT_OPUS_MODEL}"
 
 alias llm_start_litellm='litellm --config ~/gitdir/skel/llm/litellm/litellm.conf --port 4000 >/tmp/litellm-log-'"$(date '+%s')"' 2>&1 &'
-alias llm_symlink_templates='cd ~/.config/io.datasette.llm/templates/ && for i in ~/gitdir/skel/llm/TEMPLATES/*;do echo "${i}";[[ -f "${i}" ]] || ln -s "${i}";done'
 alias cdllm='cd ~/.config/io.datasette.llm/'
 alias cdllmT='cd ~/.config/io.datasette.llm/templates/'
 
@@ -94,7 +101,7 @@ alias bron='llm -u -m bro'
 alias bros='llm -u -m bro -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # alias bro='llm -u -m bro -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 alias broc='llm chat -t bro'
-alias bro='llm -u -t bro'
+alias xbro='llm -u -t bro'
 
 alias brsT='llm -u -m brs "This is just a test, respond with short acknowledgment"'
 alias brsn='llm -u -m brs'
@@ -109,6 +116,20 @@ alias brhs='llm -u -m brh -T web_search -T simple_eval -T llm_version -T llm_tim
 # alias brh='llm -u -m brh -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 alias brhc='llm chat -t brh'
 alias brh='llm -u -t brh'
+
+llm_symlink_templates() {
+  cd ~/.config/io.datasette.llm/templates/ || return 1
+  local i base
+  for i in ~/gitdir/skel/llm/TEMPLATES/*; do
+    base="$(basename "${i}")"
+    if [[ -e "${base}" || -L "${base}" ]]; then
+      echo "skip: ${base}"
+    else
+      echo "link: ${base}"
+      ln -s "${i}"
+    fi
+  done
+}
 
 llm_set_openrouter_key() {
   [[ -z "${OPENROUTER_API_KEY:-}" ]] && {
