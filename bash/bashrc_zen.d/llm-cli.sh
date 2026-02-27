@@ -253,6 +253,8 @@ aws bedrock list-inference-profiles --region us-east-1 --profile test | grep us[
 ### TEMPLATES
 #### CREATE SYMLINKS to git repo templates
 #### cd ~/.config/io.datasette.llm/templates/ && for i in ~/gitdir/skel/llm/TEMPLATES/*;do echo "${i}";ln -s "${i}";done
+llm --system 'Summarize this' --model brs --save summarize
+curl -s https://example.com/ | llm -t summarize
 
 ### SCHEMA
 llm --schema 'name, age int, one_sentence_bio' 'invent a cool dog'
@@ -267,6 +269,7 @@ llm_test_bedrock                  # run diagnostics + test prompt via Bedrock
 llm_status                        # Orienting what model and what keys are set 
 nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh     # llmedit alias
 ---------------
+
 **The model name (-m,--model) drives the keys used**
 EOF
 }
