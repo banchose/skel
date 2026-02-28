@@ -469,3 +469,43 @@ for p in json.load(sys.stdin):
   fi
   return 0
 }
+
+llm_get_host_info() {
+  local -r marker="#### HOST INFO"
+  printf '%s START\n\n' "${marker}"
+
+  declare -f "${FUNCNAME[0]}"
+  printf '\n'
+
+  local -a sections=(
+    "cat /etc/os-release"
+    "hostname"
+    "uname -a"
+    "df -h"
+    "ip a"
+    "lscpu"
+    "ping -w 4 -c 2 www.google.com"
+    "cat /etc/resolv.conf"
+    "curl -sS -o /dev/null -w 'http_code: %{http_code}\ntime: %{time_total}s\nip: %{remote_ip}\n' https://www.microsoft.com"
+    "curl -sS -o /dev/null -w 'http_code: %{http_code}\ntime: %{time_total}s\nip: %{remote_ip}\n' https://www.cnn.com"
+  )
+
+  local cmd
+  for cmd in "${sections[@]}"; do
+    printf -- '--- %s ---\n' "${cmd}"
+    eval "${cmd}" 2>&1 || true
+    printf '\n'
+  done
+
+  printf '%s END\n' "${marker}"
+}
+
+llm_check_local_litellm() {
+
+  local litellm_port=4000
+  local litellm_host=localhost
+
+  printf '%s\n' "Checking $litellm_host:$litellm_port"
+  curl -sS -o /dev/null -w 'http_code: %{http_code}\ntime: %{time_total}s\nip: %{remote_ip}\n' "${litellm_host}:${litellm_port}"
+
+}
