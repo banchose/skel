@@ -501,11 +501,16 @@ llm_get_host_info() {
 }
 
 llm_check_local_litellm() {
-
   local litellm_port=4000
   local litellm_host=localhost
+  printf '%s\n' "Checking ${litellm_host}:${litellm_port}"
+  curl -sS -o /dev/null -w 'http_code: %{http_code}\ntime: %{time_total}s\nip: %{remote_ip}\n' \
+    "${litellm_host}:${litellm_port}/health" &&
+    return 0 || return 1
+}
 
-  printf '%s\n' "Checking $litellm_host:$litellm_port"
-  curl -sS -o /dev/null -w 'http_code: %{http_code}\ntime: %{time_total}s\nip: %{remote_ip}\n' "${litellm_host}:${litellm_port}"
+llm() {
+
+  command llm -t brs "$@"
 
 }
