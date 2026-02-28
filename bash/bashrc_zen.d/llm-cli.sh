@@ -282,7 +282,8 @@ cat myfile | llm "describe this image" --at - image/jpeg # --attachment-type
 cat myfile | llm "describe this image" --at - image/png # --attachment-type
   --- custom functions --- 
 llmbed <prompt>                   # prompt via Bedrock with date context
-
+### jq
+cat data.json | llm jq "Just the first and last names"
 ### AWS
 aws sso login --region us-east-1 --profile test # test has bedrock
 aws bedrock list-inference-profiles --region us-east-1 --profile test | grep us[.]anthropic 
