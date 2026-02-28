@@ -60,6 +60,9 @@ gitseal() {
     cd ~/gitdir || return 1
     for i in ~/gitdir/{configs,aws,skel}; do
       cd "$i" || return 1
+      echo ""
+      echo "Hitting $i"
+      echo ""
       git status
       cd ..
     done
