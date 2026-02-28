@@ -54,6 +54,12 @@ gitseal() {
       git push
       cd ..
     done
+    cd ~/gitdir || return 1
+    for i in ~/gitdir/{configs,aws,skel}; do
+      cd "$i" || return 1
+      git status
+      cd ..
+    done
   )
 }
 
