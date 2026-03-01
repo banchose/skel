@@ -96,26 +96,34 @@ alias llm_what_version='llm -t default_anthropic_sonnet "What LLM model version 
 # That contains yaml of a model_id: 'bro' (llm -m bro), and the connecting bedrock-sonnet (litellm)
 # listening on the local host
 # litellm -c /home/una/gitdir/skel/llm/litellm/litellm.conf --port 4000
-alias broT='llm -u -m bro "This is just a test, respond with short acknowledgment"'
-alias bron='llm -u -m bro'
-alias bros='llm -u -m bro -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
-# alias bro='llm -u -m bro -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
-alias broc='llm chat -t bro'
-alias xbro='llm -u -t bro'
+#
+#  Alias start
+#
+#
+# alias broT='llm -u -m bro "This is just a test, respond with short acknowledgment"'
+# alias bron='llm -u -m bro'
+# alias bros='llm -u -m bro -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+# # alias bro='llm -u -m bro -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+alias bro='echo "use llm"'
+# alias broc='llm chat -t bro'
+# alias xbro='llm -u -t bro'
+#
+# alias brsT='llm -u -m brs "This is just a test, respond with short acknowledgment"'
+# alias brsn='llm -u -m brs'
+# alias brss='llm -u -m brs -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+# # alias brs='llm -u -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+alias brs='echo "use llm"'
+# alias brsc='llm chat -t brs'
+# # function now alias brs='llm -u -t brs'
+#
+# alias brhT='llm -u -m brh "This is just a test, respond with short acknowledgment"'
+# alias brhn='llm -u -m brh'
+# alias brhs='llm -u -m brh -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 
-alias brsT='llm -u -m brs "This is just a test, respond with short acknowledgment"'
-alias brsn='llm -u -m brs'
-alias brss='llm -u -m brs -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
-# alias brs='llm -u -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
-alias brsc='llm chat -t brs'
-# function now alias brs='llm -u -t brs'
-
-alias brhT='llm -u -m brh "This is just a test, respond with short acknowledgment"'
-alias brhn='llm -u -m brh'
-alias brhs='llm -u -m brh -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # alias brh='llm -u -m brh -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
-alias brhc='llm chat -t brh'
-alias brh='llm -u -t brh'
+# alias brhc='llm chat -t brh'
+# alias brh='llm -u -t brh'
+alias brh='echo "use llm"'
 
 brs() {
   local http_code
