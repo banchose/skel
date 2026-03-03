@@ -39,11 +39,17 @@ fi
 if grep 'ID="amzn"' /etc/os-release; then
   python3 -m pip install --user pipx
   sudo yum update
-  sudo yum install git
-  sudo yum install tmux
-  sudo yum install jq
-  sudo yum install curl
-  sudo yum install bash-completion
+  sudo yum -y install git
+  sudo yum -y install tmux
+  sudo yum -y install jq
+  sudo yum -y install bash-completion
+  sudo yum -y zip
+  sudo yum -y unzip
+  sudo yum -y ninja-build
+  sudo yum -y gcc
+  sudo yum -y cmake
+  sudo yum -y make
+  sudo yum -y gettext
 fi
 
 command -v pipx || {
