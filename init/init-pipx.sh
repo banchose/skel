@@ -38,12 +38,12 @@ fi
 
 if grep 'ID="amzn"' /etc/os-release; then
   python3 -m pip install --user pipx
-  yum -s update
-  yum install git
-  yum install tmux
-  yum install jq
-  yum install curl
-  yum install bash-completion
+  sudo yum -s update
+  sudo yum install git
+  sudo yum install tmux
+  sudo yum install jq
+  sudo yum install curl
+  sudo yum install bash-completion
 fi
 
 command -v pipx || {
