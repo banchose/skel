@@ -43,13 +43,13 @@ if grep 'ID="amzn"' /etc/os-release; then
   sudo yum -y install tmux
   sudo yum -y install jq
   sudo yum -y install bash-completion
-  sudo yum -y zip
-  sudo yum -y unzip
-  sudo yum -y ninja-build
-  sudo yum -y gcc
-  sudo yum -y cmake
-  sudo yum -y make
-  sudo yum -y gettext
+  sudo yum -y install zip
+  sudo yum -y install unzip
+  sudo yum -y install ninja-build
+  sudo yum -y install gcc
+  sudo yum -y install cmake
+  sudo yum -y install make
+  sudo yum -y install gettext
 fi
 
 command -v pipx || {
