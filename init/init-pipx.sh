@@ -36,7 +36,7 @@ if grep 'ID=alpine' /etc/os-release; then
   apk add iproute2
 fi
 
-if grep 'ID=amzn' /etc/os-release; then
+if grep 'ID="amzn"' /etc/os-release; then
   python3 -m pip install --user pipx
   yum -s update
   yum install git
