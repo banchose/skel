@@ -125,30 +125,30 @@ alias brs='echo "use llm"'
 # alias brh='llm -u -t brh'
 alias brh='echo "use llm"'
 
-brs() {
-  local http_code
-
-  # 1. Check litellm proxy
-  http_code=$(curl -s -o /dev/null -w '%{http_code}' \
-    --connect-timeout 2 --max-time 3 \
-    http://127.0.0.1:4000/health 2>/dev/null) || true
-
-  if [[ "${http_code}" != "200" ]]; then
-    printf 'brs: litellm proxy is not running on :4000\n' >&2
-    printf '     start: llm_start_litellm\n' >&2
-    return 1
-  fi
-
-  # 2. Check AWS SSO session
-  if ! aws sts get-caller-identity --profile test &>/dev/null; then
-    printf 'brs: AWS SSO session expired or not logged in\n' >&2
-    printf '     run:   aws sso login --profile test\n' >&2
-    return 1
-  fi
-
-  # 3. All clear — run it
-  command llm -m brs "$@"
-}
+# brs() {
+#   local http_code
+#
+#   # 1. Check litellm proxy
+#   http_code=$(curl -s -o /dev/null -w '%{http_code}' \
+#     --connect-timeout 2 --max-time 3 \
+#     http://127.0.0.1:4000/health 2>/dev/null) || true
+#
+#   if [[ "${http_code}" != "200" ]]; then
+#     printf 'brs: litellm proxy is not running on :4000\n' >&2
+#     printf '     start: llm_start_litellm\n' >&2
+#     return 1
+#   fi
+#
+#   # 2. Check AWS SSO session
+#   if ! aws sts get-caller-identity --profile test &>/dev/null; then
+#     printf 'brs: AWS SSO session expired or not logged in\n' >&2
+#     printf '     run:   aws sso login --profile test\n' >&2
+#     return 1
+#   fi
+#
+#   # 3. All clear — run it
+#   command llm -m brs "$@"
+# }
 
 llm_bootstrap() {
   local config_dir="${HOME}/.config/io.datasette.llm"

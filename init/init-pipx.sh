@@ -222,5 +222,3 @@ get_lazyvim() {
 
 # ping -q -l 1 -c 1 www.github.com &>/dev/null && echo "build_neovim"
 # ping -q -l 1 -c 1 www.github.com &>/dev/null && echo "get_lazyvim"
-
-sudo yum install python3-pip
