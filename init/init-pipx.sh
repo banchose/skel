@@ -3,6 +3,8 @@
 # docker run -it -v ~/temp:/root/temp:ro -v ~/.bashrc:/root/.bashrc:ro -v ~/.inputrc:/root/.inputrc:ro  -v ~/gitdir/skel:/root/skel:ro bash bash
 # pipx upgrade-all --include-injected
 
+# mkdir gitdir;cd gitdir;git clone https://github.com/banchose/skel;cd ./skel;./disperse.sh
+
 set -xuo pipefail
 
 export PATH="$HOME/.local/bin:$PATH"
