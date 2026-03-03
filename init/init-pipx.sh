@@ -38,7 +38,7 @@ fi
 
 if grep 'ID="amzn"' /etc/os-release; then
   python3 -m pip install --user pipx
-  sudo yum -s update
+  sudo yum update
   sudo yum install git
   sudo yum install tmux
   sudo yum install jq
