@@ -34,6 +34,16 @@ if grep 'ID=alpine' /etc/os-release; then
   apk add iproute2
 fi
 
+if grep 'ID=amzn' /etc/os-release; then
+  python3 -m pip install --user pipx
+  yum -s update
+  yum install git
+  yum install tmux
+  yum install jq
+  yum install curl
+  yum install bash-completion
+fi
+
 command -v pipx || {
   echo "no pipx"
   exit 1
@@ -212,3 +222,5 @@ get_lazyvim() {
 
 # ping -q -l 1 -c 1 www.github.com &>/dev/null && echo "build_neovim"
 # ping -q -l 1 -c 1 www.github.com &>/dev/null && echo "get_lazyvim"
+
+sudo yum install python3-pip
