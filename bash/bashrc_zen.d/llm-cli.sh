@@ -518,7 +518,12 @@ llm_check_local_litellm() {
 }
 
 llm() {
-
+  local litellm_port=4000
+  local litellm_host=localhost
+  curl -s localhost:4000 &>/dev/null || {
+    echo "Yo!!!   LitelLLM is DOWN: run llm_start_litellm"
+    return 1
+  }
   command llm -t brs "$@"
 
 }
