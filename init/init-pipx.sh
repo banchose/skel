@@ -59,55 +59,59 @@ command -v pipx || {
   exit 1
 }
 
-pipx install checkov --include-deps
 pipx install ipython --include-deps
+pipx install httpie --include-deps
+pipx install pgcli
+pipx install ftfy
+pipx install mycli
+pipx install pycowsay
+pipx install ruff
+pipx install black
+pipx install flake8
+pipx install pylint
+pipx install rust
+pipx install glances
+pipx install isort
+pipx install ptpython
+pipx install s3cmd
+pipx install speedtest-cli
+pipx install twisted
+pipx install psutils
+pipx install uv
+# pipx install pyprland
+#
+# Extra
+pipx install checkov --include-deps
+
+pipx install feedparser --include-deps
+pipx install llm
 pipx install flask --include-deps
 pipx install django --include-deps
 pipx install pandas --include-deps
 pipx install speedtest --include-deps
-pipx install httpie --include-deps
-pipx install tinfoil --include-deps
-pipx install pgcli
-pipx install ftfy
-# pipx install mycli
-pipx install pycowsay
-pipx install esptool
-pipx install litecli
-pipx install ruff
-pipx install black
-pipx install feedparser --include-deps
-pipx install flake8
-pipx install pylint
+pipx inject ptpython requests pendulum httpx uv --pip-args="--upgrade"
+
+pipx install shell-functools
+pipx install jupyter
+pipx install ansible
+pipx install openai
+pipx install posting
 pipx install cfn-lint
-# pipx install posting
-pipx install rust
+pipx install esptool
+pipx install visidata
+pipx install cfn-lsp-extra
+
+pipx install litecli
+pipx install 'litellm[proxy]'
+pipx install git-filter-repo
+pipx install tinfoil --include-deps
+
 pipx install pipenv
 pipx install poetry
-pipx install glances
-pipx install isort
-# pipx install jupyter
-pipx install llm
 pipx install aider-chat
-# pipx install ansible
-pipx install cfn-lsp-extra
 pipx install cookiecutter
 pipx install csvkit
 pipx install elia-chat
-# pipx install openai
-pipx install ptpython
-pipx install s3cmd
-pipx install shell-functools
-pipx install speedtest-cli
-pipx install twisted
-pipx install visidata
-pipx install psutils
-pipx install uv
-pipx install 'litellm[proxy]'
-pipx install git-filter-repo
-# pipx install pyprland
-
-pipx inject ptpython requests pendulum httpx uv --pip-args="--upgrade"
-
 # pipx inject llm xxxxx --pip-args="--upgrade"
 
 pipx inject llm llm-tools-simpleeval --pip-args="--upgrade"
