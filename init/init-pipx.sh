@@ -191,20 +191,20 @@ fi
 
 # git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
 
-# Install bat
-if ! command -v bat &>/dev/null; then
-  mkdir -p ~/gitdir
-  cd ~/gitdir || {
-    echo "failed to cd into ~/gitdir"
-    exit 1
-  }
-  git clone --depth=1 https://github.com/sharkdp/bat
-  cd bat || {
-    echo "failed to cd into ~/bat"
-    exit 1
-  }
-  cargo install --path . --locked
-fi
+# # Install bat
+# if ! command -v bat &>/dev/null; then
+#   mkdir -p ~/gitdir
+#   cd ~/gitdir || {
+#     echo "failed to cd into ~/gitdir"
+#     exit 1
+#   }
+#   git clone --depth=1 https://github.com/sharkdp/bat
+#   cd bat || {
+#     echo "failed to cd into ~/bat"
+#     exit 1
+#   }
+#   cargo install --path . --locked
+# fi
 
 # neovim
 build_neovim() {
