@@ -59,7 +59,6 @@ command -v pipx || {
   exit 1
 }
 
-pipx install ipython --include-deps
 pipx install httpie --include-deps
 pipx install pgcli
 pipx install ftfy
@@ -67,51 +66,56 @@ pipx install mycli
 pipx install pycowsay
 pipx install ruff
 pipx install black
-pipx install flake8
-pipx install pylint
-pipx install rust
-pipx install glances
 pipx install isort
-pipx install ptpython
 pipx install s3cmd
 pipx install speedtest-cli
-pipx install twisted
 pipx install psutils
 pipx install uv
-# pipx install pyprland
-#
-# Extra
-pipx install checkov --include-deps
 
-pipx install feedparser --include-deps
-pipx install llm
-pipx install flask --include-deps
-pipx install django --include-deps
-pipx install pandas --include-deps
-pipx install speedtest --include-deps
-pipx inject ptpython requests pendulum httpx uv --pip-args="--upgrade"
+if false; then
+  pipx install speedtest --include-deps
+  pipx install shell-functools
+  pipx install posting
 
-pipx install shell-functools
-pipx install jupyter
-pipx install ansible
-pipx install openai
-pipx install posting
-pipx install cfn-lint
-pipx install esptool
-pipx install visidata
-pipx install cfn-lsp-extra
+  pipx install litecli
+  pipx install git-filter-repo
+  pipx install cookiecutter
+  ###### Rust
+  pipx install rust
+  ##### python
+  pipx install pylint
+  pipx install flake8
+  pipx install ipython --include-deps
+  pipx install ptpython
+  pipx inject ptpython requests icecream pendulum httpx uv --pip-args="--upgrade"
+  pipx install networkx
+  pipx install httpx
+  pipx install twisted
+  pipx install icecream
+  pipx install flask --include-deps
+  pipx install django --include-deps
+  pipx install jupyter
+  pipx install pandas --include-deps
+  ##### aws
+  pipx install cfn-lsp-extra
+  pipx install checkov --include-deps
+  pipx install cfn-lint
+  ##### llm
+  pipx install llm
+  pipx install aider-chat
+  pipx install 'litellm[proxy]'
+  pipx install openai
+  # pipx install tinfoil --include-deps
+  # pipx install elia-chat
+  ##### Exta
+  pipx install feedparser --include-deps
+  pipx install csvkit
+  pipx install visidata
+  pipx install esptool
+  pipx install ansible
+  pipx install glances
+fi
 
-pipx install litecli
-pipx install 'litellm[proxy]'
-pipx install git-filter-repo
-pipx install tinfoil --include-deps
-
-pipx install pipenv
-pipx install poetry
-pipx install aider-chat
-pipx install cookiecutter
-pipx install csvkit
-pipx install elia-chat
 # pipx inject llm xxxxx --pip-args="--upgrade"
 
 pipx inject llm llm-tools-simpleeval --pip-args="--upgrade"
