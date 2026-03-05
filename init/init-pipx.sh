@@ -134,7 +134,6 @@ if command -v llm &>/dev/null; then
   pipx inject llm llm-cmd --pip-args="--upgrade"
   pipx inject llm llm-python --pip-args="--upgrade" --force
   pipx inject llm llm-jq --pip-args="--upgrade" --force
-  pipx inject llm lm-sentence-transformers --pip-args="--upgrade"
   pipx inject llm howdoi --pip-args="--upgrade"
   pipx inject llm httpx --pip-args="--upgrade"
   pipx inject llm psutils --pip-args="--upgrade"
@@ -144,6 +143,7 @@ if command -v llm &>/dev/null; then
   pipx inject llm uv --pip-args="--upgrade"
   pipx inject llm 'litellm[proxy]' --pip-args="--upgrade"
   pipx inject llm tinfoil --include-deps --pip-args="--upgrade"
+  llm install llm-sentence-transformers
 fi
 
 if command -v ipython &>/dev/null; then
