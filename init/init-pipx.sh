@@ -42,6 +42,7 @@ if grep 'ID="amzn"' /etc/os-release; then
   sudo yum -y install git
   sudo yum -y install tmux
   sudo yum -y install jq
+  sudo yum -y install python3.13
   sudo yum -y install bash-completion
   sudo yum -y install zip
   sudo yum -y install unzip
