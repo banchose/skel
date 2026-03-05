@@ -50,7 +50,7 @@ if grep 'ID="amzn"' /etc/os-release; then
   sudo yum -y install make
   sudo yum -y install gettext
   sudo yum -y install python3.13
-  python3.13 -m pip install --user pipx
+  sudo yum -y install python3.13-pip
 fi
 
 command -v pipx &>/dev/null || python3.13 -m pip install --user pipx
