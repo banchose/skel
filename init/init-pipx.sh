@@ -54,11 +54,7 @@ if grep 'ID="amzn"' /etc/os-release; then
 fi
 
 command -v pipx &>/dev/null || python3.13 -m pip install --user pipx
-
-command -v pipx || {
-  echo "no pipx"
-  exit 1
-}
+pipx ensurepath
 
 pipx install httpie --include-deps
 pipx install pgcli
@@ -119,72 +115,74 @@ fi
 
 # pipx inject llm xxxxx --pip-args="--upgrade"
 
-pipx inject llm llm-tools-simpleeval --pip-args="--upgrade"
-pipx inject llm llm-tools-exa --pip-args="--upgrade"
-pipx inject llm llm-tools-sqlite --include-deps --pip-args="--upgrade"
-pipx inject llm llm-tools-quickjs --include-deps --pip-args="--upgrade"
-pipx inject llm llm-tools-datasette --include-deps --pip-args="--upgrade"
-pipx inject llm llm-openrouter --pip-args="--upgrade"
-pipx inject llm llm-anthropic --pip-args="--upgrade"
-pipx inject llm llm-gemini --pip-args="--upgrade"
-pipx inject llm pymupdf-layout --pip-args="--upgrade"
-pipx inject llm llm-templates-github --pip-args="--upgrade"
-pipx inject llm llm-templates-fabric --pip-args="--upgrade"
-pipx inject llm llm-fragments-github --pip-args="--upgrade"
-pipx inject llm llm-fragments-pdf --pip-args="--upgrade"
-pipx inject llm llm-fragments-site-text --pip-args="--upgrade"
-pipx inject llm llm-cmd-comp --pip-args="--upgrade"
-pipx inject llm llm-cmd --pip-args="--upgrade"
-pipx inject llm llm-python --pip-args="--upgrade" --force
-pipx inject llm llm-jq --pip-args="--upgrade" --force
-pipx inject llm lm-sentence-transformers --pip-args="--upgrade"
-pipx inject llm howdoi --pip-args="--upgrade"
-pipx inject llm httpx --pip-args="--upgrade"
-pipx inject llm psutils --pip-args="--upgrade"
-pipx inject llm beautifulsoup4 --pip-args="--upgrade"
-pipx inject llm certifi --pip-args="--upgrade"
-pipx inject llm ftfy --pip-args="--upgrade"
-pipx inject llm uv --pip-args="--upgrade"
-pipx inject llm 'litellm[proxy]' --pip-args="--upgrade"
-pipx inject llm tinfoil --include-deps --pip-args="--upgrade"
+if command -v llm &>/dev/null; then
+  pipx inject llm llm-tools-simpleeval --pip-args="--upgrade"
+  pipx inject llm llm-tools-exa --pip-args="--upgrade"
+  pipx inject llm llm-tools-sqlite --include-deps --pip-args="--upgrade"
+  pipx inject llm llm-tools-quickjs --include-deps --pip-args="--upgrade"
+  pipx inject llm llm-tools-datasette --include-deps --pip-args="--upgrade"
+  pipx inject llm llm-openrouter --pip-args="--upgrade"
+  pipx inject llm llm-anthropic --pip-args="--upgrade"
+  pipx inject llm llm-gemini --pip-args="--upgrade"
+  pipx inject llm pymupdf-layout --pip-args="--upgrade"
+  pipx inject llm llm-templates-github --pip-args="--upgrade"
+  pipx inject llm llm-templates-fabric --pip-args="--upgrade"
+  pipx inject llm llm-fragments-github --pip-args="--upgrade"
+  pipx inject llm llm-fragments-pdf --pip-args="--upgrade"
+  pipx inject llm llm-fragments-site-text --pip-args="--upgrade"
+  pipx inject llm llm-cmd-comp --pip-args="--upgrade"
+  pipx inject llm llm-cmd --pip-args="--upgrade"
+  pipx inject llm llm-python --pip-args="--upgrade" --force
+  pipx inject llm llm-jq --pip-args="--upgrade" --force
+  pipx inject llm lm-sentence-transformers --pip-args="--upgrade"
+  pipx inject llm howdoi --pip-args="--upgrade"
+  pipx inject llm httpx --pip-args="--upgrade"
+  pipx inject llm psutils --pip-args="--upgrade"
+  pipx inject llm beautifulsoup4 --pip-args="--upgrade"
+  pipx inject llm certifi --pip-args="--upgrade"
+  pipx inject llm ftfy --pip-args="--upgrade"
+  pipx inject llm uv --pip-args="--upgrade"
+  pipx inject llm 'litellm[proxy]' --pip-args="--upgrade"
+  pipx inject llm tinfoil --include-deps --pip-args="--upgrade"
+fi
 
-pipx inject \
-  ipython \
-  boto3 \
-  boltons \
-  beautifulsoup4 \
-  psutils \
-  howdoi \
-  pydantic \
-  cryptography \
-  black \
-  pendulum \
-  ftfy \
-  icecream \
-  loguru \
-  certifi \
-  pydantic \
-  httpx \
-  networkx \
-  pandas \
-  esptool \
-  numpy \
-  ipython-extensions \
-  llm \
-  llm-tools-exa \
-  llm-openrouter \
-  llm-fragments-github \
-  llm-anthropic \
-  llm-tools-simpleeval \
-  llm-python \
-  llm-jq \
-  httpie \
-  uv \
-  'litellm[proxy]' \
-  --pip-args="--upgrade" \
-  --include-deps
-
-pipx ensurepath
+if command -v ipython &>/dev/null; then
+  pipx inject \
+    ipython \
+    boto3 \
+    boltons \
+    beautifulsoup4 \
+    psutils \
+    howdoi \
+    pydantic \
+    cryptography \
+    black \
+    pendulum \
+    ftfy \
+    icecream \
+    loguru \
+    certifi \
+    pydantic \
+    httpx \
+    networkx \
+    pandas \
+    esptool \
+    numpy \
+    ipython-extensions \
+    llm \
+    llm-tools-exa \
+    llm-openrouter \
+    llm-fragments-github \
+    llm-anthropic \
+    llm-tools-simpleeval \
+    llm-python \
+    llm-jq \
+    httpie \
+    uv \
+    'litellm[proxy]' \
+    --pip-args="--upgrade" \
+    --include-deps
+fi
 
 ############## Rust ##############
 
