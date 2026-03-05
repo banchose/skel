@@ -68,6 +68,7 @@ pipx install s3cmd
 pipx install speedtest-cli
 pipx install psutils
 pipx install uv
+pipx install llm
 
 if false; then
   pipx install speedtest --include-deps
@@ -98,7 +99,6 @@ if false; then
   pipx install checkov --include-deps
   pipx install cfn-lint
   ##### llm
-  pipx install llm
   pipx install aider-chat
   pipx install 'litellm[proxy]'
   pipx install openai
