@@ -37,12 +37,10 @@ if grep 'ID=alpine' /etc/os-release; then
 fi
 
 if grep 'ID="amzn"' /etc/os-release; then
-  python3 -m pip install --user pipx
   sudo yum update
   sudo yum -y install git
   sudo yum -y install tmux
   sudo yum -y install jq
-  sudo yum -y install python3.13
   sudo yum -y install bash-completion
   sudo yum -y install zip
   sudo yum -y install unzip
@@ -51,9 +49,11 @@ if grep 'ID="amzn"' /etc/os-release; then
   sudo yum -y install cmake
   sudo yum -y install make
   sudo yum -y install gettext
+  sudo yum -y install python3.13
+  python3.13 -m pip install --user pipx
 fi
 
-command -v pipx &>/dev/null || python3 -m pip install --user pipx
+command -v pipx &>/dev/null || python3.13 -m pip install --user pipx
 
 command -v pipx || {
   echo "no pipx"
