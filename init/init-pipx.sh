@@ -52,6 +52,8 @@ if grep 'ID="amzn"' /etc/os-release; then
   sudo yum -y install gettext
 fi
 
+command -v pipx &>/dev/null || python3 -m pip install --user pipx
+
 command -v pipx || {
   echo "no pipx"
   exit 1

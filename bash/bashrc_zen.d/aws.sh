@@ -12,6 +12,7 @@ export AWS_PROFILE=lab
 export AWS_DEFAULT_REGION=us-east-1
 export AwsRegion=us-east-1 # needed to set region for aliases when they expand. This will always be set in the current shell if this file loads
 export MANINSTANCE=i-0a495644db9737bf6
+export REPORTSECURITYID=i-004cab037c820cdf3
 #
 # AWS Regions to check
 REGIONS=("us-east-1" "us-west-2")
@@ -44,8 +45,8 @@ alias awcdskel='cd ~/gitdir/skel/bash/bashrc_zen.d/'
 alias awcdeks='cd ~/gitdir/aws/PHRIBIGNETWORK/EKSALB/'
 alias awvaws='nvim ~/gitdir/skel/bash/bashrc_zen.d/aws.sh'
 alias awssh-man="aws ssm start-session --target ${MANINSTANCE} --region us-east-1 --profile net"
-alias awssh-xxxreportsecurity="aws ssm start-session --target ${MANINSTANCE} --region us-east-1 --profile net"
-alias awdlb='aws elbv2 describe-load-balancers --query "LoadBalancers[].DNSName" --region us-east-1'
+alias awssh-reportsecurity="aws ssm start-session --target ${REPORTSECURITYID} --region us-east-1 --profile production"
+alias awdlb='aws elbv2 describe-load-bala --query "LoadBalancers[].DNSName" --region us-east-1'
 alias awlswaf="aws logs tail aws-waf-logs-HRI-APP-WAF   --follow   --region us-east-1   --profile net"
 alias awlscreds='aws configure export-credentials --profile $AWS_PROFILE'
 
