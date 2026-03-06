@@ -10,6 +10,28 @@
 "${!arr[@]}" # the indexes populate space separated
 ```
 
+## math
+
+```sh
+((var=1+2))
+((var++))
+((var--))
+((var+=1))
+((var-=1))
+((var=var2*arr[2]))
+```
+
+## Command Substitution
+
+```sh
+var="$(command)"
+var="$(command "$(command)")"
+```
+
+```
+
+```
+
 ### Loop over arrays
 
 ```sh
