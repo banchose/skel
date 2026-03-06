@@ -1,9 +1,75 @@
 # bash notes
 
-## Terminal confusions
+## array
 
-- foot <- pty <- bash
-- foot <-pty <- tmux <- pty <- bash
+### arrays
+
+```sh
+"${arr[@]}" # expands to each element as a paramter
+"${#arr[@]}" # exands to number of elements
+"${!arr[@]}" # the indexes populate space separated
+```
+
+### Loop over arrays
+
+```sh
+arr=(apples oranges tomatoes)
+# Just elements.
+for element in "${arr[@]}"; do
+    printf '%s\n' "$element"
+done
+
+
+for i in "${!arr[@]}"; do
+    printf '%s\n' "${arr[i]}"
+done
+
+for ((i=0;i<${#arr[@]};i++)); do
+    printf '%s\n' "${arr[i]}"
+done
+```
+
+## File
+
+### Loop over contents
+
+```sh
+while read -r line; do
+    printf '%s\n' "$line"
+done < "file"
+
+# Iterate over directories.
+for dir in ~/Downloads/*/; do
+    printf '%s\n' "$dir"
+done
+
+# Iterate recursively.
+shopt -s globstar
+for file in ~/Pictures/**/*; do
+    printf '%s\n' "$file"
+done
+shopt -u globstar
+
+# Create an empty file
+>file
+:>file
+```
+
+## Terminal
+
+```
+foot  ←→  ptm  ←→  /dev/pts/0  ←→  tmux client
+                                          ↕ (socket)
+                                     tmux server
+                                      ├→  ptm  ←→  /dev/pts/1  ←→  bash (pane 1)
+                                      └→  ptm  ←→  /dev/pts/2  ←→  bash (pane 2)
+
+Foot opens `/dev/ptmx`, gets back a master file descriptor, and the kernel creates `/dev/pts/0`. Bash's stdin/stdout/stderr point at `/dev/pts/0` (the slave). Foot reads/writes the master side. The kernel shuttles data between the two.
+```
+
+```
+foot  ←→  ptm (file descriptor in foot)  ←→  /dev/pts/0  ←→  bash
+```
 
 ## Hierachy
 
