@@ -447,6 +447,7 @@ COPY --chown=${USER_NAME}:${USER_NAME} inputrc ${USER_HOME}/.inputrc
 COPY --chown=${USER_NAME}:${USER_NAME} tmux.conf ${USER_HOME}/.tmux.conf
 COPY --chown=${USER_NAME}:${USER_NAME} gitconfig ${USER_HOME}/.gitconfig
 COPY --chown=${USER_NAME}:${USER_NAME} awsconfig ${USER_HOME}/.aws/config
+COPY --chown=${USER_NAME}:${USER_NAME} oil.lua ${USER_HOME}/.config/nvim/lua/plugins
 
 # RUN mkdir -p ${USER_HOME}/.bashrc_zen.d
 
