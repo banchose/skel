@@ -5,19 +5,19 @@
 [[ -z "${AWS_BEDROCK_DEFAULT_MODEL:-}" ]] && echo "***** AWS_BEDROCK_DEFAULT_MODEL is not set *****" >&2
 [[ -z "${EXA_API_KEY:-}" ]] && echo "***** EXA_API_KEY not set *****" >&2
 
-# llm install llm-openrouter
-# llm install llm-anthropic
-# llm install llm-jq
-# llm install llm-tools-simpleeval
-# llm install llm-tools-sqlite
-# llm install llm-tools-rag
-# llm models list
-# llm keys set anthropic --value
-# llm keys set openrouter --value
-# llm -f github:https://github.com/banchose/skel/blob/main/awk/awk.md "can you see this little awk snippet?"
+# command llm install llm-openrouter
+# command llm install llm-anthropic
+# command llm install llm-jq
+# command llm install llm-tools-simpleeval
+# command llm install llm-tools-sqlite
+# command llm install llm-tools-rag
+# command llm models list
+# command llm keys set anthropic --value
+# command llm keys set openrouter --value
+# command llm -f github:https://github.com/banchose/skel/blob/main/awk/awk.md "can you see this little awk snippet?"
 
 ### PATH llm cli to litellm to bedrock
-# broT → llm -m bro → extra-openai-models.yaml → LiteLLM (:4000) → Bedrock (via aws_profile_name: test)
+# broT → command llm -m bro → extra-openai-models.yaml → LiteLLM (:4000) → Bedrock (via aws_profile_name: test)
 # litellm runs locally 127.0.0.1:4000
 # litellm.conf has
 #       aws_region_name: us-east-1
@@ -52,27 +52,27 @@ alias llm_start_litellm='litellm --config ~/gitdir/skel/llm/litellm/litellm.conf
 alias cdllm='cd ~/.config/io.datasette.llm/'
 alias cdllmT='cd ~/.config/io.datasette.llm/templates/'
 
-alias llm_png='wl-paste | llm --at - image/png'
-alias llm_ort_srch='llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
-alias llm_ort_srch_exa='llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
-alias llmos='llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
-alias llmose='llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
-alias orts='llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
-alias orte='llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
-alias ort='llm -u -m "${OPENROUTER_DEFAULT_MODEL}"'
+alias llm_png='wl-paste | command llm --at - image/png'
+alias llm_ort_srch='command llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
+alias llm_ort_srch_exa='command llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
+alias llmos='command llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
+alias llmose='command llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
+alias orts='command llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
+alias orte='command llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
+alias ort='command llm -u -m "${OPENROUTER_DEFAULT_MODEL}"'
 
 # Anthropic
-alias llm_ant_srch='llm -u -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
-alias llm_bash_script='llm -u -f ~/gitdir/skel/PROMPT/SKILLS/bash_scripting_standards.txt -m "${ANTHROPIC_DEFAULT_MODEL}"'
-alias llma='llm -t default -m "${ANTHROPIC_DEFAULT_MODEL}"'
-alias antx='llm -u -m "${ANTHROPIC_DEFAULT_MODEL}"'
-alias antxs='llm -u -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
-alias ant='llm -t default_anthropic_sonnet'
+alias llm_ant_srch='command llm -u -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
+alias llm_bash_script='command llm -u -f ~/gitdir/skel/PROMPT/SKILLS/bash_scripting_standards.txt -m "${ANTHROPIC_DEFAULT_MODEL}"'
+alias llma='command llm -t default -m "${ANTHROPIC_DEFAULT_MODEL}"'
+alias antx='command llm -u -m "${ANTHROPIC_DEFAULT_MODEL}"'
+alias antxs='command llm -u -m "${ANTHROPIC_DEFAULT_MODEL}" -T Exa'
+alias ant='command llm -t default_anthropic_sonnet'
 
 # in template alias llma='llm -t default -T llm_version -T llm_time -T simple_eval -m "${ANTHROPIC_DEFAULT_MODEL}"'
 #
-alias llm_what_tools='llm -t default_anthropic_sonnet "What tools to you have access to?"'
-alias llm_what_version='llm -t default_anthropic_sonnet "What LLM model version are you?"'
+alias llm_what_tools='command llm -t default_anthropic_sonnet "What tools to you have access to?"'
+alias llm_what_version='command llm -t default_anthropic_sonnet "What LLM model version are you?"'
 
 ## AWS Bedrock aliases
 # -T tool because llm-exa or some such was installed: see llm tools list
@@ -104,26 +104,26 @@ alias llm_what_version='llm -t default_anthropic_sonnet "What LLM model version 
 # alias bron='llm -u -m bro'
 # alias bros='llm -u -m bro -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # # alias bro='llm -u -m bro -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
-alias bro='echo "use llm"'
 # alias broc='llm chat -t bro'
-# alias xbro='llm -u -t bro'
+alias bro='command llm -u -t bro'
+# alias bro='echo "use llm"'
 #
 # alias brsT='llm -u -m brs "This is just a test, respond with short acknowledgment"'
 # alias brsn='llm -u -m brs'
 # alias brss='llm -u -m brs -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # # alias brs='llm -u -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
-alias brs='echo "use llm"'
 # alias brsc='llm chat -t brs'
-# # function now alias brs='llm -u -t brs'
+# alias brs='echo "use llm"'
+alias brs='comand llm -u -t brs'
 #
 # alias brhT='llm -u -m brh "This is just a test, respond with short acknowledgment"'
 # alias brhn='llm -u -m brh'
 # alias brhs='llm -u -m brh -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 
-# alias brh='llm -u -m brh -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # alias brhc='llm chat -t brh'
-# alias brh='llm -u -t brh'
-alias brh='echo "use llm"'
+alias brh='command llm -u -t brh'
+# EXAMPLE alias brh='llm -u -m brh -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+# alias brh='echo "use llm"'
 
 # brs() {
 #   local http_code
@@ -326,6 +326,13 @@ llm chat -t brh -T 'SQLite("/home/una/temp/OPENBKDIR/webui.db")'
 ---------------
 
 **The model name (-m,--model) drives the keys used**
+
+llm -> ~/.config/io.datasette.llm/extra-openai-models.yaml 
+  model_id: brs
+  api_base: "http://localhost:4000" #litellm
+litellm 
+  litellm.conf
+    profile or api_key
 EOF
 }
 

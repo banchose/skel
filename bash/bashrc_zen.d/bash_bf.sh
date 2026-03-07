@@ -1,3 +1,7 @@
+bf_bkr() {
+  (nohup "$@" &>/dev/null &)
+}
+
 bf_extract() {
   # Usage: extract file "opening marker" "closing marker"
   while IFS=$'\n' read -r line; do

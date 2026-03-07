@@ -36,6 +36,9 @@ if grep 'ID=alpine' /etc/os-release; then
   apk add iproute2
 fi
 
+##
+# Amazon AWS
+##
 if grep 'ID="amzn"' /etc/os-release; then
   sudo yum update
   sudo yum -y install git
@@ -53,6 +56,9 @@ if grep 'ID="amzn"' /etc/os-release; then
   sudo yum -y install python3.13-pip
 fi
 
+##
+# pipx applications
+##
 command -v pipx &>/dev/null || python3.13 -m pip install --user pipx
 pipx ensurepath
 
@@ -70,7 +76,7 @@ pipx install psutils
 pipx install uv
 pipx install llm
 
-if false; then
+if [[ -n INIT_EXTRA ]]; then
   pipx install speedtest --include-deps
   pipx install shell-functools
   pipx install posting
@@ -79,7 +85,7 @@ if false; then
   pipx install git-filter-repo
   pipx install cookiecutter
   ###### Rust
-  pipx install rust
+  # pipx install rust
   ##### python
   pipx install pylint
   pipx install flake8
@@ -143,7 +149,8 @@ if command -v llm &>/dev/null; then
   pipx inject llm uv --pip-args="--upgrade"
   pipx inject llm 'litellm[proxy]' --pip-args="--upgrade"
   pipx inject llm tinfoil --include-deps --pip-args="--upgrade"
-  llm install llm-sentence-transformers
+
+  # llm install llm-sentence-transformers
 fi
 
 if command -v ipython &>/dev/null; then
