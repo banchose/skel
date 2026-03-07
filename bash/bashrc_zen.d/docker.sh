@@ -34,8 +34,21 @@ if type docker &>/dev/null; then
 
   alias cdpy0='cd -- ~/skel/docker/builds/py0'
   alias py0r='docker run --name py0 -u root -it --rm --hostname py0 -v ~/temp:/home/loon/temp2 py0:latest'
-  alias py0b='cd ~/gitdir/skel/docker/builds/py0 && docker buildx build -t py0:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
+  # alias py0b='cd ~/gitdir/skel/docker/builds/py0 && docker buildx build -t py0:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
   alias py0t='docker run --name py0  -it --rm --hostname py0 -v ~/temp:/home/loon/temp2 py0:latest tmux'
+
+  py0b() {
+    (
+      cd ~/gitdir/skel/docker/builds/py0 || exit 1
+
+      command cp -L -v -- ~/.config/io.datasette.llm/templates/*.yaml LLM/templates/
+
+      docker buildx build -t py0:latest \
+        --build-arg USER_UID="$(id -u)" \
+        --build-arg USER_GID="$(id -g)" \
+        .
+    )
+  }
 
   py0() {
     local mount_args=()

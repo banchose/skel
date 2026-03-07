@@ -293,6 +293,8 @@ pycowsay \
 ipython \
 flake8 \
 pylint \
+ftfy \
+git-filter-repo \
 black \
 pynvim \
 ruff \
@@ -301,11 +303,11 @@ requests \
 cfn-lint \
 csvkit \
 s3cmd \
-ptpython \
 posting \
 isort \
 icecream \
 markitdown \
+'litellm[proxy]' \
 scrapy \
 --pip-args="--upgrade" \
 --include-deps
@@ -390,7 +392,7 @@ llm-templates-fabric
 ENV PATH=$PATH:/usr/local/go/bin
 RUN go install github.com/akavel/up@latest
 RUN go install github.com/charmbracelet/glow/v2@latest
-RUN python3 -m pipx install visidata 'litellm[proxy]' --include-deps
+# RUN python3 -m pipx install visidata 'litellm[proxy]' --include-deps
 RUN python3 -m pipx install pudb
 RUN python3 -m pipx install bpython --include-deps
 
@@ -447,7 +449,9 @@ COPY --chown=${USER_NAME}:${USER_NAME} inputrc ${USER_HOME}/.inputrc
 COPY --chown=${USER_NAME}:${USER_NAME} tmux.conf ${USER_HOME}/.tmux.conf
 COPY --chown=${USER_NAME}:${USER_NAME} gitconfig ${USER_HOME}/.gitconfig
 COPY --chown=${USER_NAME}:${USER_NAME} awsconfig ${USER_HOME}/.aws/config
-COPY --chown=${USER_NAME}:${USER_NAME} oil.lua ${USER_HOME}/.config/nvim/lua/plugins
+COPY --chown=${USER_NAME}:${USER_NAME} oil.lua ${USER_HOME}/.config/nvim/lua/plugins/
+COPY --chown=${USER_NAME}:${USER_NAME} LLM/extra-openai-models.yaml ${USER_HOME}/.config/io.datasette.llm/
+COPY --chown=${USER_NAME}:${USER_NAME} LLM/templates/ ${USER_HOME}/.config/io.datasette.llm/templates/
 
 # RUN mkdir -p ${USER_HOME}/.bashrc_zen.d
 

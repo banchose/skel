@@ -1,0 +1,3 @@
+model: brs
+system_fragments:
+  - /home/una/gitdir/aws/PROMPT/DEFAULT_hriaws.md
