@@ -70,7 +70,7 @@ alias awlman="aws sso login --region $AwsRegion --profile man --no-browser --use
 # OWUI PG
 alias awpg='echo "1. Backslash \\q to quit";echo "2. ENV PASSWORD in aws secrets";kubectl run psql-client   --image=postgres:17   --rm -it   -n openwebui   -- psql "postgresql://owui_user:${OWUI_PASSWORD}@${RDS_ENDPOINT}:5432/owuivector?sslmode=require"'
 
-alias bedtokens='aws cloudwatch get-metric-statistics \
+alias awlbedtokens='aws cloudwatch get-metric-statistics \
   --namespace AWS/Bedrock \
   --metric-name InputTokenCount \
   --start-time $(date -u -d "24 hours ago" +%Y-%m-%dT%H:%M:%S) \
@@ -93,7 +93,7 @@ alias bedtokens='aws cloudwatch get-metric-statistics \
 #   --profile test \
 #   --output json | jq -r ".Datapoints | sort_by(.Timestamp) | .[] | [.Sum, (.Timestamp | sub(\"\\\\+00:00$\"; \"Z\") | fromdateiso8601 | strflocaltime(\"%Y-%m-%d %H:%M:%S\")), .Unit] | @tsv" | column -t'
 
-alias bedlogs='aws cloudtrail lookup-events \
+alias awlbedlogs='aws cloudtrail lookup-events \
   --lookup-attributes AttributeKey=EventName,AttributeValue=Converse \
   --start-time $(date -u -d "24 hours ago" +%Y-%m-%dT%H:%M:%S) \
   --max-results 50 \
