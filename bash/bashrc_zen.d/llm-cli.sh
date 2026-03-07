@@ -24,7 +24,7 @@
 #       aws_profile_name: test
 # it can authenticate via logged in aws account
 
-alias llmedit='nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh'
+alias editllm='nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh'
 export llmtst="this is just a test, can you search the web?"
 
 echo "ENV: Setting CLAUDE_CODE_USE_BEDROCK=1"
@@ -524,6 +524,6 @@ llm() {
     echo "Yo!!!   LitelLLM is DOWN: run llm_start_litellm"
     return 1
   }
-  command llm -t brs "$@"
+  command llm -u -t brs "$@"
 
 }

@@ -26,7 +26,6 @@ return {
         show_hidden = true, -- Show hidden files
       },
     })
-    vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" }) ---@diagnostic disable-line: undefined-global
   end,
   dependencies = { "nvim-tree/nvim-web-devicons" }, -- Optional dependency for icons
 }
