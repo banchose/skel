@@ -1,3 +1,5 @@
+alias editinit='$EDITOR "${HOME}"/gitdir/skel/init/init-pipx.sh'
+
 args() {
   printf "%d args:" "$#"
   [ "$#" -eq 0 ] || printf " <%s>" "$@"

@@ -74,19 +74,19 @@ pipx install s3cmd
 pipx install speedtest-cli
 pipx install psutils
 pipx install uv
-pipx install llm
 
-if [[ -n INIT_EXTRA ]]; then
+if [[ -n ${INST_RUST:-} ]]; then
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+fi
+
+if [[ -n ${INST_EXTRA:-} ]]; then
   pipx install speedtest --include-deps
   pipx install shell-functools
   pipx install posting
-
   pipx install litecli
   pipx install git-filter-repo
   pipx install cookiecutter
-  ###### Rust
-  # pipx install rust
-  ##### python
+  # if [[ -n ${INST_PYTHON_EXTRA:-} ]]; then
   pipx install pylint
   pipx install flake8
   pipx install ipython --include-deps
@@ -99,15 +99,18 @@ if [[ -n INIT_EXTRA ]]; then
   pipx install flask --include-deps
   pipx install django --include-deps
   pipx install jupyter
-  pipx install pandas --include-deps
+  # pipx install pandas --include-deps
   ##### aws
-  pipx install cfn-lsp-extra
+  # pipx install cfn-lsp-extra
   pipx install checkov --include-deps
   pipx install cfn-lint
   ##### llm
+  pipx install llm
   pipx install aider-chat
-  pipx install 'litellm[proxy]'
+  # pipx install 'litellm[proxy]'
+  pipx install litellm
   pipx install openai
+  pipx install open-terminal
   # pipx install tinfoil --include-deps
   # pipx install elia-chat
   ##### Exta
@@ -142,12 +145,14 @@ if command -v llm &>/dev/null; then
   pipx inject llm llm-jq --pip-args="--upgrade" --force
   pipx inject llm howdoi --pip-args="--upgrade"
   pipx inject llm httpx --pip-args="--upgrade"
+  pipx inject llm open-terminal --pip-args="--upgrade"
   pipx inject llm psutils --pip-args="--upgrade"
   pipx inject llm beautifulsoup4 --pip-args="--upgrade"
   pipx inject llm certifi --pip-args="--upgrade"
   pipx inject llm ftfy --pip-args="--upgrade"
   pipx inject llm uv --pip-args="--upgrade"
-  pipx inject llm 'litellm[proxy]' --pip-args="--upgrade"
+  # pipx inject llm 'litellm[proxy]' --pip-args="--upgrade"
+  pipx inject llm litellm --pip-args="--upgrade"
   pipx inject llm tinfoil --include-deps --pip-args="--upgrade"
 
   # llm install llm-sentence-transformers
@@ -186,7 +191,8 @@ if command -v ipython &>/dev/null; then
     llm-jq \
     httpie \
     uv \
-    'litellm[proxy]' \
+    litellm \
+    open-terminal \
     --pip-args="--upgrade" \
     --include-deps
 fi

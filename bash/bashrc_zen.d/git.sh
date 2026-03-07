@@ -143,7 +143,8 @@ gitsync() {
       echo "**********************************"
       echo $'\t'"${PWD##*/}"
       echo "**********************************"
-      [[ -d .git ]] && git fetch --prune && git status && git pull
+      #      [[ -d .git ]] && git fetch --prune && git status && git pull
+      [[ -d .git ]] && git fetch --prune && git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)
       cd ..
     done
   )
