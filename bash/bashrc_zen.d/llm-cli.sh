@@ -517,7 +517,7 @@ llm_check_local_litellm() {
     return 0 || return 1
 }
 
-llm() {
+llm-old() {
   local litellm_port=4000
   local litellm_host=localhost
   curl -s localhost:4000 &>/dev/null || {
@@ -526,4 +526,24 @@ llm() {
   }
   command llm -u -t brs "$@"
 
+}
+
+llm() {
+  case "${1:-}" in
+  models | keys | logs | templates | aliases | fragments | tools | plugins | openai | embed* | chat | install | uninstall)
+    command llm "$@"
+    ;;
+  *)
+    local http_code
+    http_code=$(curl -s -o /dev/null -w '%{http_code}' \
+      --connect-timeout 2 --max-time 3 \
+      http://127.0.0.1:4000/health 2>/dev/null) || true
+    if [[ "${http_code}" != "200" ]]; then
+      printf 'llm: litellm proxy not running on :4000\n' >&2
+      printf '     start: llm_start_litellm\n' >&2
+      return 1
+    fi
+    command llm -u -t brs "$@"
+    ;;
+  esac
 }
