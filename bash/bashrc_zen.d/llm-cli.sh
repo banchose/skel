@@ -49,6 +49,7 @@ export OPENROUTER_DEFAULT_OPUS_MODEL=openrouter/anthropic/claude-opus-4.6
 echo "EXPORTING OPENROUTER_DEFAULT_OPUS_MODEL: ${OPENROUTER_DEFAULT_OPUS_MODEL}"
 
 alias llm_start_litellm='litellm --config ~/gitdir/skel/llm/litellm/litellm.conf --port 4000 >/tmp/litellm-log-'"$(date '+%s')"' 2>&1 &'
+alias llm_start_litellm_debug='litellm --config ~/gitdir/skel/llm/litellm/litellm.conf --port 4000 --detailed_debug'
 alias cdllm='cd ~/.config/io.datasette.llm/'
 alias cdllmT='cd ~/.config/io.datasette.llm/templates/'
 
