@@ -1,0 +1,42 @@
+ 
+
+Here's a condensed situational briefing formatted for LLM context injection:
+
+---
+
+**SITUATIONAL CONTEXT BRIEF — March 3, 2026, ~08:00 UTC**
+**For use as reference in IT security/business continuity planning conversation**
+
+**Active military conflict: US/Israel vs. Iran, with multiple regional fronts (Lebanon, Iraq, Yemen). Escalation ongoing, no ceasefire mechanism visible.**
+
+**Direct IT/Infrastructure Impacts — Confirmed:**
+
+- **AWS data center in Bahrain (me-south-1) reportedly struck** by Iranian missiles targeting US military installations in Bahrain. Bahrain hosts the only AWS region in the Persian Gulf. Status of the facility unconfirmed but the area is under active bombardment with drone interceptions over Muharraq.
+- **Fujairah (UAE) oil terminal and port infrastructure hit and burning.** Vopak, a major global tank storage company, has suspended operations at its Fujairah terminal. Fujairah is a major submarine cable landing point and connectivity hub for Gulf-routed internet traffic.
+- **Omani ports (Sohar, Salalah) under drone/missile attack.** Oman hosts significant submarine cable infrastructure connecting Asia, Middle East, and Europe.
+- **Red Sea shipping fully disrupted** — Houthis entering the war. Bab el-Mandeb strait effectively closed to commercial traffic. Submarine cables running through the Red Sea (including multiple segments of the AAE-1, FLAG, and SEA-ME-WE systems) are in an active conflict zone.
+- **IRGC publicly confirmed using OSINT to track US force movements** — same open-source tools and feeds used by commercial threat intelligence. The information environment is completely porous.
+- **Iranian MFA threatening escalation to Europe explicitly:** "The fire will engulf Europe soon."
+- **NATO members (UK, France, Germany) deploying military assets to eastern Mediterranean.** MI5 chief entered Downing Street via back entrance — domestic threat posture elevated.
+- **Iran's entire military command structure under targeted assassination campaign.** Supreme Leader killed, defense ministers killed, Quds Force commanders killed. Succession being fast-tracked under IRGC control. Regime stability is deteriorating.
+- **US President publicly rejected Iranian offer to negotiate.** France and China attempting to open independent mediation. No ceasefire timeline.
+- **US embassies in Riyadh and Kuwait struck by Iranian drones.** State Department issuing emergency consular alerts for all Americans in the Middle East.
+- **Iraqi militias attacking US positions in Erbil and Ain al-Asad** with drone swarms. Kurdistan region now an active war zone.
+- **Strait of Hormuz not formally closed but functionally compromised** — Iranian navy being destroyed at Bushehr, but the strait area is a live combat zone. ~20% of global oil transits here.
+- **Oil approaching $90/barrel and climbing.** Global shipping rerouting around Cape of Good Hope, adding weeks to supply chains.
+
+**Key risk vectors for IT/business continuity:**
+
+1. **Cloud infrastructure in Gulf region** — me-south-1 (Bahrain) at direct physical risk. Any workloads, DR sites, or data residency obligations tied to Gulf AWS/Azure/GCP regions need immediate review.
+2. **Submarine cable damage** — Red Sea and Gulf cable routes are in active conflict zones. Latency spikes, routing changes, or outages on Asia-Europe paths are plausible.
+3. **Supply chain disruption** — shipping delays affect hardware procurement, replacement parts, anything moving by sea through Suez/Red Sea or the Gulf.
+4. **Cyber escalation** — Iran has demonstrated sophisticated cyber capabilities historically (Shamoon, attacks on Saudi Aramco, Albanian government hack). IRGC under existential pressure may authorize offensive cyber operations against Western targets. CISA advisories should be monitored hourly.
+5. **European threat environment rising** — Iranian MFA explicitly threatening Europe. Sleeper cell concerns. Physical security of European data centers and offices in scope.
+6. **Energy price/power cost implications** — oil spike will cascade into electricity costs, particularly in regions dependent on gas-fired generation.
+7. **Third-party/vendor risk** — any vendors with operations, staff, or infrastructure in the Gulf, Lebanon, Iraq, or Israel are at risk of operational disruption.
+
+**Status: Escalating. No de-escalation mechanism currently functional. Plan for sustained disruption measured in weeks, not days.**
+
+---
+
+This should give the receiving model enough grounding to reason about IT security decisions in context without needing the full play-by-play. Want me to adjust the emphasis or add anything?

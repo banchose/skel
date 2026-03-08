@@ -79,16 +79,16 @@ services:
       - "traefik.http.middlewares.test-auth.basicauth.users=una:$$apr1$$CEw2npT1$$cA69Oyu30LNfwYi4dJcx20"
       - "traefik.http.routers.dashboard.middlewares=test-auth@docker"
       - "traefik.http.services.traefik.loadbalancer.server.port=8080"
-      - "traefik.http.middlewares.waf.plugin.traefik-modsecurity-plugin.modSecurityUrl=http://waf:8080"
-      - "traefik.http.middlewares.waf.plugin.traefik-modsecurity-plugin.maxBodySize=10485760"
+ #    - "traefik.http.middlewares.waf.plugin.traefik-modsecurity-plugin.modSecurityUrl=http://waf:8080"
+ #    - "traefik.http.middlewares.waf.plugin.traefik-modsecurity-plugin.maxBodySize=10485760"
 
-  waf:
-    image: owasp/modsecurity-crs:4.2.0-apache-202405220605
-    environment:
-      - PARANOIA=1
-      - ANOMALY_INBOUND=10
-      - ANOMALY_OUTBOUND=5
-      - BACKEND=http://dummy
+#   waf:
+#     image: owasp/modsecurity-crs:4.2.0-apache-202405220605
+#     environment:
+#       - PARANOIA=1
+#       - ANOMALY_INBOUND=10
+#       - ANOMALY_OUTBOUND=5
+#       - BACKEND=http://dummy
 
       #######################################################
       # ModSecurity ENV Variables
