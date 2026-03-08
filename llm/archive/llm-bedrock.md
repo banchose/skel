@@ -2,7 +2,7 @@
 
 ## Login to aws (--profile test)
 
-- llm knows about aws auth and the test profile is in the extra file
+- No it doesn't llm knows about aws auth and the test profile is in the extra file
 
 ```
 aws sso login --region us-east-1 --profile test
