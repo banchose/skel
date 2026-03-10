@@ -111,6 +111,7 @@ if [[ -n ${INST_EXTRA:-} ]]; then
   pipx install litellm
   pipx install openai
   pipx install open-terminal
+  ####    pipx install openai-whisper # HUGE
   # pipx install tinfoil --include-deps
   # pipx install elia-chat
   ##### Exta
