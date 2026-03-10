@@ -545,7 +545,7 @@ llm() {
     ;;
   *)
     local http_code
-    http_code=$(curl -s -o /dev/null -w '%{http_code}' \
+    http_code=$(curl -s -o /dev/null -w '%{http_code}' --connect-timeout 2 --max-time 3 http://127.0.0.1:4000/health/liveliness 2>/dev/null)
       --connect-timeout 2 --max-time 3 \
       http://127.0.0.1:4000/health 2>/dev/null) || true
     if [[ "${http_code}" != "200" ]]; then
