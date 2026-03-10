@@ -1,6 +1,9 @@
 # Just a personal .bashrc that maybe renamed and then included in the real ~/.bashrc
 # in ~/.bashrc: [[ -f ~/.bashrc.includeme ]] && source ~/.bashrc.includeme
 
+# you are in the box sending things out the jack (via /dev/fd/1 or /dev/fd/2) to the speaker (terminal) which appears on the terminals output
+# Things piped out /dev/fd/1 may be connected to the output of you terminal
+
 # XDG base directories.
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"

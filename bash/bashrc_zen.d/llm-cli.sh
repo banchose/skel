@@ -53,6 +53,8 @@ alias llm_start_litellm_debug='litellm --config ~/gitdir/skel/llm/litellm/litell
 alias cdllm='cd ~/.config/io.datasette.llm/'
 alias cdllmT='cd ~/.config/io.datasette.llm/templates/'
 
+alias llm_litellm_get_local_models='curl -s http://127.0.0.1:4000/v1/models'
+
 alias llm_png='wl-paste | command llm --at - image/png'
 alias llm_ort_srch='command llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
 alias llm_ort_srch_exa='command llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -T Exa'
