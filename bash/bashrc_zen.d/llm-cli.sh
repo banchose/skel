@@ -117,7 +117,7 @@ alias bro='command llm -u -t bro'
 # # alias brs='llm -u -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # alias brsc='llm chat -t brs'
 # alias brs='echo "use llm"'
-alias brs='comand llm -u -t brs'
+alias brs='command llm -u -t brs'
 #
 # alias brhT='llm -u -m brh "This is just a test, respond with short acknowledgment"'
 # alias brhn='llm -u -m brh'
@@ -545,9 +545,9 @@ llm() {
     ;;
   *)
     local http_code
-    http_code=$(curl -s -o /dev/null -w '%{http_code}' --connect-timeout 2 --max-time 3 http://127.0.0.1:4000/health/liveliness 2>/dev/null)
+    http_code=$(curl -s -o /dev/null -w '%{http_code}' \
       --connect-timeout 2 --max-time 3 \
-      http://127.0.0.1:4000/health 2>/dev/null) || true
+      http://127.0.0.1:4000/health/liveliness 2>/dev/null) || true
     if [[ "${http_code}" != "200" ]]; then
       printf 'llm: litellm proxy not running on :4000\n' >&2
       printf '     start: llm_start_litellm\n' >&2
