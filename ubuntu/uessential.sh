@@ -18,6 +18,7 @@ sudo apt-get -y install git
 sudo apt-get -y install pv
 sudo apt-get -y install w3m
 sudo apt-get -y install unzip
+sudo apt-get -y exfatprogs
 sudo apt-get -y install zip
 sudo apt-get -y install bc
 sudo apt-get -y install curl
