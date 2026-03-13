@@ -39,14 +39,30 @@ gitroll() {
   )
 }
 
+git_hri_pull() {
+
+  cd ~/hrigit/
+  for repo in ./*/; do
+    if [[ -d ${repo}/.git ]]; then
+      cd "${repo}"
+      git s
+      git fetch --prune
+      git pull
+    else
+      echo "Skipping ${repo}"
+    fi
+  done
+
+}
+
 gitseal() {
   (
     cd ~/gitdir || return 1
-    for i in ~/gitdir/{configs,aws,skel}; do
-      cd "$i" || return 1
+    for repo in ~/gitdir/{configs,aws,skel}; do
+      cd "$repo" || return 1
       echo "####################################"
       echo ""
-      echo " Hitting $i ########"
+      echo " Hitting ${repo}"
       echo ""
       echo "####################################"
       git fetch --prune
@@ -60,11 +76,11 @@ gitseal() {
       cd ..
     done
     cd ~/gitdir || return 1
-    for i in ~/gitdir/{configs,aws,skel}; do
-      cd "$i" || return 1
+    for repo in ~/gitdir/{configs,aws,skel}; do
+      cd "${repo}" || return 1
       echo "####################################"
       echo ""
-      echo " Hitting $i ########"
+      echo " Hitting ${repo}"
       echo ""
       echo "####################################"
       git status
@@ -93,33 +109,29 @@ gitcredwin() {
 }
 
 gitwho() {
-
   git config --get user.name
   git config --get user.email
-  git config --get credential.helper
-  git config credential.https://github.com.username
-
+  git config --get credential.https://github.com.username
 }
 
-# hri swich git
-set-hri-git() {
-
-  git config --unset credential.helper
+git_set_hri() {
+  echo "Current git identity"
+  gitwho
   git config user.name "wjs04-hri"
   git config user.email "william.stewart"
-  git config credential.helper "cache --timeout=7000"
   git config credential.https://github.com.username wjs04-hri
-
+  echo "--- set to hri ---"
+  gitwho
 }
 
-set-own-git() {
-
-  git config --unset credential.helper
+git_set_home() {
+  echo "Current git identity"
+  gitwho
   git config user.name "banchose"
-  git config credential.https://github.com.username banchose
   git config user.email "a_gitmail@ownmail.net"
-  git config credential.helper "libsecret"
-
+  git config credential.https://github.com.username banchose
+  echo "--- set to home ---"
+  gitwho
 }
 
 gitcredclear() {
