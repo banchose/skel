@@ -39,7 +39,7 @@ gitroll() {
   )
 }
 
-git_hri_pull() {
+git_pull_hri() {
 
   cd ~/hrigit/
   for repo in ./*/; do
