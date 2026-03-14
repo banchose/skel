@@ -20,7 +20,7 @@ services:
       - traefik_web
     restart: unless-stopped
     environment:
-      - LITELLM_MASTER_KEY=sk-V10bVpxeOssR3id0
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
       - AWS_BEARER_TOKEN_BEDROCK=${AWS_BEARER_TOKEN_BEDROCK}
   
 #####
