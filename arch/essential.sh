@@ -78,6 +78,7 @@ sudo pacman -S linux-headers --needed --noconfirm
 sudo pacman -S openssh --needed --noconfirm
 sudo pacman -S openssl --needed --noconfirm
 sudo pacman -S dmidecode --needed --noconfirm
+sudo pacman -S par2cmdline --needed --noconfirm
 sudo pacman -S iputils --needed --noconfirm # has ping
 sudo pacman -S iproute2 --needed --noconfirm
 sudo pacman -S man --needed --noconfirm
