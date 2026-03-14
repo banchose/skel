@@ -26,7 +26,7 @@
 
 alias editllm='nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh'
 alias editlitellm='nvim ~/gitdir/skel/llm/litellm/litellm.conf'
-alias test_anthropic_list_models='curl https://api.anthropic.com/v1/models -H "x-api-key: $ANTHROPIC_API_KEY" -H "anthropic-version: 2023-06-01"'
+alias llm_test_anthropic_list_models='curl https://api.anthropic.com/v1/models -H "x-api-key: $ANTHROPIC_API_KEY" -H "anthropic-version: 2023-06-01"'
 
 export llmtst="this is just a test, can you search the web?"
 
