@@ -1,0 +1,74 @@
+# man page: resolvectl
+
+This is an LLM compressed version of the Systemd resolvectl command provided as a reference
+
+```
+RESOLVECTL_REFERENCE_v259.1
+
+IDENTITY: resolvectl (alias: resolvconf) — CLI for systemd-resolved.service(8). Resolves domain names, IPv4/IPv6 addrs, DNS RRs, services. Configures per-interface DNS settings.
+
+SYNOPSIS: resolvectl [OPTIONS...] {COMMAND} [NAME...]
+
+COMMANDS:
+- query HOSTNAME|ADDRESS: Resolve names↔addrs. With --type=/--class= does low-level RR lookup. Single-label names use search domains unless --search=no or --type=/--class= set. IDNA auto-translated for DNS only. --json= supported with --type=. [v239+]
+- service [[NAME] TYPE] DOMAIN: RFC6763 DNS-SD / RFC2782 SRV resolution. 3args=DNS-SD(SRV+TXT), 2args=SRV-only, 1arg=pre-prefixed SRV domain. [v239+]
+- openpgp EMAIL@DOMAIN: Query OPENPGPKEY RRs per RFC7929. [v239+]
+- tlsa [FAMILY] DOMAIN[:PORT]: Query TLSA RRs per RFC6698. Default port=443, family=tcp. Format: _port._family.domain. [v239+]
+- status [LINK...]: Show global+per-link DNS settings. DEFAULT command if none specified. [v239+]
+- statistics: Resolver stats incl DNSSEC status. [v239+]
+- reset-statistics: Zero stats counters. Requires root. [v239+]
+- flush-caches: Flush local DNS RR caches. Equiv SIGUSR2 to systemd-resolved. [v239+]
+- reset-server-features: Flush learned server feature levels. Equiv SIGRTMIN+1. [v239+]
+- dns [LINK [SERVER...]]: Get/set per-interface DNS servers. Format: "ip:port%ifname#sni" (IPv6 in brackets). Empty string clears. [v239+]
+- domain [LINK [DOMAIN...]]: Get/set per-interface search/route-only domains. Prefix "~" for route-only. Empty string clears. [v239+]
+- default-route [LINK [BOOL]]: Set whether link is default DNS route. [v239+]
+- llmnr [LINK [MODE]]: Get/set per-interface LLMNR. [v239+]
+- mdns [LINK [MODE]]: Get/set per-interface MulticastDNS. [v239+]
+- dnssec [LINK [MODE]]: Get/set per-interface DNSSEC. [v239+]
+- dnsovertls [LINK [MODE]]: Get/set per-interface DoT. [v239+]
+- nta [LINK [DOMAIN...]]: Get/set per-interface DNSSEC NTA domains. Empty string clears. [v239+]
+- revert LINK: Reset all per-interface DNS config to defaults. [v239+]
+- monitor: Stream local query/response pairs. Shows RR keys+records. CNAME chains shown separately. --json= supported. [v252+]
+- show-cache: Dump current cache per scope. --json= supported. [v254+]
+- show-server-state: Detailed per-server state. --json= supported. [v255+]
+- log-level [LEVEL]: Get/set manager log level. [v244+]
+
+OPTIONS:
+-4/-6: Restrict to IPv4/IPv6 only. [v239+]
+-i/--interface=INTERFACE: Target network interface (index or name). No effect if system-wide config used. [v239+]
+-p/--protocol=PROTOCOL: Constrain protocol: dns|llmnr|llmnr-ipv4|llmnr-ipv6|mdns|mdns-ipv4|mdns-ipv6. Repeatable. "help" lists values. [v239+]
+-t/--type=TYPE: DNS RR type (A,AAAA,MX,...). Disables search-domain logic+IDNA. "help" lists values. [v239+]
+-c/--class=CLASS: DNS RR class (IN,ANY,...). Default IN. "help" lists values. [v239+]
+--service-address=BOOL: Resolve hostnames in SRV records. Default true. [v239+]
+--service-txt=BOOL: Resolve TXT in DNS-SD lookups. Default true. [v239+]
+--cname=BOOL: Follow CNAME/DNAME. Default true. [v239+]
+--validate=BOOL: DNSSEC validation on/off for query. Cannot force-enable globally disabled DNSSEC. Default true. [v248+]
+--synthesize=BOOL: Local synthesis (localhost,_gateway,_outbound,_localdnsstub,_localdnsproxy,/etc/hosts). Default true. [v248+]
+--cache=BOOL: Use local cache. Default true. [v248+]
+--zone=BOOL: Answer from local LLMNR/mDNS zone. Default true. [v248+]
+--trust-anchor=BOOL: Use local DNSSEC trust anchors for DS/DNSKEY. Default true. [v248+]
+--network=BOOL: Allow network queries (DNS/LLMNR/mDNS). Default true. [v248+]
+--search=BOOL: Enable search domain logic for single-label names. Default true. Overridden by --type=. [v239+]
+--raw[=payload|packet]: Binary dump. payload=primary data only (subset: SSHFP,TLSA,OPENPGPKEY,A,AAAA). packet=wire-format+LE64 length prefix. [v239+]
+--legend=BOOL: Show/hide headers+meta. Default true. [v239+]
+--stale-data=BOOL: Allow stale (expired) RRs. Default true. [v254+]
+--relax-single-label=BOOL: Route single-label queries upstream. Default false. See ResolveUnicastSingleLabel= in resolved.conf(5). [v256+]
+--no-ask-password: Skip auth prompts.
+--json=MODE: short|pretty|off. [default off]
+-j: --json=pretty on tty, --json=short otherwise.
+--no-pager: Disable pager.
+-h/--help, --version: Self-explanatory.
+
+RESOLVCONF_COMPAT: When invoked as "resolvconf" (symlink), limited resolvconf(8) compat mode targeting systemd-resolved only. /etc/resolv.conf updated only if symlinked to /run/systemd/resolve/resolv.conf.
+  -a IFACE: Register per-iface DNS config from stdin (nameserver,domain/search fields). ≈ dns+domain commands. [v239+]
+  -d: Unregister per-iface config. ≈ revert. [v239+]
+  -f: Silently ignore missing interfaces with -a/-d. [v239+]
+  -x: Partial exclusive support. Maps to search domain "~." [v239+]
+  -p: Interface not used as default route. [v257+]
+  -m: Silently ignored. [v239+]
+  -u,-I,-i,-l,-R,-r,-v,-V,--enable-updates,--disable-updates,--are-updates-enabled: Unsupported, command fails. [v239+]
+
+AUTH_MODEL: Locally DNSSEC-validated data = authenticated. Local sources (/etc/hosts, localhost, local hostname) = authenticated. Output indicates protocol, interface, auth status.
+
+KEY_RELATIONSHIPS: Backend is systemd-resolved.service(8). Per-link settings documented in systemd.network(5). System-wide config in resolved.conf(5).
+```
