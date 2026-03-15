@@ -49,7 +49,7 @@ tf() {
     done
   fi
 
-  llm -m tinfoil-kimi-k2-5 "$@"
+  llm -t tinfoil-kimi-k2-5 "$@"
 }
 
 alias llm_test_anthropic_list_models='curl https://api.anthropic.com/v1/models -H "x-api-key: $ANTHROPIC_API_KEY" -H "anthropic-version: 2023-06-01"'
