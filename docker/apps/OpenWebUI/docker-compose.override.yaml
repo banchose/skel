@@ -43,6 +43,13 @@ services:
     environment:
       - FASTMCP_LOG_LEVEL=ERROR
       - AWS_DOCUMENTATION_PARTITION=aws
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/openapi.json')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
 
   mcpo-aws-knowledge:
     build:
