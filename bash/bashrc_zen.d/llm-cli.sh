@@ -69,7 +69,7 @@ alias cdllm='cd ~/.config/io.datasette.llm/'
 alias cdllmT='cd ~/.config/io.datasette.llm/templates/'
 alias cdlitellm='cd ~/gitdir/skel/llm/litellm/'
 
-alias llm_test_litellm_get_local_models='curl -s http://127.0.0.1:4000/v1/models'
+alias llm_test_litellm_get_local_models='curl -s -H "Authorization: Bearer ${LITELLM_MASTER_KEY}" http://127.0.0.1:4000/v1/models'
 
 alias llm_png='wl-paste | command llm --at - image/png'
 alias llm_ort_srch='command llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
