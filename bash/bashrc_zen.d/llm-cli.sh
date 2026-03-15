@@ -28,6 +28,10 @@ alias editllm='nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh'
 alias editlitellm='nvim ~/gitdir/skel/llm/litellm/litellm.conf'
 alias llm_test_anthropic_list_models='curl https://api.anthropic.com/v1/models -H "x-api-key: $ANTHROPIC_API_KEY" -H "anthropic-version: 2023-06-01"'
 
+alias llm_anthropic_list_models='curl https://api.anthropic.com/v1/models \
+    -H 'anthropic-version: 2023-06-01' \
+    -H "X-Api-Key: $ANTHROPIC_API_KEY"`'
+
 export llmtst="this is just a test, can you search the web?"
 
 echo "ENV: Setting CLAUDE_CODE_USE_BEDROCK=1"
@@ -50,6 +54,12 @@ echo "EXPORTING OPENROUTER_DEFAULT_SONNET_MODEL: ${OPENROUTER_DEFAULT_SONNET_MOD
 
 export OPENROUTER_DEFAULT_OPUS_MODEL=openrouter/anthropic/claude-opus-4.6
 echo "EXPORTING OPENROUTER_DEFAULT_OPUS_MODEL: ${OPENROUTER_DEFAULT_OPUS_MODEL}"
+
+llm_anthropic_simple_curl_models() {
+  curl https://api.anthropic.com/v1/models \
+    -H "anthropic-version: 2023-06-01" \
+    -H "X-Api-Key: ${ANTHROPIC_API_KEY}"
+}
 
 alias llm_start_litellm='litellm --config ~/gitdir/skel/llm/litellm/litellm.conf --port 4000 >/tmp/litellm-log-'"$(date '+%s')"' 2>&1 &'
 alias llm_start_litellm_debug='litellm --config ~/gitdir/skel/llm/litellm/litellm.conf --port 4000 --detailed_debug'
