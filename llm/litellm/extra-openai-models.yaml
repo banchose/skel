@@ -19,3 +19,22 @@
   supports_tools: true
   supports_schema: true
   vision: true
+- model_id: anto
+  model_name: claude-opus-4-6
+  api_base: "http://localhost:4000"
+  aliases: ["anthropic-opus-proxy"]
+  supports_tools: true
+  # supports_schema: true
+  # vision: true
+- model_id: ants
+  model_name: claude-sonnet-4-6
+  api_base: "http://localhost:4000"
+  aliases: ["anthropic-sonnet-proxy"]
+  supports_tools: true
+  # supports_schema: true
+  # vision: true
+- model_id: tinfoil-kimi-2-5
+  model_name: tinfoil-kimi-2-5
+  api_base: "http://localhost:4000"
+  aliases: ["tinfoil-kimi-2-5-proxy"]
+  supports_tools: true
