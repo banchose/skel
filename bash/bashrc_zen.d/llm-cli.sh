@@ -28,7 +28,29 @@ alias editllm='nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh'
 alias editlitellm='nvim ~/gitdir/skel/llm/litellm/litellm.conf'
 alias editllmextra='nvim ~/gitdir/skel/llm/litellm/extra-openai-models.yaml'
 
-alias tf='llm -m tinfoil-kimi-k2-5'
+tf() {
+  local log_file
+  log_file="/tmp/tinfoil.$(date '+%s')"
+
+  if ! curl -s --connect-timeout 4 http://localhost:8080 >/dev/null 2>&1; then
+    tinfoil proxy \
+      -r tinfoilsh/confidential-model-router \
+      -e inference.tinfoil.sh \
+      -p 8080 >"${log_file}" 2>&1 &
+
+    local -i attempts=0
+    until curl -s --connect-timeout 1 http://localhost:8080 >/dev/null 2>&1; do
+      ((attempts++))
+      if ((attempts >= 10)); then
+        printf 'tinfoil proxy did not become ready (log: %s)\n' "${log_file}" >&2
+        return 1
+      fi
+      sleep 0.5
+    done
+  fi
+
+  llm -m tinfoil-kimi-k2-5 "$@"
+}
 
 alias llm_test_anthropic_list_models='curl https://api.anthropic.com/v1/models -H "x-api-key: $ANTHROPIC_API_KEY" -H "anthropic-version: 2023-06-01"'
 
