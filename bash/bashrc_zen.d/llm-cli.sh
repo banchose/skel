@@ -26,6 +26,8 @@
 
 alias editllm='nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh'
 alias editlitellm='nvim ~/gitdir/skel/llm/litellm/litellm.conf'
+alias editllmextra='nvim ~/gitdir/skel/llm/litellm/extra-openai-models.yaml'
+
 alias llm_test_anthropic_list_models='curl https://api.anthropic.com/v1/models -H "x-api-key: $ANTHROPIC_API_KEY" -H "anthropic-version: 2023-06-01"'
 
 alias llm_anthropic_list_models='curl https://api.anthropic.com/v1/models \
@@ -65,8 +67,9 @@ alias llm_start_litellm='litellm --config ~/gitdir/skel/llm/litellm/litellm.conf
 alias llm_start_litellm_debug='litellm --config ~/gitdir/skel/llm/litellm/litellm.conf --port 4000 --detailed_debug'
 alias cdllm='cd ~/.config/io.datasette.llm/'
 alias cdllmT='cd ~/.config/io.datasette.llm/templates/'
+alias cdlitellm='cd ~/gitdir/skel/llm/litellm/'
 
-alias llm_litellm_get_local_models='curl -s http://127.0.0.1:4000/v1/models'
+alias llm_test_litellm_get_local_models='curl -s http://127.0.0.1:4000/v1/models'
 
 alias llm_png='wl-paste | command llm --at - image/png'
 alias llm_ort_srch='command llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
