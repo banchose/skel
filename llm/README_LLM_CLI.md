@@ -13,8 +13,8 @@ alias orts='command llm -u -m "${OPENROUTER_DEFAULT_MODEL}" -o online 1'
 
 ## llm cli
 
-- llm cli is driven by the model choice - it will find the provider env api key from the model name
-- llm cli will find the models configurd in `extra-openai-models` putting them under OpenAI as the provider
+- llm cli is driven by the model choice - it will find the provider (set in an exported ENV var) api key from the model name
+- llm cli will find the models configured in `extra-openai-models` putting them under OpenAI as the provider
   - `llm models list`
   - `llm defaults model`
   - `llm defaults model <model>`
