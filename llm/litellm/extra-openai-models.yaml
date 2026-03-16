@@ -40,6 +40,7 @@
   supports_tools: true
 
 - model_id: tinfoil-kimi-k2-5
+  aliases: ["kimi"]
   model_name: kimi-k2-5
   api_base: "http://127.0.0.1:8080/v1"
   api_key_name: tinfoil
