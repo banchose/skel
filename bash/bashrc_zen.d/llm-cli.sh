@@ -8,6 +8,7 @@
 # command llm install llm-openrouter
 # command llm install llm-anthropic
 # command llm install llm-jq
+# command llm install llm-docs
 # command llm install llm-tools-simpleeval
 # command llm install llm-tools-sqlite
 # command llm install llm-tools-rag

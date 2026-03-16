@@ -105,7 +105,7 @@ if [[ -n ${INST_EXTRA:-} ]]; then
   pipx install checkov --include-deps
   pipx install cfn-lint
   ##### llm
-  pipx install llm && llm install llm-docs
+  pipx install llm && command llm install llm-docs
   pipx install aider-chat
   # pipx install 'litellm[proxy]'
   pipx install litellm
