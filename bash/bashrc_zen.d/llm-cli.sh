@@ -391,6 +391,12 @@ llm -> ~/.config/io.datasette.llm/extra-openai-models.yaml
 litellm 
   litellm.conf
     profile or api_key
+
+## Common issues
+"Error: Error code: 400 - {'error': {'message': 'No connected db.', 'type': 'no_db_connection', 'param': None, 'code': '400'}}"
+echo $LITELLM_MASTER_KEY
+look in ~/.config/io.datasette.llm/extra-openai-models.yaml
+It is set somewhere
 EOF
 }
 
