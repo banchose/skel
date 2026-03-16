@@ -4,4 +4,4 @@ alias getrag="kubectl logs -f --context arn:aws:eks:us-east-1:405350004483:clust
 
 alias getwebui="aws s3 cp s3://openwebui-db-backups/webui.db ~/Downloads/webui.db-"$(date +%s)" --region us-east-1 --profile test"
 
-alias get_webui_logs='kubectl logs --context arn:aws:eks:us-east-1:405350004483:cluster/EksTest -n openwebui statefulsets/open-webui  -f'
+alias get_webui_logs='kubectl logs --context arn:aws:eks:us-east-1:405350004483:cluster/EksTest -n openwebui statefulsets/openwebui-open-webui -f'
