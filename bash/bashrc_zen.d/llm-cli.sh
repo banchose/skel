@@ -37,13 +37,11 @@ alias llm-ids='command llm logs list --json -q'
 tf() {
   local log_file
   log_file="/tmp/tinfoil.$(date '+%s')"
-
   if ! curl -s --connect-timeout 4 http://localhost:8080 >/dev/null 2>&1; then
     tinfoil proxy \
       -r tinfoilsh/confidential-model-router \
       -e inference.tinfoil.sh \
       -p 8080 >"${log_file}" 2>&1 &
-
     local -i attempts=0
     until curl -s --connect-timeout 1 http://localhost:8080 >/dev/null 2>&1; do
       ((attempts++))
@@ -54,33 +52,14 @@ tf() {
       sleep 0.5
     done
   fi
-
-  llm -t tinfoil-kimi-k2-5 "$@"
-}
-
-tf-chat() {
-  local log_file
-  log_file="/tmp/tinfoil.$(date '+%s')"
-
-  if ! curl -s --connect-timeout 4 http://localhost:8080 >/dev/null 2>&1; then
-    tinfoil proxy \
-      -r tinfoilsh/confidential-model-router \
-      -e inference.tinfoil.sh \
-      -p 8080 >"${log_file}" 2>&1 &
-
-    local -i attempts=0
-    until curl -s --connect-timeout 1 http://localhost:8080 >/dev/null 2>&1; do
-      ((attempts++))
-      if ((attempts >= 10)); then
-        printf 'tinfoil proxy did not become ready (log: %s)\n' "${log_file}" >&2
-        return 1
-      fi
-      sleep 0.5
-    done
+  if [[ "${1:-}" == "chat" ]]; then
+    shift
+    llm chat -t tinfoil-kimi-k2-5 "$@"
+  else
+    llm -t tinfoil-kimi-k2-5 "$@"
   fi
-
-  llm chat -t tinfoil-kimi-k2-5 "$@"
 }
+
 ## Python funcition example
 # llm --functions '
 # def evaluate(expression: str) -> str:
