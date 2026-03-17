@@ -1,0 +1,3 @@
+model: ants
+system_fragments:
+  - /home/una/gitdir/skel/PROMPT/DEFAULT_weather.md

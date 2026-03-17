@@ -55,9 +55,9 @@ tf() {
   fi
   if [[ "${1:-}" == "chat" ]]; then
     shift
-    llm chat -t tinfoil-kimi-k2-5 "$@"
+    llm chat "$@" -t tin --ta
   else
-    llm -t tinfoil-kimi-k2-5 "$@"
+    llm "$@" -t tin --ta
   fi
 }
 
