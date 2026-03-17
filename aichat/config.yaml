@@ -11,7 +11,24 @@ clients:
         type: embedding
         default_chunk_size: 1000
         max_batch_size: 50
-
+  - type: openai-compatible
+    name: tinfoil
+    api_base: http://localhost:8080/v1
+    models:
+      - name: deepseek-r1-0528
+        max_input_tokens: 131072
+        supports_function_calling: true
+      - name: kimi-k2-5
+        max_input_tokens: 262144
+        supports_vision: true
+        supports_function_calling: true
+#       supports_reasoning: false
+      - name: gpt-oss-120b
+        max_input_tokens: 131072
+        supports_function_calling: true
+      - name: llama3-3-70b
+        max_input_tokens: 131072
+        supports_function_calling: true
 rag_embedding_model: ollama:nomic-embed-text
 
 temperature: null
@@ -24,6 +41,8 @@ keybindings: vi
 editor: nvim
 wrap: no
 wrap_code: false
+highlight: true
+theme: dark
 
 # ---- function-calling ----
 function_calling: true

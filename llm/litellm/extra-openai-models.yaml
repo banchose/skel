@@ -24,15 +24,22 @@
   api_base: "http://localhost:4000"
   aliases: ["anthropic-opus-proxy"]
   supports_tools: true
-  # supports_schema: true
-  # vision: true
+  supports_schema: true
+  vision: true
 - model_id: ants
   model_name: claude-sonnet-4-6
   api_base: "http://localhost:4000"
   aliases: ["anthropic-sonnet-proxy"]
   supports_tools: true
-  # supports_schema: true
-  # vision: true
+  supports_schema: true
+  vision: true
+- model_id: anth
+  model_name: claude-haiku-4-5
+  api_base: "http://localhost:4000"
+  aliases: ["anthropic-haiku-proxy", "hack", "haik"]
+  supports_tools: true
+  supports_schema: true
+  vision: true
 - model_id: tinfoil-deepseek-r1
   model_name: deepseek-r1-0528
   api_base: "http://127.0.0.1:8080/v1"
@@ -44,7 +51,10 @@
   model_name: kimi-k2-5
   api_base: "http://127.0.0.1:8080/v1"
   api_key_name: tinfoil
+  aliases: ["kimi", "kim"]
   supports_tools: true
+  supports_schema: true
+  vision: true
 
 - model_id: tinfoil-gpt-oss-120b
   model_name: gpt-oss-120b
