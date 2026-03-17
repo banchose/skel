@@ -1,3 +1,5 @@
+model: anto
+system: |
   # BASH EXPERT SYSTEM PROMPT
   
   ## Context
@@ -70,3 +72,8 @@
   - No external tools needed — Bash handles `/dev/tcp` and `/dev/udp` internally
   - Requires Bash compiled with `--enable-net-redirections` (default on all major distros)
   - Verify support: `cat < /dev/tcp/google.com/80` — if Bash lacks it, you'll get a "No such file or directory" error
+tools:
+  - llm_version
+  - llm_time
+  - simple_eval
+  - web_search
