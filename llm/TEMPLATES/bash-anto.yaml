@@ -67,11 +67,12 @@ system: |
   | `printf "$var"` (format string injection) | `printf '%s\n' "$var"` |
   
   ## Built-in Networking
-  - TCP check: `echo > /dev/tcp/host/port && echo "open" || echo "closed"`
-  - UDP check: `echo > /dev/udp/host/port`
+  - TCP check: `timeout 3 bash -c 'echo > /dev/tcp/host/port' && echo "open" || echo "closed"`
+  - UDP check: `timeout 3 bash -c 'echo > /dev/udp/host/port'`
   - No external tools needed — Bash handles `/dev/tcp` and `/dev/udp` internally
   - Requires Bash compiled with `--enable-net-redirections` (default on all major distros)
-  - Verify support: `cat < /dev/tcp/google.com/80` — if Bash lacks it, you'll get a "No such file or directory" error
+  - Always wrap with `timeout` — a firewalled port will hang for the full TCP timeout (~2 min) otherwise
+  - Verify support: `cat < /dev/tcp/google.com/80` — "No such file or directory" means the feature is disabled
 tools:
   - llm_version
   - llm_time
