@@ -25,6 +25,33 @@
 #       aws_profile_name: test
 # it can authenticate via logged in aws account
 
+# llm() {
+#   case "${1:-}" in
+#   models | keys | logs | templates | aliases | fragments | tools | plugins | openai | embed* | chat | install | uninstall)
+#     command llm "$@"
+#     ;;
+#   *)
+#     local http_code
+#     http_code=$(curl -s -o /dev/null -w '%{http_code}' \
+#       --connect-timeout 2 --max-time 3 \
+#       http://127.0.0.1:4000/health/liveliness 2>/dev/null) || true
+#     if [[ "${http_code}" != "200" ]]; then
+#       printf 'llm: litellm proxy not running on :4000\n' >&2
+#       printf '     start: llm_start_litellm\n' >&2
+#       return 1
+#     fi
+#     command llm -u -t brs "$@"
+#     ;;
+#   esac
+# }
+
+alias llm='llm -t "${LLM_DEFAULT_TEMPLATE:-ants}"'
+# alias llm='llm --ta -t "${LLM_DEFAULT_TEMPLATE:-ants}"'
+
+alias llm-test='llm -t "${LLM_DEFAULT_TEMPLATE:-ants}" "This is only a test to see if this is working.  Please respond with a short acknowledgment and list the tools you have available"'
+
+alias editllm-a='nvim -O ~/.config/io.datasette.llm/extra-openai-models.yaml ~/gitdir/skel/llm/litellm/litellm.conf'
+
 alias editllm='nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh'
 alias editlitellm='nvim ~/gitdir/skel/llm/litellm/litellm.conf'
 alias editllmextra='nvim ~/gitdir/skel/llm/litellm/extra-openai-models.yaml'
@@ -56,7 +83,7 @@ tf() {
     done
   fi
 
-  llm "$@" -t tin --ta
+  command llm "$@" -t tin --ta
 }
 
 # worked once
@@ -631,24 +658,4 @@ llm-old() {
   }
   command llm -u -t brs "$@"
 
-}
-
-llm() {
-  case "${1:-}" in
-  models | keys | logs | templates | aliases | fragments | tools | plugins | openai | embed* | chat | install | uninstall)
-    command llm "$@"
-    ;;
-  *)
-    local http_code
-    http_code=$(curl -s -o /dev/null -w '%{http_code}' \
-      --connect-timeout 2 --max-time 3 \
-      http://127.0.0.1:4000/health/liveliness 2>/dev/null) || true
-    if [[ "${http_code}" != "200" ]]; then
-      printf 'llm: litellm proxy not running on :4000\n' >&2
-      printf '     start: llm_start_litellm\n' >&2
-      return 1
-    fi
-    command llm -u -t brs "$@"
-    ;;
-  esac
 }

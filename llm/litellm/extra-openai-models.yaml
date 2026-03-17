@@ -1,6 +1,6 @@
-- model_id: brs
-  model_name: bedrock-sonnet
-  api_base: "http://localhost:4000"
+- model_id: brs # seen in llm models list and llm -m
+  model_name: bedrock-sonnet # 'model_name: in litellm.conf'
+  api_base: "http://localhost:4000" # opneai compat 
   aliases: ["bedrock-sonnet-proxy"]
   supports_tools: true
   supports_schema: true
