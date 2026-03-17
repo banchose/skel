@@ -1,0 +1,29 @@
+# see https://github.com/sigoden/aichat/blob/main/config.example.yaml
+model: claude:claude-sonnet-4-6
+
+clients:
+  - type: claude
+  - type: openai-compatible
+    name: ollama
+    api_base: http://localhost:11434/v1
+    models:
+      - name: nomic-embed-text
+        type: embedding
+        default_chunk_size: 1000
+        max_batch_size: 50
+
+rag_embedding_model: ollama:nomic-embed-text
+
+temperature: null
+top_p: null
+
+# ---- behavior ----
+stream: true
+save: true
+keybindings: vi
+editor: nvim
+wrap: no
+wrap_code: false
+
+# ---- function-calling ----
+function_calling: true
