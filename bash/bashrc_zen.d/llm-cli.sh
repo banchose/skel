@@ -61,6 +61,7 @@ alias llm-find='command llm logs list -s -q' #"what ever you talked about"
 alias llm-ids='command llm logs list --json -q'
 # llm chat --cid abc123      # resume
 # llm-ids "Exa" | jq -r '.[].conversation_id' | sort -u | head -n 1
+
 tf() {
   local log_file
   log_file="/tmp/tinfoil.$(date '+%s')"

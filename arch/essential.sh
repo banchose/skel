@@ -64,6 +64,7 @@ sudo pacman -S nvme-cli --needed --noconfirm
 sudo pacman -S lsscsi --needed --noconfirm
 sudo pacman -S wol --needed --noconfirm
 sudo pacman -S hdparm --needed --noconfirm
+sudo pacman -S aichat --needed --noconfirm
 sudo pacman -S lm_sensors --needed --noconfirm
 
 # Extra

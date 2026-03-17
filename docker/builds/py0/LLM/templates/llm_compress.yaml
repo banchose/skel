@@ -1,0 +1,10 @@
+model: bro
+system: |
+  Summarize this input text ignoring human readability concerns
+  and optimized for ingestion by another llm (Sonnet or better)
+  Please Prioritize llm ingestion optimization above all
+  If the document does not lend itself to this kind of llm optimization "scheme", stop, and explain why
+tools:
+  - llm_version
+  - llm_time
+  - simple_eval
