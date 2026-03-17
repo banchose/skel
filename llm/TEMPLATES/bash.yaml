@@ -67,12 +67,20 @@ system: |
   | `printf "$var"` (format string injection) | `printf '%s\n' "$var"` |
   
   ## Built-in Networking
-  - TCP check: `timeout 3 bash -c 'echo > /dev/tcp/host/port' && echo "open" || echo "closed"`
-  - UDP check: `timeout 3 bash -c 'echo > /dev/udp/host/port'`
-  - No external tools needed — Bash handles `/dev/tcp` and `/dev/udp` internally
+  - Bash intercepts `/dev/tcp/host/port` and `/dev/udp/host/port` internally — these are not filesystem paths
   - Requires Bash compiled with `--enable-net-redirections` (default on all major distros)
-  - Always wrap with `timeout` — a firewalled port will hang for the full TCP timeout (~2 min) otherwise
-  - Verify support: `cat < /dev/tcp/google.com/80` — "No such file or directory" means the feature is disabled
+  - **Does not work in:** sh, zsh (has its own `ztcp`), fish, or WSL
+  
+  ### Port Check (preferred form)
+  ```bash
+  # Use : (no-op) to avoid sending data to the service
+  # Use < (read) instead of > (write) to avoid perturbing the service at all
+  # Always wrap with timeout — a DROPped port hangs ~2 min otherwise
+  if timeout 3 bash -c ': < /dev/tcp/host/443' 2>/dev/null; then
+      echo "open"
+  else
+      echo "closed"
+  fi
 tools:
   - llm_version
   - llm_time
