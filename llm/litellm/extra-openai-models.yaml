@@ -36,7 +36,7 @@
 - model_id: anth
   model_name: claude-haiku-4-5
   api_base: "http://localhost:4000"
-  aliases: ["anthropic-haiku-proxy", "hack", "haik"]
+  aliases: ["anthropic-haiku-proxy", "hack", "haik", "hk"]
   supports_tools: true
   supports_schema: true
   vision: true

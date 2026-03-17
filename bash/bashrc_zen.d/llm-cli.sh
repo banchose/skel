@@ -46,6 +46,8 @@
 # }
 
 alias llm='llm -t "${LLM_DEFAULT_TEMPLATE:-ants}"'
+alias hk='llm -t ant-haiku'
+
 # alias llm='llm --ta -t "${LLM_DEFAULT_TEMPLATE:-ants}"'
 
 alias llm-test='llm -t "${LLM_DEFAULT_TEMPLATE:-ants}" "This is only a test to see if this is working.  Please respond with a short acknowledgment and list the tools you have available"'
