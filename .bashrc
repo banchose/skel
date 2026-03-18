@@ -95,6 +95,7 @@ CDPATH=".:~:"
 alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,pidns,utsns,ipcns,mntns,netns,cmd'
 alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
 alias nps='ps -N --ppid 2 -o pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
+alias psf='ps -N --ppid 2 -lwf'
 
 # Existing
 alias chown='chown --preserve-root'

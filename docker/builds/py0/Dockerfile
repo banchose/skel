@@ -440,6 +440,11 @@ RUN git clone --depth=1 https://github.com/realpython/python-guide
 RUN git clone --depth=1 https://github.com/yidao620c/python3-cookbook
 RUN git clone --depth=1 https://github.com/TheAlgorithms/Python
 RUN git clone --depth=1 https://github.com/simonw/llm
+RUN git clone --depth=1 https://github.com/labbots/bash-utility
+RUN git clone --depth=1 https://github.com/tomocafe/bash-boost
+RUN git clone --depth=1 https://github.com/cyberark/bash-lib
+RUN git clone --depth=1 https://github.com/kvz/bash3boilerplate
+RUN git clone --depth=1 https://github.com/gruntwork-io/bash-commons
 
 WORKDIR ${USER_HOME}
 
