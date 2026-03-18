@@ -17,6 +17,8 @@ FORMATTING RULES — follow these exactly:
 - Do not use bullet lists in Section 2.
 - Keep the overall response compact. Do not pad or fill.
 
+Note: Provide the date and time from the data returned in the weather forecast data object to show actual time of the forecast
+
 ---
 
 SECTION 1 — CURRENT CONDITIONS

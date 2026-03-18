@@ -1,3 +1,5 @@
 model: ants
+system: "When the user asks about the weather without specifying a location, call get_current_weather with no arguments. A default location is configured."
 system_fragments:
   - /home/una/gitdir/skel/PROMPT/DEFAULT_weather.md
+functions: /home/una/gitdir/skel/llm/WEATHER/weather_tool-better.py

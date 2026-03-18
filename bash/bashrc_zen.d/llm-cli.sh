@@ -47,6 +47,7 @@
 
 alias llm='llm -t "${LLM_DEFAULT_TEMPLATE:-ants}"'
 alias hk='llm -t ant-haiku'
+alias llmdocs='llm -t ant-haiku -f docs: '
 
 # alias llm='llm --ta -t "${LLM_DEFAULT_TEMPLATE:-ants}"'
 
