@@ -2,12 +2,19 @@
 import os
 import json
 import requests
+import datetime
+
 
 OPENWEATHER_API_KEY = os.environ["OPENWEATHER_APP_ID"]
 OPENWEATHER_UNITS = os.environ.get("OPENWEATHER_UNITS", "imperial")
 NOMINATIM_EMAIL = os.environ.get("NOMINATIM_EMAIL", "")
 DEFAULT_LAT = os.environ.get("LAT")
 DEFAULT_LON = os.environ.get("LON")
+
+
+def get_current_datetime() -> str:
+    """Return the current date, time, and timezone."""
+    return datetime.datetime.now().astimezone().strftime("%A, %B %d, %Y %I:%M %p %Z")
 
 
 def _geocode_location(location: str) -> tuple[float, float]:

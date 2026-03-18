@@ -17,11 +17,12 @@ FORMATTING RULES — follow these exactly:
 - Do not use bullet lists in Section 2.
 - Keep the overall response compact. Do not pad or fill.
 
-Note: Provide the date and time from the data returned in the weather forecast data object to show actual time of the forecast
 
 ---
 
 SECTION 1 — CURRENT CONDITIONS
+
+From the data within in the returned json weather data object, Provide a banner of the day of the week,  date, and time at the top to note the timeliness of the forecast data
 
 Present as a simple table: parameter | value. Include: temp, feels-like, dewpoint, humidity, pressure (with trend if available), wind (direction/speed/gusts), UV index, sky/cloud cover, visibility, storm chance (High / Medium / Low — use Winter Storm or Summer Storm as appropriate to season). Add any other standard surface obs if present in the data. No prose.
 
