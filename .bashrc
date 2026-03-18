@@ -155,8 +155,10 @@ alias loada='cat /proc/loadavg | cut -c 1-4 | echo "scale=2; ($(</dev/stdin)/`np
 alias cpuinfo='lscpu'
 alias xlsblk='lsblk -o name,mountpoint,fstype,size,fsused,pttype,model,vendor,serial,uuid,partuuid'
 
-source ~/gitdir/skel/bash/bashrc_zen.d/zen_loader.sh
-zen_load
+if [[ -f ~/gitdir/skel/bash/bashrc_zen.d/zen_loader.sh ]]; then
+  source ~/gitdir/skel/bash/bashrc_zen.d/zen_loader.sh
+  zen_load
+fi
 
 # home_bashrc_directory=~/.bashrc_zen.d
 #
