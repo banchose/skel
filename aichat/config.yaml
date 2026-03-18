@@ -1,5 +1,5 @@
 # see https://github.com/sigoden/aichat/blob/main/config.example.yaml
-model: claude:claude-sonnet-4-6
+model: claude:claude-haiku-4-5-20251001
 
 clients:
   - type: claude
@@ -22,7 +22,6 @@ clients:
         max_input_tokens: 262144
         supports_vision: true
         supports_function_calling: true
-#       supports_reasoning: false
       - name: gpt-oss-120b
         max_input_tokens: 131072
         supports_function_calling: true

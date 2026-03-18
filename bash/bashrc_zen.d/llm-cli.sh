@@ -61,6 +61,7 @@ alias editllm-a='nvim -O ~/.config/io.datasette.llm/extra-openai-models.yaml ~/g
 alias editllm='nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh'
 alias editlitellm='nvim ~/gitdir/skel/llm/litellm/litellm.conf'
 alias editllmextra='nvim ~/gitdir/skel/llm/litellm/extra-openai-models.yaml'
+alias editAichatconfig='nvim ~/data/aichat/config.yaml'
 
 # In your shell rc
 alias llm-find='command llm logs list -s -q' #"what ever you talked about"

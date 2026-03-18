@@ -60,22 +60,6 @@ if type docker &>/dev/null; then
     docker run -it --rm --name py0 --hostname py0 "${mount_args[@]}" py0:latest
   }
 
-  # py1 ######################
-
-  alias cdpy1='cd -- ~/skel/docker/builds/py1'
-  alias py1r='docker run --name py1 -u root -it --rm --hostname py1 -v ~/temp:/home/loon/temp py1:latest'
-  alias py1b='cd ~/gitdir/skel/docker/builds/py1 && docker buildx build -t py1:latest --build-arg USER_UID="$(id -u)" --build-arg USER_GID="$(id -g)" .'
-
-  py1() {
-    local mount_args=()
-
-    [[ -d ~/gitdir/skel ]] && mount_args+=(-v "$HOME/gitdir/skel:/home/loon/gitdir/skel")
-    [[ -d ~/temp ]] && mount_args+=(-v "$HOME/temp:/home/loon/temp:ro")
-    [[ -d ~/gitdir ]] && mount_args+=(-v "$HOME/gitdir:/home/loon/gitdir:ro")
-
-    docker run -it --rm --name py1 --hostname py1 "${mount_args[@]}" py1:latest
-  }
-
   function dconnet() {
 
     docker ps --format '{{.Names}}' | while read -r container; do
