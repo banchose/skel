@@ -53,6 +53,9 @@ alias llmdocs='llm -t ant-haiku -f docs: '
 
 alias llm-test='llm -t "${LLM_DEFAULT_TEMPLATE:-ants}" "This is only a test to see if this is working.  Please respond with a short acknowledgment and list the tools you have available"'
 
+alias llm_weather='llm -t Weatherman-anthropic "what is the weather"'
+alias llm_weather-d='llm -t Weatherman-anthropic "what is the weather" --td'
+
 alias editllm-a='nvim -O ~/.config/io.datasette.llm/extra-openai-models.yaml ~/gitdir/skel/llm/litellm/litellm.conf'
 
 alias editllm='nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh'
