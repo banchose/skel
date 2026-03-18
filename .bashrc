@@ -155,18 +155,21 @@ alias loada='cat /proc/loadavg | cut -c 1-4 | echo "scale=2; ($(</dev/stdin)/`np
 alias cpuinfo='lscpu'
 alias xlsblk='lsblk -o name,mountpoint,fstype,size,fsused,pttype,model,vendor,serial,uuid,partuuid'
 
-home_bashrc_directory=~/.bashrc_zen.d
+source ~/gitdir/skel/bash/bashrc_zen.d/zen_loader.sh
+zen_load
 
-if [[ -d "${home_bashrc_directory}" ]]; then
-  echo "Running scripts in ${home_bashrc_directory}"
-  for profile in "${home_bashrc_directory}/"*.sh; do
-    if [[ -r "$profile" ]]; then
-      echo "Sourcing: $profile"
-      . "$profile"
-    else
-      echo "Cannot read $profile, skipping..."
-    fi
-  done
-else
-  echo "Directory ${home_bashrc_directory} does not exist."
-fi
+# home_bashrc_directory=~/.bashrc_zen.d
+#
+# if [[ -d "${home_bashrc_directory}" ]]; then
+#   echo "Running scripts in ${home_bashrc_directory}"
+#   for profile in "${home_bashrc_directory}/"*.sh; do
+#     if [[ -r "$profile" ]]; then
+#       echo "Sourcing: $profile"
+#       . "$profile"
+#     else
+#       echo "Cannot read $profile, skipping..."
+#     fi
+#   done
+# else
+#   echo "Directory ${home_bashrc_directory} does not exist."
+# fi
