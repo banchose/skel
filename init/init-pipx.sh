@@ -77,7 +77,26 @@ pipx install uv
 
 if [[ -n ${INST_RUST:-} ]]; then
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  source "$HOME/.cargo/env"
+  cargo install cargo-update fd-find ripgrep
 fi
+
+## cargo
+
+# if command -v rustc &>/dev/null; then
+#     echo "Rust is already installed: $(rustc --version). Skipping."
+#     exit 0
+# fi
+#
+# # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+# source "$HOME/.cargo/env"
+#
+# cargo install cargo-update fd-find ripgrep
+#
+# cargo install cargo-update fd-find ripgrep
+# cargo install cargo-update
+# cargo install fd-find
+# cargo install ripgrep
 
 if [[ -n ${INST_EXTRA:-} ]]; then
   pipx install speedtest --include-deps
@@ -197,6 +216,23 @@ if command -v ipython &>/dev/null; then
     --pip-args="--upgrade" \
     --include-deps
 fi
+
+## cargo
+
+# if command -v rustc &>/dev/null; then
+#     echo "Rust is already installed: $(rustc --version). Skipping."
+#     exit 0
+# fi
+#
+# # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+# source "$HOME/.cargo/env"
+#
+# cargo install cargo-update fd-find ripgrep
+#
+# cargo install cargo-update fd-find ripgrep
+# cargo install cargo-update
+# cargo install fd-find
+# cargo install ripgrep
 
 ############## Rust ##############
 
