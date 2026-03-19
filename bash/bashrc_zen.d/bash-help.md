@@ -1,5 +1,14 @@
 # Bash short
 
+## globstar
+
+- `shopt -s globstar`
+- `(shopt -s globstar; ...)` - subshell leaves setting alone
+
+- `**`: match all files and zero or more directories and **subdirectories**
+- `**/`: only directories and subdirectories match
+ 
+
 ## Paramter Expansion
 
 - `${parameter:-word}` - Good to avoid -e issues with undefined var

@@ -10,6 +10,9 @@ bnaked() {
   env -i bash --norc --noprofile
 }
 
+alias editbashmisc='nvim ~/gitdir/skel/bash/bashrc_zen.d/bash_misc.sh'
+alias editbashhelp='nvim ~/gitdir/skel/bash/bashrc_zen.d/bash-help.md'
+
 bash-help() {
   local bash_help_path="${HOME}/.bashrc_zen.d/bash-help.md"
   local pager
