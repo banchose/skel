@@ -10,11 +10,27 @@ bnaked() {
   env -i bash --norc --noprofile
 }
 
-a_timer() {
-  now=$(date '+%s')
-  [ -z "$then" ] && then=$now
-  echo $((now - then))
-  then=$now
+bash-help() {
+  local bash_help_path="${HOME}/.bashrc_zen.d/bash-help.md"
+  local pager
+
+  if command -v bat >/dev/null 2>&1; then
+    pager=bat
+  elif command -v less >/dev/null 2>&1; then
+    pager=less
+  elif command -v cat >/dev/null 2>&1; then
+    pager=cat
+  else
+    printf >&2 'bash-help: no usable pager found (bat/less/cat)\n'
+    return 1
+  fi
+
+  if [[ ! -f "${bash_help_path}" ]]; then
+    printf >&2 'bash-help: cannot find %s\n' "${bash_help_path}"
+    return 1
+  fi
+
+  "${pager}" "${bash_help_path}"
 }
 
 glob_to_regex() {
