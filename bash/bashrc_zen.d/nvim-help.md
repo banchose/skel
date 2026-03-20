@@ -1,6 +1,15 @@
 # nvim notes
 
-## z spelling
+## buffers
+
+- space comma `,`
+
+## Switch Tabs
+
+- space tab `[` 
+- space tab `]` 
+
+## spelling - z
 
 - `:set spell?`
 - `:set spell spelllang=en_us`
@@ -13,4 +22,11 @@
 | `zg` | Add word to your spell file (mark as good) |
 | `zw` | Mark word as wrong/bad |
 
+## yank
 
+- yaf — yank a function
+- yif — yank inside a function
+- yac — yank a class
+- dif — delete inside a function
+- vaf — visually select a function
+- cic — change inside a class

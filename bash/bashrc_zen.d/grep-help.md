@@ -1,5 +1,7 @@
 # Grep
 
+skiddin' and driftin'
+
 ## quick
 
 ```sh
@@ -7,6 +9,8 @@ echo "who am I amamam" | grep -o '\bam\b'
 grep -P
 grep '^.' # match any character at the start of the line 
 grep '^\.' # match the first '.' of the line
+grep '^[[:alnum:]]\+$'
+echo "who am I amamam" | grep -o '^.[[:alnum:] ]\+$' # space in the char class and it matches
 ```
 
 ## Grep
