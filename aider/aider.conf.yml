@@ -1,5 +1,13 @@
 model: claude-sonnet-4-6
 edit-format: ask
 map-tokens: 0
+git: false
+auto-commits: false
+cache-prompts: true
+disable-playwright: true
+# dry-run: true
+# just-check-update: true
 # edit-format: chat
+# suggest-shell-command: false
+# shell completions: outputs the completions
 
