@@ -7,7 +7,7 @@ import datetime
 
 OPENWEATHER_API_KEY = os.environ["OPENWEATHER_APP_ID"]
 OPENWEATHER_UNITS = os.environ.get("OPENWEATHER_UNITS", "imperial")
-NOMINATIM_EMAIL = os.environ.get("NOMINATIM_EMAIL", "")
+NOMINATIM_EMAIL = os.environ.get("NOMINATIM_EMAIL", "dark.book0043@fastmail.com")
 DEFAULT_LAT = os.environ.get("LAT")
 DEFAULT_LON = os.environ.get("LON")
 
@@ -21,7 +21,9 @@ def _geocode_location(location: str) -> tuple[float, float]:
     """Geocode a location string to lat/lon using Nominatim."""
     if not NOMINATIM_EMAIL:
         raise EnvironmentError(
-            "NOMINATIM_EMAIL must be set to geocode a named location."
+            "NOMINATIM_EMAIL environment variable is empty or unset. "
+            "Set it to any valid email address (required by Nominatim's usage policy).\n"
+            '  export NOMINATIM_EMAIL="you@yourdomain.com"'
         )
     response = requests.get(
         "https://nominatim.openstreetmap.org/search",
