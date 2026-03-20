@@ -6,11 +6,10 @@ readonly CACHE_FILE="${XDG_RUNTIME_DIR:-/tmp}/oil_price_cache.json"
 
 # WTI crude futures (NYMEX/Globex) trade Sun 18:00 ET → Fri 17:00 ET
 # with a daily halt 17:00–18:00 ET each weekday.
+
 is_market_open() {
   local dow hour min
-  dow=$(date +%u) # 1=Mon .. 7=Sun
-  hour=$(date +%-H)
-  min=$(date +%-M)
+  read -r dow hour min < <(TZ=America/New_York date '+%u %-H %-M')
   local now_min=$((hour * 60 + min))
 
   # Saturday all day: closed
