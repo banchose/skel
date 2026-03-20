@@ -59,7 +59,7 @@ grep-help() {
   "${pager}" "${grep_help_path}"
 }
 
-bash-purer() {
+bash-help-pure() {
   local purebash_help_path="${HOME}/gitdir/skel/bash/pure-bash-bible.md"
   local pager
 
