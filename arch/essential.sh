@@ -45,6 +45,7 @@ sudo pacman -S docker-buildx --needed --noconfirm
 
 # hardware
 sudo pacman -S usbutils --needed --noconfirm
+sudo pacman -S exfatprogs --needed --noconfirm
 sudo pacman -S lvm2 --needed --noconfirm
 sudo pacman -S dmidecode --needed --noconfirm
 sudo pacman -S lshw --needed --noconfirm
