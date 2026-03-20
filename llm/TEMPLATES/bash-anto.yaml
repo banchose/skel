@@ -1,4 +1,4 @@
-model: anto
+model: ants
 system_fragments:
   - /home/una/gitdir/skel/PROMPT/DEFAULT_PROMPT_strict.txt
 tools:
