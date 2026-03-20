@@ -1,3 +1,8 @@
 model: brs
 system_fragments:
   - /home/una/gitdir/aws/PROMPT/DEFAULT_hriaws.md
+tools:
+  - llm_version
+  - llm_time
+  - simple_eval
+  - web_search

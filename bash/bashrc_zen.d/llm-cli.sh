@@ -48,8 +48,9 @@
 export LLM_TEST_STRING="This is a test only. Repond only with 'OK'"
 export LLM_TEST_STRING_TOOLS="This is a test only. Respond with a brief acknowledgment and a list of tools you have access to"
 
-alias llm='llm -t "${LLM_DEFAULT_TEMPLATE:-ants}"'
+# alias llm='llm -t "${LLM_DEFAULT_TEMPLATE:-ants}"'
 alias hk='llm -t ant-haiku'
+alias llh='llmh -t ant-haiku'
 alias llmdocs='llm -t ant-haiku -f docs: '
 
 # alias llm='llm --ta -t "${LLM_DEFAULT_TEMPLATE:-ants}"'
