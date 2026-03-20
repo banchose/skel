@@ -465,10 +465,25 @@ litellm
     profile or api_key
 
 ## Common issues
+
 "Error: Error code: 400 - {'error': {'message': 'No connected db.', 'type': 'no_db_connection', 'param': None, 'code': '400'}}"
 echo $LITELLM_MASTER_KEY
 look in ~/.config/io.datasette.llm/extra-openai-models.yaml
 It is set somewhere
+
+  ## Fragments (not rag just one copy multi use)
+
+command llm -f setup.py "extract metadata"
+command llm fragments
+### alias
+command llm fragments set mydocs ./docs.md
+command llm -f mydocs "How do I access metadata?"
+command llm fragments --aliases
+### github
+command llm -f github:simonw/s3-credenttials
+
+## Model aliases
+llm aliases
 EOF
 }
 
