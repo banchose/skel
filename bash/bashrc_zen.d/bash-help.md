@@ -1,5 +1,10 @@
 # Bash short
 
+## pure-bash-bible
+
+- `~/gitdir/skel/bash/pure-bash-bible.md`
+- nvim: `gf`
+
 ## globstar
 
 - `shopt -s globstar`
@@ -8,7 +13,6 @@
 - `**`: match all files and zero or more directories and **subdirectories**
 - `**/`: only directories and subdirectories match
  
-
 ## Paramter Expansion
 
 - `${parameter:-word}` - Good to avoid -e issues with undefined var
@@ -31,7 +35,7 @@
 
 ## Conditional Expressions
 
-### file tests
+### File tests
 
 - `-f`: if file exists and is a regular file
 - `-r`: if file readable
@@ -41,12 +45,12 @@
 - `-L`: if file exists and is a symbolic link
 - `-t`: if file exists and is a terminal
 
-### parameter tests
+### Parameter tests
 
 - `-z`: True if length of string is zero
 - `-n`: True if length of string is non-zero
 
-### string tests
+### String tests
 
 - Pattern match equal: `[[ string1 = string2 ]]`
 - Pattern match not equal: `[[ string1 != string2 ]]`

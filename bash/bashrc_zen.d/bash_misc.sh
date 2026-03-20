@@ -36,6 +36,29 @@ bash-help() {
   "${pager}" "${bash_help_path}"
 }
 
+grep-help() {
+  local grep_help_path="${HOME}/.bashrc_zen.d/grep-help.md"
+  local pager
+
+  if command -v bat >/dev/null 2>&1; then
+    pager=bat
+  elif command -v less >/dev/null 2>&1; then
+    pager=less
+  elif command -v cat >/dev/null 2>&1; then
+    pager=cat
+  else
+    printf >&2 'grep-help: no usable pager found (bat/less/cat)\n'
+    return 1
+  fi
+
+  if [[ ! -f "${grep_help_path}" ]]; then
+    printf >&2 'grep-help: cannot find %s\n' "${grep_help_path}"
+    return 1
+  fi
+
+  "${pager}" "${grep_help_path}"
+}
+
 glob_to_regex() {
   local glob="$1"
   local regex=""
