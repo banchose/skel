@@ -175,7 +175,8 @@ if command -v llm &>/dev/null; then
   # pipx inject llm 'litellm[proxy]' --pip-args="--upgrade"
   pipx inject llm litellm --pip-args="--upgrade"
   pipx inject llm tinfoil --include-deps --pip-args="--upgrade"
-
+  llm sentence-transformers register all-MiniLM-L12-v2 --alias mini-l12
+  llm sentence-transformers register all-mpnet-base-v2 --alias mpnet
   # llm install llm-sentence-transformers
 fi
 

@@ -483,6 +483,22 @@ command llm fragments --aliases
 ### github
 command llm -f github:simonw/s3-credenttials
 
+### embedding documents
+llm install llm-tools-rag
+llm embed-models
+llm embed-models default mpnet
+llm collections list
+llme_test_embed() {
+  (
+    local docdir=~/temp/tinfoil-docs
+
+    cd "${docdir}" # && llm collections delete tinfoil
+
+    # llm embed-multi tinfoil -m mini-l12 --files ./ '*.md' --store
+    llm embed-multi tinfoil -m mpnet --files ./ '*.md' --store
+  )
+}
+
 ## Model aliases
 llm aliases
 EOF
@@ -685,4 +701,12 @@ llm-old() {
   }
   command llm -u -t brs "$@"
 
+}
+
+llme_test_embed_example() {
+  (
+    cd ~/temp/tinfoil-docs # && llm collections delete tinfoil
+    # llm embed-multi tinfoil -m mini-l12 --files ./ '*.md' --store
+    llm embed-multi tinfoil -m mpnet --files ./ '*.md' --store
+  )
 }

@@ -17,3 +17,9 @@ tinllm() {
   "temperature": 0
 }'
 }
+
+tinfoil_get_docs_md() {
+
+  curl -s https://docs.tinfoil.sh/llms-full.txt -o tinfoil-docs-full.md
+
+}
