@@ -107,6 +107,7 @@ if [[ -n ${INST_EXTRA:-} ]]; then
   pipx install cookiecutter
   # if [[ -n ${INST_PYTHON_EXTRA:-} ]]; then
   pipx install pylint
+  pipx install sqlite-utils
   pipx install flake8
   pipx install ipython --include-deps
   pipx install ptpython
@@ -182,6 +183,7 @@ if command -v ipython &>/dev/null; then
   pipx inject \
     ipython \
     boto3 \
+    sqlite-utils \
     boltons \
     beautifulsoup4 \
     psutils \
