@@ -1,6 +1,4 @@
-#!/usr/bin/env bash
-
-WIPE_NVIM() {
+nvim_wipe() {
 
   # required
   [[ -d ~/.config/nvim ]] || {
@@ -33,15 +31,26 @@ safe_input() {
     fi
   done
 }
-NVIM_INSTALL() {
-  echo "#####################"
-  echo "Ubuntu"
-  echo "insturctions on installing nvim"
-  echo "xudo add-apt-repository ppa:neovim-ppa/unstable -y"
-  echo "xudo apt update"
-  echo "xudo apt install make gcc ripgrep unzip git xclip neovim"
-  echo "#####################"
-  echo "Install Arch Linux"
-  echo "xudo pacman -S --noconfirm --needed gcc make git fzf tmux jq ripgrep fd unzip neovim"
 
+nvim-help() {
+  local nvim_help_path="${HOME}/gitdir/skel/nvim/nvim-help.md"
+  local pager
+
+  if command -v bat >/dev/null 2>&1; then
+    pager=bat
+  elif command -v less >/dev/null 2>&1; then
+    pager=less
+  elif command -v cat >/dev/null 2>&1; then
+    pager=cat
+  else
+    printf >&2 'nvim-help: no usable pager found (bat/less/cat)\n'
+    return 1
+  fi
+
+  if [[ ! -f "${nvim_help_path}" ]]; then
+    printf >&2 'nvim-help: cannot find %s\n' "${nvim_help_path}"
+    return 1
+  fi
+
+  "${pager}" "${nvim_help_path}"
 }
