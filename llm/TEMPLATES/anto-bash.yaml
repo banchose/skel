@@ -1,6 +1,6 @@
 model: ants
 system_fragments:
-  - /home/una/gitdir/skel/PROMPT/DEFAULT_PROMPT_strict.txt
+  - /home/una/gitdir/skel/PROMPT/DEFAULT_bash.md
 tools:
   - llm_version
   - llm_time

@@ -1,5 +1,15 @@
 # Bash short
 
+## rsync
+
+- copy one dir to another
+- run again to update - dir HAS to be there
+- mind the trailing slashes... Content's to contents
+
+```bash
+rsync -rltL /home/una/gitdir/skel/ /run/media/una/PNY256/skel/
+```
+
 ## pipe past confusion
 
 - The pipe kills the variable
@@ -38,7 +48,7 @@ bat_show_themes() {
 
 - The order of expansions is: brace expansion; tilde expansion, parameter and variable expansion, arithmetic expansion, and command substitution (done in a left-to-right fashion); word splitting; pathname expansion; and quote removal.
 - if a **variable** equals '*', that variable will expand, then later, **word splitting**, then **file expansion**
-- `b='[w-z]*'`;echo `$b`; works gets files starting with w-z
+- File expansion AFTER variable expansion `b='[w-z]*'`;echo `$b`; works gets files starting with w-z
 
 ## pure-bash-bible
 
