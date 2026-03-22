@@ -7,6 +7,14 @@
   vision: true
   audio: true
 
+- model_id: voxtral
+  model_name: voxtral-small-24b
+  api_base: "http://127.0.0.1:8080/v1"
+  # api_base: "https://api.tinfoil.sh"  # or whatever their endpoint is
+  aliases: ["voxtral-small"]
+  audio: true
+  supports_tools: true  # given it supports function calling
+
 - model_id: brh
   model_name: bedrock-haiku
   api_base: "http://localhost:4000"
@@ -52,6 +60,22 @@
   vision: true
   audio: true
 
+- model_id: whisper
+  model_name: whisper-large-v3-turbo
+  api_base: "http://127.0.0.1:8080/v1"
+  aliases: ["whisper-turbo", "wh"]
+  api_key_name: tinfoil
+  audio: true
+
+- model_id: voxtral
+  model_name: voxtral-small-24b
+  api_base: "http://127.0.0.1:8080/v1"
+  api_key_name: tinfoil
+  # api_base: "https://api.tinfoil.sh"  # or whatever their endpoint is
+  aliases: ["voxtral-small"]
+  audio: true
+  supports_tools: true  # given it supports function calling
+
 - model_id: tinfoil-deepseek-r1
   model_name: deepseek-r1-0528
   api_base: "http://127.0.0.1:8080/v1"
@@ -67,7 +91,7 @@
   supports_tools: true
   supports_schema: true
   vision: true
-  audio: true
+
 - model_id: tinfoil-gpt-oss-120b
   model_name: gpt-oss-120b
   api_base: "http://127.0.0.1:8080/v1"

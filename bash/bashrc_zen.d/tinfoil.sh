@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -exuo pipefail
-
 ## Tinfoil Models
 # deepseek-r1-0528
 # kimi-k2-5
@@ -19,7 +17,12 @@ tinllm() {
 }
 
 tinfoil_get_docs_md() {
-
   curl -s https://docs.tinfoil.sh/llms-full.txt -o tinfoil-docs-full.md
+}
 
+tinfoil-transcribe() {
+  curl -s http://127.0.0.1:8080/v1/audio/transcriptions \
+    -H "Authorization: Bearer ${TINFOIL_API_KEY}" \
+    -F file=@"$1" \
+    -F model=whisper-large-v3-turbo | jq -r '.text'
 }
