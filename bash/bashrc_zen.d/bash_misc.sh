@@ -105,3 +105,38 @@ glob_to_regex() {
 
   printf '^%s$\n' "${regex}"
 }
+
+par2_it() {
+  local input="${1:?Usage: par2_it <file_or_directory>}"
+
+  if [[ ! -e "$input" ]]; then
+    echo "Error: '$input' does not exist" >&2
+    return 1
+  fi
+
+  input="${input%/}"
+  local base
+  base="$(basename -- "$input")"
+  local archive="${base}.tar.gz.gpg"
+
+  if [[ -e "$archive" ]]; then
+    echo "Error: '$archive' already exists" >&2
+    return 1
+  fi
+
+  local -
+  set -o pipefail
+
+  tar czf - -- "$input" | gpg --symmetric --compress-algo none --batch -o "$archive" || {
+    echo "Error: tar/gpg pipeline failed" >&2
+    rm -vf -- "$archive" 2>/dev/null
+    return 1
+  }
+
+  par2 create -r5 -n7 -- "$archive" || {
+    echo "Warning: par2 failed, encrypted archive still exists" >&2
+    return 1
+  }
+
+  echo "Done: $archive (+ par2 files)"
+}

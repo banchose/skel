@@ -73,6 +73,8 @@ alias llm-ids='command llm logs list --json -q'
 # llm chat --cid abc123      # resume
 # llm-ids "Exa" | jq -r '.[].conversation_id' | sort -u | head -n 1
 
+alias llm_chat_tin_bash='llm chat -t tin --sf ~/gitdir/skel/PROMPT/DEFAULT_bash.md'
+
 tf() {
   local log_file
   log_file="/tmp/tinfoil.$(date '+%s')"

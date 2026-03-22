@@ -182,3 +182,10 @@ When working in containers or stripped-down Linux where common tools are missing
 | `"~/path"` | `"$HOME/path"` |
 | `printf "$var"` (format string injection) | `printf '%s\n' "$var"` |
 | `{$a,$b}` (brace + variable) | Brace expansion happens first; use arrays or explicit args |
+
+## Prefer Builtins Over Subprocesses
+- **String operations:** Use parameter expansion (`${var##*/}`, `${var%.*}`) over `basename`, `dirname`, `sed`, `awk`, `cut` when the operation is a simple prefix/suffix strip
+- **Conditionals:** Use `[[ $var == pattern ]]` over `echo "$var" | grep -q pattern`
+- **Arithmetic:** Use `(( ))` over `$(( ))` piped to `expr` or `bc` (for integer math)
+- **Array operations:** Use `"${arr[@]}"` slicing/iteration over piping to external tools
+- `dirname` alternative: `${var%/*}` (but note: doesn't handle edge cases like bare filenames or `/` — use `dirname` if you need POSIX-correct behavior for arbitrary paths)
