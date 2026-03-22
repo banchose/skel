@@ -1,8 +1,18 @@
 # Bash short
 
+## pipe past confusion
+
+- The pipe kills the variable
+
+## Remove preceeding spaces
+
+```bash
+while IFS= read -r line;do echo "${line##*[[:space:]] }";done < ./boom.txt
+```
+
 ## while IFS= read -r
 
-- Replaced a pattern like: `themes=($(bat --list-themes)) with for i in "${themes[@]};do..."`
+- Replaced a pattern like: `themes=($(bat --list-themes))` and `for i in "${themes[@]};do..."`
 
 ```bash
 bat_show_themes() {
@@ -12,6 +22,17 @@ bat_show_themes() {
   done
 }
 ```
+
+## OOE
+
+- brace
+  - tilde
+  - parameter and variable
+  - arithmetic
+  - command
+- word splitting
+- pathname expansion
+- quote removal
 
 ## Order of expansion
 
@@ -27,7 +48,7 @@ bat_show_themes() {
 ## globstar
 
 - `shopt -s globstar`
-- `(shopt -s globstar; ...)` - subshell leaves setting alone
+- `(shopt -s globstar; ...)` - sub shell leaves setting alone
 
 - `**`: match all files and zero or more directories and **subdirectories**
 - `**/`: only directories and subdirectories match
@@ -78,7 +99,7 @@ bat_show_themes() {
 
 ## Operations?
 
-- `[[]]` evaluated as arithmatic expressions
+- `[[]]` evaluated as arithmetic expressions
   - `-eq`
   - `-ne`
   - `-lt`
@@ -153,6 +174,4 @@ Process substitution allows a **process's** input or output to be referred to us
 
 - The shell scans the results of parameter expansion, command substitution, and arithmetic expansion that did not occur within double quotes for word splitting.  Words that were not expanded are not split.
 - The shell treats each character of IFS as a **delimiter**, and splits the results of the other  expansions  into  words  using  these characters as **field terminators**.
-
-
 
