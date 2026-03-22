@@ -1,5 +1,18 @@
 # Bash short
 
+## while IFS= read -r
+
+- Replaced a pattern like: `themes=($(bat --list-themes)) with for i in "${themes[@]};do..."`
+
+```bash
+bat_show_themes() {
+  bat --list-themes | while IFS= read -r theme; do
+    echo "${theme}"
+    bat -r 10:15 --theme "${theme}" ~/gitdir/skel/nvim/nvim-help.md
+  done
+}
+```
+
 ## Order of expansion
 
 - The order of expansions is: brace expansion; tilde expansion, parameter and variable expansion, arithmetic expansion, and command substitution (done in a left-to-right fashion); word splitting; pathname expansion; and quote removal.

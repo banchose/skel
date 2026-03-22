@@ -1,14 +1,38 @@
 # nvim help
 
-## help
+## Tag jumping
 
-- `:h`
-- `:help i_<help>`
-- `:helpclose`
+- ctrl-o
+- ctrl-]
+- `:ts`/`:tselect`: show tags
+- `:tn`/ `:tp`
+
+## spelling
+
+- `setlocal spell spelllang=en_us`
+- `]s`
+- `[s`
+- `]S` ?
+- `]r` ?
+- `z=` suggest for 'bad' words
+- `spellr`: Do the last spell replace to all the others
+- `zg` Add word local (good word to first name in `spellfile`)
+- `spellr` 
+- `zuw` undo `zw` and `zg`
+- `zug` undo `zw` and `zg` in `spellfile`
 
 ## quickfix
 
-### keys [c global, l local]
+### quickfix related commands
+
+  - `help quickfix`
+  - `vimgrep`
+  - `grep`
+  - `helpgrep`
+  - `make`
+  - spelling
+
+### quickfix keys [c global, l local]
 
 - `cc`, `cc<n>`: Display error
 - `[count]cn`: Display next error
@@ -21,16 +45,17 @@
 - `cfirst`
 - `clast`
 
-- quickfix list
-  - `vimgrep`
-  - `grep`
-  - `helpgrep`
-  - `make`
 - A 'location list' is a window-local quickfix list
   - `lvimgrep`
   - `lgrep`
   - `lhelpgrep`
   - `lmake`
+
+## help
+
+- `:h`
+- `:help i_<help>`
+- `:helpclose`
 
 ## helpgrep
 
