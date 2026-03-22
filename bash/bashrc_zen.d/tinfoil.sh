@@ -26,3 +26,36 @@ tinfoil-transcribe() {
     -F file=@"$1" \
     -F model=whisper-large-v3-turbo | jq -r '.text'
 }
+
+tinfoil_start_proxy() {
+
+  tinfoil proxy \
+    -r tinfoilsh/confidential-model-router \
+    -e inference.tinfoil.sh \
+    -p 8080 >/dev/null 2>&1 &
+}
+
+# tf() {
+#   local log_file
+#   log_file="/tmp/tinfoil.$(date '+%s')"
+#
+#   if ! curl -s --connect-timeout 4 http://localhost:8080 >/dev/null 2>&1; then
+#     tinfoil proxy \
+#       -r tinfoilsh/confidential-model-router \
+#       -e inference.tinfoil.sh \
+#       -p 8080 \
+#       >"${log_file}" 2>&1 &
+#
+#     local -i attempts=0
+#     until curl -s --connect-timeout 1 http://localhost:8080 >/dev/null 2>&1; do
+#       ((++attempts))
+#       if ((attempts >= 10)); then
+#         printf 'tinfoil proxy did not become ready (log: %s)\n' "${log_file}" >&2
+#         return 1
+#       fi
+#       sleep 0.5
+#     done
+#   fi
+#
+#   command llm "$@" -t tin --ta
+# }
