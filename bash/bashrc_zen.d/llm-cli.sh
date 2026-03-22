@@ -488,7 +488,9 @@ llm install llm-tools-rag
 llm embed-models
 llm embed-models default mpnet
 llm collections list
+# Create a tinfoil collection example
 llme_test_embed() {
+  # you embed a collection and you  can use it again works well
   (
     local docdir=~/temp/tinfoil-docs
 
