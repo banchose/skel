@@ -20,6 +20,7 @@ sudo apt-get -y install w3m
 sudo apt-get -y install unzip
 sudo apt-get -y exfatprogs
 sudo apt-get -y install zip
+sudo apt-get -y install par2
 sudo apt-get -y install bc
 sudo apt-get -y install curl
 sudo apt-get -y install tcpdump
