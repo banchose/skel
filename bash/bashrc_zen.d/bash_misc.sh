@@ -13,10 +13,9 @@ bnaked() {
 alias editbashmisc='nvim ~/gitdir/skel/bash/bashrc_zen.d/bash_misc.sh'
 alias editbashhelp='nvim ~/gitdir/skel/bash/bashrc_zen.d/bash-help.md'
 
-bash-help() {
-  local bash_help_path="${HOME}/.bashrc_zen.d/bash-help.md"
+_show_help_file() {
+  local label="${1:?}" path="${2:?}"
   local pager
-
   if command -v bat >/dev/null 2>&1; then
     pager=bat
   elif command -v less >/dev/null 2>&1; then
@@ -24,63 +23,19 @@ bash-help() {
   elif command -v cat >/dev/null 2>&1; then
     pager=cat
   else
-    printf >&2 'bash-help: no usable pager found (bat/less/cat)\n'
+    printf >&2 '%s: no usable pager found (bat/less/cat)\n' "${label}"
     return 1
   fi
-
-  if [[ ! -f "${bash_help_path}" ]]; then
-    printf >&2 'bash-help: cannot find %s\n' "${bash_help_path}"
+  if [[ ! -f "${path}" ]]; then
+    printf >&2 '%s: cannot find %s\n' "${label}" "${path}"
     return 1
   fi
-
-  "${pager}" "${bash_help_path}"
+  "${pager}" "${path}"
 }
 
-grep-help() {
-  local grep_help_path="${HOME}/.bashrc_zen.d/grep-help.md"
-  local pager
-
-  if command -v bat >/dev/null 2>&1; then
-    pager=bat
-  elif command -v less >/dev/null 2>&1; then
-    pager=less
-  elif command -v cat >/dev/null 2>&1; then
-    pager=cat
-  else
-    printf >&2 'grep-help: no usable pager found (bat/less/cat)\n'
-    return 1
-  fi
-
-  if [[ ! -f "${grep_help_path}" ]]; then
-    printf >&2 'grep-help: cannot find %s\n' "${grep_help_path}"
-    return 1
-  fi
-
-  "${pager}" "${grep_help_path}"
-}
-
-bash-help-pure() {
-  local purebash_help_path="${HOME}/gitdir/skel/bash/pure-bash-bible.md"
-  local pager
-
-  if command -v bat >/dev/null 2>&1; then
-    pager=bat
-  elif command -v less >/dev/null 2>&1; then
-    pager=less
-  elif command -v cat >/dev/null 2>&1; then
-    pager=cat
-  else
-    printf >&2 'purebash-help: no usable pager found (bat/less/cat)\n'
-    return 1
-  fi
-
-  if [[ ! -f "${purebash_help_path}" ]]; then
-    printf >&2 'purebash-help: cannot find %s\n' "${purebash_help_path}"
-    return 1
-  fi
-
-  "${pager}" "${purebash_help_path}"
-}
+bash-help() { _show_help_file bash-help "${HOME}/.bashrc_zen.d/bash-help.md"; }
+grep-help() { _show_help_file grep-help "${HOME}/.bashrc_zen.d/grep-help.md"; }
+bash-help-pure() { _show_help_file bash-help-pure "${HOME}/gitdir/skel/bash/pure-bash-bible.md"; }
 
 glob_to_regex() {
   local glob="$1"
@@ -109,34 +64,64 @@ glob_to_regex() {
 par2_it() {
   local input="${1:?Usage: par2_it <file_or_directory>}"
 
-  if [[ ! -e "$input" ]]; then
-    echo "Error: '$input' does not exist" >&2
+  if [[ ! -e "${input}" ]]; then
+    printf >&2 'Error: %s does not exist\n' "${input}"
     return 1
   fi
 
   input="${input%/}"
-  local base
-  base="$(basename -- "$input")"
+  local base="${input##*/}"
   local archive="${base}.tar.gz.gpg"
 
-  if [[ -e "$archive" ]]; then
-    echo "Error: '$archive' already exists" >&2
+  if [[ -e "${archive}" ]]; then
+    printf >&2 'Error: %s already exists\n' "${archive}"
     return 1
   fi
 
   local -
   set -o pipefail
 
-  tar czf - -- "$input" | gpg --symmetric --compress-algo none --batch -o "$archive" || {
-    echo "Error: tar/gpg pipeline failed" >&2
-    rm -vf -- "$archive" 2>/dev/null
+  tar czf - -- "${input}" |
+    gpg --symmetric --compress-algo none \
+      --pinentry-mode loopback \
+      -o "${archive}" ||
+    {
+      printf >&2 'Error: tar/gpg pipeline failed\n'
+      rm -f -- "${archive}" 2>/dev/null
+      return 1
+    }
+
+  par2 create -r5 "${archive}" || {
+    printf >&2 'Warning: par2 failed, encrypted archive still exists\n'
     return 1
   }
 
-  par2 create -r5 -n7 -- "$archive" || {
-    echo "Warning: par2 failed, encrypted archive still exists" >&2
+  printf 'Done: %s (+ par2 files)\n' "${archive}"
+}
+
+par2_restore() {
+  local archive="${1:?Usage: par2_restore <file.tar.gz.gpg>}"
+  if [[ ! -e "${archive}" ]]; then
+    printf 'Error: %s does not exist\n' "${archive}" 1>&2
+    return 1
+  fi
+
+  local -
+  set -o pipefail
+
+  # Repair if par2 files are present
+  local par2file="${archive}.par2"
+  if [[ -e "${par2file}" ]]; then
+    par2 repair "${par2file}" || {
+      printf 'Error: par2 repair failed\n' 1>&2
+      return 1
+    }
+  fi
+
+  gpg --pinentry-mode loopback -d -- "${archive}" | tar xzf - || {
+    printf 'Error: gpg/tar pipeline failed\n' 1>&2
     return 1
   }
 
-  echo "Done: $archive (+ par2 files)"
+  printf 'Done: extracted from %s\n' "${archive}"
 }
