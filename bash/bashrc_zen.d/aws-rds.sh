@@ -26,6 +26,7 @@ aws_get_SQLVERSION() {
     --query SecretString \
     --output text | jq -r '.password')
 
+  # NOTE: sqlcmd reads SQLCMDPASSWORD
   sqlcmd -S sqlserver2022-instance.ctvplhh4dcnc.us-east-1.rds.amazonaws.com,1433 \
     -U adminuser \
     -C \
