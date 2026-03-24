@@ -505,6 +505,47 @@ llme_test_embed() {
 
 ## Model aliases
 llm aliases
+#
+## Picture
+#
+cat image.jpg | llm "describe this image" -a -
+llm "extract text" -a image1.jpg -a image2.jpg
+llm "describe this image" -a https://static.simonwillison.net/static/2024/pelicans.jpg
+cat myfile | llm "describe this image" --at - image/jpeg
+###########
+# PIPEING
+###########
+cat image.jpg | llm "describe this image" -a -
+cat myfile | llm "describe this image" --at - image/jpeg
+git diff | llm -s 'Describe these changes'
+cat llm/utils.py | llm -t pytest
+####
+####
+name:
+model:
+system:
+options:
+  temperature: 1.8
+functions: |
+  def reverse_string(s: str):
+      return s[::-1]
+
+  def greet(name: str):
+      return f"Hello, {name}!"
+fragments:
+- https://example.com/robots.txt
+- /path/to/file.txt
+- 993fd38d898d2b59fd2d16c811da5bdac658faa34f0f4d411edde7c17ebb0680
+system_fragments:
+- https://example.com/systm-prompt.txt
+tools:
+- llm_version
+- llm_time
+- simple_eval
+- web_search
+schema_object:
+### TEMPLATE VARIABLES
+llm -t recipe -p ingredients 'sausages, milk' -p country Germany # $country in the template
 EOF
 }
 
