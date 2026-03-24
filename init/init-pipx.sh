@@ -67,6 +67,7 @@ pipx install pgcli
 pipx install ftfy
 pipx install mycli
 pipx install pycowsay
+pipx install html2text
 pipx install ruff
 pipx install black
 pipx install isort
