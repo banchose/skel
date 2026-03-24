@@ -7,7 +7,7 @@
     // Choose the order of the modules
     "modules-left": ["hyprland/workspaces", "custom/librewolf-default", "custom/firefox-Super-Default", "custom/firefox-youtube", "custom/firefox-TV","custom/firefox-Other", "custom/librewolf-default", "custom/pinger", "custom/1min","custom/5min","custom/15min", "cpu", "custom/weather", "custom/oil"],
     "modules-center": ["clock"],
-    "modules-right": ["custom/Ping_GW","custom/Ping_fios", "custom/Ping_firewall", "idle_inhibitor", "custom/clearmako", "pulseaudio", "cpu", "memory", "temperature", "tray"],
+    "modules-right": ["custom/gold","custom/vix","custom/tnx","custom/Ping_GW","custom/Ping_fios", "custom/Ping_firewall", "idle_inhibitor", "custom/clearmako", "pulseaudio", "cpu", "memory", "temperature", "tray"],
     // Modules configuration
     // "sway/workspaces": {
     //     "disable-scroll": true,
@@ -296,10 +296,31 @@
         "tooltip": true
     },
     "custom/oil": {
-        "exec": "~/.config/waybar/scripts/oil_price.sh",
+    "exec": "~/.config/waybar/scripts/market_indicator.sh CL=F 🛢️ 'WTI Crude' oil '' dollar",
+    "return-type": "json",
+    "interval": 300,
+    "tooltip": true,
+    "min-length": 16
+    },
+    "custom/gold": {
+        "exec": "~/.config/waybar/scripts/market_indicator.sh GC=F 🪙 Gold gold '' dollar",
         "return-type": "json",
         "interval": 300,
         "tooltip": true,
         "min-length": 16
+    },
+    "custom/vix": {
+        "exec": "~/.config/waybar/scripts/market_indicator.sh ^VIX 😰 VIX vix invert index",
+        "return-type": "json",
+        "interval": 300,
+        "tooltip": true,
+        "min-length": 14
+    },
+    "custom/tnx": {
+        "exec": "~/.config/waybar/scripts/market_indicator.sh ^TNX 📈 '10Y Yield' tnx '' pct",
+        "return-type": "json",
+        "interval": 300,
+        "tooltip": true,
+        "min-length": 14
     }
 }
