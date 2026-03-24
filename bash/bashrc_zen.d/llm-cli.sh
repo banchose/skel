@@ -292,16 +292,13 @@ llm_bootstrap() {
 }
 
 llm_symlink_templates() {
-  cd ~/.config/io.datasette.llm/templates/ || return 1
-  local i base
-  for i in ~/gitdir/skel/llm/TEMPLATES/*; do
-    base="$(basename "${i}")"
-    if [[ -e "${base}" || -L "${base}" ]]; then
-      echo "skip: ${base}"
-    else
-      echo "link: ${base}"
-      ln -s "${i}"
-    fi
+  local src_dir="${HOME}/gitdir/skel/llm/TEMPLATES"
+  local dst_dir
+  dst_dir="$(llm templates path)"
+  local f
+  for f in "${src_dir}"/*.yaml; do
+    [[ -f "${f}" ]] || continue
+    ln -sf "${f}" "${dst_dir}/"
   done
 }
 
@@ -754,37 +751,4 @@ llme_test_embed_example() {
     # llm embed-multi tinfoil -m mini-l12 --files ./ '*.md' --store
     llm embed-multi tinfoil -m mpnet --files ./ '*.md' --store
   )
-}
-
-llm_whisper_transcribe() {
-  local file="${1:?Usage: llm_whisper_transcribe <audio_file>}"
-  [[ -f "${file}" ]] || {
-    printf 'Error: file not found: %s\n' "${file}" >&2
-    return 1
-  }
-
-  local api_key
-  api_key="$(llm keys get tinfoil 2>/dev/null)" || {
-    printf 'Error: could not retrieve tinfoil API key\n' >&2
-    return 1
-  }
-
-  curl -s http://127.0.0.1:8080/v1/audio/transcriptions \
-    -F file=@"${file}" \
-    -F model=whisper-large-v3-turbo \
-    -H "Authorization: Bearer ${api_key}"
-}
-
-llm_whisper_transcribe_and_clean() {
-  local file="${1:?Usage: llm_whisper_transcribe_and_clean <audio_file>}"
-  local transcript
-  transcript="$(llm_whisper_transcribe "${file}")" || return 1
-
-  [[ -n "${transcript}" ]] || {
-    printf 'Error: empty transcript\n' >&2
-    return 1
-  }
-
-  printf '%s' "${transcript}" |
-    llm -m brs "Clean up this meeting transcript. Fix punctuation, speaker attribution if apparent, and remove filler words. Preserve the original meaning."
 }
