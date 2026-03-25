@@ -543,6 +543,8 @@ tools:
 schema_object:
 ### TEMPLATE VARIABLES
 llm -t recipe -p ingredients 'sausages, milk' -p country Germany # $country in the template
+## IMAGE worked
+wl-paste | llm -t tin "can you see this"  --at - image/jpeg
 EOF
 }
 
