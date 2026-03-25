@@ -35,6 +35,25 @@ tinfoil_start_proxy() {
     -p 8080 >/dev/null 2>&1 &
 }
 
+tinfoil_curl() {
+
+  local tinfoil_model=kimi-k2-5
+
+  curl -X POST https://inference.tinfoil.sh/v1/chat/completions \
+    -H "Authorization: Bearer ${TINFOIL_API_KEY}" \
+    -H "Content-Type: application/json" \
+    -d '{
+    "model": "'"${tinfoil_model}"'",
+    "messages": [{"role": "user", "content": "Hello world"}]
+  }'
+}
+
+tinfoil_list_models() {
+
+  curl https://inference.tinfoil.sh/v1/models \
+    -H "Authorization: Bearer ${TINFOIL_API_KEY}"
+}
+
 # tf ()
 # {
 #     local log_file;
