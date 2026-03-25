@@ -1,2 +1,24 @@
+
 set selection-clipboard clipboard
-set sandbox strict
+
+
+
+set recolor true
+set recolor-darkcolor "#CDD6F4"    # text color (catppuccin-ish, adjust to taste)
+set recolor-lightcolor "#1E1E2E"   # background
+set recolor-keephue true           # preserves colored diagrams/figures
+set recolor-reverse-video true     # keeps images looking normal
+
+set adjust-open width              # "width" is usually better than "best-fit" on wide monitors
+set window-title-basename true     # cleaner window title for Hyprland's bar/switcher
+set window-title-page true         # shows page number in title (useful for waybar window module)
+set statusbar-home-tilde true      # ~/Documents/foo.pdf instead of /home/user/Documents/foo.pdf
+
+set scroll-page-aware true         # stops at page boundaries on half/full page scroll
+set scroll-full-overlap 0.1        # 10% overlap when paging, helps keep your place
+set scroll-step 80                 # default 40 can feel sluggish
+
+set pages-per-row 1
+set first-page-column 1:2          # in dual-page mode, first page stands alone (like a book cover)
+set page-v-padding 2
+set page-h-padding 2
