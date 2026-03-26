@@ -1,4 +1,4 @@
-model: anth
+model: anto
 system_fragments:
   - /home/una/gitdir/skel/PROMPT/DEFAULT_bash.md
 tools:
