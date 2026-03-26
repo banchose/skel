@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
-
 ## Tinfoil Models
 # deepseek-r1-0528
 # kimi-k2-5
 # gpt-oss-120b
 # llama3-3-70b
+
+alias tf_help_zathura='tf -f ~/gitdir/skel/zathura/zathura-help.md'
 
 tin_test_llm() {
   curl -sS https://inference.tinfoil.sh/v1/chat/completions -H "Authorization: Bearer ${TINFOIL_API_KEY}" \
@@ -54,20 +54,11 @@ tinfoil_list_models() {
     -H "Authorization: Bearer ${TINFOIL_API_KEY}"
 }
 
-# tf ()
-# {
-#     local log_file;
-#     log_file="/tmp/tinfoil.$(date '+%s')";
-#     if ! curl -s --connect-timeout 4 http://localhost:8080 > /dev/null 2>&1; then
-#         tinfoil proxy -r tinfoilsh/confidential-model-router -e inference.tinfoil.sh -p 8080 > "${log_file}" 2>&1 & local -i attempts=0;
-#         until curl -s --connect-timeout 1 http://localhost:8080 > /dev/null 2>&1; do
-#             ((++attempts));
-#             if ((attempts >= 10)); then
-#                 printf 'tinfoil proxy did not become ready (log: %s)\n' "${log_file}" 1>&2;
-#                 return 1;
-#             fi;
-#             sleep 0.5;
-#         done;
-#     fi;
-#     command llm "$@" -t tin --ta
-# }
+tf_llm_img() {
+  local prompt="$1"
+  local tmpfile
+  tmpfile=$(mktemp --suffix=.jpg)
+  wl-paste --type image/png | magick png:- -resize '2000x2000>' -quality 85 "$tmpfile"
+  llm -t tin "$prompt" -a "$tmpfile"
+  rm -f "$tmpfile"
+}
