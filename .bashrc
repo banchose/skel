@@ -33,10 +33,10 @@ fi
 # Set the editor and editor alias
 ######################################
 command_exists() {
-  command -v "$1" 1>&2 >/dev/null
+  command -v "$1" >/dev/null 2>&1
 }
 
-if command_exists nvim 1>&2 >/dev/null; then
+if command_exists nvim; then
   export EDITOR=nvim
   alias v='nvim'
 elif command_exists vim; then
@@ -65,9 +65,14 @@ export IGNOREEOF=4
 PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?]\[$(tput setaf 7)\][\v]\$ \[$(tput sgr0)\]"
 
 checkip() {
-  exec 3<>/dev/tcp/checkip.amazonaws.com/80
-  printf "GET / HTTP/1.1\r\nHost: checkip.amazonaws.com\r\nConnection: close\r\n\r\n" >&3
-  tail -n1 <&3
+  local fd
+  exec {fd}<>/dev/tcp/checkip.amazonaws.com/80 || {
+    echo >&2 "checkip: connect failed"
+    return 1
+  }
+  printf "GET / HTTP/1.1\r\nHost: checkip.amazonaws.com\r\nConnection: close\r\n\r\n" >&"${fd}"
+  tail -n1 <&"${fd}"
+  exec {fd}>&-
 }
 
 PROMPT_DIRTRIM=10
@@ -84,13 +89,13 @@ shopt -s dirspell 2>/dev/null
 shopt -s cdspell 2>/dev/null
 shopt -s cdable_vars
 shopt -s lithist
-export HISTSIZE=50000
-export HISTFILESIZE=10000
-export HISTCONTROL="ignorespace:erasedups"
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
-export HISTTIMEFORMAT='%F %T '
+HISTSIZE=50000
+HISTFILESIZE=50000
+HISTCONTROL="ignorespace:erasedups"
+HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+HISTTIMEFORMAT='%F %T '
 
-CDPATH=".:~:"
+CDPATH=".:~"
 
 alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,pidns,utsns,ipcns,mntns,netns,cmd'
 alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
@@ -151,7 +156,6 @@ alias jbw='journalctl -p "emerg..warning" -b'
 alias jbn='journalctl -p "emerg..notice" -b'
 alias jlb='journalctl --list-boots'
 # A load average of multi cpu system
-alias loada='cat /proc/loadavg | cut -c 1-4 | echo "scale=2; ($(</dev/stdin)/`nproc`)*100" | bc -l'
 alias cpuinfo='lscpu'
 alias xlsblk='lsblk -o name,mountpoint,fstype,size,fsused,pttype,model,vendor,serial,uuid,partuuid'
 
