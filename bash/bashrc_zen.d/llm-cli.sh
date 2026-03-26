@@ -348,206 +348,6 @@ llm_test_bedrock() {
 
 }
 
-llm_help() {
-
-  cat <<'EOF'
-llm prompt --help    # Help on the flags
-alias brs='llm -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
---td, --tool-debug
---ta, --tool-approve
--u, --usage
--T, --tool
--sf, --system-fragment
--f, --fragment
--t, --template
---key
---save TEMPLATE
---extract-last # fenced code
-llm keys list
-llm keys path
-llm keys get
-llm keys set
-llm logs status
-llm logs          #  find conversation IDs
-llm --cid <id>
-llm logs list
-llm logs on
-llm logs off
-llm logs -c --json --expand
-llm models options
-llm models list
-llm models default # show the default model
-llm models default MODEL # to set default model
-llm chat -f my_doc.txt
-llm -c # to continue chat
-llm -f https://llm.datasette.io/robots.txt 'explain this'
-llm -f cli.py 'a short snappy poem inspired by this code'
-llm -f cli.py --sf explain_code.txt     # system prompt
-llm -f github:https://github.com/banchose/skel/blob/main/awk/awk.md "can you see this little awk snippet?"
-llm -t fabric:summarize -f https://...
-llm -f pdf:some.pdf
-### Fragments
-llm fragments
-llm fragments loaders         # github:
-llm fragments -q pytest -q asyncio
-llm fragments remove cli
-llm -f fragment:
-### FABRIC
-llm -f fabric:expain_code
-llm -f fabric:extract_wisdom
-llm -f fabric:summarize
-llm -f fabric:review_code
-llm -f fabric:improve_writing
-llm -f fabric:extract_main_idea
-llm -f fabric:create_mermaid_visualization
-llm -f fabric:analyze_logs
-llm -f fabric:summarize_git_diff
-### Test (simple eval)
-llm -T simple_eval "12345 * 12345" --td  # --td tool-debug
-llm prompt --help
-### Append Images
-cat image.jpg | llm "describe this image" -a -
-cat myfile | llm "describe this image" --at - image/jpeg # --attachment-type
-cat myfile | llm "describe this image" --at - image/png # --attachment-type
-  --- custom functions --- 
-llmbed <prompt>                   # prompt via Bedrock with date context
-### jq
-cat data.json | llm jq "Just the first and last names"
-### AWS
-aws sso login --region us-east-1 --profile test # test has bedrock
-aws bedrock list-inference-profiles --region us-east-1 --profile test | grep us[.]anthropic 
-### IMPORTANT
-===> llm_set_bedrock_model        # set llm default model to AWS_BEDROCK_DEFAULT_MODEL
-===> llm_set_openrouter_key       # load OPENROUTER_API_KEY into llm keys
-===> llm_set_anthropic_key        # load ANTHROPIC_API_KEY into llm keys
-===> llm_set_exa_key              # load EXA_API_KEY into llm keys
-
-### TEMPLATES
-#### CREATE SYMLINKS to git repo templates
-#### cd ~/.config/io.datasette.llm/templates/ && for i in ~/gitdir/skel/llm/TEMPLATES/*;do echo "${i}";ln -s "${i}";done
-llm --system 'Summarize this' --model brs --save summarize
-curl -s https://example.com/ | llm -t summarize
-
-### SCHEMA
-llm --schema 'name, age int, one_sentence_bio' 'invent a cool dog'
-llm --schema-multi 'name, age int, one_sentence_bio' 'invent 3 really cool dogs'
-llm logs --schema-multi 'name, age int, one_sentence_bio' --data
-llm logs --schema-multi 'name, ten_word_bio' --data-key items
-llm logs --schema-multi 'name, ten_word_bio' --data-key items --data-array
-llm logs --schema-multi 'name, ten_word_bio' --data-key items --data-ids
-
-### TEST/TROUBLEHSOOT
-
-llm_test_bedrock                  # run diagnostics + test prompt via Bedrock
-llm_status                        # Orienting what model and what keys are set 
-nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh     # llmedit alias
-
-
-### llm-docs
-
-llm install llm-docs
-llm -f docs: "question"
-llm -f docs:sqlite-utils "question"
-
-### Odd Ball
-
-# it will inspect the table for schema so no doc needed
-llm chat -t brh -T 'SQLite("/home/una/temp/OPENBKDIR/webui.db")'
----------------
-
-**The model name (-m,--model) drives the keys used**
-
-llm -> ~/.config/io.datasette.llm/extra-openai-models.yaml 
-  model_id: brs
-  api_base: "http://localhost:4000" #litellm
-litellm 
-  litellm.conf
-    profile or api_key
-
-## Common issues
-
-"Error: Error code: 400 - {'error': {'message': 'No connected db.', 'type': 'no_db_connection', 'param': None, 'code': '400'}}"
-echo $LITELLM_MASTER_KEY
-look in ~/.config/io.datasette.llm/extra-openai-models.yaml
-It is set somewhere
-
-  ## Fragments (not rag just one copy multi use)
-
-command llm -f setup.py "extract metadata"
-command llm fragments
-### alias
-command llm fragments set mydocs ./docs.md
-command llm -f mydocs "How do I access metadata?"
-command llm fragments --aliases
-### github
-command llm -f github:simonw/s3-credenttials
-
-### embedding documents
-llm install llm-tools-rag
-llm embed-models
-llm embed-models default mpnet
-llm collections list
-# Create a tinfoil collection example
-llme_test_embed() {
-  # you embed a collection and you  can use it again works well
-  (
-    local docdir=~/temp/tinfoil-docs
-
-    cd "${docdir}" # && llm collections delete tinfoil
-
-    # llm embed-multi tinfoil -m mini-l12 --files ./ '*.md' --store
-    llm embed-multi tinfoil -m mpnet --files ./ '*.md' --store
-  )
-}
-
-## Model aliases
-llm aliases
-#
-## Picture
-#
-cat image.jpg | llm "describe this image" -a -
-llm "extract text" -a image1.jpg -a image2.jpg
-llm "describe this image" -a https://static.simonwillison.net/static/2024/pelicans.jpg
-cat myfile | llm "describe this image" --at - image/jpeg
-###########
-# PIPEING
-###########
-cat image.jpg | llm "describe this image" -a -
-cat myfile | llm "describe this image" --at - image/jpeg
-git diff | llm -s 'Describe these changes'
-cat llm/utils.py | llm -t pytest
-####
-####
-name:
-model:
-system:
-options:
-  temperature: 1.8
-functions: |
-  def reverse_string(s: str):
-      return s[::-1]
-
-  def greet(name: str):
-      return f"Hello, {name}!"
-fragments:
-- https://example.com/robots.txt
-- /path/to/file.txt
-- 993fd38d898d2b59fd2d16c811da5bdac658faa34f0f4d411edde7c17ebb0680
-system_fragments:
-- https://example.com/systm-prompt.txt
-tools:
-- llm_version
-- llm_time
-- simple_eval
-- web_search
-schema_object:
-### TEMPLATE VARIABLES
-llm -t recipe -p ingredients 'sausages, milk' -p country Germany # $country in the template
-## IMAGE worked
-wl-paste | llm -t tin "can you see this"  --at - image/jpeg
-EOF
-}
-
 # Use a function instead of alias to capture date once
 llmbed() {
   local current_date
@@ -753,4 +553,208 @@ llme_test_embed_example() {
     # llm embed-multi tinfoil -m mini-l12 --files ./ '*.md' --store
     llm embed-multi tinfoil -m mpnet --files ./ '*.md' --store
   )
+}
+
+llm_help() {
+
+  cat <<'EOF'
+llm prompt --help    # Help on the flags
+alias brs='llm -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
+--td, --tool-debug
+--ta, --tool-approve
+-u, --usage
+-T, --tool
+-sf, --system-fragment
+-f, --fragment
+-t, --template
+--key
+--save TEMPLATE
+--extract-last # fenced code
+llm keys list
+llm keys path
+llm keys get
+llm keys set
+llm logs status
+llm logs          #  find conversation IDs
+llm --cid <id>
+llm logs list
+llm logs on
+llm logs off
+llm logs -c --json --expand
+llm models options
+llm models list
+llm models default # show the default model
+llm models default MODEL # to set default model
+llm chat -f my_doc.txt
+llm -c # to continue chat
+llm -f https://llm.datasette.io/robots.txt 'explain this'
+llm -f cli.py 'a short snappy poem inspired by this code'
+llm -f cli.py --sf explain_code.txt     # system prompt
+llm -f github:https://github.com/banchose/skel/blob/main/awk/awk.md "can you see this little awk snippet?"
+llm -t fabric:summarize -f https://...
+llm -f pdf:some.pdf
+### Fragments
+llm fragments
+llm fragments loaders         # github:
+llm fragments -q pytest -q asyncio
+llm fragments remove cli
+llm -f fragment:
+### FABRIC
+llm -f fabric:expain_code
+llm -f fabric:extract_wisdom
+llm -f fabric:summarize
+llm -f fabric:review_code
+llm -f fabric:improve_writing
+llm -f fabric:extract_main_idea
+llm -f fabric:create_mermaid_visualization
+llm -f fabric:analyze_logs
+llm -f fabric:summarize_git_diff
+### Test (simple eval)
+llm -T simple_eval "12345 * 12345" --td  # --td tool-debug
+llm prompt --help
+### Append Images
+cat image.jpg | llm "describe this image" -a -
+cat myfile | llm "describe this image" --at - image/jpeg # --attachment-type
+cat myfile | llm "describe this image" --at - image/png # --attachment-type
+  --- custom functions --- 
+llmbed <prompt>                   # prompt via Bedrock with date context
+### jq
+cat data.json | llm jq "Just the first and last names"
+### AWS
+aws sso login --region us-east-1 --profile test # test has bedrock
+aws bedrock list-inference-profiles --region us-east-1 --profile test | grep us[.]anthropic 
+### IMPORTANT
+===> llm_set_bedrock_model        # set llm default model to AWS_BEDROCK_DEFAULT_MODEL
+===> llm_set_openrouter_key       # load OPENROUTER_API_KEY into llm keys
+===> llm_set_anthropic_key        # load ANTHROPIC_API_KEY into llm keys
+===> llm_set_exa_key              # load EXA_API_KEY into llm keys
+
+### TEMPLATES
+#### CREATE SYMLINKS to git repo templates
+#### cd ~/.config/io.datasette.llm/templates/ && for i in ~/gitdir/skel/llm/TEMPLATES/*;do echo "${i}";ln -s "${i}";done
+llm --system 'Summarize this' --model brs --save summarize
+curl -s https://example.com/ | llm -t summarize
+
+### SCHEMA
+llm --schema 'name, age int, one_sentence_bio' 'invent a cool dog'
+llm --schema-multi 'name, age int, one_sentence_bio' 'invent 3 really cool dogs'
+llm logs --schema-multi 'name, age int, one_sentence_bio' --data
+llm logs --schema-multi 'name, ten_word_bio' --data-key items
+llm logs --schema-multi 'name, ten_word_bio' --data-key items --data-array
+llm logs --schema-multi 'name, ten_word_bio' --data-key items --data-ids
+
+### TEST/TROUBLEHSOOT
+
+llm_test_bedrock                  # run diagnostics + test prompt via Bedrock
+llm_status                        # Orienting what model and what keys are set 
+nvim ~/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh     # llmedit alias
+
+
+### llm-docs
+
+llm install llm-docs
+llm -f docs: "question"
+llm -f docs:sqlite-utils "question"
+
+### Odd Ball
+
+# it will inspect the table for schema so no doc needed
+llm chat -t brh -T 'SQLite("/home/una/temp/OPENBKDIR/webui.db")'
+---------------
+
+**The model name (-m,--model) drives the keys used**
+
+llm -> ~/.config/io.datasette.llm/extra-openai-models.yaml 
+  model_id: brs
+  api_base: "http://localhost:4000" #litellm
+litellm 
+  litellm.conf
+    profile or api_key
+
+## Common issues
+
+"Error: Error code: 400 - {'error': {'message': 'No connected db.', 'type': 'no_db_connection', 'param': None, 'code': '400'}}"
+echo $LITELLM_MASTER_KEY
+look in ~/.config/io.datasette.llm/extra-openai-models.yaml
+It is set somewhere
+
+  ## Fragments (not rag just one copy multi use)
+
+command llm -f setup.py "extract metadata"
+command llm fragments
+### alias
+command llm fragments set mydocs ./docs.md
+command llm -f mydocs "How do I access metadata?"
+command llm fragments --aliases
+### github
+command llm -f github:simonw/s3-credenttials
+
+### embedding documents
+llm install llm-tools-rag
+llm embed-models
+llm embed-models default mpnet
+llm collections list
+# Create a tinfoil collection example
+llme_test_embed() {
+  # you embed a collection and you  can use it again works well
+  (
+    local docdir=~/temp/tinfoil-docs
+
+    cd "${docdir}" # && llm collections delete tinfoil
+
+    # llm embed-multi tinfoil -m mini-l12 --files ./ '*.md' --store
+    llm embed-multi tinfoil -m mpnet --files ./ '*.md' --store
+  )
+}
+
+## Model aliases
+llm aliases
+#
+## Picture
+#
+cat image.jpg | llm "describe this image" -a -
+llm "extract text" -a image1.jpg -a image2.jpg
+llm "describe this image" -a https://static.simonwillison.net/static/2024/pelicans.jpg
+cat myfile | llm "describe this image" --at - image/jpeg
+###########
+# PIPEING
+###########
+cat image.jpg | llm "describe this image" -a -
+cat myfile | llm "describe this image" --at - image/jpeg
+git diff | llm -s 'Describe these changes'
+cat llm/utils.py | llm -t pytest
+####
+####
+name:
+model:
+system:
+options:
+  temperature: 1.8
+functions: |
+  def reverse_string(s: str):
+      return s[::-1]
+
+  def greet(name: str):
+      return f"Hello, {name}!"
+fragments:
+- https://example.com/robots.txt
+- /path/to/file.txt
+- 993fd38d898d2b59fd2d16c811da5bdac658faa34f0f4d411edde7c17ebb0680
+system_fragments:
+- https://example.com/systm-prompt.txt
+tools:
+- llm_version
+- llm_time
+- simple_eval
+- web_search
+schema_object:
+### TEMPLATE VARIABLES
+llm -t recipe -p ingredients 'sausages, milk' -p country Germany # $country in the template
+## IMAGE worked
+wl-paste | llm -t tin "can you see this"  --at - image/jpeg
+### find a conversation:
+llm logs -q "keyword" | grep conversation:    # get candidate IDs
+llm logs --cid <ID> | head -5                  # peek at each one
+llm chat --cid <ID>                            # resume the right one
+EOF
 }
