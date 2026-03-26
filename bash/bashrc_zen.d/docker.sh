@@ -63,7 +63,7 @@ if type docker &>/dev/null; then
   function dconnet() {
 
     docker ps --format '{{.Names}}' | while read -r container; do
-      networks=$(docker inspect $container --format '{{range $k, $v := .NetworkSettings.Networks}}{{$k}} {{end}}')
+      networks=$(docker inspect "${container}" --format '{{range $k, $v := .NetworkSettings.Networks}}{{$k}} {{end}}')
       echo "$container: $networks"
     done | column -t -s ':'
 
@@ -72,7 +72,7 @@ if type docker &>/dev/null; then
   function dpip() {
 
     docker ps --format '{{.Names}}' | while read -r container; do
-      networks=$(docker inspect $container --format '{{range $k, $v := .NetworkSettings.Networks}}{{$k}}:{{.IPAddress}} {{end}}')
+      networks=$(docker inspect "${container}" --format '{{range $k, $v := .NetworkSettings.Networks}}{{$k}}:{{.IPAddress}} {{end}}')
       printf "%-40s %s\n" "$container" "$networks"
     done
 
@@ -86,9 +86,10 @@ if type docker &>/dev/null; then
   }
 
   function dclear() {
-    cons="$(docker ps -q)"
-    [[ -z $cons ]] || docker stop $cons
-    dkill # defined here
+    local -a cons
+    readarray -t cons < <(docker ps -q)
+    ((${#cons[@]})) && docker stop "${cons[@]}"
+    dkill
     docker container prune -f
     docker volume prune -f
   }
@@ -108,13 +109,12 @@ if type docker &>/dev/null; then
   }
 
   function dockerpurge() {
-
-    contains=$(docker ps -aq)
-    [[ -z $contains ]] || docker rm -f $contains
-    docker system prune -f -a # Boom
+    local -a contains
+    readarray -t contains < <(docker ps -aq)
+    ((${#contains[@]})) && docker rm -f "${contains[@]}"
+    docker system prune -f -a
     docker volume prune -f
     docker network prune -f
-
   }
 
   function dockupdate() {

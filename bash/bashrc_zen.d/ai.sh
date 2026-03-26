@@ -228,12 +228,9 @@ ailsma() {
   fi
 
   local response
-  response=$(curl -s "https://api.anthropic.com/v1/models" \
+  if ! response=$(curl -s "https://api.anthropic.com/v1/models" \
     --header "x-api-key: ${ANTHROPIC_API_KEY}" \
-    --header "anthropic-version: 2023-06-01")
-
-  # Check if curl command succeeded
-  if [[ $? -ne 0 ]]; then
+    --header "anthropic-version: 2023-06-01"); then # Check if curl command succeeded
     echo "Error: Failed to connect to Anthropic API." >&2
     return 2
   fi
@@ -329,7 +326,7 @@ qa() {
     '
 
   # Optionally capture and return the exit status of jq (or curl if tee isn't used)
-  return "${PIPESTATUS[${#PIPESTATUS[@]} - 1]}"
+  return "${PIPESTATUS[${#PIPESTATUS[@]}-1]}"
 }
 
 ailsmo() {

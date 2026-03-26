@@ -7,7 +7,7 @@ function xfg() {
     return 1
   }
 
-  find . -path './gitdir' -prune -o -name "$fileName" -print
+  find . -path './gitdir' -prune -o -name "$1" -print
 
 }
 

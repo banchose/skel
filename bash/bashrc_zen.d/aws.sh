@@ -31,13 +31,16 @@ fi
 
 
 # alias awbedck="aws logs filter-log-events   --log-group-name /aws/bedrock/model-invocations   --start-time $(($(date +%s) - 3600))000   --region us-east-1   --profile test   --query 'events[].message'   --output json | jq -r '.[] | fromjson | .modelId' | sort | uniq -c"
-alias awbedck="aws logs filter-log-events \
-  --log-group-name /aws/bedrock/model-invocations \
-  --start-time $(($(date +%s) - 3600))000 \
-  --region us-east-1 \
-  --profile test \
-  --query 'events[].message' \
-  --output json | jq -r '.[] | fromjson | .modelId' | sort | uniq -c"
+
+aws_check_bedrock_events() {
+  aws logs filter-log-events \
+    --log-group-name /aws/bedrock/model-invocations \
+    --start-time "$(( $(date +%s) - 3600 ))000" \
+    --region us-east-1 \
+    --profile test \
+    --query 'events[].message' \
+    --output json | jq -r '.[] | fromjson | .modelId' | sort | uniq -c
+}
 
 
 alias awcd='cd ~/gitdir/aws'
@@ -57,7 +60,6 @@ alias awlct="aws configure sso  --region ${AwsRegion:-us-east-1} --profile test"
 alias awlcn="aws configure sso  --region $AwsRegion --profile net"
 alias awlcd="aws configure sso  --region $AwsRegion --profile dev"
 alias awlcp="aws configure sso  --region $AwsRegion --profile production"
-alias awlcp="aws configure sso  --region $AwsRegion --profile man"
 
 alias awlt="aws sso login --region ${AwsRegion:-us-east-1} --profile test --no-browser --use-device-code"
 alias awltc="aws configure sso --region $AwsRegion --profile test --no-browser --use-device-code"
