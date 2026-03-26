@@ -162,6 +162,8 @@ if command -v llm &>/dev/null; then
   pipx inject llm llm-fragments-pdf --pip-args="--upgrade"
   pipx inject llm llm-fragments-site-text --pip-args="--upgrade"
   pipx inject llm llm-cmd-comp --pip-args="--upgrade"
+  pipx inject llm kubernetes --pip-args="--upgrade"
+  pipx inject llm python-dateutil --pip-args="--upgrade"
   pipx inject llm llm-cmd --pip-args="--upgrade"
   pipx inject llm llm-python --pip-args="--upgrade" --force
   pipx inject llm llm-jq --pip-args="--upgrade" --force
@@ -191,6 +193,8 @@ if command -v ipython &>/dev/null; then
     psutils \
     howdoi \
     pydantic \
+    kubernetes \
+    dateutil \
     cryptography \
     black \
     pendulum \

@@ -1,0 +1,57 @@
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - "8081:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - frontend
+      - backend
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:80"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  api:
+    image: python:3.11-slim
+    command:
+      - python3
+      - -c
+      - |
+        from http.server import HTTPServer, BaseHTTPRequestHandler
+        import json
+
+        class H(BaseHTTPRequestHandler):
+            def do_GET(self):
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(json.dumps({"status": "ok"}).encode())
+            def log_message(self, *a):
+                pass
+
+        HTTPServer(("0.0.0.0", 5000), H).serve_forever()
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  redis:
+    image: redis:alpine
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+networks:
+  frontend:
+  backend:

@@ -1,0 +1,215 @@
+model: tinfoil-kimi-k2-5
+name: Docker-monitor
+system: |
+  You are a Docker infrastructure assistant monitoring a dedicated Docker Compose host called "star".
+  Star runs multiple compose projects behind Traefik as a reverse proxy on the traefik_web network.
+  Known compose projects: openwebui, traefik, and several standalone containers.
+  Domain pattern: *.xaax.dev with TLS terminated at Traefik.
+  mcpo containers are internal-only (no published ports, no Traefik labels).
+  
+  When reporting container status:
+    - List containers grouped by their compose project
+    - Note health status for each container
+    - Flag any containers that are unhealthy, restarting, or exited
+    - Note uptime for each container
+  When investigating issues:
+    - Check network connectivity between containers when services can't reach dependencies
+    - Cross-reference healthcheck status with recent logs
+    - Note if containers share expected networks (especially traefik_web)
+  Be concise and structured. Use tables where appropriate.
+
+functions: |
+  import docker
+
+  def list_containers() -> list[dict]:
+      """List all running containers with name, status, image, and health."""
+      client = docker.from_env()
+      containers = client.containers.list(all=True)
+      return [
+          {
+              "name": c.name,
+              "status": c.status,
+              "health": c.attrs["State"].get("Health", {}).get("Status", "no healthcheck"),
+              "image": c.attrs["Config"]["Image"],
+              "project": c.labels.get("com.docker.compose.project", "standalone"),
+              "service": c.labels.get("com.docker.compose.service", c.name),
+              "uptime": c.attrs["State"]["StartedAt"],
+          }
+          for c in containers
+      ]
+
+  def get_container_logs(container_name: str, tail: int = 50) -> str:
+      """Get recent log lines from a specific container."""
+      client = docker.from_env()
+      container = client.containers.get(container_name)
+      return container.logs(tail=tail).decode("utf-8", errors="replace")
+
+  def inspect_container(container_name: str) -> dict:
+      """Get detailed inspection of a container: restart count, env vars (keys only),
+      mounts, ports, networks, labels, and healthcheck config."""
+      client = docker.from_env()
+      c = client.containers.get(container_name)
+      attrs = c.attrs
+      state = attrs["State"]
+      config = attrs["Config"]
+      host_config = attrs["HostConfig"]
+      network_settings = attrs["NetworkSettings"]
+
+      # Extract env var keys only (no values — could contain secrets)
+      env_keys = [e.split("=", 1)[0] for e in config.get("Env", [])]
+
+      # Healthcheck config if present
+      hc = config.get("Healthcheck", {})
+      healthcheck_info = {
+          "test": hc.get("Test"),
+          "interval_ns": hc.get("Interval"),
+          "timeout_ns": hc.get("Timeout"),
+          "retries": hc.get("Retries"),
+          "start_period_ns": hc.get("StartPeriod"),
+      } if hc else None
+
+      # Recent healthcheck log (last 3 results)
+      health_log = []
+      health_state = state.get("Health", {})
+      for entry in health_state.get("Log", [])[-3:]:
+          health_log.append({
+              "start": entry.get("Start"),
+              "end": entry.get("End"),
+              "exit_code": entry.get("ExitCode"),
+              "output": entry.get("Output", "")[:500],
+          })
+
+      return {
+          "name": c.name,
+          "image": config["Image"],
+          "status": state["Status"],
+          "running": state["Running"],
+          "started_at": state["StartedAt"],
+          "finished_at": state["FinishedAt"],
+          "restart_count": attrs.get("RestartCount", 0),
+          "restart_policy": host_config.get("RestartPolicy", {}),
+          "env_keys": env_keys,
+          "mounts": [
+              {"source": m.get("Source"), "destination": m.get("Destination"), "mode": m.get("Mode")}
+              for m in attrs.get("Mounts", [])
+          ],
+          "ports": network_settings.get("Ports", {}),
+          "networks": {
+              net_name: {
+                  "ip": net.get("IPAddress"),
+                  "dns_names": net.get("DNSNames", []),
+              }
+              for net_name, net in network_settings.get("Networks", {}).items()
+          },
+          "labels": {k: v for k, v in config.get("Labels", {}).items()
+                     if k.startswith("traefik.") or k.startswith("com.docker.compose.")},
+          "healthcheck_config": healthcheck_info,
+          "healthcheck_log": health_log,
+      }
+
+  def list_networks() -> list[dict]:
+      """List all Docker networks with connected containers."""
+      client = docker.from_env()
+      networks = client.networks.list()
+      result = []
+      for net in networks:
+          net.reload()
+          result.append({
+              "name": net.name,
+              "driver": net.attrs.get("Driver"),
+              "scope": net.attrs.get("Scope"),
+              "containers": [
+                  {"name": c_attrs.get("Name"), "ip": c_attrs.get("IPv4Address")}
+                  for c_attrs in net.attrs.get("Containers", {}).values()
+              ],
+          })
+      return result
+
+  def get_compose_config(project_name: str) -> list[dict]:
+      """Get all containers belonging to a compose project with their service names and status."""
+      client = docker.from_env()
+      containers = client.containers.list(
+          all=True,
+          filters={"label": f"com.docker.compose.project={project_name}"}
+      )
+      return [
+          {
+              "name": c.name,
+              "service": c.labels.get("com.docker.compose.service"),
+              "status": c.status,
+              "health": c.attrs["State"].get("Health", {}).get("Status", "no healthcheck"),
+              "image": c.attrs["Config"]["Image"],
+              "networks": list(c.attrs["NetworkSettings"]["Networks"].keys()),
+          }
+          for c in containers
+      ]
+
+  def docker_disk_usage() -> dict:
+      """Get summarized disk usage for Docker: images, containers, volumes, build cache."""
+      client = docker.from_env()
+      df = client.df()
+      def sum_size(items, size_key="Size"):
+          return round(sum(i.get(size_key, 0) for i in items) / (1024**3), 2)
+      return {
+          "images": {
+              "count": len(df.get("Images", [])),
+              "total_gb": sum_size(df.get("Images", [])),
+          },
+          "containers": {
+              "count": len(df.get("Containers", [])),
+              "total_gb": sum_size(df.get("Containers", []), "SizeRw"),
+          },
+          "volumes": {
+              "count": len(df.get("Volumes", [])),
+              "total_gb": round(
+                  sum(v.get("UsageData", {}).get("Size", 0)
+                      for v in df.get("Volumes", [])) / (1024**3), 2
+              ),
+          },
+          "build_cache_gb": sum_size(df.get("BuildCache", [])),
+      }
+
+
+  def docker_events_recent(minutes: int = 10) -> list[dict]:
+      """Get Docker events from the last N minutes. Useful for spotting restarts,
+      OOM kills, network disconnects, and other recent activity."""
+      import time
+      client = docker.from_env(timeout=30)
+      now = int(time.time())
+      since = now - (minutes * 60)
+      events = client.events(since=since, until=now, decode=True)
+      result = []
+      for event in events:
+          result.append({
+              "time": event.get("time"),
+              "type": event.get("Type"),
+              "action": event.get("Action"),
+              "actor": event.get("Actor", {}).get("Attributes", {}).get("name", ""),
+              "image": event.get("Actor", {}).get("Attributes", {}).get("image", ""),
+          })
+          if len(result) >= 100:
+              break
+      return result
+
+  def find_container(name: str) -> list[str]:
+      """Find containers matching a name substring or compose service name.
+      Useful for resolving short names like 'api' to full names like 'dummy_env-api-1'."""
+      client = docker.from_env()
+      return [c.name for c in client.containers.list(all=True)
+              if name.lower() in c.name.lower()
+              or name.lower() == c.labels.get("com.docker.compose.service", "").lower()]
+
+  def docker_system_info() -> dict:
+      """Get system-level info about the Docker daemon."""
+      client = docker.from_env()
+      info = client.info()
+      return {
+          "containers_running": info["ContainersRunning"],
+          "containers_stopped": info["ContainersStopped"],
+          "images": info["Images"],
+          "server_version": info["ServerVersion"],
+          "os": info["OperatingSystem"],
+          "memory_gb": round(info["MemTotal"] / (1024**3), 1),
+          "cpus": info["NCPU"],
+          "name": info["Name"],
+      }
