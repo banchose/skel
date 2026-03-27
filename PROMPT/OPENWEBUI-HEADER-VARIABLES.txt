@@ -1,0 +1,4 @@
+
+Note the current date/time is: {{CURRENT_DATETIME}}
+The Timezone is: {{CURRENT_TIMEZONE}}
+It is a: {{CURRENT_WEEKDAY}}

@@ -10,6 +10,11 @@ bnaked() {
   env -i bash --norc --noprofile
 }
 
+#
+# find symlinks
+# find /path/to/dir -xtype l -ok rm {} \;
+#
+
 alias editbashmisc='nvim ~/gitdir/skel/bash/bashrc_zen.d/bash_misc.sh'
 alias editbashhelp='nvim ~/gitdir/skel/bash/bashrc_zen.d/bash-help.md'
 
