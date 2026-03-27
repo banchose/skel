@@ -132,6 +132,9 @@ RUN apt update && apt install -y \
   python3-boto3 \
   python3-arrow  \
   python3-cryptography \
+  python3-html2text \
+  python3-kubernetes \
+  python3-dateutil \
   python3-loguru \
   python3-icecream \
   python3-scipy \
@@ -341,6 +344,8 @@ RUN pipx inject ipython \
   psutils \
   howdoi \
   cryptography \
+  html2text \
+  kubernetes \
   black \
   pendulum \
   loguru \
@@ -360,6 +365,7 @@ RUN pipx inject ipython \
   'litellm[proxy]'
 # --pip-args="--upgrade" \
 # --include-deps
+
 
 # llm
 RUN python3 -m pipx install llm \
@@ -404,31 +410,32 @@ RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linu
 RUN mkdir -p ${USER_HOME}/.config/nvim
 
 RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
+########################## nvim initialization OG
+# RUN nvim --headless \
+#   "+Lazy! sync" \
+#   "+sleep 30" \
+#   "+Lazy! update" \
+#   "+sleep 30" \
+#   "+Lazy! sync" \
+#   "+sleep 5" \
+#   "+TSUpdate" \
+#   "+sleep 10" \
+#   +qa
+# 
+# RUN timeout 180 nvim --headless \
+#   -c 'lua require("lazy").setup()' \
+#   -c 'lua require("mason").setup()' \
+#   -c 'lua require("mason-lspconfig").setup()' \
+#   -c 'LspInstall lua_ls' \
+#   -c 'sleep 10' \
+#   -c qall || true # After lazy.nvim sync and LSP installs
+# 
+# RUN timeout 60 nvim --headless \
+#   -c 'normal :' \
+#   -c 'sleep 5' \
+#   -c qall || true
+################################################
 
-RUN nvim --headless \
-  "+Lazy! sync" \
-  "+sleep 30" \
-  "+Lazy! update" \
-  "+sleep 30" \
-  "+Lazy! sync" \
-  "+sleep 5" \
-  "+TSUpdate" \
-  "+sleep 10" \
-  +qa
-
-RUN timeout 180 nvim --headless \
-  -c 'lua require("lazy").setup()' \
-  -c 'lua require("mason").setup()' \
-  -c 'lua require("mason-lspconfig").setup()' \
-  -c 'LspInstall lua_ls' \
-  -c 'sleep 10' \
-  -c qall || true # After lazy.nvim sync and LSP installs
-
-RUN timeout 60 nvim --headless \
-  -c 'normal :' \
-  -c 'sleep 5' \
-  -c qall || true
-######
 WORKDIR ${USER_HOME}/gitdir
 RUN git clone --depth=1 https://github.com/banchose/skel
 
@@ -494,7 +501,7 @@ RUN chmod 755 ${USER_HOME}/.claude/anthropic_keys.sh
 RUN ls -la ${USER_HOME}/.claude/anthropic_keys.sh
 RUN cat ${USER_HOME}/.claude/anthropic_keys.sh
 
-RUN llm models default anthropic/claude-sonnet-4-5
+RUN llm models default anthropic/claude-sonnet-4-6
 
 RUN npm install neovim
 
@@ -512,6 +519,34 @@ RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/aws.sh && \
  
 
 WORKDIR ${USER_HOME}
+
+RUN llm install llm-docs
+RUN llm install llm-sentence-transformers
+RUN llm sentence-transformers register all-mpnet-base-v2 --alias mpnet
+RUN llm install llm-tools-rag
+
+# Ensure lockfile commits match what's on disk
+RUN nvim --headless \
+  -c 'lua require("lazy").sync({ wait = true })' \
+  -c 'sleep 30' \
+  -c 'lua require("lazy").sync({ wait = true })' \
+  -c 'sleep 15' \
+  -c 'qall' || true
+
+
+RUN timeout 180 nvim --headless \
+  -c 'lua require("lazy").setup()' \
+  -c 'lua require("mason").setup()' \
+  -c 'lua require("mason-lspconfig").setup()' \
+  -c 'LspInstall lua_ls' \
+  -c 'sleep 10' \
+  -c qall || true # After lazy.nvim sync and LSP installs
+
+# Force blink.cmp to run its build step
+RUN nvim --headless \
+  -c 'lua require("lazy").build({ plugins = {"blink.cmp"}, wait = true })' \
+  -c 'sleep 15' \
+  -c 'qall' || true
 
 # Create gitdir with proper ownership BEFORE switching users
 # ENTRYPOINT ["/bin/sleep"]
