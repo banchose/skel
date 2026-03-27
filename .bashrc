@@ -91,7 +91,7 @@ shopt -s cdable_vars
 shopt -s lithist
 HISTSIZE=50000
 HISTFILESIZE=50000
-HISTCONTROL="ignorespace:erasedups"
+HISTCONTROL="ignorespace:ignoredups"
 HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 HISTTIMEFORMAT='%F %T '
 

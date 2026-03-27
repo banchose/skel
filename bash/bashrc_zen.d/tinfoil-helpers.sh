@@ -7,6 +7,8 @@
 # tf is just a alias to llm and this is not llm centric
 # command -v tf &>/dev/null || return 0
 
+# Was: curl -fsSL https://github.com/tinfoilsh/tinfoil-cli/raw/main/install.sh | sh
+
 alias tf_help_zathura='tf -f ~/gitdir/skel/zathura/zathura-help.md'
 
 tin_test_llm() {
