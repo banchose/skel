@@ -1,6 +1,6 @@
-model: brs
+model: ants
 system_fragments:
-  - /home/una/gitdir/aws/PROMPT/DEFAULT_hriaws.md
+  - /home/una/gitdir/skel/PROMPT/DEFAULT_bash.md
 tools:
   - llm_version
   - llm_time

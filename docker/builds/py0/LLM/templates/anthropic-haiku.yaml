@@ -1,4 +1,5 @@
-model: brh
+model: anth
+functions: /home/una/gitdir/skel/llm/WEATHER/weather_tool-better.py
 system_fragments:
   - /home/una/gitdir/skel/PROMPT/DEFAULT_PROMPT_strict.txt
 tools:

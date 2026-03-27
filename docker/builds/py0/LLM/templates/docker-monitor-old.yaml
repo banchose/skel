@@ -1,0 +1,56 @@
+model: tinfoil-kimi-k2-5
+name: Docker-monitor
+system: |
+  You are a Docker infrastructure assistant monitoring a dedicated Docker Compose host called "star".
+  Star runs multiple compose projects behind Traefik as a reverse proxy.
+  When reporting container status:
+    - List containers grouped by their compose project
+    - Note health status for each container
+    - Flag any containers that are unhealthy, restarting, or exited
+    - Note uptime for each container
+  Be concise and structured. Use tables where appropriate.
+functions: |
+  import docker
+
+  def list_containers() -> list[dict]:
+      """List all running containers with name, status, image, and health."""
+      client = docker.from_env()
+      containers = client.containers.list(all=True)
+      return [
+          {
+              "name": c.name,
+              "status": c.status,
+              "health": c.attrs["State"].get("Health", {}).get("Status", "no healthcheck"),
+              "image": c.attrs["Config"]["Image"],
+              "project": c.labels.get("com.docker.compose.project", "standalone"),
+              "service": c.labels.get("com.docker.compose.service", c.name),
+              "uptime": c.attrs["State"]["StartedAt"],
+          }
+          for c in containers
+      ]
+
+  def get_container_logs(container_name: str, tail: int = 20) -> str:
+      """Get recent log lines from a specific container."""
+      client = docker.from_env()
+      container = client.containers.get(container_name)
+      return container.logs(tail=tail).decode("utf-8", errors="replace")
+
+  def docker_disk_usage() -> dict:
+      """Get disk usage summary for the Docker host."""
+      client = docker.from_env()
+      return client.df()
+
+  def docker_system_info() -> dict:
+      """Get system-level info about the Docker daemon."""
+      client = docker.from_env()
+      info = client.info()
+      return {
+          "containers_running": info["ContainersRunning"],
+          "containers_stopped": info["ContainersStopped"],
+          "images": info["Images"],
+          "server_version": info["ServerVersion"],
+          "os": info["OperatingSystem"],
+          "memory_gb": round(info["MemTotal"] / (1024**3), 1),
+          "cpus": info["NCPU"],
+          "name": info["Name"],
+      }

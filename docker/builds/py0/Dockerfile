@@ -503,6 +503,11 @@ RUN cat ${USER_HOME}/.claude/anthropic_keys.sh
 
 RUN llm models default anthropic/claude-sonnet-4-6
 
+RUN llm install llm-docs
+RUN llm install llm-sentence-transformers
+RUN llm sentence-transformers register all-mpnet-base-v2 --alias mpnet
+RUN llm install llm-tools-rag
+
 RUN npm install neovim
 
 WORKDIR ${USER_HOME}/gitdir
@@ -519,11 +524,6 @@ RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/aws.sh && \
  
 
 WORKDIR ${USER_HOME}
-
-RUN llm install llm-docs
-RUN llm install llm-sentence-transformers
-RUN llm sentence-transformers register all-mpnet-base-v2 --alias mpnet
-RUN llm install llm-tools-rag
 
 # Ensure lockfile commits match what's on disk
 RUN nvim --headless \
@@ -545,6 +545,12 @@ RUN timeout 180 nvim --headless \
 # Force blink.cmp to run its build step
 RUN nvim --headless \
   -c 'lua require("lazy").build({ plugins = {"blink.cmp"}, wait = true })' \
+  -c 'sleep 15' \
+  -c 'qall' || true
+
+RUN nvim --headless \
+  -c 'set filetype=lua' \
+  -c 'normal! itest' \
   -c 'sleep 15' \
   -c 'qall' || true
 
