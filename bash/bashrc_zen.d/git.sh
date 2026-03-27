@@ -179,3 +179,11 @@ gitp() (
   git commit -m "generic zen script"
   git push
 )
+
+get_help() {
+
+  cat <<EOF
+# find changes to a file
+git log -p --follow -- path/to/file
+EOF
+}
