@@ -4,6 +4,9 @@
 # gpt-oss-120b
 # llama3-3-70b
 
+# tf is just a alias to llm and this is not llm centric
+# command -v tf &>/dev/null || return 0
+
 alias tf_help_zathura='tf -f ~/gitdir/skel/zathura/zathura-help.md'
 
 tin_test_llm() {
@@ -62,3 +65,10 @@ tf_llm_img() {
   llm -t tin "$prompt" -a "$tmpfile"
   rm -f "$tmpfile"
 }
+
+edittin() {
+  "${EDITOR}" ~/gitdir/skel/bash/bashrc_zen.d/tinfoil-helpers.sh
+}
+
+echo "BASH COMPLETIONS: added for tinfoil"
+source <(tinfoil completion bash)
