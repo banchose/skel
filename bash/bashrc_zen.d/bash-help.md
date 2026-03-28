@@ -1,5 +1,11 @@
 # Bash short
 
+## Network port check
+
+```sh
+timeout 1 bash -c ': < /dev/tcp/registry/5000'"
+```
+
 ## rsync
 
 - copy one dir to another

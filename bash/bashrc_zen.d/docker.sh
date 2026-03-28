@@ -131,7 +131,33 @@ if type docker &>/dev/null; then
   function docker_help() {
 
     cat <<EOF
+### ENTRYPOINT
+ENTRYPOINT will always execute unless --entrypoint
+ENTRYPOINT ["bash", "/somescript" ]
+### Simple Dockerfile
+FROM ubuntu:latest
+RUN apt-get update
+RUN apt-get install -y build-essential
+WORKDIR /app
+COPY app/hello.c /app/
+RUN gcc -o hello hello.c
+ENTRYPOINT [ "/app/hello" ]
+###
+### REGISTRY
+docker run --name register -d -p 1180:5000 registry 
+##
 docker run -it --rm --user ubuntu ubuntu
+## service dns names
+# if not on the default bridge
+docker inspect $(docker ps -q) --format '{{.Name}}: {{range .NetworkSettings.Networks}}{{.DNSNames}} {{end}}'
+docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"
+docker run -it -d -p 8000:8000 --rm bash -- nc -kl -p 8000
+docker --dns 8.8.8.8 --dns 1.1.1.1
+docker --dns-search example.net
+docker --hostname # containers hostname
+docker create --cap-drop ALL --cap-add NET_ADMIN -p 8080:8080 -ti --name bashY bash
+docker commit <containerName> my_image_yay
+docker run -it --rm --network mynet ubuntu bash -c "timeout 1 bash -c ': < /dev/tcp/registry/5000'"
 EOF
   }
 

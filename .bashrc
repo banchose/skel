@@ -63,8 +63,21 @@ bind '"jj":vi-movement-mode'
 export IGNOREEOF=4
 
 # PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?]\[$(tput setaf 7)\][\v]\$ \[$(tput sgr0)\]"
-PS1='\[\e[37m\][\!]\[\e[38;5;47m\][\H]\[\e[33m\][\u]\[\e[90m\][\D{%F %T}]\[\e[32m\][\w]\n\[\e[37m\][\$?]\[\e[37m\][\v]\$ \[\e[0m\]'
+# PS1='\[\e[37m\][\!]\[\e[38;5;47m\][\H]\[\e[33m\][\u]\[\e[90m\][\D{%F %T}]\[\e[32m\][\w]\n\[\e[37m\][\$?]\[\e[37m\][\v]\$ \[\e[0m\]'
 # PS1='[\!][\H][\u][\D{%F %T}][\w]\n[\$?][\v]\$ '  # no color
+
+PROMPT_COMMAND='__last_exit=$?'
+
+__ps1_exit_color() {
+  if ((__last_exit != 0)); then
+    printf '\e[31m' # red
+  else
+    printf '\e[37m' # white
+  fi
+}
+
+PS1='\[\e[37m\][\!]\[\e[38;5;47m\][\H]\[\e[33m\][\u]\[\e[90m\][\D{%F %T}]\[\e[32m\][\w]\n\[$(__ps1_exit_color)\][${__last_exit}]\[\e[37m\][\v]\$ \[\e[0m\]'
+
 checkip() {
   local fd
   exec {fd}<>/dev/tcp/checkip.amazonaws.com/80 || {
