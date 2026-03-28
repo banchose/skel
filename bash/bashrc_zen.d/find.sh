@@ -74,6 +74,7 @@ find . -name "*.txt" \( -exec echo {} \; -o -exec true \; \) -exec grep banana {
 find . -path ./.git -prune -o -print  # avoid .git
 find . -name '.git' -type d
 #
+find $HOME -mtime 0 # last 24 hours
 #### Simple find using -exec
 #
 find . -type f -exec file '{}' \;

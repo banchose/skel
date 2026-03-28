@@ -6,6 +6,7 @@ if type docker &>/dev/null; then
   export BUILDKIT_PROGRESS=plain
   export DOCKER_BUILDKIT=1
 
+  alias editdocker='nvim ~/gitdir/skel/bash/bashrc_zen.d/docker.sh'
   alias rdp='docker -H ssh://una@s1 ps --all'
   alias rdr='docker -H ssh://una@s1 ps'
   alias rde='docker -H ssh://una@s1'
@@ -126,6 +127,14 @@ if type docker &>/dev/null; then
 
     docker run -it --rm -v ~/.aws:/root/.aws:ro -v ~/.bashrc:/root/.bashrc:ro -v ~/.inputrc:/root/.inputrc:ro -v ~/.bashrc_zen.d:/root/.bashrc_zen.d:ro -v ~/gitdir/skel:/root/gitdir/skel:ro -v ~/gitdir:/root/gitdir:ro --entrypoint /bin/bash amazon/aws-cli
   }
+
+  function docker_help() {
+
+    cat <<EOF
+docker run -it --rm --user ubuntu ubuntu
+EOF
+  }
+
 # [[ $HOSTNAME == arc ]] && export DOCKER_HOST="ssh://orb.example.net"
 # [[ $HOSTNAME == arc ]] && export DOCKER_HOST="ssh://star.example.net"
 fi
