@@ -1,10 +1,112 @@
 # Bash short
 
+## Fast
+
+### Timestamp
+
+```bash
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+```
+
+### Prune older
+
+```bash
+find "${BACKUP_DIR}" -name "open-webui-*.tar.gz" -type f -mtime +30 -delete
+```
+
+## Strip first/last word
+
+- `while IFS= read -r line;do echo "${line#* }";done <<< "one two three"`
+- `while IFS= read -r line;do echo "${line##* }";done <<< "one two three"`
+
+## Trace
+
+- `-e` Raised at top level:  errors "bubble up" from functions and the TL function fails
+- `E`: Raised in the function: Fails at the line in the function with `-E` allowing it to be "seen"
+
+## Conditional Expressions
+
+- var set: `-v`
+- var non-zero length: `-n`
+- var zero length: `-z`
+
+## non-zero from command substitution
+
+- A non-zero return from a `$()` will kill a script wiht `-e`
+- Can `$(somecommand)` return a non-zero, then check `-e`
+
+## (( 0 )) or expression equates to 0 = false (error)
+
+- `0` is false
+- `1` is true
+
+## (( x == 8))
+
+- returns `0` for false
+- returns 1 for true
+
+## "$*" expansion
+
+- `$*` inside double quotes joins the positional parameters with the first character of IFS.
+-  Bash arrays is the same
+  - `"${arr[*]}"` joins with first char of IFS, `"${arr[@]}"`
+  - `"${arr[@]}"` keeps them separate
+
+```bash
+```bash
+f() {
+  
+  local IFS=","
+  echo "$*"
+  echo "$@"
+
+}
+
+- The key distinction: "$*" = one string, joined by first char of IFS. "$@" = separate words, IFS **irrelevant**.
+
+```
+```
+
+## return
+
+- Only valid in a function or sourced script
+
+## -e workarounds
+
+`set -e` is disabled for any command used as a condition — meaning anything tested by `if`, `while`, `until`, or on the left side of `&&` or `||`.
+
+```bash
+false || status=$?
+```
+```
+```
+
+## redirects
+
+```
+fd1 -> terminal
+fd2 -> terminal
+
+# Case 1: ls > dirlist 2>&1
+fd1 = open("dirlist")      # fd1 -> dirlist
+fd2 = fd1                  # fd2 -> dirlist  (copies current value of fd1)
+exec ls                    # ls writes stdout/stderr to dirlist
+
+# Case 2: ls 2>&1 > dirlist
+fd2 = fd1                  # fd2 -> terminal  (copies current value of fd1)
+fd1 = open("dirlist")      # fd1 -> dirlist   (fd2 unchanged)
+exec ls                    # ls writes stdout to dirlist, stderr to terminal
+```
+
+### Comand substitution capture
+
+When you write `out=$(f 2>&1)`, the `$(...)` sets up a pipe to capture stdout. Inside that command substitution, fd 1 doesn't point to the terminal — it points to the pipe that feeds back into the variable assignment.
+
 ## associative arrays no order
 
 ## evals
 
-```sh
+```bash
 set -euo pipefail
 
 x=5
