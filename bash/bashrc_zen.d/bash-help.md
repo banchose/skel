@@ -1,5 +1,61 @@
 # Bash short
 
+## associative arrays no order
+
+## evals
+
+```sh
+set -euo pipefail
+
+x=5
+
+if [[ $x -gt 3 ]] && [[ $x -lt 10 ]]; then
+    echo "A"
+fi
+
+if (( x > 3 )) && (( x < 10 )); then
+    echo "B"
+fi
+
+if (( x > 3 && x < 10 )); then
+    echo "C"
+fi
+
+if [[ $x -gt 3 && $x -lt 10 ]]; then
+    echo "D"
+fi
+# A
+# B
+# C
+# D
+```
+
+## bash read pipe pattern
+
+```
+# WRONG
+set -euo pipefail
+
+printf '%s\n' "one" "two" "three" | read -r first
+echo "$first"
+```
+
+```
+# RIGHT
+read -r first < <(printf '%s\n' "one" "two" "three")
+```
+```
+```
+
+## `[[ $msg == "$var"* ]]`
+
+- Inside [[ ]], the right side of == is assembled from its parts.
+
+## The same file in redirects
+
+NO: `< file.txt > file.txt`
+
+
 ## Network port check
 
 ```sh
