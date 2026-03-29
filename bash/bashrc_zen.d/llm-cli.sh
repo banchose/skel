@@ -555,6 +555,32 @@ llme_test_embed_example() {
   )
 }
 
+llm_help_anthropic_api_key_changed() {
+
+  cat <<'EOF'
+Change on host **star** in
+  /apps/OpenWebUI/.env # systemd unit might start and not me with api key loaded
+  ~/.bashrc_zen.d/apikeys.sh
+EOF
+}
+
+llm_test_anthropic_query() {
+  curl https://api.anthropic.com/v1/messages \
+    -H "Content-Type: application/json" \
+    -H "x-api-key: $ANTHROPIC_API_KEY" \
+    -H "anthropic-version: 2023-06-01" \
+    -d '{
+    "model": "claude-opus-4-6",
+    "max_tokens": 1000,
+    "messages": [
+      {
+        "role": "user",
+        "content": "This is just a test to see if this is working, please respond with 'OK'"
+      }
+    ]
+  }'
+}
+
 llm_help() {
 
   cat <<'EOF'
