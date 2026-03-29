@@ -180,10 +180,11 @@ gitp() (
   git push
 )
 
-get_help() {
+git_help() {
 
-  cat <<EOF
-# find changes to a file
+  cat <<'EOF'
+git reset --hard origin/main
+git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)
 git log -p --follow -- path/to/file
 EOF
 }
