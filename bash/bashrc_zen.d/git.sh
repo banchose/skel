@@ -156,6 +156,9 @@ gitsync() {
       echo $'\t'"${PWD##*/}"
       echo "**********************************"
       #      [[ -d .git ]] && git fetch --prune && git status && git pull
+      last=$(git log -1 --format=%ct --all 2>/dev/null) # epoch seconds
+      threshold=$(date -d '1 year ago' +%s)
+      ((last < threshold)) && echo "STALE"
       [[ -d .git ]] && git fetch --prune && git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)
       cd ..
     done
