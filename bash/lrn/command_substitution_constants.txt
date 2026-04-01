@@ -1,0 +1,79 @@
+
+Command Substitution and Constants
+
+In the previous lesson, we learned how to create variables and perform parameter expansions with them. In this lesson, we will extend this idea to show how we can substitute the results from commands.
+
+When we last left our script, it could create an HTML page that contained a few simple lines of text, including the host name of the machine which we obtained from the environment variable HOSTNAME. Now, we will add a time stamp to the page to indicate when it was last updated, along with the user that did it.
+#!/bin/bash
+
+# sysinfo_page - A script to produce an HTML file
+
+title="System Information for"
+
+cat <<- _EOF_
+    <html>
+    <head>
+        <title>
+        $title $HOSTNAME
+        </title>
+    </head>
+
+    <body>
+    <h1>$title $HOSTNAME</h1>
+    <p>Updated on $(date +"%x %r %Z") by $USER</p>
+    </body>
+    </html>
+_EOF_
+
+As we can see, another environment variable, USER, is used to get the user name. In addition, we used this strange looking thing:
+
+$(date +"%x %r %Z")
+
+The characters "$( )" tell the shell, "substitute the results of the enclosed command," a technique known as command substitution. In our script, we want the shell to insert the results of the command date +"%x %r %Z" which outputs the current date and time. The date command has many features and formatting options. To look at them all, try this:
+[me@linuxbox me]$ date --help | less
+
+Be aware that there is an older, alternate syntax for "$(command)" that uses the backtick character " ` ". This older form is compatible with the original Bourne shell (sh) but its use is discouraged in favor of the modern syntax. The bash shell fully supports scripts written for sh, so the following forms are equivalent:
+
+$(command)
+`command`
+Assigning a Command's Result to a Variable
+
+We can also assign the results of a command to a variable:
+right_now="$(date +"%x %r %Z")"
+
+We can even nest the variables (place one inside another), like this:
+right_now="$(date +"%x %r %Z")"
+time_stamp="Updated on $right_now by $USER"
+
+An important safety tip: when performing parameter expansions or command substitutions, it is good practice to surround them in double quotes to prevent unwanted word splitting in case the result of the expansion contains whitespace characters.
+Constants
+
+As the name variable suggests, the content of a variable is subject to change. This means that it is expected that during the execution of our script, a variable may have its content modified by something the script does.
+
+On the other hand, there may be values that, once set, should never be changed. These are called constants. This is a common idea in programming. Most programming languages have special facilities to support values that are not allowed to change. Bash also has this facility but it is rarely used. Instead, if a value is intended to be a constant, it is given an uppercase name to remind the programmer that it should be considered a constant even if it's not being enforced.
+
+Environment variables are usually considered constants since they are rarely changed. Like constants, environment variables are given uppercase names by convention. In the scripts that follow, we will use this convention - uppercase names for constants and lowercase names for variables.
+
+So, applying everything we know, our program looks like this:
+#!/bin/bash
+
+# sysinfo_page - A script to produce an HTML file
+
+title="System Information for $HOSTNAME"
+RIGHT_NOW="$(date +"%x %r %Z")"
+TIME_STAMP="Updated on $RIGHT_NOW by $USER"
+
+cat <<- _EOF_
+    <html>
+    <head>
+        <title>
+        $title
+        </title>
+    </head>
+
+    <body>
+    <h1>$title</h1>
+    <p>$TIME_STAMP</p>
+    </body>
+    </html>
+_EOF_

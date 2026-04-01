@@ -1,0 +1,218 @@
+Shell Functions
+
+As programs get longer and more complex, they become more difficult to design, code, and maintain. As with any large endeavor, it is often useful to break a single, large task into a series of smaller tasks.
+
+In this lesson, we will begin to break our single monolithic script into a number of separate functions.
+
+To get familiar with this idea, let's consider the description of an everyday task -- going to the market to buy food. Imagine that we were going to describe the task to a man from Mars.
+
+Our first top-level description might look like this:
+
+    Leave house
+    Drive to market
+    Park car
+    Enter market
+    Purchase food
+    Drive home
+    Park car
+    Enter house
+
+This description covers the overall process of going to the market; however a man from Mars will probably require additional detail. For example, the "Park car" sub task could be described as follows:
+
+    Find parking space
+    Drive car into space
+    Turn off motor
+    Set parking brake
+    Exit car
+    Lock car
+
+Of course the task "Turn off motor" has a number of steps such as "turn off ignition" and "remove key from ignition switch," and so on.
+
+This process of identifying the top-level steps and developing increasingly detailed views of those steps is called top-down design. This technique allows us to break large complex tasks into many small, simple tasks.
+
+As our script continues to grow, we will use top down design to help us plan and code our script.
+
+If we look at our script's top-level tasks, we find the following list:
+
+    Open page
+    Open head section
+    Write title
+    Close head section
+    Open body section
+    Write title
+    Write time stamp
+    Close body section
+    Close page
+
+All of these tasks are implemented, but we want to add more. Let's insert some additional tasks after task 7:
+
+    Write time stamp
+    Write system release info
+    Write up-time
+    Write drive space
+    Write home space
+    Close body section
+    Close page
+
+It would be great if there were commands that performed these additional tasks. If there were, we could use command substitution to place them in our script like so:
+#!/bin/bash
+
+# sysinfo_page - A script to produce a system information HTML file
+
+##### Constants
+
+TITLE="System Information for $HOSTNAME"
+RIGHT_NOW="$(date +"%x %r %Z")"
+TIME_STAMP="Updated on $RIGHT_NOW by $USER"
+
+##### Main
+
+cat <<- _EOF_
+  <html>
+  <head>
+      <title>$TITLE</title>
+  </head>
+
+  <body>
+      <h1>$TITLE</h1>
+      <p>$TIME_STAMP</p>
+      $(system_info)
+      $(show_uptime)
+      $(drive_space)
+      $(home_space)
+  </body>
+  </html>
+_EOF_
+
+While there are no commands that do exactly what we need, we can create them using shell functions.
+
+As we learned in lesson 2, shell functions act as "little programs within programs" and allow us to follow top-down design principles. To add the shell functions to our script, we'll change it so:
+#!/bin/bash
+
+# sysinfo_page - A script to produce an system information HTML file
+
+##### Constants
+
+TITLE="System Information for $HOSTNAME"
+RIGHT_NOW="$(date +"%x %r %Z")"
+TIME_STAMP="Updated on $RIGHT_NOW by $USER"
+
+##### Functions
+
+system_info()
+{
+
+}
+
+
+show_uptime()
+{
+
+}
+
+
+drive_space()
+{
+
+}
+
+
+home_space()
+{
+
+}
+
+##### Main
+
+cat <<- _EOF_
+  <html>
+  <head>
+      <title>$TITLE</title>
+  </head>
+
+  <body>
+      <h1>$TITLE</h1>
+      <p>$TIME_STAMP</p>
+      $(system_info)
+      $(show_uptime)
+      $(drive_space)
+      $(home_space)
+  </body>
+  </html>
+_EOF_
+
+A couple of important points about functions: First, they must appear before we attempt to use them. Second, the function body (the portions of the function between the { and } characters) must contain at least one valid command. As written, the script will not execute without error, because the function bodies are empty. The simple way to fix this is to place a return statement in each function body. After we do this, our script will execute successfully again.
+Keep Your Scripts Working
+
+When we develop a program, it is is often a good practice to add a small amount of code, run the script, add some more code, run the script, and so on. This way, if we introduce a mistake into the code, it will be easier to find and correct.
+
+As we add functions to your script, we can also use a technique called stubbing to help watch the logic of our script develop. Stubbing works like this: imagine that we are going to create a function called "system_info" but we haven't figured out all of the details of its code yet. Rather than hold up the development of the script until we are finished with system_info, we just add an echo command like this:
+system_info()
+{
+    # Temporary function stub
+    echo "function system_info"
+}
+
+This way, our script will still execute successfully, even though we do not yet have a finished system_info function. We will later replace the temporary stubbing code with the complete working version.
+
+The reason we use an echo command is so we get some feedback from the script to indicate that the functions are being executed.
+
+Let's go ahead and write stubs for our new functions and keep the script working.
+#!/bin/bash
+
+# sysinfo_page - A script to produce an system information HTML file
+
+##### Constants
+
+TITLE="System Information for $HOSTNAME"
+RIGHT_NOW="$(date +"%x %r %Z")"
+TIME_STAMP="Updated on $RIGHT_NOW by $USER"
+
+##### Functions
+
+system_info()
+{
+    # Temporary function stub
+    echo "function system_info"
+}
+
+
+show_uptime()
+{
+    # Temporary function stub
+    echo "function show_uptime"
+}
+
+
+drive_space()
+{
+    # Temporary function stub
+    echo "function drive_space"
+}
+
+
+home_space()
+{
+    # Temporary function stub
+    echo "function home_space"
+}
+
+
+##### Main
+
+cat <<- _EOF_
+  <html>
+  <head>
+      <title>$TITLE</title>
+  </head>
+
+  <body>
+      <h1>$TITLE</h1>
+      <p>$TIME_STAMP</p>
+      $(system_info)
+      $(show_uptime)
+      $(drive_space)
+      $(home_space)
+  </body>
+  </html>
+_EOF_

@@ -168,6 +168,31 @@ if [[ -f ~/gitdir/skel/bash/bashrc_zen.d/zen_loader.sh ]]; then
   zen_load
 fi
 
+getc() {
+  IFS= read -r -n1 -d '' "$@"
+}
+
+exists() {
+  type "$@" >/dev/null 2>/dev/null
+}
+
+trim_l() {
+  local str=${!1}
+  str="${str##+([[:space:]])}"
+  export "$1"="$str"
+}
+
+trim_r() {
+  local str=${!1}
+  str="${str%%+([[:space:]])}"
+  export "$1"="$str"
+}
+
+trim() {
+  trim_l "$@"
+  trim_r "$@"
+}
+
 # home_bashrc_directory=~/.bashrc_zen.d
 #
 # if [[ -d "${home_bashrc_directory}" ]]; then
