@@ -1,0 +1,131 @@
+model: ants
+name: Weather-inline
+system: |
+  You are a highly researched and experienced weatherman.
+  You are friendly, serious and circumspect
+  You may be asked random weather questions
+  You may be asked for weather for different locations
+  You provide the weahter in 3 sections:
+    First section is current conditions noting the time and date of the forecast data at the top
+      Current conditions should contain the typical defaults making certain dew point is mentioned
+      Temperatures are prefered be both in Fahrenheit and Celsius with Celsius contained in parentheses
+    Second section 2-3 day forecast noting any potential weather hazard. Try and constrain to one (2 max) sentence(s) per day
+    Third section is a short paragraph or 2 describing any trends, notable weather patterns, arcane or insightful observations, alerts, warnings - flexible
+functions: |
+  # weather_tool.py
+  import os
+  import json
+  import requests
+  import datetime
+  from urllib.parse import quote_plus
+
+  OPENWEATHER_API_KEY = os.environ["OPENWEATHER_APP_ID"]
+  OPENWEATHER_UNITS = os.environ.get("OPENWEATHER_UNITS", "imperial")
+  NOMINATIM_EMAIL = os.environ.get("NOMINATIM_EMAIL", "dark.book0043@fastmail.com")
+  DEFAULT_LAT = os.environ.get("LAT")
+  DEFAULT_LON = os.environ.get("LON")
+  WOLFRAMALPHA_APP_ID = os.environ["WOLFRAMALPHA_APP_ID"]
+
+  def get_current_datetime() -> str:
+      """Return the current date, time, and timezone."""
+      return datetime.datetime.now().astimezone().strftime("%A, %B %d, %Y %I:%M %p %Z")
+
+  def _geocode_location(location: str) -> tuple[float, float]:
+      """Geocode a location string to lat/lon using Nominatim."""
+      if not NOMINATIM_EMAIL:
+          raise EnvironmentError(
+              "NOMINATIM_EMAIL environment variable is empty or unset. "
+              "Set it to any valid email address (required by Nominatim's usage policy).\n"
+              '  export NOMINATIM_EMAIL="you@yourdomain.com"'
+          )
+      response = requests.get(
+          "https://nominatim.openstreetmap.org/search",
+          params={
+              "q": location,
+              "limit": 1,
+              "format": "jsonv2",
+              "email": NOMINATIM_EMAIL,
+          },
+          headers={"User-Agent": "llm-weather-tool"},
+      )
+      response.raise_for_status()
+      data = response.json()
+      if not data:
+          raise ValueError(f"Could not geocode: {location}")
+      return float(data[0]["lat"]), float(data[0]["lon"])
+
+  def _trim_weather_data(data: dict) -> dict:
+      """Pare down the OneCall response to what's actually useful for commentary."""
+      trimmed = {}
+      if "current" in data:
+          trimmed["current"] = data["current"]
+      if "alerts" in data:
+          trimmed["alerts"] = data["alerts"]
+      if "hourly" in data:
+          trimmed["hourly_next_12h"] = data["hourly"][:12]
+      if "daily" in data:
+          trimmed["daily"] = data["daily"]
+      for key in ("timezone", "timezone_offset", "lat", "lon"):
+          if key in data:
+              trimmed[key] = data[key]
+      return trimmed
+
+  def get_current_weather(location: str = "") -> str:
+      """Get the current weather for a location.
+
+      :param location: The location to get weather for (city, address, etc.).
+                       If empty, uses the default lat/lon from environment.
+      :return: Current weather data as JSON
+      """
+      if location:
+          lat, lon = _geocode_location(location)
+      elif DEFAULT_LAT and DEFAULT_LON:
+          lat, lon = float(DEFAULT_LAT), float(DEFAULT_LON)
+      else:
+          return "No location provided and no default LAT/LON set in environment."
+      response = requests.get(
+          "http://api.openweathermap.org/data/3.0/onecall",
+          params={
+              "lat": lat,
+              "lon": lon,
+              "appid": OPENWEATHER_API_KEY,
+              "units": OPENWEATHER_UNITS,
+          },
+      )
+      response.raise_for_status()
+      data = response.json()
+      return json.dumps(_trim_weather_data(data), indent=2)
+
+  def perform_query(query_string: str) -> str:
+      """Query Wolfram|Alpha LLM API with a natural language question.
+
+      Returns computed results optimized for LLM consumption.
+
+      Usage guidelines:
+      - Convert queries to simplified English keywords (e.g. "how many people live in France" -> "France population").
+      - Use exponent notation 6*10^14, never 6e14.
+      - Use single-letter variable names (e.g. n, x, n_1).
+      - Use named physical constants (e.g. "speed of light"), not numerical values.
+      - Include spaces between compound units (e.g. "ohm m").
+      - Make separate calls for separate properties.
+      - If results seem irrelevant, re-query using Wolfram's suggested assumptions before rephrasing.
+      - Format math in responses with dollar-sign blocks or backslash-paren for inline.
+
+      :param query_string: Natural language query (e.g. "France population", "integrate x^2 dx")
+      :return: Wolfram|Alpha response text
+      """
+      url = (
+          f"https://www.wolframalpha.com/api/v1/llm-api"
+          f"?input={quote_plus(query_string)}"
+          f"&appid={WOLFRAMALPHA_APP_ID}"
+          f"&maxchars=6800"
+      )
+      response = requests.get(url, timeout=30)
+      if response.status_code == 200:
+          return response.text
+      return f"Wolfram|Alpha returned HTTP {response.status_code}: {response.text}"
+tools:
+  - llm_version
+  - llm_time
+  - simple_eval
+  - web_search
