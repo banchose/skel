@@ -117,6 +117,19 @@ tf_curl() {
   }'
 }
 
+tf_curl_local() {
+
+  local tinfoil_model=kimi-k2-5
+
+  curl -X POST http://localhost:8080/v1/chat/completions \
+    -H "Authorization: Bearer ${TINFOIL_API_KEY}" \
+    -H "Content-Type: application/json" \
+    -d '{
+    "model": "'"${tinfoil_model}"'",
+    "messages": [{"role": "user", "content": "This is a test.  Respond with 'OK'"}]
+  }'
+}
+
 tf_list_models() {
 
   curl https://inference.tinfoil.sh/v1/models \
@@ -132,7 +145,7 @@ tf_llm_img() {
   rm -f "$tmpfile"
 }
 
-edittin() {
+edittf() {
   "${EDITOR}" ~/gitdir/skel/bash/bashrc_zen.d/tinfoil-helpers.sh
 }
 
