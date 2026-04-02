@@ -97,7 +97,7 @@ tf() {
     done
   fi
 
-  command llm "$@" -t tin --ta
+  command llm "$@" -t tf_f --ta
 }
 
 # worked once
