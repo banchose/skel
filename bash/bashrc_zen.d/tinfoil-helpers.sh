@@ -11,7 +11,7 @@
 
 alias tf_help_zathura='tf -f ~/gitdir/skel/zathura/zathura-help.md'
 
-tin_test_llm() {
+tf_test_llm() {
   curl -sS https://inference.tinfoil.sh/v1/chat/completions -H "Authorization: Bearer ${TINFOIL_API_KEY}" \
     -H "Content-Type: application/json" \
     -d '{
@@ -21,7 +21,7 @@ tin_test_llm() {
 }'
 }
 
-tinfoil_get_docs_md() {
+tf_get_docs_md() {
   curl -s https://docs.tinfoil.sh/llms-full.txt -o tinfoil-docs-full.md
 }
 
@@ -96,7 +96,7 @@ tf_whisper_transcribe() {
 #     -F model=whisper-large-v3-turbo | jq -r '.text'
 # }
 
-tinfoil_start_proxy() {
+tf_start_proxy() {
 
   tinfoil proxy \
     -r tinfoilsh/confidential-model-router \
@@ -104,7 +104,7 @@ tinfoil_start_proxy() {
     -p 8080 >/dev/null 2>&1 &
 }
 
-tinfoil_curl() {
+tf_curl() {
 
   local tinfoil_model=kimi-k2-5
 
@@ -117,7 +117,7 @@ tinfoil_curl() {
   }'
 }
 
-tinfoil_list_models() {
+tf_list_models() {
 
   curl https://inference.tinfoil.sh/v1/models \
     -H "Authorization: Bearer ${TINFOIL_API_KEY}"
@@ -134,6 +134,13 @@ tf_llm_img() {
 
 edittin() {
   "${EDITOR}" ~/gitdir/skel/bash/bashrc_zen.d/tinfoil-helpers.sh
+}
+
+tf_help() {
+
+  cat <<'EOF'
+curl http://127.0.0.1:8080/v1/models
+EOF
 }
 
 echo "BASH COMPLETIONS: added for tinfoil"

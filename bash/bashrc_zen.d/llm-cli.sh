@@ -171,7 +171,9 @@ llm_anthropic_simple_curl_models() {
 alias llm_start_litellm='litellm --config ~/gitdir/skel/llm/litellm/litellm.conf --port 4000 >/tmp/litellm-log-'"$(date '+%s')"' 2>&1 &'
 alias llm_start_litellm_debug='litellm --config ~/gitdir/skel/llm/litellm/litellm.conf --port 4000 --detailed_debug'
 alias cdllm='cd ~/.config/io.datasette.llm/'
-alias cdllmT='cd ~/.config/io.datasette.llm/templates/'
+alias cdllmt='cd ~/.config/io.datasette.llm/templates/'
+alias cdllmS='cd ~/gitdir/skel/llm'
+alias cdllmT='cd ~/gitdir/skel/llm/TEMPLATES'
 alias cdlitellm='cd ~/gitdir/skel/llm/litellm/'
 
 alias llm_test_litellm_get_local_models='curl -s -H "Authorization: Bearer ${LITELLM_MASTER_KEY}" http://127.0.0.1:4000/v1/models'
