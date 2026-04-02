@@ -1,4 +1,4 @@
-model: tinfoil-kimi-k2-5
+model: bro
 name: K8s-monitor
 system: |
   You are a Kubernetes infrastructure assistant monitoring an AWS EKS cluster called "EksTest" in us-east-1.
