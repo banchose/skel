@@ -123,14 +123,15 @@ if [[ -n ${INST_EXTRA:-} ]]; then
   # pipx install pandas --include-deps
   ##### aws
   # pipx install cfn-lsp-extra
-  pipx install checkov --include-deps
+  pipx install checkov
   pipx install cfn-lint
   ##### llm
   pipx install llm && command llm install llm-docs
-  pipx install aider-chat
-  # pipx install 'litellm[proxy]'
-  pipx install litellm
+  pipx install aider-chat --include-deps
+  pipx install 'litellm[proxy]'
+  #  pipx install litellm
   pipx install openai
+  pipx install anthropic --include-deps
   pipx install open-terminal
   ####    pipx install openai-whisper # HUGE
   # pipx install tinfoil --include-deps
@@ -206,6 +207,7 @@ if command -v ipython &>/dev/null; then
     httpx \
     networkx \
     pandas \
+    anthropic \
     esptool \
     numpy \
     ipython-extensions \
@@ -221,8 +223,8 @@ if command -v ipython &>/dev/null; then
     uv \
     litellm \
     open-terminal \
-    --pip-args="--upgrade" \
-    --include-deps
+    --pip-args="--upgrade"
+#   --include-deps
 fi
 
 ## cargo
