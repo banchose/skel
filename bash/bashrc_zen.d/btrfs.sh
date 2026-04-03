@@ -8,8 +8,6 @@ lsbtrfs() {
   done
 }
 
-#!/usr/bin/env bash
-
 # Function to convert a directory to a BTRFS subvolume
 # Usage: dir_to_btrfs_subvolume "/path/to/directory"
 dir_to_btrfs_subvolume() {

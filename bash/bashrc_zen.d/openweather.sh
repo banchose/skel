@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 [[ -z $OPENWEATHER_APP_ID ]] && {
   echo "OPENWEATHER_APP_ID is not defined... not loading openweather"
   return 1

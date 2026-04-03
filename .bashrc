@@ -193,6 +193,12 @@ trim() {
   trim_r "$@"
 }
 
+regex() {
+
+  [[ $1 =~ $2 ]] && printf '%s\n' "${BASH_REMATCH[0]}"
+
+}
+
 # home_bashrc_directory=~/.bashrc_zen.d
 #
 # if [[ -d "${home_bashrc_directory}" ]]; then
