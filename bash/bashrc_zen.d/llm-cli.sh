@@ -134,7 +134,7 @@ tf() {
 #     return str(simple_eval(expression))
 # ' "What is 2**32 divided by 7?" --td
 
-alias llm_test_anthropic_list_models='curl https://api.anthropic.com/v1/models -H "x-api-key: $ANTHROPIC_API_KEY" -H "anthropic-version: 2023-06-01"'
+# alias llm_curl_anthropic_models='curl https://api.anthropic.com/v1/models -H "x-api-key: $ANTHROPIC_API_KEY" -H "anthropic-version: 2023-06-01"'
 
 alias llm_start_tinfoil_proxy='tinfoil proxy -r tinfoilsh/confidential-model-router -e inference.tinfoil.sh -p 8080'
 
@@ -143,10 +143,10 @@ export llmtst="this is just a test, can you search the web?"
 echo "ENV: Setting CLAUDE_CODE_USE_BEDROCK=1"
 export CLAUDE_CODE_USE_BEDROCK=1
 
-export OPENROUTER_DEFAULT_MODEL=openrouter/anthropic/claude-sonnet-4.6
+export OPENROUTER_DEFAULT_MODEL=anthropic/claude-sonnet-4.6
 echo "EXPORTING OPENROUTER_DEFAULT_MODEL: ${OPENROUTER_DEFAULT_MODEL}"
 
-export ANTHROPIC_DEFAULT_MODEL=anthropic/claude-sonnet-4-6
+export ANTHROPIC_DEFAULT_MODEL=claude-sonnet-4-6
 echo "EXPORTING ANTHROPIC_DEFAULT_MODEL: ${ANTHROPIC_DEFAULT_MODEL}"
 
 export AWS_BEDROCK_DEFAULT_SONNET_MODEL=us.anthropic.claude-sonnet-4-5-20250929-v1:0
@@ -164,10 +164,62 @@ echo "EXPORTING OPENROUTER_DEFAULT_OPUS_MODEL: ${OPENROUTER_DEFAULT_OPUS_MODEL}"
 export LTS="This is a test only. Repond only with 'OK'"
 echo "EXPORTING LTS: ${LTS}"
 
-llm_anthropic_simple_curl_models() {
+llm_curl_anthropic_models() {
   curl https://api.anthropic.com/v1/models \
     -H "anthropic-version: 2023-06-01" \
     -H "X-Api-Key: ${ANTHROPIC_API_KEY}"
+}
+
+llm_curl_anthorpic_test() {
+  curl -X POST https://api.anthropic.com/v1/chat/completions \
+    -H "Authorization: Bearer ${ANTHROPIC_API_KEY}" \
+    -H "Content-Type: application/json" \
+    -d '{
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful assistant."
+    },
+    {
+      "role": "user",
+      "content": "This is just a test. Please respond with a brief acknowledgment"
+    }
+  ],
+  "model": "'"${ANTHROPIC_DEFAULT_MODEL:-claude-sonnet-4-6}"'",
+  "max_tokens": 150,
+  "temperature": 0.7
+}'
+}
+
+llm_curl_openrouter_models_count() {
+  curl https://openrouter.ai/api/v1/models/count \
+    -H "X-Api-Key: ${OPENROUTER_API_KEY}"
+}
+
+llm_curl_openrouter_models() {
+  curl https://openrouter.ai/api/v1/models \
+    -H "X-Api-Key: ${OPENROUTER_API_KEY}"
+}
+
+llm_curl_openrouter_test() {
+  curl -X POST https://openrouter.ai/api/v1/chat/completions \
+    -H "Authorization: Bearer ${OPENROUTER_API_KEY}" \
+    -H "Content-Type: application/json" \
+    -d '{
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful assistant."
+    },
+    {
+      "role": "user",
+      "content": "This is just a test. Please respond with a brief acknowledgment"
+    }
+  ],
+  "model": "'"${OPENROUTER_DEFAULT_MODEL:-anthropic/claude-sonnet-4-6}"'",
+  "max_tokens": 150,
+  "temperature": 0.7
+}'
 }
 
 alias llm_start_litellm='litellm --config ~/gitdir/skel/llm/litellm/litellm.conf --port 4000 >/tmp/litellm-log-'"$(date '+%s')"' 2>&1 &'

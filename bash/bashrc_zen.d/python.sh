@@ -24,5 +24,15 @@ a.bit_length() # calling the method, getting a result
 A compound statement consists of 1 or more clauses.
   clause: consistes of header and a suite
   clause header begins with a uniquely identifing key word and ends in a colon
+## iterators
+One method needs to be defined for container objects to provide iterable support __iter__()
+__iter__() returns the iterator object
+iterator object support
+  iterator.__iter__()
+  iterator.__next__()
+sequence(support interation methods): string, tuple, list, range
+iteration over containers
+iterator: an object representing a stream of data, repeated calls to '__inter()__' returning successive items
+every iterator is interable and can mostly be used in place of itererables are accepted
 EOF
 }
