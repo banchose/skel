@@ -21,6 +21,8 @@ callable(a.__add__)
 a = 1
 a.bit_length # the method object (a reference to the function
 a.bit_length() # calling the method, getting a result
-
+A compound statement consists of 1 or more clauses.
+  clause: consistes of header and a suite
+  clause header begins with a uniquely identifing key word and ends in a colon
 EOF
 }

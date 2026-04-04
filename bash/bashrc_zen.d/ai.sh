@@ -20,7 +20,7 @@ source ~/.bashrc_zen.d/api_keys_envs.sh
 # OR_MODEL="anthropic/claude-3.5-haiku"
 # OR_MODEL="anthropic/claude-3.5-sonnet"
 # OR_MODEL="anthropic/claude-3.7-sonnet"
-OR_MODEL="anthropic/claude-sonnet-4"
+OR_MODEL="anthropic/claude-opus-4-6"
 OR_MODEL_QUICK=mistralai/mistral-small-3.1-24b-instruct
 # OR_MODEL="mistralai/mistral-large-2411"
 # OR_MODEL="minimax/minimax-01"
@@ -33,8 +33,8 @@ Current_Model="${OR_MODEL}"
 #
 # ANTHROPIC_MODEL="claude-haiku-4-5-20251001"
 #
-HAIKU="claude-haiku-4-5-20251001"
-SONNET="claude-sonnet-4-5-20250929"
+ANT_HAIKU="claude-haiku-4-5-20251001"
+ANT_SONNET="claude-sonnet-4-6"
 # ANTHROPIC_MODEL="claude-sonnet-4-5-20250929"
 # ANTHROPIC_MODEL="us.anthropic.claude-opus-4-6-v1"
 
@@ -68,9 +68,8 @@ alias vai='nvim ~/gitdir/skel/bash/bashrc_zen.d/ai.sh'
 
 sanitize_input() {
   local input="$1"
-  # Remove non-printable characters except for newline, and truncate to 300 characters
-  Sanitized_Input=$(echo "$input" | tr -cd '[:print:]\n' | cut -c 1-${Max_Input_Tokens})
-  echo "$Sanitized_Input"
+  local max="${max_input_tokens:-300}"
+  printf '%s' "$input" | tr -cd '[:print:]\n' | cut -c "1-${max}"
 }
 #
 #   cat ./FOWARDER-RULE-TO-HEALTHRESEARCH-ORG.json | jq -r '.messages[] | select(.content != null) | .content'

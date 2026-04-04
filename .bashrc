@@ -199,18 +199,57 @@ regex() {
 
 }
 
-# home_bashrc_directory=~/.bashrc_zen.d
+confirm() {
+  # if confirm "Delete everything?"; then
+  #    rm -rf "${target}"
+  # fi
+  local answer
+  read -rn 1 -p "${1:-Continue?} [y/N] " answer
+  echo
+  [[ "${answer}" =~ ^[yY]$ ]]
+}
+
 #
-# if [[ -d "${home_bashrc_directory}" ]]; then
-#   echo "Running scripts in ${home_bashrc_directory}"
-#   for profile in "${home_bashrc_directory}/"*.sh; do
-#     if [[ -r "$profile" ]]; then
-#       echo "Sourcing: $profile"
-#       . "$profile"
-#     else
-#       echo "Cannot read $profile, skipping..."
-#     fi
-#   done
-# else
-#   echo "Directory ${home_bashrc_directory} does not exist."
-# fi
+# warn: Print a message to stderr.
+### Usage: warn "format" ["arguments"...]
+#
+# warn() {
+#   local fmt=$1
+#   shift
+#   printf "script_name: $fmt\n" "$@" >&2
+# }
+#
+### Usage: some_command || die "message" ["arguments"...]
+# #
+# die() {
+#   local st=$?
+#   warn "$@"
+#   exit "$st"
+# }
+#
+# ##
+### Usage: if blah; then die status_code "message" ["arguments"...]; fi
+# #
+# die1() {
+#   local st=$1
+#   shift
+#   warn "$@"
+#   exit "$st"
+# }
+#
+### Usage: some_command || die [status code] "message" ["arguments"...]
+# #
+# die2() {
+#   local st=$?
+#   if [[ $1 != *[^0-9]* ]]; then
+#     st=$1
+#     shift
+#   fi
+#   warn "$@"
+#   exit "$st"
+# }
+#
+# [[ ]]
+# [[ abc = a* ]]
+# [[ abb =~ ^ab+$ ]]
+# -eq, -ne, -lt, -gt, -le, -ge

@@ -1,3 +1,5 @@
+source ~/.bashrc_zen.d/api_keys_envs.sh
+
 # Check for required environment variables
 [[ -z "${ANTHROPIC_API_KEY:-}" ]] && echo "***** ANTHROPIC_API_KEY not set *****" >&2
 [[ -z "${OPENROUTER_API_KEY:-}" ]] && echo "***** OPENROUTER_API_KEY not set *****" >&2
@@ -18,7 +20,7 @@
 # command llm -f github:https://github.com/banchose/skel/blob/main/awk/awk.md "can you see this little awk snippet?"
 
 ### PATH llm cli to litellm to bedrock
-# broT → command llm -m bro → extra-openai-models.yaml → LiteLLM (:4000) → Bedrock (via aws_profile_name: test)
+# lbroT → command llm -m bro → extra-openai-models.yaml → LiteLLM (:4000) → Bedrock (via aws_profile_name: test)
 # litellm runs locally 127.0.0.1:4000
 # litellm.conf has
 #       aws_region_name: us-east-1
@@ -44,9 +46,6 @@
 #     ;;
 #   esac
 # }
-
-export LLM_TEST_STRING="This is a test only. Repond only with 'OK'"
-export LLM_TEST_STRING_TOOLS="This is a test only. Respond with a brief acknowledgment and a list of tools you have access to"
 
 # alias llm='llm -t "${LLM_DEFAULT_TEMPLATE:-ants}"'
 alias hk='llm -t ant-haiku'
@@ -161,6 +160,9 @@ echo "EXPORTING OPENROUTER_DEFAULT_SONNET_MODEL: ${OPENROUTER_DEFAULT_SONNET_MOD
 
 export OPENROUTER_DEFAULT_OPUS_MODEL=openrouter/anthropic/claude-opus-4.6
 echo "EXPORTING OPENROUTER_DEFAULT_OPUS_MODEL: ${OPENROUTER_DEFAULT_OPUS_MODEL}"
+
+export LTS="This is a test only. Repond only with 'OK'"
+echo "EXPORTING LTS: ${LTS}"
 
 llm_anthropic_simple_curl_models() {
   curl https://api.anthropic.com/v1/models \
