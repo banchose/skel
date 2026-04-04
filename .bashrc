@@ -98,6 +98,7 @@ HISTFILESIZE=50000
 HISTCONTROL="ignorespace:ignoredups"
 HISTIGNORE="[ ]*:exit:ls:bg:fg:history:clear"
 HISTTIMEFORMAT='%F %T '
+PROMPT_COMMAND="history -a; history -n"
 
 CDPATH=".:~"
 

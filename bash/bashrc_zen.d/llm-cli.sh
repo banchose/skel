@@ -191,6 +191,8 @@ llm_curl_anthorpic_test() {
 }'
 }
 
+## Openrouter
+
 llm_curl_openrouter_models_count() {
   curl https://openrouter.ai/api/v1/models/count \
     -H "X-Api-Key: ${OPENROUTER_API_KEY}"
