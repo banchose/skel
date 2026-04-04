@@ -100,7 +100,7 @@ HISTIGNORE="[ ]*:exit:ls:bg:fg:history:clear"
 HISTTIMEFORMAT='%F %T '
 PROMPT_COMMAND="history -a; history -n"
 
-CDPATH=".:~"
+CDPATH=".:~:~/gitdir"
 
 alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,pidns,utsns,ipcns,mntns,netns,cmd'
 alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'

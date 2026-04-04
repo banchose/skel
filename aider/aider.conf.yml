@@ -1,5 +1,5 @@
 # aider --list-models sonnet # has to have a search term
-model: claude-sonnet-4-6
+model: claude-opus-4-6
 edit-format: ask
 map-tokens: 0
 git: false
