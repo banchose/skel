@@ -503,10 +503,10 @@ RUN cat ${USER_HOME}/.claude/anthropic_keys.sh
 
 RUN llm models default anthropic/claude-sonnet-4-6
 
-RUN llm install llm-docs
-RUN llm install llm-sentence-transformers
-RUN llm sentence-transformers register all-mpnet-base-v2 --alias mpnet
-RUN llm install llm-tools-rag
+# RUN llm install llm-docs
+# RUN llm install llm-sentence-transformers
+# RUN llm sentence-transformers register all-mpnet-base-v2 --alias mpnet
+# RUN llm install llm-tools-rag
 
 RUN npm install neovim
 
@@ -553,6 +553,15 @@ RUN nvim --headless \
   -c 'normal! itest' \
   -c 'sleep 15' \
   -c 'qall' || true
+
+ENV GOPATH=${USER_HOME}/gopath
+ENV PATH="${GOPATH}/bin:${PATH}"
+
+WORKDIR ${USER_HOME}/gitdir
+RUN git clone https://github.com/tinfoilsh/tinfoil-cli.git
+
+WORKDIR ${USER_HOME}/gitdir/tinfoil-cli
+RUN go build -o tinfoil . && mv tinfoil ${USER_HOME}/.local/bin
 
 # Create gitdir with proper ownership BEFORE switching users
 # ENTRYPOINT ["/bin/sleep"]

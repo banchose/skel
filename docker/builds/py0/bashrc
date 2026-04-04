@@ -63,8 +63,11 @@ bind '"jj":vi-movement-mode'
 export IGNOREEOF=4
 
 # PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?]\[$(tput setaf 7)\][\v]\$ \[$(tput sgr0)\]"
-PS1='\[\e[37m\][\!]\[\e[38;5;47m\][\H]\[\e[33m\][\u]\[\e[90m\][\D{%F %T}]\[\e[32m\][\w]\n\[\e[37m\][\$?]\[\e[37m\][\v]\$ \[\e[0m\]'
+# PS1='\[\e[37m\][\!]\[\e[38;5;47m\][\H]\[\e[33m\][\u]\[\e[90m\][\D{%F %T}]\[\e[32m\][\w]\n\[\e[37m\][\$?]\[\e[37m\][\v]\$ \[\e[0m\]'
 # PS1='[\!][\H][\u][\D{%F %T}][\w]\n[\$?][\v]\$ '  # no color
+
+PS1='\[\e[37m\][\!]\[\e[38;5;47m\][\H]\[\e[33m\][\u]\[\e[90m\][\D{%F %T}]\[\e[32m\][\w]\n\[\e[37m\][$?]\[\e[37m\][\v]\$ \[\e[0m\]'
+
 checkip() {
   local fd
   exec {fd}<>/dev/tcp/checkip.amazonaws.com/80 || {
@@ -95,8 +98,9 @@ HISTFILESIZE=50000
 HISTCONTROL="ignorespace:ignoredups"
 HISTIGNORE="[ ]*:exit:ls:bg:fg:history:clear"
 HISTTIMEFORMAT='%F %T '
+PROMPT_COMMAND="history -a; history -n"
 
-CDPATH=".:~"
+CDPATH=".:~:~/gitdir"
 
 alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,pidns,utsns,ipcns,mntns,netns,cmd'
 alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
@@ -165,18 +169,90 @@ if [[ -f ~/gitdir/skel/bash/bashrc_zen.d/zen_loader.sh ]]; then
   zen_load
 fi
 
-# home_bashrc_directory=~/.bashrc_zen.d
+getc() {
+  IFS= read -r -n1 -d '' "$@"
+}
+
+exists() {
+  type "$@" >/dev/null 2>/dev/null
+}
+
+trim_l() {
+  local str=${!1}
+  str="${str##+([[:space:]])}"
+  export "$1"="$str"
+}
+
+trim_r() {
+  local str=${!1}
+  str="${str%%+([[:space:]])}"
+  export "$1"="$str"
+}
+
+trim() {
+  trim_l "$@"
+  trim_r "$@"
+}
+
+regex() {
+
+  #  [[ $1 =~ $2 ]] && printf '%s\n' "${BASH_REMATCH[0]}"
+  #  $2 would have () in its regex to provide a capture group
+  [[ $1 =~ $2 ]] && printf '%s\n' "${BASH_REMATCH[1]}"
+
+}
+
+confirm() {
+  # if confirm "Delete everything?"; then
+  #    rm -rf "${target}"
+  # fi
+  local answer
+  read -rn 1 -p "${1:-Continue?} [y/N] " answer
+  echo
+  [[ "${answer}" =~ ^[yY]$ ]]
+}
+
 #
-# if [[ -d "${home_bashrc_directory}" ]]; then
-#   echo "Running scripts in ${home_bashrc_directory}"
-#   for profile in "${home_bashrc_directory}/"*.sh; do
-#     if [[ -r "$profile" ]]; then
-#       echo "Sourcing: $profile"
-#       . "$profile"
-#     else
-#       echo "Cannot read $profile, skipping..."
-#     fi
-#   done
-# else
-#   echo "Directory ${home_bashrc_directory} does not exist."
-# fi
+# warn: Print a message to stderr.
+### Usage: warn "format" ["arguments"...]
+#
+# warn() {
+#   local fmt=$1
+#   shift
+#   printf "script_name: $fmt\n" "$@" >&2
+# }
+#
+### Usage: some_command || die "message" ["arguments"...]
+# #
+# die() {
+#   local st=$?
+#   warn "$@"
+#   exit "$st"
+# }
+#
+# ##
+### Usage: if blah; then die status_code "message" ["arguments"...]; fi
+# #
+# die1() {
+#   local st=$1
+#   shift
+#   warn "$@"
+#   exit "$st"
+# }
+#
+### Usage: some_command || die [status code] "message" ["arguments"...]
+# #
+# die2() {
+#   local st=$?
+#   if [[ $1 != *[^0-9]* ]]; then
+#     st=$1
+#     shift
+#   fi
+#   warn "$@"
+#   exit "$st"
+# }
+#
+# [[ ]]
+# [[ abc = a* ]]
+# [[ abb =~ ^ab+$ ]]
+# -eq, -ne, -lt, -gt, -le, -ge
