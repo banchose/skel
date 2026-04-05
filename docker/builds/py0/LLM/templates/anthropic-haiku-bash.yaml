@@ -1,6 +1,6 @@
 model: anth
 system_fragments:
-  - /home/una/gitdir/skel/PROMPT/DEFAULT_bash.md
+  - /home/loon/gitdir/skel/PROMPT/DEFAULT_bash.md
 tools:
   - llm_version
   - llm_time

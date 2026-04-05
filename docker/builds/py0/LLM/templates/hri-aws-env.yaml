@@ -1,6 +1,6 @@
 model: brs
 system_fragments:
-  - /home/una/gitdir/aws/PROMPT/DEFAULT_hriaws.md
+  - /home/loon/gitdir/aws/PROMPT/DEFAULT_hriaws.md
 tools:
   - llm_version
   - llm_time

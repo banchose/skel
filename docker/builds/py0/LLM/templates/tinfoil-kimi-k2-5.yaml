@@ -1,7 +1,7 @@
 model: tinfoil-kimi-k2-5
-functions: /home/una/gitdir/skel/llm/WEATHER/weather_tool-better.py
+functions: /home/loon/gitdir/skel/llm/WEATHER/weather_tool-better.py
 system_fragments:
-  - /home/una/gitdir/skel/PROMPT/DEFAULT_PROMPT_strict.txt
+  - /home/loon/gitdir/skel/PROMPT/DEFAULT_PROMPT_strict.txt
 tools:
   - llm_version
   - llm_time

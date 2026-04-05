@@ -562,7 +562,7 @@ RUN git clone https://github.com/tinfoilsh/tinfoil-cli.git
 
 WORKDIR ${USER_HOME}/gitdir/tinfoil-cli
 RUN go build -o tinfoil . && mv tinfoil ${USER_HOME}/.local/bin
-
+WORKDIR ${USER_HOME}
 # Create gitdir with proper ownership BEFORE switching users
 # ENTRYPOINT ["/bin/sleep"]
 # CMD ["-l"]

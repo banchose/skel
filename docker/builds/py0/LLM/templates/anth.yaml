@@ -1,0 +1,9 @@
+model: anth
+functions: /home/una/gitdir/skel/llm/WEATHER/weather_tool-better.py
+system_fragments:
+  - /home/una/gitdir/skel/PROMPT/DEFAULT_PROMPT_strict.txt
+tools:
+  - llm_version
+  - llm_time
+  - simple_eval
+  - web_search
