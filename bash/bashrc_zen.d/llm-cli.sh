@@ -99,32 +99,37 @@ tf() {
   command llm "$@" -t tf_f --ta
 }
 
-# worked once
-# tf() {
-#   local log_file
-#   log_file="/tmp/tinfoil.$(date '+%s')"
-#   if ! curl -s --connect-timeout 4 http://localhost:8087 >/dev/null 2>&1; then
-#     tinfoil proxy \
-#       -r tinfoilsh/confidential-model-router \
-#       -e inference.tinfoil.sh \
-#       -p 8087 >"${log_file}" 2>&1 &
-#     local -i attempts=0
-#     until curl -s --connect-timeout 1 http://localhost:8087 >/dev/null 2>&1; do
-#       ((attempts++))
-#       if ((attempts >= 10)); then
-#         printf 'tinfoil proxy did not become ready (log: %s)\n' "${log_file}" >&2
-#         return 1
-#       fi
-#       sleep 0.5
-#     done
-#   fi
-#   if [[ "${1:-}" == "chat" ]]; then
-#     shift
-#     llm chat "$@" -t tin --ta
-#   else
-#     llm "$@" -t tin --ta
-#   fi
-# }
+tf() {
+  if ! command -v tinfoil >/dev/null 2>&1; then
+    printf >&2 'tf: tinfoil is not installed\n'
+    read -rp 'Install tinfoil-cli? [y/N] ' answer
+    if [[ ${answer,,} == y ]]; then
+      curl -fsSL https://github.com/tinfoilsh/tinfoil-cli/raw/main/install.sh | sh
+    else
+      return 1
+    fi
+  fi
+
+  local log_file
+  log_file="/tmp/tinfoil.$(date '+%s')"
+
+  if ! curl -s --connect-timeout 4 http://localhost:8087 >/dev/null 2>&1; then
+    tinfoil proxy -r tinfoilsh/confidential-model-router -e inference.tinfoil.sh -p 8087 \
+      >"${log_file}" 2>&1 &
+
+    local -i attempts=0
+    until curl -s --connect-timeout 1 http://localhost:8087 >/dev/null 2>&1; do
+      ((++attempts))
+      if ((attempts >= 10)); then
+        printf >&2 'tinfoil proxy did not become ready (log: %s)\n' "${log_file}"
+        return 1
+      fi
+      sleep 0.5
+    done
+  fi
+
+  command llm "$@" -t tf_f --ta
+}
 
 ## Python funcition example
 # llm --functions '
