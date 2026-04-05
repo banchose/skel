@@ -55,6 +55,7 @@ sudo pacman -S smartmontools --needed --noconfirm
 sudo pacman -S ndisc6 --needed --noconfirm
 sudo pacman -S freeipmi --needed --noconfirm
 sudo pacman -S ipmitool --needed --noconfirm
+sudo pacman -S uv --needed --noconfirm
 sudo pacman -S iostat --needed --noconfirm
 sudo pacman -S wireguard-tools --needed --noconfirm
 sudo pacman -S iw --needed --noconfirm
@@ -100,6 +101,7 @@ sudo pacman -S screen --needed --noconfirm
 sudo pacman -S ipcalc --needed --noconfirm
 sudo pacman -S perf --needed --noconfirm
 sudo pacman -S p7zip --needed --noconfirm
+sudo pacman -S pdfgrep --needed --noconfirm
 sudo pacman -S strace --needed --noconfirm
 sudo pacman -S htop --needed --noconfirm
 sudo pacman -S mtr --needed --noconfirm
@@ -146,6 +148,21 @@ sudo pacman -S python-pdftotext --needed --noconfirm
 sudo pacman -S python-pyusb --needed --noconfirm
 sudo pacman -S python-redis --needed --noconfirm
 sudo pacman -S python-beautifultable4 --needed --noconfirm
+sudo pacman -S python-httpx --needed --noconfirm
+sudo pacman -S python-feedparser --needed --noconfirm
+sudo pacman -S python-networkx --needed --noconfirm
+sudo pacman -S python-requests --needed --noconfirm
+sudo pacman -S python-pendulum --needed --noconfirm
+sudo pacman -S python-pandas --needed --noconfirm
+sudo pacman -S python-numby --needed --noconfirm
+sudo pacman -S python-html2text --needed --noconfirm
+sudo pacman -S python-html5-parser --needed --noconfirm
+sudo pacman -S python-icecream --needed --noconfirm
+sudo pacman -S python-kubernetes --needed --noconfirm
+sudo pacman -S python-dateutil --needed --noconfirm
+sudo pacman -S python-btrfs --needed --noconfirm
+sudo pacman -S python-jinja --needed --noconfirm
+sudo pacman -S ipython --needed --noconfirm
 #
 sudo pacman -S argparse --needed --noconfirm
 sudo pacman -S libqalculate --needed --noconfirm
@@ -221,7 +238,6 @@ sudo pacman -S ranger --needed --noconfirm
 sudo pacman -S shellcheck --needed --noconfirm
 sudo pacman -S bash-language-server --needed --noconfirm
 sudo pacman -S dive --needed --noconfirm # docker
-sudo pacman -S uv --needed --noconfirm
 # sudo pacman -S yt-dlp --needed --noconfirm
 # sudo pacman -S aws-cli --needed --noconfirm
 # sudo pacman -S neofetch  --needed --noconfirm
@@ -233,11 +249,13 @@ sudo pacman -S fzf --needed --noconfirm
 # sudo pacman -S imagemagik --needed --noconfirm
 
 # yay
-sudo pacman -S base-devel --needed --noconfirm # req for makepkg
-cd ~/temp
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
+if ! command -v yay &>/dev/null; then
+  sudo pacman -S base-devel --needed --noconfirm # req for makepkg
+  cd ~/temp
+  git clone https://aur.archlinux.org/yay.git
+  cd yay
+  makepkg -si
+fi
 
 # Pipewire
 # sudo pacman wireplumber --needed --noconfirm
@@ -251,7 +269,7 @@ yay -S bcc-tools --needed --noconfirm # /usr/share/bcc/{tools,man}
 yay -S python-bcc --needed --noconfirm
 yay -S bpftrace --needed --noconfirm
 
-yay -S jc jo yq htmlq jless xsv gron ripgrep-all moreutils entr --needed
+yay -S jc jo yq htmlq jless xsv gron ripgrep-all moreutils entr --needed --noconfirm
 
 # Spelling
 
@@ -337,6 +355,7 @@ pipx install twisted
 pipx install visidata
 pipx install psutils
 pipx install uv
+pipx
 
 pipx inject llm llm-tools-exa --pip-args="--upgrade"
 pipx inject llm llm-openrouter --pip-args="--upgrade"
