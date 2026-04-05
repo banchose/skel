@@ -4,3 +4,9 @@ services:
     volumes:
       - ./readeck-data:/readeck
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/bin/readeck", "healthcheck", "-config", "config.toml"]
+      interval: 30s
+      timeout: 2s
+      retries: 3
+ 
