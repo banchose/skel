@@ -135,7 +135,7 @@ alias path='printf "%s\n" "${PATH//:/$'"'"'\n'"'"'}"'
 alias now='date +"%T"'
 alias j='jobs -l'
 # Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:139.0) Gecko/20100101 Firefox/139.0
-alias acurl='curl -L -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:139.0) Gecko/20100101 Firefox/139.0"'
+alias acurl='curl -L -s -A "Mozilla/5.0 (X11; Linux x86_64; rv:149.0) Gecko/20100101 Firefox/149.0"'
 ## shortcut  for iptables and pass it via sudo#
 alias ipt='sudo /sbin/iptables'
 # display all rules #
