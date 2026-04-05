@@ -78,15 +78,15 @@ tf() {
   local log_file
   log_file="/tmp/tinfoil.$(date '+%s')"
 
-  if ! curl -s --connect-timeout 4 http://localhost:8080 >/dev/null 2>&1; then
+  if ! curl -s --connect-timeout 4 http://localhost:8087 >/dev/null 2>&1; then
     tinfoil proxy \
       -r tinfoilsh/confidential-model-router \
       -e inference.tinfoil.sh \
-      -p 8080 \
+      -p 8087 \
       >"${log_file}" 2>&1 &
 
     local -i attempts=0
-    until curl -s --connect-timeout 1 http://localhost:8080 >/dev/null 2>&1; do
+    until curl -s --connect-timeout 1 http://localhost:8087 >/dev/null 2>&1; do
       ((++attempts))
       if ((attempts >= 10)); then
         printf 'tinfoil proxy did not become ready (log: %s)\n' "${log_file}" >&2
@@ -103,13 +103,13 @@ tf() {
 # tf() {
 #   local log_file
 #   log_file="/tmp/tinfoil.$(date '+%s')"
-#   if ! curl -s --connect-timeout 4 http://localhost:8080 >/dev/null 2>&1; then
+#   if ! curl -s --connect-timeout 4 http://localhost:8087 >/dev/null 2>&1; then
 #     tinfoil proxy \
 #       -r tinfoilsh/confidential-model-router \
 #       -e inference.tinfoil.sh \
-#       -p 8080 >"${log_file}" 2>&1 &
+#       -p 8087 >"${log_file}" 2>&1 &
 #     local -i attempts=0
-#     until curl -s --connect-timeout 1 http://localhost:8080 >/dev/null 2>&1; do
+#     until curl -s --connect-timeout 1 http://localhost:8087 >/dev/null 2>&1; do
 #       ((attempts++))
 #       if ((attempts >= 10)); then
 #         printf 'tinfoil proxy did not become ready (log: %s)\n' "${log_file}" >&2
@@ -136,7 +136,7 @@ tf() {
 
 # alias llm_curl_anthropic_models='curl https://api.anthropic.com/v1/models -H "x-api-key: $ANTHROPIC_API_KEY" -H "anthropic-version: 2023-06-01"'
 
-alias llm_start_tinfoil_proxy='tinfoil proxy -r tinfoilsh/confidential-model-router -e inference.tinfoil.sh -p 8080'
+alias llm_start_tinfoil_proxy='tinfoil proxy -r tinfoilsh/confidential-model-router -e inference.tinfoil.sh -p 8087'
 
 export llmtst="this is just a test, can you search the web?"
 
