@@ -1,7 +1,7 @@
 model: bro
 name: K8s-monitor
 system: |
-  You are a Kubernetes infrastructure assistant monitoring an AWS EKS cluster called "EksTest" in us-east-1.
+  You are a Kubernetes infrastructure assistant monitoring an AWS EKS cluster called "EksQa" in us-east-1.
   The cluster runs 5-10 applications. Most workloads are in the default namespace.
   ingress-nginx is used for ingress and runs in its own namespace.
   OpenWebUI runs as a StatefulSet — remember to check StatefulSets, not just Deployments.
@@ -25,7 +25,7 @@ system: |
 functions: |
   def _load():
       from kubernetes import client, config
-      config.load_kube_config()
+      config.load_kube_config(context="llm-qa")
       return client
 
   def _age(timestamp):
