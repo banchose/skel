@@ -66,9 +66,7 @@ export IGNOREEOF=4
 # PS1='\[\e[37m\][\!]\[\e[38;5;47m\][\H]\[\e[33m\][\u]\[\e[90m\][\D{%F %T}]\[\e[32m\][\w]\n\[\e[37m\][\$?]\[\e[37m\][\v]\$ \[\e[0m\]'
 # PS1='[\!][\H][\u][\D{%F %T}][\w]\n[\$?][\v]\$ '  # no color
 
-# PS1='\[\e[37m\][\!]\[\e[38;5;47m\][\H]\[\e[33m\][\u]\[\e[90m\][\D{%F %T}]\[\e[32m\][\w]\n\[\e[37m\][$?]\[\e[37m\][\v]\$ \[\e[0m\]'
-
-PS1='\[\e[37m\][\!]\[\e[38;5;47m\][\H]\[\e[33m\][\u]\[\e[90m\][\D{%F %T}]\[\e[32m\][\w]\n\[\e[37m\][$__last_exit]\[\e[37m\][\v]\$ \[\e[0m\]'
+PS1='\[\e[37m\][\!]\[\e[38;5;47m\][\H]\[\e[33m\][\u]\[\e[90m\][\D{%F %T}]\[\e[32m\][\w]\n\[\e[37m\][$?]\[\e[37m\][\v]\$ \[\e[0m\]'
 
 checkip() {
   local fd
@@ -100,7 +98,7 @@ HISTFILESIZE=50000
 HISTCONTROL="ignorespace:ignoredups"
 HISTIGNORE="[ ]*:exit:ls:bg:fg:history:clear"
 HISTTIMEFORMAT='%F %T '
-PROMPT_COMMAND='__last_exit=$?; history -a; history -n'
+PROMPT_COMMAND="history -a; history -n"
 
 CDPATH=".:~:~/gitdir"
 
@@ -214,7 +212,6 @@ confirm() {
   [[ "${answer}" =~ ^[yY]$ ]]
 }
 
-# Examples
 #
 # warn: Print a message to stderr.
 ### Usage: warn "format" ["arguments"...]
