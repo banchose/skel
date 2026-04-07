@@ -55,7 +55,7 @@ alias llmdocs='llm -t ant-haiku -f docs: '
 # alias llm='llm --ta -t "${LLM_DEFAULT_TEMPLATE:-ants}"'
 
 alias llm-test='llm -t "${LLM_DEFAULT_TEMPLATE:-ants}" "${LLM_TEST_STRING_TOOLS}"'
-
+alias llm_test_anthropic_get_models='curl -H "anthropic-version: 2023-06-01" -H "x-api-key: '"${ANTHROPIC_API_KEY}"'" https://api.anthropic.com/v1/models'
 alias llm_weather='llm -t weather-inline "what is the weather"'
 alias llm_weather-d='llm -t Weatherman-anthropic "what is the weather" --td'
 
