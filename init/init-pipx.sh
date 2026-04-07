@@ -116,6 +116,7 @@ if [[ -n ${INST_EXTRA:-} ]]; then
   pipx install networkx
   pipx install httpx
   pipx install twisted
+  pipx install copyparty
   pipx install icecream
   pipx install flask --include-deps
   pipx install django --include-deps
@@ -190,6 +191,7 @@ if command -v ipython &>/dev/null; then
     ipython \
     boto3 \
     sqlite-utils \
+    copyparty \
     boltons \
     beautifulsoup4 \
     psutils \
