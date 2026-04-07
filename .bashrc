@@ -1,9 +1,6 @@
 # Just a personal .bashrc that maybe renamed and then included in the real ~/.bashrc
 # in ~/.bashrc: [[ -f ~/.bashrc.includeme ]] && source ~/.bashrc.includeme
 
-# you are in the box sending things out the jack (via /dev/fd/1 or /dev/fd/2) to the speaker (terminal) which appears on the terminals output
-# Things piped out /dev/fd/1 may be connected to the output of you terminal
-
 # XDG base directories.
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -33,10 +30,10 @@ fi
 # Set the editor and editor alias
 ######################################
 command_exists() {
-  command -v "$1" >/dev/null 2>&1
+  command -v "$1" 1>&2 >/dev/null
 }
 
-if command_exists nvim; then
+if command_exists nvim 1>&2 >/dev/null; then
   export EDITOR=nvim
   alias v='nvim'
 elif command_exists vim; then
@@ -61,22 +58,15 @@ bind -m vi-command ".":yank-last-arg # or insert-last-argument
 bind '"jj":vi-movement-mode'
 
 export IGNOREEOF=4
-
-# PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?]\[$(tput setaf 7)\][\v]\$ \[$(tput sgr0)\]"
-# PS1='\[\e[37m\][\!]\[\e[38;5;47m\][\H]\[\e[33m\][\u]\[\e[90m\][\D{%F %T}]\[\e[32m\][\w]\n\[\e[37m\][\$?]\[\e[37m\][\v]\$ \[\e[0m\]'
-# PS1='[\!][\H][\u][\D{%F %T}][\w]\n[\$?][\v]\$ '  # no color
-
-PS1='\[\e[37m\][\!]\[\e[38;5;47m\][\H]\[\e[33m\][\u]\[\e[90m\][\D{%F %T}]\[\e[32m\][\w]\n\[\e[37m\][$?]\[\e[37m\][\v]\$ \[\e[0m\]'
+# export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\v]\$ \[$(tput sgr0)\]"
+# the git broke sudo bash export PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?][\[$(tput setaf 9)\]\$(parse_git_branch)\[$(tput setaf 7)\]][\v]\$ \[$(tput sgr0)\]"
+PS1="\[$(tput setaf 7)\][\!]\[$(tput setaf 47)\][\H]\[$(tput setaf 3)\][\u]\[$(tput setaf 8)\][\D{%F %T}]\[$(tput setaf 2)\][\w]\n\[$(tput setaf 7)\][\$?]\[$(tput setaf 7)\][\v]\$ \[$(tput sgr0)\]"
+# Make info friendly
 
 checkip() {
-  local fd
-  exec {fd}<>/dev/tcp/checkip.amazonaws.com/80 || {
-    echo >&2 "checkip: connect failed"
-    return 1
-  }
-  printf "GET / HTTP/1.1\r\nHost: checkip.amazonaws.com\r\nConnection: close\r\n\r\n" >&"${fd}"
-  tail -n1 <&"${fd}"
-  exec {fd}>&-
+  exec 3<>/dev/tcp/checkip.amazonaws.com/80
+  printf "GET / HTTP/1.1\r\nHost: checkip.amazonaws.com\r\nConnection: close\r\n\r\n" >&3
+  tail -n1 <&3
 }
 
 PROMPT_DIRTRIM=10
@@ -93,19 +83,38 @@ shopt -s dirspell 2>/dev/null
 shopt -s cdspell 2>/dev/null
 shopt -s cdable_vars
 shopt -s lithist
+<<<<<<< Updated upstream
 HISTSIZE=50000
 HISTFILESIZE=50000
 HISTCONTROL="ignorespace:ignoredups"
 HISTIGNORE="[ ]*:exit:ls:bg:fg:history:clear"
 HISTTIMEFORMAT='%F %T '
 PROMPT_COMMAND="history -a; history -n"
+||||||| Stash base
+HISTSIZE=50000
+HISTFILESIZE=50000
+HISTCONTROL="ignorespace:ignoredups"
+HISTIGNORE="[ ]*:exit:ls:bg:fg:history:clear"
+HISTTIMEFORMAT='%F %T '
+=======
+export HISTSIZE=50000
+export HISTFILESIZE=10000
+export HISTCONTROL="ignorespace:erasedups"
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+export HISTTIMEFORMAT='%F %T '
+>>>>>>> Stashed changes
 
+<<<<<<< Updated upstream
 CDPATH=".:~:~/gitdir"
+||||||| Stash base
+CDPATH=".:~"
+=======
+CDPATH=".:~:"
+>>>>>>> Stashed changes
 
 alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,pidns,utsns,ipcns,mntns,netns,cmd'
 alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
 alias nps='ps -N --ppid 2 -o pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
-alias psf='ps -N --ppid 2 -lwf'
 
 # Existing
 alias chown='chown --preserve-root'
@@ -115,10 +124,10 @@ alias bc='bc -l'
 alias dmesg='dmesg --color=always'
 alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
-alias rm='rm -v -I --preserve-root'
 alias cp='cp -i -v'
 alias grep='grep -i --color=auto'
 alias mv='mv -i -v'
+alias rm='rm -v -I --preserve-root'
 alias df='df -H'
 alias du='du -ch'
 alias ls='ls -F -h --color=always --time-style=long-iso'
@@ -131,7 +140,7 @@ alias ltr='ls -AFltrh --color=auto'
 alias lt='ls -AFlth --color=auto'
 alias g='grep'
 alias pg="pcre2grep -i"
-alias path='printf "%s\n" "${PATH//:/$'"'"'\n'"'"'}"'
+alias path='echo -e ${PATH//:/\\n}'
 alias now='date +"%T"'
 alias j='jobs -l'
 # Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:139.0) Gecko/20100101 Firefox/139.0
@@ -161,13 +170,27 @@ alias jbw='journalctl -p "emerg..warning" -b'
 alias jbn='journalctl -p "emerg..notice" -b'
 alias jlb='journalctl --list-boots'
 # A load average of multi cpu system
+alias loada='cat /proc/loadavg | cut -c 1-4 | echo "scale=2; ($(</dev/stdin)/`nproc`)*100" | bc -l'
 alias cpuinfo='lscpu'
 alias xlsblk='lsblk -o name,mountpoint,fstype,size,fsused,pttype,model,vendor,serial,uuid,partuuid'
 
-if [[ -f ~/gitdir/skel/bash/bashrc_zen.d/zen_loader.sh ]]; then
-  source ~/gitdir/skel/bash/bashrc_zen.d/zen_loader.sh
-  zen_load
+# Ensure the directory variable is not empty
+home_bashrc_directory=~/.bashrc_zen.d
+
+if [[ -d "${home_bashrc_directory}" ]]; then
+  echo "Running scripts in ${home_bashrc_directory}"
+  for profile in "${home_bashrc_directory}/"*.sh; do
+    if [[ -r "$profile" ]]; then
+      echo "Sourcing: $profile"
+      . "$profile"
+    else
+      echo "Cannot read $profile, skipping..."
+    fi
+  done
+else
+  echo "Directory ${home_bashrc_directory} does not exist."
 fi
+<<<<<<< Updated upstream
 
 getc() {
   IFS= read -r -n1 -d '' "$@"
@@ -256,3 +279,47 @@ confirm() {
 # [[ abc = a* ]]
 # [[ abb =~ ^ab+$ ]]
 # -eq, -ne, -lt, -gt, -le, -ge
+||||||| Stash base
+
+getc() {
+  IFS= read -r -n1 -d '' "$@"
+}
+
+exists() {
+  type "$@" >/dev/null 2>/dev/null
+}
+
+trim_l() {
+  local str=${!1}
+  str="${str##+([[:space:]])}"
+  export "$1"="$str"
+}
+
+trim_r() {
+  local str=${!1}
+  str="${str%%+([[:space:]])}"
+  export "$1"="$str"
+}
+
+trim() {
+  trim_l "$@"
+  trim_r "$@"
+}
+
+# home_bashrc_directory=~/.bashrc_zen.d
+#
+# if [[ -d "${home_bashrc_directory}" ]]; then
+#   echo "Running scripts in ${home_bashrc_directory}"
+#   for profile in "${home_bashrc_directory}/"*.sh; do
+#     if [[ -r "$profile" ]]; then
+#       echo "Sourcing: $profile"
+#       . "$profile"
+#     else
+#       echo "Cannot read $profile, skipping..."
+#     fi
+#   done
+# else
+#   echo "Directory ${home_bashrc_directory} does not exist."
+# fi
+=======
+>>>>>>> Stashed changes
