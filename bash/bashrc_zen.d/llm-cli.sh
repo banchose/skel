@@ -74,30 +74,30 @@ alias llm-ids='command llm logs list --json -q'
 
 alias llm_chat_tin_bash='llm chat -t tin --sf ~/gitdir/skel/PROMPT/DEFAULT_bash.md'
 
-tf() {
-  local log_file
-  log_file="/tmp/tinfoil.$(date '+%s')"
-
-  if ! curl -s --connect-timeout 4 http://localhost:8087 >/dev/null 2>&1; then
-    tinfoil proxy \
-      -r tinfoilsh/confidential-model-router \
-      -e inference.tinfoil.sh \
-      -p 8087 \
-      >"${log_file}" 2>&1 &
-
-    local -i attempts=0
-    until curl -s --connect-timeout 1 http://localhost:8087 >/dev/null 2>&1; do
-      ((++attempts))
-      if ((attempts >= 10)); then
-        printf 'tinfoil proxy did not become ready (log: %s)\n' "${log_file}" >&2
-        return 1
-      fi
-      sleep 0.5
-    done
-  fi
-
-  command llm "$@" -t tf_f --ta
-}
+# tf() {
+#   local log_file
+#   log_file="/tmp/tinfoil.$(date '+%s')"
+#
+#   if ! curl -s --connect-timeout 4 http://localhost:8087 >/dev/null 2>&1; then
+#     tinfoil proxy \
+#       -r tinfoilsh/confidential-model-router \
+#       -e inference.tinfoil.sh \
+#       -p 8087 \
+#       >"${log_file}" 2>&1 &
+#
+#     local -i attempts=0
+#     until curl -s --connect-timeout 1 http://localhost:8087 >/dev/null 2>&1; do
+#       ((++attempts))
+#       if ((attempts >= 10)); then
+#         printf 'tinfoil proxy did not become ready (log: %s)\n' "${log_file}" >&2
+#         return 1
+#       fi
+#       sleep 0.5
+#     done
+#   fi
+#
+#   command llm "$@" -t tf_f --ta
+# }
 
 tf() {
   if ! command -v tinfoil >/dev/null 2>&1; then
