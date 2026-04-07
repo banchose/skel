@@ -1,11 +1,6 @@
 source ~/.bashrc_zen.d/api_keys_envs.sh
 
 # Check for required environment variables
-[[ -z "${ANTHROPIC_API_KEY:-}" ]] && echo "***** ANTHROPIC_API_KEY not set *****" >&2
-[[ -z "${OPENROUTER_API_KEY:-}" ]] && echo "***** OPENROUTER_API_KEY not set *****" >&2
-[[ -z "${AWS_BEARER_TOKEN_BEDROCK:-}" ]] && echo "***** AWS_BEARER_TOKEN_BEDROCK not set *****" >&2
-[[ -z "${AWS_BEDROCK_DEFAULT_MODEL:-}" ]] && echo "***** AWS_BEDROCK_DEFAULT_MODEL is not set *****" >&2
-[[ -z "${EXA_API_KEY:-}" ]] && echo "***** EXA_API_KEY not set *****" >&2
 
 # command llm install llm-openrouter
 # command llm install llm-anthropic
@@ -153,6 +148,9 @@ echo "EXPORTING AWS_BEDROCK_DEFAULT_SONNET_MODEL: ${AWS_BEDROCK_DEFAULT_SONNET_M
 
 export AWS_BEDROCK_DEFAULT_OPUS_MODEL=us.anthropic.claude-opus-4-6-v1
 echo "EXPORTING AWS_BEDROCK_DEFAULT_OPUS_MODEL: ${AWS_BEDROCK_DEFAULT_OPUS_MODEL}"
+
+export AWS_BEDROCK_DEFAULT_MODEL="${AWS_BEDROCK_DEFAULT_OPUS_MODEL}"
+echo "EXPORTING AWS_BEDROCK_DEFAULT_MODEL: ${AWS_BEDROCK_DEFAULT_MODEL}"
 
 export ANTHROPIC_DEFAULT_MODEL="${AWS_BEDROCK_DEFAULT_OPUS_MODEL}"
 echo "EXPORTING ANTHROPIC_DEFAULT_MODEL: ${ANTHROPIC_DEFAULT_MODEL}"
@@ -847,3 +845,9 @@ llm logs --cid <ID> | head -5                  # peek at each one
 llm chat --cid <ID>                            # resume the right one
 EOF
 }
+
+[[ -z "${ANTHROPIC_API_KEY:-}" ]] && echo "***** ANTHROPIC_API_KEY not set *****" >&2
+[[ -z "${OPENROUTER_API_KEY:-}" ]] && echo "***** OPENROUTER_API_KEY not set *****" >&2
+[[ -z "${AWS_BEARER_TOKEN_BEDROCK:-}" ]] && echo "***** AWS_BEARER_TOKEN_BEDROCK not set *****" >&2
+[[ -z "${AWS_BEDROCK_DEFAULT_MODEL:-}" ]] && echo "***** AWS_BEDROCK_DEFAULT_MODEL is not set *****" >&2
+[[ -z "${EXA_API_KEY:-}" ]] && echo "***** EXA_API_KEY not set *****" >&2
