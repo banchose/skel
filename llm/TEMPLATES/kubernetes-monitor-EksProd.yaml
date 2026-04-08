@@ -1,0 +1,450 @@
+model: bro
+name: K8s-monitor
+system: |
+  You are a Kubernetes infrastructure assistant monitoring an AWS EKS cluster called "EksProd" in us-east-1.
+  The cluster runs 5-10 applications. Most workloads are in the default namespace.
+  ingress-nginx is used for ingress and runs in its own namespace.
+  OpenWebUI runs as a StatefulSet — remember to check StatefulSets, not just Deployments.
+  Some test workloads may appear in unexpected namespaces.
+
+  When reporting cluster status:
+    - Start with cluster_overview() for general queries to conserve function call budget
+    - List pods grouped by namespace
+    - Flag any pods that are CrashLoopBackOff, Error, Pending, or have high restart counts
+    - Note pod age and which node they're on
+  When investigating issues:
+    - Check pod events first for scheduling, image pull, or OOM issues
+    - Cross-reference logs with events
+    - For connectivity issues, trace the Ingress → Service → Endpoints chain
+    - Verify port alignment between Ingress backends and Service definitions
+  You have a limit of 5 function calls per response. Be strategic:
+    - For general status: cluster_overview() first, then list_pods() if needed
+    - For specific pod issues: get_pod_logs() and get_pod_events() together
+    - For ingress debugging: list_ingresses() then describe_ingress() and list_services()
+  Be concise and structured. Use tables where appropriate.
+functions: |
+  def _load():
+      from kubernetes import client, config
+      config.load_kube_config(context="llm-prod")
+      return client
+
+  def _age(timestamp):
+      from datetime import datetime, timezone
+      if timestamp is None:
+          return "unknown"
+      if isinstance(timestamp, str):
+          from dateutil import parser
+          timestamp = parser.isoparse(timestamp)
+      delta = datetime.now(timezone.utc) - timestamp
+      days = delta.days
+      hours, rem = divmod(delta.seconds, 3600)
+      minutes = rem // 60
+      if days > 0:
+          return f"{days}d{hours}h"
+      if hours > 0:
+          return f"{hours}h{minutes}m"
+      return f"{minutes}m"
+
+  def cluster_overview() -> dict:
+      """Get cluster overview: nodes with status/capacity, namespace count,
+      and pod summary counts (running, failed, pending, succeeded)."""
+      c = _load()
+      v1 = c.CoreV1Api()
+      nodes = v1.list_node().items
+      node_info = []
+      for n in nodes:
+          conds = {cond.type: cond.status for cond in (n.status.conditions or [])}
+          node_info.append({
+              "name": n.metadata.name,
+              "status": "Ready" if conds.get("Ready") == "True" else "NotReady",
+              "roles": ",".join(
+                  k.replace("node-role.kubernetes.io/", "")
+                  for k in (n.metadata.labels or {})
+                  if k.startswith("node-role.kubernetes.io/")
+              ) or "none",
+              "kubelet_version": n.status.node_info.kubelet_version,
+              "cpu": str(n.status.capacity.get("cpu", "?")),
+              "memory_gb": round(int(n.status.capacity.get("memory", "0Ki").rstrip("Ki")) / (1024 * 1024), 1) if n.status.capacity.get("memory") else "?",
+              "pods_capacity": n.status.capacity.get("pods", "?"),
+          })
+      namespaces = v1.list_namespace().items
+      pods = v1.list_pod_for_all_namespaces().items
+      phase_counts = {}
+      for p in pods:
+          phase = p.status.phase or "Unknown"
+          phase_counts[phase] = phase_counts.get(phase, 0) + 1
+      return {
+          "nodes": node_info,
+          "namespace_count": len(namespaces),
+          "pod_summary": phase_counts,
+          "total_pods": len(pods),
+      }
+
+  def list_namespaces() -> list[dict]:
+      """List all namespaces with their status."""
+      c = _load()
+      v1 = c.CoreV1Api()
+      return [
+          {"name": ns.metadata.name, "status": ns.status.phase}
+          for ns in v1.list_namespace().items
+      ]
+
+  def list_pods(namespace: str = None) -> list[dict]:
+      """List pods with status, restarts, age, node, and owner.
+      If namespace is None, lists across all namespaces."""
+      c = _load()
+      v1 = c.CoreV1Api()
+      if namespace:
+          pods = v1.list_namespaced_pod(namespace).items
+      else:
+          pods = v1.list_pod_for_all_namespaces().items
+      result = []
+      for p in pods:
+          restarts = sum(
+              cs.restart_count for cs in (p.status.container_statuses or [])
+          )
+          owner = ""
+          if p.metadata.owner_references:
+              ref = p.metadata.owner_references[0]
+              owner = f"{ref.kind}/{ref.name}"
+          result.append({
+              "name": p.metadata.name,
+              "namespace": p.metadata.namespace,
+              "status": p.status.phase,
+              "restarts": restarts,
+              "age": _age(p.metadata.creation_timestamp),
+              "node": p.spec.node_name or "unscheduled",
+              "owner": owner,
+          })
+      return result
+
+  def find_pod(name: str) -> list[dict]:
+      """Find pods matching a name substring across all namespaces.
+      Useful for resolving short names to full pod names."""
+      c = _load()
+      v1 = c.CoreV1Api()
+      pods = v1.list_pod_for_all_namespaces().items
+      return [
+          {"name": p.metadata.name, "namespace": p.metadata.namespace, "status": p.status.phase}
+          for p in pods
+          if name.lower() in p.metadata.name.lower()
+      ]
+
+  def list_workloads(namespace: str = None) -> list[dict]:
+      """List Deployments, StatefulSets, and DaemonSets with replica status.
+      Returns all workload types in one call so StatefulSets aren't missed."""
+      c = _load()
+      apps = c.AppsV1Api()
+      result = []
+      if namespace:
+          deps = apps.list_namespaced_deployment(namespace).items
+          sts = apps.list_namespaced_stateful_set(namespace).items
+          ds = apps.list_namespaced_daemon_set(namespace).items
+      else:
+          deps = apps.list_deployment_for_all_namespaces().items
+          sts = apps.list_stateful_set_for_all_namespaces().items
+          ds = apps.list_daemon_set_for_all_namespaces().items
+      for d in deps:
+          result.append({
+              "kind": "Deployment",
+              "name": d.metadata.name,
+              "namespace": d.metadata.namespace,
+              "desired": d.spec.replicas or 0,
+              "ready": d.status.ready_replicas or 0,
+              "available": d.status.available_replicas or 0,
+          })
+      for s in sts:
+          result.append({
+              "kind": "StatefulSet",
+              "name": s.metadata.name,
+              "namespace": s.metadata.namespace,
+              "desired": s.spec.replicas or 0,
+              "ready": s.status.ready_replicas or 0,
+          })
+      for d in ds:
+          result.append({
+              "kind": "DaemonSet",
+              "name": d.metadata.name,
+              "namespace": d.metadata.namespace,
+              "desired": d.status.desired_number_scheduled or 0,
+              "ready": d.status.number_ready or 0,
+          })
+      return result
+
+  def inspect_pod(name: str, namespace: str) -> dict:
+      """Detailed pod inspection: containers with state/exit codes/restart counts,
+      env var keys (no values), volume mounts, conditions, ownerReferences."""
+      c = _load()
+      v1 = c.CoreV1Api()
+      p = v1.read_namespaced_pod(name, namespace)
+      containers = []
+      for cs in (p.status.container_statuses or []):
+          state_info = {}
+          if cs.state:
+              if cs.state.running:
+                  state_info = {"state": "running", "started_at": str(cs.state.running.started_at)}
+              elif cs.state.waiting:
+                  state_info = {"state": "waiting", "reason": cs.state.waiting.reason, "message": (cs.state.waiting.message or "")[:300]}
+              elif cs.state.terminated:
+                  t = cs.state.terminated
+                  state_info = {"state": "terminated", "reason": t.reason, "exit_code": t.exit_code, "message": (t.message or "")[:300]}
+          containers.append({
+              "name": cs.name,
+              "image": cs.image,
+              "ready": cs.ready,
+              "restart_count": cs.restart_count,
+              **state_info,
+          })
+      init_containers = []
+      for cs in (p.status.init_container_statuses or []):
+          state_info = {}
+          if cs.state:
+              if cs.state.terminated:
+                  t = cs.state.terminated
+                  state_info = {"state": "terminated", "exit_code": t.exit_code, "reason": t.reason}
+              elif cs.state.waiting:
+                  state_info = {"state": "waiting", "reason": cs.state.waiting.reason}
+          init_containers.append({
+              "name": cs.name,
+              "image": cs.image,
+              "restart_count": cs.restart_count,
+              **state_info,
+          })
+      spec_containers = []
+      for sc in p.spec.containers:
+          env_keys = [e.name for e in (sc.env or [])]
+          env_from = [ef.config_map_ref.name if ef.config_map_ref else ef.secret_ref.name if ef.secret_ref else "?" for ef in (sc.env_from or [])]
+          mounts = [{"name": vm.name, "path": vm.mount_path, "read_only": vm.read_only} for vm in (sc.volume_mounts or [])]
+          spec_containers.append({
+              "name": sc.name,
+              "env_keys": env_keys,
+              "env_from": env_from,
+              "mounts": mounts,
+              "ports": [{"container_port": pt.container_port, "protocol": pt.protocol} for pt in (sc.ports or [])],
+              "resources": {
+                  "requests": dict(sc.resources.requests) if sc.resources and sc.resources.requests else {},
+                  "limits": dict(sc.resources.limits) if sc.resources and sc.resources.limits else {},
+              },
+          })
+      owners = [{"kind": ref.kind, "name": ref.name} for ref in (p.metadata.owner_references or [])]
+      conditions = [{"type": cond.type, "status": cond.status, "reason": cond.reason, "message": cond.message} for cond in (p.status.conditions or [])]
+      sa = p.spec.service_account_name
+      sa_info = {"service_account": sa}
+      if sa:
+          try:
+              sa_obj = v1.read_namespaced_service_account(sa, namespace)
+              annotations = sa_obj.metadata.annotations or {}
+              role_arn = annotations.get("eks.amazonaws.com/role-arn")
+              if role_arn:
+                  sa_info["iam_role_arn"] = role_arn
+          except Exception:
+              pass
+      return {
+          "name": p.metadata.name,
+          "namespace": p.metadata.namespace,
+          "node": p.spec.node_name,
+          "status": p.status.phase,
+          "owners": owners,
+          "containers": containers,
+          "init_containers": init_containers,
+          "spec": spec_containers,
+          "conditions": conditions,
+          **sa_info,
+      }
+
+  def get_pod_logs(name: str, namespace: str, tail: int = 50, container: str = None) -> str:
+      """Get recent log lines from a pod. If container is None and pod has
+      multiple containers, returns logs from all containers labeled by name."""
+      c = _load()
+      v1 = c.CoreV1Api()
+      pod = v1.read_namespaced_pod(name, namespace)
+      container_names = [cn.name for cn in (pod.spec.containers or [])]
+      if container:
+          return v1.read_namespaced_pod_log(name, namespace, container=container, tail_lines=tail)
+      if len(container_names) == 1:
+          return v1.read_namespaced_pod_log(name, namespace, tail_lines=tail)
+      parts = []
+      for cn in container_names:
+          try:
+              logs = v1.read_namespaced_pod_log(name, namespace, container=cn, tail_lines=tail)
+              parts.append(f"=== Container: {cn} ===\n{logs}")
+          except Exception as e:
+              parts.append(f"=== Container: {cn} ===\n[error reading logs: {e}]")
+      return "\n\n".join(parts)
+
+  def get_pod_events(name: str, namespace: str) -> list[dict]:
+      """Get events related to a specific pod. Shows scheduling, pull, OOM,
+      CrashLoopBackOff, and other pod lifecycle events."""
+      from datetime import datetime, timezone
+      c = _load()
+      v1 = c.CoreV1Api()
+      field = f"involvedObject.name={name},involvedObject.namespace={namespace}"
+      events = v1.list_namespaced_event(namespace, field_selector=field).items
+      events.sort(key=lambda e: e.last_timestamp or e.event_time or datetime.min.replace(tzinfo=timezone.utc))
+      return [
+          {
+              "type": e.type,
+              "reason": e.reason,
+              "message": (e.message or "")[:500],
+              "count": e.count,
+              "first": str(e.first_timestamp),
+              "last": str(e.last_timestamp),
+              "source": e.source.component if e.source else "",
+          }
+          for e in events[-30:]
+      ]
+
+  def list_events(namespace: str = None, minutes: int = 30) -> list[dict]:
+      """List recent events across the cluster or a specific namespace.
+      Defaults to last 30 minutes. Returns up to 100 events."""
+      from datetime import datetime, timezone
+      c = _load()
+      v1 = c.CoreV1Api()
+      if namespace:
+          events = v1.list_namespaced_event(namespace).items
+      else:
+          events = v1.list_event_for_all_namespaces().items
+      cutoff = datetime.now(timezone.utc).timestamp() - (minutes * 60)
+      recent = []
+      for e in events:
+          ts = e.last_timestamp or e.event_time
+          if ts and ts.timestamp() >= cutoff:
+              recent.append(e)
+      recent.sort(key=lambda e: (e.last_timestamp or e.event_time or datetime.min.replace(tzinfo=timezone.utc)))
+      return [
+          {
+              "type": e.type,
+              "reason": e.reason,
+              "object": f"{e.involved_object.kind}/{e.involved_object.name}",
+              "namespace": e.involved_object.namespace or "",
+              "message": (e.message or "")[:300],
+              "count": e.count,
+              "last": str(e.last_timestamp),
+              "source": e.source.component if e.source else "",
+          }
+          for e in recent[-100:]
+      ]
+
+  def list_services(namespace: str = None) -> list[dict]:
+      """List services with type, selector, ports, and endpoint readiness."""
+      c = _load()
+      v1 = c.CoreV1Api()
+      if namespace:
+          services = v1.list_namespaced_service(namespace).items
+      else:
+          services = v1.list_service_for_all_namespaces().items
+      result = []
+      for svc in services:
+          ports = [
+              {"name": pt.name, "port": pt.port, "target_port": str(pt.target_port), "protocol": pt.protocol}
+              for pt in (svc.spec.ports or [])
+          ]
+          try:
+              ep = v1.read_namespaced_endpoints(svc.metadata.name, svc.metadata.namespace)
+              ready_addrs = 0
+              not_ready_addrs = 0
+              for subset in (ep.subsets or []):
+                  ready_addrs += len(subset.addresses or [])
+                  not_ready_addrs += len(subset.not_ready_addresses or [])
+              endpoints = {"ready": ready_addrs, "not_ready": not_ready_addrs}
+          except Exception:
+              endpoints = {"ready": 0, "not_ready": 0, "error": "could not fetch"}
+          result.append({
+              "name": svc.metadata.name,
+              "namespace": svc.metadata.namespace,
+              "type": svc.spec.type,
+              "cluster_ip": svc.spec.cluster_ip,
+              "selector": dict(svc.spec.selector) if svc.spec.selector else {},
+              "ports": ports,
+              "endpoints": endpoints,
+          })
+      return result
+
+  def list_ingresses(namespace: str = None) -> list[dict]:
+      """List all ingresses with their hosts and paths."""
+      c = _load()
+      net = c.NetworkingV1Api()
+      if namespace:
+          ingresses = net.list_namespaced_ingress(namespace).items
+      else:
+          ingresses = net.list_ingress_for_all_namespaces().items
+      result = []
+      for ing in ingresses:
+          hosts = []
+          for rule in (ing.spec.rules or []):
+              paths = []
+              for pa in ((rule.http.paths if rule.http else []) or []):
+                  backend = pa.backend
+                  svc_name = backend.service.name if backend.service else "?"
+                  svc_port = ""
+                  if backend.service and backend.service.port:
+                      svc_port = backend.service.port.number or backend.service.port.name or ""
+                  paths.append({"path": pa.path, "path_type": pa.path_type, "service": svc_name, "port": str(svc_port)})
+              hosts.append({"host": rule.host or "*", "paths": paths})
+          tls_hosts = []
+          for t in (ing.spec.tls or []):
+              tls_hosts.extend(t.hosts or [])
+          result.append({
+              "name": ing.metadata.name,
+              "namespace": ing.metadata.namespace,
+              "class": (ing.spec.ingress_class_name or ing.metadata.annotations.get("kubernetes.io/ingress.class", "?")) if ing.metadata.annotations else ing.spec.ingress_class_name or "?",
+              "hosts": hosts,
+              "tls_hosts": tls_hosts,
+          })
+      return result
+
+  def describe_ingress(name: str, namespace: str) -> dict:
+      """Detailed ingress inspection: rules, backends, annotations, TLS config,
+      and whether backend services exist with matching ports."""
+      c = _load()
+      net = c.NetworkingV1Api()
+      v1 = c.CoreV1Api()
+      ing = net.read_namespaced_ingress(name, namespace)
+      rules = []
+      for rule in (ing.spec.rules or []):
+          paths = []
+          for pa in ((rule.http.paths if rule.http else []) or []):
+              backend = pa.backend
+              svc_name = backend.service.name if backend.service else "?"
+              svc_port = None
+              if backend.service and backend.service.port:
+                  svc_port = backend.service.port.number or backend.service.port.name
+              svc_status = {}
+              if svc_name != "?":
+                  try:
+                      svc = v1.read_namespaced_service(svc_name, namespace)
+                      svc_ports = [sp.port for sp in (svc.spec.ports or [])]
+                      svc_status = {
+                          "exists": True,
+                          "service_ports": svc_ports,
+                          "port_match": svc_port in svc_ports if svc_port else "no_port_specified",
+                      }
+                      try:
+                          ep = v1.read_namespaced_endpoints(svc_name, namespace)
+                          ready = sum(len(s.addresses or []) for s in (ep.subsets or []))
+                          svc_status["ready_endpoints"] = ready
+                      except Exception:
+                          svc_status["ready_endpoints"] = "unknown"
+                  except Exception:
+                      svc_status = {"exists": False}
+              paths.append({
+                  "path": pa.path,
+                  "path_type": pa.path_type,
+                  "service": svc_name,
+                  "port": svc_port,
+                  "service_status": svc_status,
+              })
+          rules.append({"host": rule.host or "*", "paths": paths})
+      tls = []
+      for t in (ing.spec.tls or []):
+          tls.append({"hosts": t.hosts, "secret": t.secret_name})
+      annotations = dict(ing.metadata.annotations) if ing.metadata.annotations else {}
+      return {
+          "name": ing.metadata.name,
+          "namespace": ing.metadata.namespace,
+          "class": ing.spec.ingress_class_name or annotations.get("kubernetes.io/ingress.class", "?"),
+          "rules": rules,
+          "tls": tls,
+          "annotations": annotations,
+      }
+

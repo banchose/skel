@@ -29,6 +29,17 @@ alias kra='for i in $(kubectl api-resources -o name);do echo "${i%%.*}";kubectl 
 alias klsp='kubectl run  -it alpine-test --image=alpine --restart=Never --rm --command  -- ls'
 alias akcurl='kubectl run -it curl-$RANDOM --rm --restart=Never --image=curlimages/curl --'
 
+## completion
+# In .bashrc, BEFORE sourcing kubectl completion:
+echo "COMPLETIONS: kubectl"
+if [[ -f /usr/share/bash-completion/bash_completion ]]; then
+  source /usr/share/bash-completion/bash_completion
+elif [[ -f /etc/bash_completion ]]; then
+  source /etc/bash_completion
+fi
+
+source <(kubectl completion bash)
+
 kwhoami() {
 
   kubectl auth can-i --list

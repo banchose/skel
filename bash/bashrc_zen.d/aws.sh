@@ -8,7 +8,7 @@ type aws &>/dev/null || {
   return 0
 }
 
-export AWS_PROFILE=lab
+# export AWS_PROFILE=lab
 export AWS_DEFAULT_REGION=us-east-1
 export AwsRegion=us-east-1 # needed to set region for aliases when they expand. This will always be set in the current shell if this file loads
 export MANINSTANCE=i-0a495644db9737bf6
@@ -42,7 +42,7 @@ aws_check_bedrock_events() {
     --output json | jq -r '.[] | fromjson | .modelId' | sort | uniq -c
 }
 
-
+alias editaws='nvim ~/gitdir/skel/bash/bashrc_zen.d/aws.sh'
 alias awcd='cd ~/gitdir/aws'
 alias cdaws='cd ~/gitdir/aws'
 alias awcdskel='cd ~/gitdir/skel/bash/bashrc_zen.d/'
@@ -938,4 +938,32 @@ for awsprofile in $(aws configure list-profiles)
     echo "Checking AWS Profile: ${awsprofile}"
     aws sts get-caller-identity --region us-east-1 --profile "${awsprofile}"
   done
+}
+
+aws_help() {
+
+  cat <<'EOF'
+#########################
+aws sso login --sso-session hri --no-browser --use-device-code
+~/.aws/config example
+------
+[sso-session hri]
+sso_start_url = https://d-9067806dc9.awsapps.com/start
+sso_region = us-east-1
+sso_registration_scopes = sso:account:access
+
+[profile net]
+sso_session = hri
+sso_account_id = 211262586138
+sso_role_name = AWSAdministratorAccess
+region = us-east-1
+------
+#########################
+kubernetes context -> kubernetes user -> aws profile
+Role, context, permissionset, profile
+The kubenetes context maps a user with a cluster
+  The kubernetes 'user' points to both a AWS **cluster** name and a AWS **profile** (aws sso login --profile xyz)
+  PermissionSets map a group or user to an account with a trust policy with whom can assume it
+  AWS PermissionSets create roles in each of the accounts that 'xyz' can assume
+EOF
 }
