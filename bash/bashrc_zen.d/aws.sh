@@ -1044,6 +1044,8 @@ aws eks update-kubeconfig --region region-code --name my-cluster
   If public, publishes a resolveable url, if private the same but resolves to private IPS
   Can be both private and public.  Vpc needed for private. no public subnet, aws just publishes it
   Eks Nodes connect to the cluster control plane over Kubernetes API server endpoints
+### kubectl
+  Uses 'exec' aws in ~/.kube/config to call aws and cluster has cluster endpoint https://CC7A64222E08AEF734022C4F2123C68E.gr7.us-east-1.eks.amazonaws.com
 ### Oddball
   aws cloudformation get-template --stack-name <stack-name> --query 'TemplateBody' --region us-east-1 --profile test
 EOF
