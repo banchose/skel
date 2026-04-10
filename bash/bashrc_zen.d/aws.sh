@@ -962,6 +962,11 @@ aws_help() {
     IAM Policy
       Used to allow access to AWS services
       ONLY when attached to users,groups,roles)
+##### IAM Groups
+  Can attach a identity-policy to a group
+  Cannot identify a group as a principal in a policy
+  Not a principal or authenticated entity
+  Permissions only, principals are authenticated IAM entities
 #### aws cli #####################
   IAM Acess Keys
     0 or 1 or 2
@@ -1039,5 +1044,7 @@ aws eks update-kubeconfig --region region-code --name my-cluster
   If public, publishes a resolveable url, if private the same but resolves to private IPS
   Can be both private and public.  Vpc needed for private. no public subnet, aws just publishes it
   Eks Nodes connect to the cluster control plane over Kubernetes API server endpoints
+### Oddball
+  aws cloudformation get-template --stack-name <stack-name> --query 'TemplateBody' --region us-east-1 --profile test
 EOF
 }
