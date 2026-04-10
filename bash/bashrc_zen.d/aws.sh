@@ -1032,5 +1032,12 @@ The kubenetes context maps a user with a cluster
   PermissionSets map a group or user to an account with a trust policy with whom can assume it
   AWS PermissionSets create roles in each of the accounts that 'xyz' can assume
 aws eks update-kubeconfig --region region-code --name my-cluster
+##### Eks Control Plane
+  When you create a new cluster, Amazon EKS creates an endpoint
+  Endpoint used by kubectl
+  Default Public enabled/Private disabled (no vpc or subnet needed)
+  If public, publishes a resolveable url, if private the same but resolves to private IPS
+  Can be both private and public.  Vpc needed for private. no public subnet, aws just publishes it
+  Eks Nodes connect to the cluster control plane over Kubernetes API server endpoints
 EOF
 }
