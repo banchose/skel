@@ -942,6 +942,24 @@ for awsprofile in $(aws configure list-profiles)
 aws_help() {
 
   cat <<'EOF'
+## blah ###
+  aws sso login --sso-session hri (authenticates and caches the SSO access token)
+  aws s3 ls --profile test (SDK uses the cached token to assume the role in that account)
+## Authentication
+  You authenticate to IAM Identity Center 
+  -> SSO access token (from Identity Center token) cached
+  That is the token that assumes the roles in other accounts
+#########################
+aws sts get-caller-identity
+  Proof of identity -> Issue temp credentials
+    access key, secret key, session token
+  IAM user/service calls 'sts:AssumeRole, sts checks the roles trust polcy
+  If allowed by trust policy, sts mints temporary credentials
+aws sso login - IAM identity Center
+  Identity Center determines which accounts/PermissionSets your entitled to
+  When accessing an account, Identity Center calls STS assumeRole (role must be in account)
+  **The assumed role must exist in the account (via permissionsets/account association)
+You → Identity Center (authenticate) → STS AssumeRole → temporary creds → ~/.aws/cli/cache
 #########################
 aws sso login --sso-session hri --no-browser --use-device-code
 ~/.aws/config example
