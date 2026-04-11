@@ -1,0 +1,14 @@
+name: dogs
+schema_object:
+    properties:
+        dogs:
+            items:
+                properties:
+                    bio:
+                        type: string
+                    name:
+                        type: string
+                type: object
+            type: array
+    type: object
+

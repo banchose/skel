@@ -184,6 +184,7 @@ if command -v llm &>/dev/null; then
   llm sentence-transformers register all-MiniLM-L12-v2 --alias mini-l12
   llm sentence-transformers register all-mpnet-base-v2 --alias mpnet
   # llm install llm-sentence-transformers
+  uv tool install strip-tags
 fi
 
 if command -v ipython &>/dev/null; then

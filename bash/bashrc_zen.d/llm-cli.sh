@@ -290,7 +290,7 @@ alias llm_what_version='command llm -t default_anthropic_sonnet "What LLM model 
 # alias bros='llm -u -m bro -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # # alias bro='llm -u -m bro -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # alias broc='llm chat -t bro'
-alias bro='command llm -u -t bro'
+alias bro='command llm -t bro --ta'
 # alias bro='echo "use llm"'
 #
 # alias brsT='llm -u -m brs "This is just a test, respond with short acknowledgment"'
@@ -299,14 +299,14 @@ alias bro='command llm -u -t bro'
 # # alias brs='llm -u -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # alias brsc='llm chat -t brs'
 # alias brs='echo "use llm"'
-alias brs='command llm -u -t brs'
+alias brs='command llm -t brs --ta'
 #
 # alias brhT='llm -u -m brh "This is just a test, respond with short acknowledgment"'
 # alias brhn='llm -u -m brh'
 # alias brhs='llm -u -m brh -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 
 # alias brhc='llm chat -t brh'
-alias brh='command llm -u -t brh'
+alias brh='command llm -t brh --ta'
 # EXAMPLE alias brh='llm -u -m brh -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # alias brh='echo "use llm"'
 
