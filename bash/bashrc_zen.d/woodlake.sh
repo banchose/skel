@@ -45,3 +45,17 @@ dimoff() {
   hyprctl keyword decoration:dim_inactive false
 
 }
+
+wood_help() {
+
+  cat <<'EOF'
+Wifi in access mode so ethernet/wifi on same network .200.0/24 at .1
+Wifi has no services (access mode and NO dns and NO dhcp
+Wifi gets dhcp from the firewall
+Wifi gets DNS from ns2
+Wifi in access mode so ethernet/wifi on same network .200.0/24
+Wifi network allows dns to .2
+arc on .10.0/24 network at .10
+ns1 on 
+EOF
+}
