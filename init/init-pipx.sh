@@ -127,8 +127,8 @@ if [[ -n ${INST_EXTRA:-} ]]; then
   pipx install cfn-lint
   ##### llm
   pipx install llm && command llm install llm-docs
-  pipx install aider-chat --include-deps
-  pipx install 'litellm[proxy]'
+  uv tool install aider-chat --python 3.11
+  pipx install litellm['proxy']
   pipx install openai
   pipx install anthropic --include-deps
   pipx install open-terminal
@@ -175,7 +175,7 @@ if command -v llm &>/dev/null; then
   pipx inject llm certifi --pip-args="--upgrade"
   pipx inject llm ftfy --pip-args="--upgrade"
   pipx inject llm uv --pip-args="--upgrade"
-  # pipx inject llm 'litellm[proxy]' --pip-args="--upgrade"
+  pipx inject llm litellm['proxy'] --pip-args="--upgrade"
   pipx inject llm tinfoil --include-deps --pip-args="--upgrade"
 
   # pipx inject llm llm-sentence-transformers --pip-args="--upgrade"
@@ -211,6 +211,7 @@ if command -v ipython &>/dev/null; then
     numpy \
     ipython-extensions \
     llm \
+    litellm['proxy'] \
     llm-tools-exa \
     llm-openrouter \
     llm-fragments-github \
