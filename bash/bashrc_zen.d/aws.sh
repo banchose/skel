@@ -62,7 +62,7 @@ alias awlcp="aws configure sso  --region $AwsRegion --profile production"
 
 alias awlt="aws sso login --region ${AwsRegion:-us-east-1} --profile test --no-browser --use-device-code"
 alias awltc="aws configure sso --region $AwsRegion --profile test --no-browser --use-device-code"
-alias awln="aws sso login --region $AwsRegion --profile net --no-browser --use-device-code"
+alias awlnet="aws sso login --region $AwsRegion --profile net --no-browser --use-device-code"
 alias awlnc="aws configure sso --region $AwsRegion --profile net --no-browser --use-device-code"
 alias awld="aws sso login --region $AwsRegion --profile dev --no-browser --use-device-code"
 alias awlprod="aws sso login --region $AwsRegion --profile production --no-browser --use-device-code"

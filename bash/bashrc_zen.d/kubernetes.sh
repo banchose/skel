@@ -143,3 +143,51 @@ kscan() {
     kubectl get pods
   done
 }
+
+editkube() {
+  nvim ~/gitdir/skel/bash/bashrc_zen.d/kubernetes.sh
+}
+
+kube_help() {
+
+  cat <<'EOF'
+## image (2 levels)
+  container layer r/w
+  -- copy-on-write
+  Image layers r/o
+  docker uses storage drivers to create the layered architecture
+  - AUFS
+  - ZFS
+  - BTRFS
+  - Device Mapper
+  - Overlay
+  - Overlay2
+
+## Storage
+### Persistent Volume
+  A piece of storge available to the cluster provisioned by admin or dynamically using storage classes
+
+### Persistent Volume Claim
+  A request for storage by a user
+  one-to-one relationship between claims and volumes
+  Every persistent volume claim is bound to single persistent volume
+  A persistent volume claim PVC is bound to a PV persistent volume
+  Kubernetes will find a PV to that has sufficeint capacity (access mode, storage class) 
+  Smaller claim may get a larger volume if everything else matches and nothing smaller
+  Delete the PVC an either RETAIN, DELETE, Recycle (deprecated)
+
+### Storage class
+  Google disk: before creating PV, you need to run a command on google to provision the disk
+  Storage class does both and eliminates the need for the PV
+  Creates a PV
+  Has a provisioner that determines what volume plugin is used to provision the PV
+  Will have a reclaim policy (delete, retain)
+  Volume expansion (grow only) is allowed with some (CSI, PortWorx..)
+  Storage class ex.
+    each class may be 1. ssds or 2. ssds that get replicated each a different class of storage
+### Provisioning
+  static: a PV carring details of real storage avail for use by user
+  dynamic: no PVs created by admin, then a storage class is used to provision
+  Claims that request class "" effectively disable dynamic provisioning for themselves
+EOF
+}

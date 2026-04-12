@@ -59,8 +59,8 @@ fi
 ##
 # pipx applications
 ##
-command -v pipx &>/dev/null || python3.13 -m pip install --user pipx
-pipx ensurepath
+# command -v pipx &>/dev/null || python3.13 -m pip install --user pipx
+# pipx ensurepath
 
 pipx install httpie --include-deps
 pipx install pgcli
@@ -116,7 +116,6 @@ if [[ -n ${INST_EXTRA:-} ]]; then
   pipx install networkx
   pipx install httpx
   pipx install twisted
-  pipx install copyparty
   pipx install icecream
   pipx install flask --include-deps
   pipx install django --include-deps
@@ -130,7 +129,6 @@ if [[ -n ${INST_EXTRA:-} ]]; then
   pipx install llm && command llm install llm-docs
   pipx install aider-chat --include-deps
   pipx install 'litellm[proxy]'
-  #  pipx install litellm
   pipx install openai
   pipx install anthropic --include-deps
   pipx install open-terminal
@@ -163,7 +161,6 @@ if command -v llm &>/dev/null; then
   pipx inject llm llm-fragments-github --pip-args="--upgrade"
   pipx inject llm llm-fragments-pdf --pip-args="--upgrade"
   pipx inject llm llm-fragments-site-text --pip-args="--upgrade"
-  pipx inject llm llm-sentence-transformers --pip-args="--upgrade"
   pipx inject llm llm-cmd-comp --pip-args="--upgrade"
   pipx inject llm kubernetes --pip-args="--upgrade"
   pipx inject llm python-dateutil --pip-args="--upgrade"
@@ -179,12 +176,11 @@ if command -v llm &>/dev/null; then
   pipx inject llm ftfy --pip-args="--upgrade"
   pipx inject llm uv --pip-args="--upgrade"
   # pipx inject llm 'litellm[proxy]' --pip-args="--upgrade"
-  pipx inject llm litellm --pip-args="--upgrade"
   pipx inject llm tinfoil --include-deps --pip-args="--upgrade"
-  llm sentence-transformers register all-MiniLM-L12-v2 --alias mini-l12
-  llm sentence-transformers register all-mpnet-base-v2 --alias mpnet
-  # llm install llm-sentence-transformers
-  uv tool install strip-tags
+
+  # pipx inject llm llm-sentence-transformers --pip-args="--upgrade"
+  # llm sentence-transformers register all-MiniLM-L12-v2 --alias mini-l12
+  # llm sentence-transformers register all-mpnet-base-v2 --alias mpnet
 fi
 
 if command -v ipython &>/dev/null; then
@@ -192,7 +188,6 @@ if command -v ipython &>/dev/null; then
     ipython \
     boto3 \
     sqlite-utils \
-    copyparty \
     boltons \
     beautifulsoup4 \
     psutils \
@@ -225,7 +220,6 @@ if command -v ipython &>/dev/null; then
     llm-jq \
     httpie \
     uv \
-    litellm \
     open-terminal \
     --pip-args="--upgrade"
 #   --include-deps
@@ -298,6 +292,7 @@ get_lazyvim() {
 
 }
 
+build_neovim
 # git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # ~/.fzf/install
 
