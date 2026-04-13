@@ -25,7 +25,7 @@ deploy-pisal-awsweb() {
     printf 'Cancelled.\n'
     return 0
   }
-  kubectl apply --context Prod-Admin@Prod -f ./pisal-deploy-awswebprod.yaml
+  kubectl apply --context arn:aws:eks:us-east-1:315633532929:cluster/EksProd -f ./pisal-deploy-awswebprod.yaml
 }
 deploy-pisalapi-awsweb() {
   cd ~/hrigit/Kubernetes/pisalapi/awswebprod/ || {
