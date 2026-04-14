@@ -8,7 +8,7 @@ type aws &>/dev/null || {
   return 0
 }
 
-# export AWS_PROFILE=lab
+export AWS_PROFILE=bedrock
 export AWS_DEFAULT_REGION=us-east-1
 export AwsRegion=us-east-1 # needed to set region for aliases when they expand. This will always be set in the current shell if this file loads
 export MANINSTANCE=i-0a495644db9737bf6

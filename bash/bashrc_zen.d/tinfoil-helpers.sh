@@ -28,89 +28,94 @@ tf_get_docs_md() {
 tf_whisper_transcribe() {
   local file="${1:?Usage: tf_whisper_transcribe <audio_file>}"
   local segment_time="${2:-600}"
+  local port=8087
+  local max_bytes=25000000
 
   [[ -f "${file}" ]] || {
-    printf 'Error: file not found: %s\n' "${file}" >&2
+    printf >&2 'Error: file not found: %s\n' "${file}"
     return 1
   }
 
   local api_key
-  api_key="$(llm keys get tinfoil 2>/dev/null)" || {
-    printf 'Error: could not retrieve tinfoil API key\n' >&2
-    return 1
-  }
+  api_key="$(llm keys get tinfoil 2>/dev/null)" ||
+    {
+      printf >&2 'Error: could not retrieve tinfoil API key (run: llm keys set tinfoil)\n'
+      return 1
+    }
 
-  command -v ffmpeg >/dev/null 2>&1 || {
-    printf 'Error: ffmpeg not found\n' >&2
-    return 1
-  }
+  type ffmpeg >/dev/null 2>&1 ||
+    {
+      printf >&2 'Error: ffmpeg not found\n'
+      return 1
+    }
+
+  curl -sf --connect-timeout 4 "http://localhost:${port}/health" >/dev/null 2>&1 ||
+    {
+      printf >&2 'Tinfoil proxy not running on port %s. Start it with: tf\n' "${port}"
+      return 1
+    }
 
   local tmpdir
-  tmpdir="$(mktemp -d)" || {
-    printf 'Error: could not create temp directory\n' >&2
-    return 1
-  }
-  trap 'rm -rf "${tmpdir}"' RETURN
+  tmpdir="$(mktemp -d)" || return 1
+  # NO trap — explicit cleanup via command rm (bypasses rm -v alias)
 
   local mp3_file="${tmpdir}/audio.mp3"
-  local ext="${file##*.}"
-
-  if [[ "${ext,,}" == "mp3" ]]; then
+  if [[ "${file##*.}" == [Mm][Pp]3 ]]; then
     mp3_file="${file}"
   else
-    printf 'Converting %s to mp3...\n' "${ext}" >&2
-    if ! ffmpeg -hide_banner -loglevel error -y \
-      -i "${file}" -vn -b:a 64k "${mp3_file}"; then
-      printf 'Error: ffmpeg conversion failed\n' >&2
+    printf >&2 'Converting to mp3...\n'
+    if ! ffmpeg -hide_banner -loglevel error -y -i "${file}" -vn -b:a 64k "${mp3_file}"; then
+      printf >&2 'Error: ffmpeg conversion failed\n'
+      command rm -rf "${tmpdir}"
       return 1
     fi
   fi
 
-  local max_bytes=25000000
   local file_size
-  file_size="$(stat --printf='%s' "${mp3_file}" 2>/dev/null || stat -f '%z' "${mp3_file}" 2>/dev/null)" || {
-    printf 'Error: could not determine file size\n' >&2
+  file_size="$(stat --printf='%s' "${mp3_file}" 2>/dev/null || stat -f '%z' "${mp3_file}")" || {
+    printf >&2 'Error: could not stat %s\n' "${mp3_file}"
+    command rm -rf "${tmpdir}"
     return 1
   }
 
+  local -a chunks=()
+
   if ((file_size <= max_bytes)); then
-    curl -s http://127.0.0.1:8087/v1/audio/transcriptions \
-      -F file=@"${mp3_file}" \
-      -F model=whisper-large-v3-turbo \
-      -H "Authorization: Bearer ${api_key}"
-    return
+    chunks=("${mp3_file}")
+  else
+    printf >&2 'File exceeds 25MB (%s bytes), splitting into %ds segments...\n' "${file_size}" "${segment_time}"
+    if ! ffmpeg -hide_banner -loglevel error -y \
+      -i "${mp3_file}" -f segment -segment_time "${segment_time}" -c copy \
+      "${tmpdir}/chunk-%03d.mp3"; then
+      printf >&2 'Error: ffmpeg split failed\n'
+      command rm -rf "${tmpdir}"
+      return 1
+    fi
+    readarray -t chunks < <(printf '%s\n' "${tmpdir}"/chunk-*.mp3 | sort)
+    if ((${#chunks[@]} == 0)); then
+      printf >&2 'Error: no chunks produced\n'
+      command rm -rf "${tmpdir}"
+      return 1
+    fi
+    printf >&2 'Transcribing %d chunks...\n' "${#chunks[@]}"
   fi
-
-  printf 'File exceeds 25MB (%s bytes), splitting into %ds segments...\n' "${file_size}" "${segment_time}" >&2
-
-  if ! ffmpeg -hide_banner -loglevel error -y \
-    -i "${mp3_file}" \
-    -f segment -segment_time "${segment_time}" -c copy \
-    "${tmpdir}/chunk-%03d.mp3"; then
-    printf 'Error: ffmpeg split failed\n' >&2
-    return 1
-  fi
-
-  local chunks
-  readarray -t chunks < <(printf '%s\n' "${tmpdir}"/chunk-*.mp3 | sort)
-
-  if ((${#chunks[@]} == 0)); then
-    printf 'Error: no chunks produced\n' >&2
-    return 1
-  fi
-
-  printf 'Transcribing %d chunks...\n' "${#chunks[@]}" >&2
 
   local i=0
   for chunk in "${chunks[@]}"; do
     ((++i))
-    printf '[chunk %d/%d]\n' "${i}" "${#chunks[@]}" >&2
-    curl -s http://127.0.0.1:8087/v1/audio/transcriptions \
+    ((${#chunks[@]} > 1)) && printf >&2 '[chunk %d/%d]\n' "${i}" "${#chunks[@]}"
+    if ! curl -sf "http://127.0.0.1:${port}/v1/audio/transcriptions" \
       -F file=@"${chunk}" \
       -F model=whisper-large-v3-turbo \
-      -H "Authorization: Bearer ${api_key}"
+      -H "Authorization: Bearer ${api_key}"; then
+      printf >&2 'Error: transcription request failed on chunk %d (curl exit: %d)\n' "${i}" "$?"
+      command rm -rf "${tmpdir}"
+      return 1
+    fi
     printf '\n'
   done
+
+  command rm -rf "${tmpdir}"
 }
 
 # tinfoil-transcribe() {
