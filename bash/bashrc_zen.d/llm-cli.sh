@@ -299,14 +299,14 @@ alias llm_what_version='command llm -t default_anthropic_sonnet "What LLM model 
 # # alias brs='llm -u -m brs -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # alias brsc='llm chat -t brs'
 # alias brs='echo "use llm"'
-alias brs='command llm -t brs --ta'
+# alias brs='command llm -t brs --ta'
 #
 # alias brhT='llm -u -m brh "This is just a test, respond with short acknowledgment"'
 # alias brhn='llm -u -m brh'
 # alias brhs='llm -u -m brh -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 
 # alias brhc='llm chat -t brh'
-alias brh='command llm -t brh --ta'
+# alias brh='command llm -t brh --ta'
 # EXAMPLE alias brh='llm -u -m brh -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # alias brh='echo "use llm"'
 
@@ -352,6 +352,58 @@ bro() {
 
   command llm "$@" -t bro --ta
 }
+
+_br_preflight() {
+  if ! aws sts get-caller-identity --profile bedrock &>/dev/null; then
+    echo "AWS SSO session expired or invalid. Run:" >&2
+    echo "  aws sso login --sso-session hri --no-browser --use-device-code" >&2
+    return 1
+  fi
+  if ! curl -sf http://127.0.0.1:4000/health/liveliness &>/dev/null; then
+    echo "LiteLLM proxy not running. Run:" >&2
+    echo "  llm_start_litellm" >&2
+    echo "litellm --config ~/gitdir/skel/llm/litellm/litellm.conf --port 4000 &" >&2
+    return 1
+  fi
+}
+
+bro() { _br_preflight && command llm "$@" -t bro --ta; }
+brs() { _br_preflight && command llm "$@" -t brs --ta; }
+brh() { _br_preflight && command llm "$@" -t brh --ta; }
+
+# brs() {
+#   if ! aws sts get-caller-identity --profile bedrock &>/dev/null; then
+#     echo "AWS SSO session expired or invalid. Run:" >&2
+#     echo "  aws sso login --sso-session hri --no-browser --use-device-code" >&2
+#     return 1
+#   fi
+#
+#   if ! curl -sf http://127.0.0.1:4000/health/liveliness &>/dev/null; then
+#     echo "LiteLLM proxy not running. Run:" >&2
+#     echo "  llm_start_litellm" >&2
+#     echo "litellm --config ~/gitdir/skel/llm/litellm/litellm.conf --port 4000 &" >&2
+#     return 1
+#   fi
+#
+#   command llm "$@" -t brs --ta
+# }
+#
+# brh() {
+#   if ! aws sts get-caller-identity --profile bedrock &>/dev/null; then
+#     echo "AWS SSO session expired or invalid. Run:" >&2
+#     echo "  aws sso login --sso-session hri --no-browser --use-device-code" >&2
+#     return 1
+#   fi
+#
+#   if ! curl -sf http://127.0.0.1:4000/health/liveliness &>/dev/null; then
+#     echo "LiteLLM proxy not running. Run:" >&2
+#     echo "  llm_start_litellm" >&2
+#     echo "litellm --config ~/gitdir/skel/llm/litellm/litellm.conf --port 4000 &" >&2
+#     return 1
+#   fi
+#
+#   command llm "$@" -t brh --ta
+# }
 
 llm_bootstrap() {
   local config_dir="${HOME}/.config/io.datasette.llm"
