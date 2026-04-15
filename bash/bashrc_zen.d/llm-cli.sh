@@ -290,7 +290,7 @@ alias llm_what_version='command llm -t default_anthropic_sonnet "What LLM model 
 # alias bros='llm -u -m bro -T web_search -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # # alias bro='llm -u -m bro -T Exa -T simple_eval -T llm_version -T llm_time -T get_answer -T get_contents'
 # alias broc='llm chat -t bro'
-alias bro='command llm -t bro --ta'
+# alias bro='command llm -t bro --ta'
 # alias bro='echo "use llm"'
 #
 # alias brsT='llm -u -m brs "This is just a test, respond with short acknowledgment"'
@@ -334,6 +334,24 @@ alias brh='command llm -t brh --ta'
 #   # 3. All clear — run it
 #   command llm -m brs "$@"
 # }
+#
+
+bro() {
+  if ! aws sts get-caller-identity --profile bedrock &>/dev/null; then
+    echo "AWS SSO session expired or invalid. Run:" >&2
+    echo "  aws sso login --sso-session hri --no-browser --use-device-code" >&2
+    return 1
+  fi
+
+  if ! curl -sf http://127.0.0.1:4000/health/liveliness &>/dev/null; then
+    echo "LiteLLM proxy not running. Run:" >&2
+    echo "  llm_start_litellm" >&2
+    echo "litellm --config ~/gitdir/skel/llm/litellm/litellm.conf --port 4000 &" >&2
+    return 1
+  fi
+
+  command llm "$@" -t bro --ta
+}
 
 llm_bootstrap() {
   local config_dir="${HOME}/.config/io.datasette.llm"
