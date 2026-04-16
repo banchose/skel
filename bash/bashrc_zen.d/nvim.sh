@@ -44,7 +44,7 @@ editnvimhelp() {
   nvim "${nvim_help_path}"
 }
 
-nvim-help() {
+nvim_help() {
   local nvim_help_path="${HOME}/gitdir/skel/nvim/nvim-help.md"
   local pager
 

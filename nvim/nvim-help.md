@@ -1,5 +1,14 @@
 # nvim help
 
+## Buffers
+
+- H: previous Buffer
+- L: next buffer
+- <leader>bd: delete buffer
+- <leader>bb: switch to other buffer/last
+- <leader>,: buffer picker
+
+
 ## Tag jumping
 
 - ctrl-o
