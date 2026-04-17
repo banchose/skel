@@ -1027,8 +1027,6 @@ aws_get_litellm_role_info() {
   aws iam get-role --role-name AmazonEKS_LiteLLM_OpenWebUI_Role --region us-east-1 --profile test
   aws iam list-attached-role-policies --role-name AmazonEKS_LiteLLM_OpenWebUI_Role --region us-east-1 --profile test
   aws iam list-role-policies --role-name AmazonEKS_LiteLLM_OpenWebUI_Role --region us-east-1 --profile test
-  aws iam get-role --role-name AmazonEKS_LiteLLM_OpenWebUI_Role --region us-east-1 --profile test
-  aws iam list-attached-role-policies --role-name AmazonEKS_LiteLLM_OpenWebUI_Role --region us-east-1 --profile test
   aws iam get-policy-version --policy-arn arn:aws:iam::405350004483:policy/litellm-bedrock-policy --version-id "$(aws iam get-policy --policy-arn arn:aws:iam::405350004483:policy/litellm-bedrock-policy --query 'Policy.DefaultVersionId' --output text --region us-east-1 --profile test)" --region us-east-1 --profile test
 
 }
