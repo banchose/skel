@@ -1024,9 +1024,68 @@ EOF
 
 aws_get_litellm_role_info() {
 
+  echo "############################################"
+  echo ""
+  echo "iam get role"
+  echo ""
+  echo "############################################"
   aws iam get-role --role-name AmazonEKS_LiteLLM_OpenWebUI_Role --region us-east-1 --profile test
+  echo "############################################"
+  echo ""
+  echo "iam list attached policies"
+  echo ""
+  echo "############################################"
   aws iam list-attached-role-policies --role-name AmazonEKS_LiteLLM_OpenWebUI_Role --region us-east-1 --profile test
+  echo "############################################"
+  echo ""
+  echo "iam list role policies"
+  echo ""
+  echo "############################################"
   aws iam list-role-policies --role-name AmazonEKS_LiteLLM_OpenWebUI_Role --region us-east-1 --profile test
+  echo "############################################"
+  echo ""
+  echo "iam get policy version"
+  echo ""
+  echo "############################################"
   aws iam get-policy-version --policy-arn arn:aws:iam::405350004483:policy/litellm-bedrock-policy --version-id "$(aws iam get-policy --policy-arn arn:aws:iam::405350004483:policy/litellm-bedrock-policy --query 'Policy.DefaultVersionId' --output text --region us-east-1 --profile test)" --region us-east-1 --profile test
+  echo "############################################"
+  echo ""
+  echo "Get kube config map aws-auth in kube-system"
+  echo ""
+  echo "############################################"
+  kubectl -n kube-system get configmap aws-auth --context arn:aws:eks:us-east-1:405350004483:cluster/EksTest -o yaml
+  echo "############################################"
+  echo ""
+  echo "Get kube litellm service account"
+  echo ""
+  echo "############################################"
+  kubectl get serviceaccounts -n openwebui litellm-sa --context arn:aws:eks:us-east-1:405350004483:cluster/EksTest -o yaml
+  echo "############################################"
+  echo ""
+  echo "Litellm config"
+  echo ""
+  echo "############################################"
+  LITELLM_POD=$(kubectl get pods -n openwebui -l app=litellm --context arn:aws:eks:us-east-1:405350004483:cluster/EksTest -o jsonpath='{.items[0].metadata.name}')
+  echo "$LITELLM_POD"
+  kubectl -n openwebui exec --context arn:aws:eks:us-east-1:405350004483:cluster/EksTest "$LITELLM_POD" -- cat /app/proxy_config.yaml
+  echo "---------------------------------------------------------------"
+  echo ""
+  echo "Explain"
+  cat <<'EOF'
+  Who can talk to the cluster (Kubernetes API)
+  ------------------------------
+  aws-auth maps IAM identities to Kubernetes RBAC groups (for humans and AWS services)
+  - K8s Username: system:node{{...}}
+  - K8s Group: system:bootstrappers, system:nodes (to join the cluster)
+  - K8s Username: eks-developer-role
+  - K8s Group: system:masters
+  - K8s eks-mcp-user
+  - K8s Group: llm-readonly
 
+  What a pod can do in AWS (litellm calls bedrock)
+  ------------------------------
+  kubectl get serviceaccounts  -n openwebui  litellm-sa --context arn:aws:eks:us-east-1:405350004483:cluster/EksTest
+  - K8s Service Account: openwebui:litellm-sa
+  - IAM Role: AmazonEKS_LiteLLM_OpenWebUI_Role
+EOF
 }
