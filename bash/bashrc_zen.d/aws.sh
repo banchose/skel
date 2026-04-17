@@ -28,13 +28,12 @@ if command -v aws_completer &>/dev/null; then
   complete -C "$(command -v aws_completer)" aws
 fi
 
-
 # alias awbedck="aws logs filter-log-events   --log-group-name /aws/bedrock/model-invocations   --start-time $(($(date +%s) - 3600))000   --region us-east-1   --profile test   --query 'events[].message'   --output json | jq -r '.[] | fromjson | .modelId' | sort | uniq -c"
 
 aws_check_bedrock_events() {
   aws logs filter-log-events \
     --log-group-name /aws/bedrock/model-invocations \
-    --start-time "$(( $(date +%s) - 3600 ))000" \
+    --start-time "$(($(date +%s) - 3600))000" \
     --region us-east-1 \
     --profile test \
     --query 'events[].message' \
@@ -53,7 +52,6 @@ alias awssh-warehouse="aws ssm start-session --target ${WAREHOUSEID} --region us
 alias awdlb='aws elbv2 describe-load-bala --query "LoadBalancers[].DNSName" --region us-east-1'
 alias awlswaf="aws logs tail aws-waf-logs-HRI-APP-WAF   --follow   --region us-east-1   --profile net"
 alias awlscreds='aws configure export-credentials --profile $AWS_PROFILE'
-
 
 alias awlct="aws configure sso  --region ${AwsRegion:-us-east-1} --profile test"
 alias awlcn="aws configure sso  --region $AwsRegion --profile net"
@@ -83,34 +81,6 @@ alias awlbedtokens='aws cloudwatch get-metric-statistics \
   --region us-east-1 \
   --profile test \
   --output json | jq -r ".Datapoints | sort_by(.Timestamp) | .[] | [.Sum, (.Timestamp | sub(\"\\\\+00:00$\"; \"Z\") | fromdateiso8601 | strflocaltime(\"%Y-%m-%d %H:%M:%S\")), .Unit] | @tsv" | column -t'
-
-# alias xbedtokens='aws cloudwatch get-metric-statistics \
-#   --namespace AWS/Bedrock \
-#   --metric-name InputTokenCount \
-# # --dimensions Name=ModelId,Value=us.anthropic.claude-sonnet-4-5-20250929-v1:0 \
-#   --start-time $(date -u -d "24 hours ago" +%Y-%m-%dT%H:%M:%S) \
-#   --end-time $(date -u +%Y-%m-%dT%H:%M:%S) \
-#   --period 300 \
-#   --statistics Sum \
-#   --region us-east-1 \
-#   --profile test \
-#   --output json | jq -r ".Datapoints | sort_by(.Timestamp) | .[] | [.Sum, (.Timestamp | sub(\"\\\\+00:00$\"; \"Z\") | fromdateiso8601 | strflocaltime(\"%Y-%m-%d %H:%M:%S\")), .Unit] | @tsv" | column -t'
-
-alias awlbedlogs='aws cloudtrail lookup-events \
-  --lookup-attributes AttributeKey=EventName,AttributeValue=Converse \
-  --start-time $(date -u -d "24 hours ago" +%Y-%m-%dT%H:%M:%S) \
-  --max-results 50 \
-  --region us-east-1 \
-  --profile test \
-  --output json | jq -r '\''.Events | sort_by(.EventTime) | .[] | {time: .EventTime, event: .EventName, user: .Username, ip: (.CloudTrailEvent | fromjson | .sourceIPAddress), userAgent: (.CloudTrailEvent | fromjson | .userAgent)}'\'''
-
-# Function: Get AWS Profile
-#get_aws_context() {
-#  local profile="$1"
-#  if [[ -z "$profile" ]]; then
-#    echo "Missing a profile name"
-#    return 0
-#  fi
 
 INGRESS=ingo.healthresearch.org
 
@@ -207,24 +177,24 @@ set_aws_envs() {
   set_stack_outputs HRI-BIGTEST us-east-1 test
   echo " HRI-BIGDATA"
   set_stack_outputs HRI-BIGDATA us-east-1 production # Mind the profile
-# echo " HRI-BIGEKSALB"
-# set_stack_outputs HRI-BIGEKSALB us-east-1 test # Mind the profile
+  # echo " HRI-BIGEKSALB"
+  # set_stack_outputs HRI-BIGEKSALB us-east-1 test # Mind the profile
   echo " BIG-ELBPUBLIC"
   set_stack_outputs BIG-ELBPUBLIC us-east-1 net # Mind the profile
   echo "HRI-EKS-VPC-TEST"
   set_stack_outputs HRI-EKS-VPC-TEST us-east-1 test
-# echo "HRI-EKSALB-PRIVATE-TEST"
-# set_stack_outputs HRI-EKSALB-PRIVATE-TEST us-east-1 test
+  # echo "HRI-EKSALB-PRIVATE-TEST"
+  # set_stack_outputs HRI-EKSALB-PRIVATE-TEST us-east-1 test
   echo "HRI-BIGEKS-TEST"
   set_stack_outputs HRI-BIGEKS-TEST us-east-1 test
   echo "HRI-EKS-NLB-TEST"
   set_stack_outputs HRI-EKS-NLB-TEST us-east-1 test
-# echo "HRI-EKS-CLUSTER-PROD"
-# set_stack_outputs HRI-EKS-CLUSTER-PROD us-east-1 production
+  # echo "HRI-EKS-CLUSTER-PROD"
+  # set_stack_outputs HRI-EKS-CLUSTER-PROD us-east-1 production
   echo "HRI-EKS-VPC-PROD"
   set_stack_outputs HRI-EKS-VPC-PROD us-east-1 production
-# echo "HRI-EKSALB-PRIVATE-PROD"
-# set_stack_outputs HRI-EKSALB-PRIVATE-PROD us-east-1 production
+  # echo "HRI-EKSALB-PRIVATE-PROD"
+  # set_stack_outputs HRI-EKSALB-PRIVATE-PROD us-east-1 production
   echo "HRI-EKS-VPC-QA"
   set_stack_outputs HRI-EKS-VPC-QA us-east-1 test
   echo "HRI-BIGNETWORK-TGWRT-ASSC-EKSVPC-QA"
@@ -233,16 +203,16 @@ set_aws_envs() {
   set_stack_outputs HRI-EKS-NLB-PROD us-east-1 production
   echo "HRI-BIGEKS-QA"
   set_stack_outputs HRI-BIGEKS-QA us-east-1 test
-# echo "HRI-EKSALB-PRIVATE-QA"
-# set_stack_outputs HRI-EKSALB-PRIVATE-QA us-east-1 test
+  # echo "HRI-EKSALB-PRIVATE-QA"
+  # set_stack_outputs HRI-EKSALB-PRIVATE-QA us-east-1 test
   echo "HRI-EKS-NLB-QA"
   set_stack_outputs HRI-EKS-NLB-QA us-east-1 test
   echo "HRI-INFRA-VPC-PROD"
   set_stack_outputs HRI-INFRA-VPC-PROD us-east-1 production
   echo "HRI-BIGNETWORK-TGWRT-ASSC-INFRA-VPC-PROD"
   set_stack_outputs HRI-BIGNETWORK-TGWRT-ASSC-INFRA-VPC-PROD us-east-1 net
-#  echo "HRI-ONE-VPC-PROD"
-#  set_stack_outputs HRI-ONE-VPC-PROD us-east-1 production
+  #  echo "HRI-ONE-VPC-PROD"
+  #  set_stack_outputs HRI-ONE-VPC-PROD us-east-1 production
 }
 
 get_aws_context() {
@@ -914,7 +884,7 @@ alseni() {
     SecurityGroups:Groups[*].GroupName
   }' \
     --region "${region}" \
-    --profile "${profile}" # --filters "Name=vpc-id,Values=vpc-12345678" \
+    --profile "${profile}"
 }
 
 # if the us. is missing, you get an inference error - "with on-demand throughput isn’t supported." put the `us.` at the beginning
@@ -934,8 +904,7 @@ askbed() {
 
 awlcheck() {
 
-for awsprofile in $(aws configure list-profiles)
-  do
+  for awsprofile in $(aws configure list-profiles); do
     echo "Checking AWS Profile: ${awsprofile}"
     aws sts get-caller-identity --region us-east-1 --profile "${awsprofile}"
   done
@@ -1051,4 +1020,15 @@ aws eks update-kubeconfig --region region-code --name my-cluster
 ### Oddball
   aws cloudformation get-template --stack-name <stack-name> --query 'TemplateBody' --region us-east-1 --profile test
 EOF
+}
+
+aws_get_litellm_role_info() {
+
+  aws iam get-role --role-name AmazonEKS_LiteLLM_OpenWebUI_Role --region us-east-1 --profile test
+  aws iam list-attached-role-policies --role-name AmazonEKS_LiteLLM_OpenWebUI_Role --region us-east-1 --profile test
+  aws iam list-role-policies --role-name AmazonEKS_LiteLLM_OpenWebUI_Role --region us-east-1 --profile test
+  aws iam get-role --role-name AmazonEKS_LiteLLM_OpenWebUI_Role --region us-east-1 --profile test
+  aws iam list-attached-role-policies --role-name AmazonEKS_LiteLLM_OpenWebUI_Role --region us-east-1 --profile test
+  aws iam get-policy-version --policy-arn arn:aws:iam::405350004483:policy/litellm-bedrock-policy --version-id "$(aws iam get-policy --policy-arn arn:aws:iam::405350004483:policy/litellm-bedrock-policy --query 'Policy.DefaultVersionId' --output text --region us-east-1 --profile test)" --region us-east-1 --profile test
+
 }
