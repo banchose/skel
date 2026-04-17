@@ -1,0 +1,2146 @@
+<!DOCTYPE html>
+<html class="client-nojs" lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<title>Quick reference-nftables in 10 minutes - nftables wiki</title>
+<script>(function(){var className="client-js";var cookie=document.cookie.match(/(?:^|; )wikidb_nftablesmwclientpreferences=([^;]+)/);if(cookie){cookie[1].split('%2C').forEach(function(pref){className=className.replace(new RegExp('(^| )'+pref.replace(/-clientpref-\w+$|[^\w-]+/g,'')+'-clientpref-\\w+( |$)'),'$1'+pref+'$2');});}document.documentElement.className=className;}());RLCONF={"wgBreakFrames":false,"wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgRequestId":"ad7dma18h9jbS0fTXERHnQAAAA0","wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Quick_reference-nftables_in_10_minutes","wgTitle":"Quick reference-nftables in 10 minutes","wgCurRevisionId":1132,"wgRevisionId":1132,"wgArticleId":4,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Pages using deprecated source tags","Pages with too many expensive parser function calls"],"wgPageViewLanguage":"en","wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgRelevantPageName":"Quick_reference-nftables_in_10_minutes","wgRelevantArticleId":4,"wgIsProbablyEditable":false,"wgRelevantPageIsProbablyEditable":false,"wgRestrictionEdit":[],"wgRestrictionMove":[]};
+RLSTATE={"site.styles":"ready","user.styles":"ready","user":"ready","user.options":"loading","ext.pygments":"ready","skins.vector.styles.legacy":"ready"};RLPAGEMODULES=["ext.pygments.view","site","mediawiki.page.ready","mediawiki.toc","skins.vector.legacy.js"];</script>
+<script>(RLQ=window.RLQ||[]).push(function(){mw.loader.impl(function(){return["user.options@12s5i",function($,jQuery,require,module){mw.user.tokens.set({"patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});
+}];});});</script>
+<link rel="stylesheet" href="/wiki-nftables/load.php?lang=en&amp;modules=ext.pygments%7Cskins.vector.styles.legacy&amp;only=styles&amp;skin=vector">
+<script async="" src="/wiki-nftables/load.php?lang=en&amp;modules=startup&amp;only=scripts&amp;raw=1&amp;skin=vector"></script>
+<meta name="generator" content="MediaWiki 1.43.6">
+<meta name="robots" content="max-image-preview:standard">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=1120">
+<link rel="search" type="application/opensearchdescription+xml" href="/wiki-nftables/rest.php/v1/search" title="nftables wiki (en)">
+<link rel="EditURI" type="application/rsd+xml" href="http://wiki.nftables.org/wiki-nftables/api.php?action=rsd">
+<link rel="license" href="https://www.gnu.org/copyleft/fdl.html">
+<link rel="alternate" type="application/atom+xml" title="nftables wiki Atom feed" href="/wiki-nftables/index.php?title=Special:RecentChanges&amp;feed=atom">
+</head>
+<body class="skin-vector-legacy mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-Quick_reference-nftables_in_10_minutes rootpage-Quick_reference-nftables_in_10_minutes skin-vector action-view"><div id="mw-page-base" class="noprint"></div>
+<div id="mw-head-base" class="noprint"></div>
+<div id="content" class="mw-body" role="main">
+	<a id="top"></a>
+	<div id="siteNotice"></div>
+	<div class="mw-indicators">
+	</div>
+	<h1 id="firstHeading" class="firstHeading mw-first-heading"><span class="mw-page-title-main">Quick reference-nftables in 10 minutes</span></h1>
+	<div id="bodyContent" class="vector-body">
+		<div id="siteSub" class="noprint">From nftables wiki</div>
+		<div id="contentSub"><div id="mw-content-subtitle"></div></div>
+		<div id="contentSub2"></div>
+		
+		<div id="jump-to-nav"></div>
+		<a class="mw-jump-link" href="#mw-head">Jump to navigation</a>
+		<a class="mw-jump-link" href="#searchInput">Jump to search</a>
+		<div id="mw-content-text" class="mw-body-content"><div class="mw-content-ltr mw-parser-output" lang="en" dir="ltr"><p>Find below some basic concepts to know before using nftables.
+</p><p><b>table</b> refers to a container of <a href="/wiki-nftables/index.php/Configuring_chains" title="Configuring chains">chains</a> with no specific semantics.
+</p><p><b>chain</b> within a <a href="/wiki-nftables/index.php/Configuring_tables" title="Configuring tables">table</a> refers to a container of <a href="/wiki-nftables/index.php/Simple_rule_management" title="Simple rule management">rules</a>.
+</p><p><b>rule</b> refers to an action to be configured within a <i>chain</i>.
+</p><p><br />
+</p>
+<div id="toc" class="toc" role="navigation" aria-labelledby="mw-toc-heading"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none" /><div class="toctitle" lang="en" dir="ltr"><h2 id="mw-toc-heading">Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#nft_command_line"><span class="tocnumber">1</span> <span class="toctext">nft command line</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#Tables"><span class="tocnumber">1.1</span> <span class="toctext">Tables</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="#Chains"><span class="tocnumber">1.2</span> <span class="toctext">Chains</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="#Rules"><span class="tocnumber">1.3</span> <span class="toctext">Rules</span></a>
+<ul>
+<li class="toclevel-3 tocsection-5"><a href="#Matches"><span class="tocnumber">1.3.1</span> <span class="toctext">Matches</span></a>
+<ul>
+<li class="toclevel-4 tocsection-6"><a href="#Ip"><span class="tocnumber">1.3.1.1</span> <span class="toctext">Ip</span></a></li>
+<li class="toclevel-4 tocsection-7"><a href="#Ip6"><span class="tocnumber">1.3.1.2</span> <span class="toctext">Ip6</span></a></li>
+<li class="toclevel-4 tocsection-8"><a href="#Tcp"><span class="tocnumber">1.3.1.3</span> <span class="toctext">Tcp</span></a></li>
+<li class="toclevel-4 tocsection-9"><a href="#Udp"><span class="tocnumber">1.3.1.4</span> <span class="toctext">Udp</span></a></li>
+<li class="toclevel-4 tocsection-10"><a href="#Udplite"><span class="tocnumber">1.3.1.5</span> <span class="toctext">Udplite</span></a></li>
+<li class="toclevel-4 tocsection-11"><a href="#Sctp"><span class="tocnumber">1.3.1.6</span> <span class="toctext">Sctp</span></a></li>
+<li class="toclevel-4 tocsection-12"><a href="#Dccp"><span class="tocnumber">1.3.1.7</span> <span class="toctext">Dccp</span></a></li>
+<li class="toclevel-4 tocsection-13"><a href="#Ah"><span class="tocnumber">1.3.1.8</span> <span class="toctext">Ah</span></a></li>
+<li class="toclevel-4 tocsection-14"><a href="#Esp"><span class="tocnumber">1.3.1.9</span> <span class="toctext">Esp</span></a></li>
+<li class="toclevel-4 tocsection-15"><a href="#Comp"><span class="tocnumber">1.3.1.10</span> <span class="toctext">Comp</span></a></li>
+<li class="toclevel-4 tocsection-16"><a href="#Icmp"><span class="tocnumber">1.3.1.11</span> <span class="toctext">Icmp</span></a></li>
+<li class="toclevel-4 tocsection-17"><a href="#Icmpv6"><span class="tocnumber">1.3.1.12</span> <span class="toctext">Icmpv6</span></a></li>
+<li class="toclevel-4 tocsection-18"><a href="#Ether"><span class="tocnumber">1.3.1.13</span> <span class="toctext">Ether</span></a></li>
+<li class="toclevel-4 tocsection-19"><a href="#Dst"><span class="tocnumber">1.3.1.14</span> <span class="toctext">Dst</span></a></li>
+<li class="toclevel-4 tocsection-20"><a href="#Frag"><span class="tocnumber">1.3.1.15</span> <span class="toctext">Frag</span></a></li>
+<li class="toclevel-4 tocsection-21"><a href="#Hbh"><span class="tocnumber">1.3.1.16</span> <span class="toctext">Hbh</span></a></li>
+<li class="toclevel-4 tocsection-22"><a href="#Mh"><span class="tocnumber">1.3.1.17</span> <span class="toctext">Mh</span></a></li>
+<li class="toclevel-4 tocsection-23"><a href="#Rt"><span class="tocnumber">1.3.1.18</span> <span class="toctext">Rt</span></a></li>
+<li class="toclevel-4 tocsection-24"><a href="#Vlan"><span class="tocnumber">1.3.1.19</span> <span class="toctext">Vlan</span></a></li>
+<li class="toclevel-4 tocsection-25"><a href="#Arp"><span class="tocnumber">1.3.1.20</span> <span class="toctext">Arp</span></a></li>
+<li class="toclevel-4 tocsection-26"><a href="#Ct"><span class="tocnumber">1.3.1.21</span> <span class="toctext">Ct</span></a></li>
+<li class="toclevel-4 tocsection-27"><a href="#Meta"><span class="tocnumber">1.3.1.22</span> <span class="toctext">Meta</span></a></li>
+</ul>
+</li>
+<li class="toclevel-3 tocsection-28"><a href="#Statements"><span class="tocnumber">1.3.2</span> <span class="toctext">Statements</span></a>
+<ul>
+<li class="toclevel-4 tocsection-29"><a href="#Verdict_statements"><span class="tocnumber">1.3.2.1</span> <span class="toctext">Verdict statements</span></a></li>
+<li class="toclevel-4 tocsection-30"><a href="#Log"><span class="tocnumber">1.3.2.2</span> <span class="toctext">Log</span></a></li>
+<li class="toclevel-4 tocsection-31"><a href="#Reject"><span class="tocnumber">1.3.2.3</span> <span class="toctext">Reject</span></a></li>
+<li class="toclevel-4 tocsection-32"><a href="#Counter"><span class="tocnumber">1.3.2.4</span> <span class="toctext">Counter</span></a></li>
+<li class="toclevel-4 tocsection-33"><a href="#Limit"><span class="tocnumber">1.3.2.5</span> <span class="toctext">Limit</span></a></li>
+<li class="toclevel-4 tocsection-34"><a href="#Nat"><span class="tocnumber">1.3.2.6</span> <span class="toctext">Nat</span></a></li>
+<li class="toclevel-4 tocsection-35"><a href="#Queue"><span class="tocnumber">1.3.2.7</span> <span class="toctext">Queue</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-36"><a href="#Extras"><span class="tocnumber">1.4</span> <span class="toctext">Extras</span></a>
+<ul>
+<li class="toclevel-3 tocsection-37"><a href="#Export_Configuration"><span class="tocnumber">1.4.1</span> <span class="toctext">Export Configuration</span></a></li>
+<li class="toclevel-3 tocsection-38"><a href="#Monitor_Events"><span class="tocnumber">1.4.2</span> <span class="toctext">Monitor Events</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-39"><a href="#Nft_scripting"><span class="tocnumber">2</span> <span class="toctext">Nft scripting</span></a>
+<ul>
+<li class="toclevel-2 tocsection-40"><a href="#List_ruleset"><span class="tocnumber">2.1</span> <span class="toctext">List ruleset</span></a></li>
+<li class="toclevel-2 tocsection-41"><a href="#Flush_ruleset"><span class="tocnumber">2.2</span> <span class="toctext">Flush ruleset</span></a></li>
+<li class="toclevel-2 tocsection-42"><a href="#Load_ruleset"><span class="tocnumber">2.3</span> <span class="toctext">Load ruleset</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-43"><a href="#Examples"><span class="tocnumber">3</span> <span class="toctext">Examples</span></a>
+<ul>
+<li class="toclevel-2 tocsection-44"><a href="#Simple_IP/IPv6_Firewall"><span class="tocnumber">3.1</span> <span class="toctext">Simple IP/IPv6 Firewall</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h1><span class="mw-headline" id="nft_command_line">nft command line</span></h1>
+<p><i>nft</i> is the command line tool in order to interact with nftables at userspace.
+</p>
+<h2><span class="mw-headline" id="Tables">Tables</span></h2>
+<p><b>family</b> refers to a one of the following table types: <i>ip</i>, <i>arp</i>, <i>ip6</i>, <i>bridge</i>, <i>inet</i>, <i>netdev</i>. It defaults to <i>ip</i>.
+</p>
+<div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>%<span class="w"> </span>nft<span class="w"> </span>list<span class="w"> </span>tables<span class="w"> </span><span class="o">[</span>&lt;family&gt;<span class="o">]</span>
+%<span class="w"> </span>nft<span class="w"> </span><span class="o">[</span>-n<span class="o">]</span><span class="w"> </span><span class="o">[</span>-a<span class="o">]</span><span class="w"> </span>list<span class="w"> </span>table<span class="w"> </span><span class="o">[</span>&lt;family&gt;<span class="o">]</span><span class="w"> </span>&lt;name&gt;
+%<span class="w"> </span>nft<span class="w"> </span><span class="o">(</span>add<span class="w"> </span><span class="p">|</span><span class="w"> </span>delete<span class="w"> </span><span class="p">|</span><span class="w"> </span>flush<span class="o">)</span><span class="w"> </span>table<span class="w"> </span><span class="o">[</span>&lt;family&gt;<span class="o">]</span><span class="w"> </span>&lt;name&gt;
+</pre></div>
+<p>The argument <i>-n</i> shows the addresses and other information that use names in numeric format. The <i>-a</i> argument is used to display each rule's <i>handle</i> (i.e., a numerical identifier).
+</p>
+<h2><span class="mw-headline" id="Chains">Chains</span></h2>
+<p><b>type</b> refers to the kind of chain to be created. Possible types are:
+</p>
+<ul><li><i>filter</i>: Supported by <i>arp</i>, <i>bridge</i>, <i>ip</i>, <i>ip6</i> and <i>inet</i> table families.</li>
+<li><i>route</i>: Mark packets (like mangle for the <i>output</i> hook, for other hooks use the type <i>filter</i> instead), supported by <i>ip</i> and <i>ip6</i>.</li>
+<li><i>nat</i>: In order to perform Network Address Translation, supported by <i>ip</i> and <i>ip6</i>.</li></ul>
+<p><b>hook</b> refers to an specific stage of the packet while it's being processed through the kernel. More info in <a href="/wiki-nftables/index.php/Netfilter_hooks" title="Netfilter hooks">Netfilter hooks</a>.
+</p>
+<ul><li>The hooks for <i>ip</i>, <i>ip6</i> and <i>inet</i> families are: <i>prerouting</i>, <i>input</i>, <i>forward</i>, <i>output</i>, <i>postrouting</i>.</li>
+<li>The hooks for <i>arp</i> family are: <i> input</i>, <i>output</i>.</li>
+<li>The <i>bridge</i> family handles ethernet packets traversing bridge devices.</li>
+<li>The hooks for <i>netdev</i> are: <i>ingress</i>, <i>egress</i>.</li></ul>
+<p><b>priority</b> refers to a number used to order the chains or to set them between some Netfilter operations. Possible values are: <i>NF_IP_PRI_CONNTRACK_DEFRAG (-400)</i>, <i>NF_IP_PRI_RAW (-300)</i>, <i>NF_IP_PRI_SELINUX_FIRST (-225)</i>, <i>NF_IP_PRI_CONNTRACK (-200)</i>, <i>NF_IP_PRI_MANGLE (-150)</i>, <i>NF_IP_PRI_NAT_DST (-100)</i>, <i>NF_IP_PRI_FILTER (0)</i>, <i>NF_IP_PRI_SECURITY (50)</i>, <i>NF_IP_PRI_NAT_SRC (100)</i>, <i>NF_IP_PRI_SELINUX_LAST (225)</i>, <i>NF_IP_PRI_CONNTRACK_HELPER (300)</i>.
+</p><p><b>policy</b> is the default verdict statement to control the flow in the base chain. Possible values are: <i>accept</i> (default) and <i>drop</i>. Warning: Setting the policy to <i>drop</i> discards all packets that
+have not been accepted by the ruleset.
+</p>
+<div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>%<span class="w"> </span>nft<span class="w"> </span><span class="o">(</span>add<span class="w"> </span><span class="p">|</span><span class="w"> </span>create<span class="o">)</span><span class="w"> </span>chain<span class="w"> </span><span class="o">[</span>&lt;family&gt;<span class="o">]</span><span class="w"> </span>&lt;table&gt;<span class="w"> </span>&lt;name&gt;<span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="se">\{</span><span class="w"> </span><span class="nb">type</span><span class="w"> </span>&lt;type&gt;<span class="w"> </span>hook<span class="w"> </span>&lt;hook&gt;<span class="w"> </span><span class="o">[</span>device<span class="w"> </span>&lt;device&gt;<span class="o">]</span><span class="w"> </span>priority<span class="w"> </span>&lt;priority&gt;<span class="w"> </span><span class="se">\;</span><span class="w"> </span><span class="o">[</span>policy<span class="w"> </span>&lt;policy&gt;<span class="w"> </span><span class="se">\;</span><span class="o">]</span><span class="w"> </span><span class="se">\}</span><span class="w"> </span><span class="o">]</span>
+%<span class="w"> </span>nft<span class="w"> </span><span class="o">(</span>delete<span class="w"> </span><span class="p">|</span><span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>flush<span class="o">)</span><span class="w"> </span>chain<span class="w"> </span><span class="o">[</span>&lt;family&gt;<span class="o">]</span><span class="w"> </span>&lt;table&gt;<span class="w"> </span>&lt;name&gt;
+%<span class="w"> </span>nft<span class="w"> </span>rename<span class="w"> </span>chain<span class="w"> </span><span class="o">[</span>&lt;family&gt;<span class="o">]</span><span class="w"> </span>&lt;table&gt;<span class="w"> </span>&lt;name&gt;<span class="w"> </span>&lt;newname&gt;
+</pre></div>
+<h2><span class="mw-headline" id="Rules">Rules</span></h2>
+<p><b>handle</b> is an internal number that identifies a certain <i>rule</i>.
+</p>
+<div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>%<span class="w"> </span>nft<span class="w"> </span>add<span class="w"> </span>rule<span class="w"> </span><span class="o">[</span>&lt;family&gt;<span class="o">]</span><span class="w"> </span>&lt;table&gt;<span class="w"> </span>&lt;chain&gt;<span class="w"> </span>&lt;matches&gt;<span class="w"> </span>&lt;statements&gt;
+%<span class="w"> </span>nft<span class="w"> </span>insert<span class="w"> </span>rule<span class="w"> </span><span class="o">[</span>&lt;family&gt;<span class="o">]</span><span class="w"> </span>&lt;table&gt;<span class="w"> </span>&lt;chain&gt;<span class="w"> </span><span class="o">[</span>position<span class="w"> </span>&lt;handle&gt;<span class="o">]</span><span class="w"> </span>&lt;matches&gt;<span class="w"> </span>&lt;statements&gt;
+%<span class="w"> </span>nft<span class="w"> </span>replace<span class="w"> </span>rule<span class="w"> </span><span class="o">[</span>&lt;family&gt;<span class="o">]</span><span class="w"> </span>&lt;table&gt;<span class="w"> </span>&lt;chain&gt;<span class="w"> </span><span class="o">[</span>handle<span class="w"> </span>&lt;handle&gt;<span class="o">]</span><span class="w"> </span>&lt;matches&gt;<span class="w"> </span>&lt;statements&gt;
+%<span class="w"> </span>nft<span class="w"> </span>delete<span class="w"> </span>rule<span class="w"> </span><span class="o">[</span>&lt;family&gt;<span class="o">]</span><span class="w"> </span>&lt;table&gt;<span class="w"> </span>&lt;chain&gt;<span class="w"> </span><span class="o">[</span>handle<span class="w"> </span>&lt;handle&gt;<span class="o">]</span>
+</pre></div>
+<p>Inserted rules are placed at the beginning of the chain, by default. However, if you specify a <i>position</i> handle, then the new rule is inserted just before the existing rule with that handle.
+</p>
+<h3><span class="mw-headline" id="Matches">Matches</span></h3>
+<p><b>matches</b> are clues used to access to certain packet information and create filters according to them.
+</p>
+<h4><span class="mw-headline" id="Ip">Ip</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">ip match
+</th></tr>
+<tr>
+<td><i>dscp &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip<span class="w"> </span>dscp<span class="w"> </span>cs1
+ip<span class="w"> </span>dscp<span class="w"> </span>!<span class="o">=</span><span class="w"> </span>cs1
+ip<span class="w"> </span>dscp<span class="w"> </span>0x38
+ip<span class="w"> </span>dscp<span class="w"> </span>!<span class="o">=</span><span class="w"> </span>0x20
+ip<span class="w"> </span>dscp<span class="w"> </span><span class="o">{</span><span class="w"> </span>cs0,<span class="w"> </span>cs1,<span class="w"> </span>cs2,<span class="w"> </span>cs3,<span class="w"> </span>cs4,<span class="w"> </span>cs5,<span class="w"> </span>cs6,<span class="w"> </span>cs7,<span class="w"> </span>af11,<span class="w"> </span>af12,<span class="w"> </span>af13,<span class="w"> </span>af21,<span class="w"> </span>
+af22,<span class="w"> </span>af23,<span class="w"> </span>af31,<span class="w"> </span>af32,<span class="w"> </span>af33,<span class="w"> </span>af41,<span class="w"> </span>af42,<span class="w"> </span>af43,<span class="w"> </span>ef<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>length &lt;length&gt;</i>
+</td>
+<td>Total packet length
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip<span class="w"> </span>length<span class="w"> </span><span class="m">232</span>
+ip<span class="w"> </span>length<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">233</span>
+ip<span class="w"> </span>length<span class="w"> </span><span class="m">333</span>-435
+ip<span class="w"> </span>length<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">333</span>-453
+ip<span class="w"> </span>length<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">333</span>,<span class="w"> </span><span class="m">553</span>,<span class="w"> </span><span class="m">673</span>,<span class="w"> </span><span class="m">838</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>id &lt;id&gt;</i>
+</td>
+<td>IP ID
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip<span class="w"> </span>id<span class="w"> </span><span class="m">22</span>
+ip<span class="w"> </span>id<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">233</span>
+ip<span class="w"> </span>id<span class="w"> </span><span class="m">33</span>-45
+ip<span class="w"> </span>id<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+ip<span class="w"> </span>id<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>frag-off &lt;value&gt;</i>
+</td>
+<td>Fragmentation offset
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip<span class="w"> </span>frag-off<span class="w"> </span><span class="p">&amp;</span><span class="w"> </span>0x1fff<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="c1"># match fragments</span>
+ip<span class="w"> </span>frag-off<span class="w"> </span><span class="p">&amp;</span><span class="w"> </span>0x2000<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="c1"># match MF flag                                                  </span>
+ip<span class="w"> </span>frag-off<span class="w"> </span><span class="p">&amp;</span><span class="w"> </span>0x4000<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="c1"># match DF flag</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>ttl &lt;ttl&gt;</i>
+</td>
+<td>Time to live
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip<span class="w"> </span>ttl<span class="w"> </span><span class="m">0</span>
+ip<span class="w"> </span>ttl<span class="w"> </span><span class="m">233</span>
+ip<span class="w"> </span>ttl<span class="w"> </span><span class="m">33</span>-55
+ip<span class="w"> </span>ttl<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">45</span>-50
+ip<span class="w"> </span>ttl<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">43</span>,<span class="w"> </span><span class="m">53</span>,<span class="w"> </span><span class="m">45</span><span class="w"> </span><span class="o">}</span>
+ip<span class="w"> </span>ttl<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>protocol &lt;protocol&gt;</i>
+</td>
+<td>Upper layer protocol
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip<span class="w"> </span>protocol<span class="w"> </span>tcp
+ip<span class="w"> </span>protocol<span class="w"> </span><span class="m">6</span>
+ip<span class="w"> </span>protocol<span class="w"> </span>!<span class="o">=</span><span class="w"> </span>tcp
+ip<span class="w"> </span>protocol<span class="w"> </span><span class="o">{</span><span class="w"> </span>icmp,<span class="w"> </span>esp,<span class="w"> </span>ah,<span class="w"> </span>comp,<span class="w"> </span>udp,<span class="w"> </span>udplite,<span class="w"> </span>tcp,<span class="w"> </span>dccp,<span class="w"> </span>sctp<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>checksum &lt;checksum&gt;</i>
+</td>
+<td>IP header checksum
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip<span class="w"> </span>checksum<span class="w"> </span><span class="m">13172</span>
+ip<span class="w"> </span>checksum<span class="w"> </span><span class="m">22</span>
+ip<span class="w"> </span>checksum<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">233</span>
+ip<span class="w"> </span>checksum<span class="w"> </span><span class="m">33</span>-45
+ip<span class="w"> </span>checksum<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+ip<span class="w"> </span>checksum<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+ip<span class="w"> </span>checksum<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>saddr &lt;ip source address&gt;</i>
+</td>
+<td>Source address
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip<span class="w"> </span>saddr<span class="w"> </span><span class="m">192</span>.168.2.0/24
+ip<span class="w"> </span>saddr<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">192</span>.168.2.0/24
+ip<span class="w"> </span>saddr<span class="w"> </span><span class="m">192</span>.168.3.1<span class="w"> </span>ip<span class="w"> </span>daddr<span class="w"> </span><span class="m">192</span>.168.3.100
+ip<span class="w"> </span>saddr<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">1</span>.1.1.1
+ip<span class="w"> </span>saddr<span class="w"> </span><span class="m">1</span>.1.1.1
+ip<span class="w"> </span>saddr<span class="w"> </span><span class="p">&amp;</span><span class="w"> </span><span class="nv">0xff</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">1</span>
+ip<span class="w"> </span>saddr<span class="w"> </span><span class="p">&amp;</span><span class="w"> </span><span class="m">0</span>.0.0.255<span class="w"> </span>&lt;<span class="w"> </span><span class="m">0</span>.0.0.127
+</pre></div>
+</td></tr>
+<tr>
+<td><i>daddr &lt;ip destination address&gt;</i>
+</td>
+<td>Destination address
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip<span class="w"> </span>daddr<span class="w"> </span><span class="m">192</span>.168.0.1
+ip<span class="w"> </span>daddr<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">192</span>.168.0.1
+ip<span class="w"> </span>daddr<span class="w"> </span><span class="m">192</span>.168.0.1-192.168.0.250
+ip<span class="w"> </span>daddr<span class="w"> </span><span class="m">10</span>.0.0.0-10.255.255.255
+ip<span class="w"> </span>daddr<span class="w"> </span><span class="m">172</span>.16.0.0-172.31.255.255
+ip<span class="w"> </span>daddr<span class="w"> </span><span class="m">192</span>.168.3.1-192.168.4.250
+ip<span class="w"> </span>daddr<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">192</span>.168.0.1-192.168.0.250
+ip<span class="w"> </span>daddr<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">192</span>.168.0.1-192.168.0.250<span class="w"> </span><span class="o">}</span>
+ip<span class="w"> </span>daddr<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">192</span>.168.5.1,<span class="w"> </span><span class="m">192</span>.168.5.2,<span class="w"> </span><span class="m">192</span>.168.5.3<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>version &lt;version&gt;</i>
+</td>
+<td>Ip Header version
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip<span class="w"> </span>version<span class="w"> </span><span class="m">4</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>hdrlength &lt;header length&gt;</i>
+</td>
+<td>IP header length
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip<span class="w"> </span>hdrlength<span class="w"> </span><span class="m">0</span>
+ip<span class="w"> </span>hdrlength<span class="w"> </span><span class="m">15</span>
+</pre></div>
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id="Ip6">Ip6</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">ip6 match
+</th></tr>
+<tr>
+<td><i>dscp &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip6<span class="w"> </span>dscp<span class="w"> </span>cs1
+ip6<span class="w"> </span>dscp<span class="w"> </span>!<span class="o">=</span><span class="w"> </span>cs1
+ip6<span class="w"> </span>dscp<span class="w"> </span>0x38
+ip6<span class="w"> </span>dscp<span class="w"> </span>!<span class="o">=</span><span class="w"> </span>0x20
+ip6<span class="w"> </span>dscp<span class="w"> </span><span class="o">{</span><span class="w"> </span>cs0,<span class="w"> </span>cs1,<span class="w"> </span>cs2,<span class="w"> </span>cs3,<span class="w"> </span>cs4,<span class="w"> </span>cs5,<span class="w"> </span>cs6,<span class="w"> </span>cs7,<span class="w"> </span>af11,<span class="w"> </span>af12,<span class="w"> </span>af13,<span class="w"> </span>af21,<span class="w"> </span>af22,<span class="w"> </span>af23,<span class="w"> </span>af31,<span class="w"> </span>af32,<span class="w"> </span>af33,<span class="w"> </span>af41,<span class="w"> </span>af42,<span class="w"> </span>af43,<span class="w"> </span>ef<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>flowlabel &lt;label&gt;</i>
+</td>
+<td>Flow label
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip6<span class="w"> </span>flowlabel<span class="w"> </span><span class="m">22</span>
+ip6<span class="w"> </span>flowlabel<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">233</span>
+ip6<span class="w"> </span>flowlabel<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+ip6<span class="w"> </span>flowlabel<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>length &lt;length&gt;</i>
+</td>
+<td>Payload length
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip6<span class="w"> </span>length<span class="w"> </span><span class="m">232</span>
+ip6<span class="w"> </span>length<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">233</span>
+ip6<span class="w"> </span>length<span class="w"> </span><span class="m">333</span>-435
+ip6<span class="w"> </span>length<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">333</span>-453
+ip6<span class="w"> </span>length<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">333</span>,<span class="w"> </span><span class="m">553</span>,<span class="w"> </span><span class="m">673</span>,<span class="w"> </span><span class="m">838</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>nexthdr &lt;header&gt;</i>
+</td>
+<td>Next header type (Upper layer protocol number)
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip6<span class="w"> </span>nexthdr<span class="w"> </span><span class="o">{</span><span class="w"> </span>esp,<span class="w"> </span>udp,<span class="w"> </span>ah,<span class="w"> </span>comp,<span class="w"> </span>udplite,<span class="w"> </span>tcp,<span class="w"> </span>dccp,<span class="w"> </span>sctp,<span class="w"> </span>icmpv6<span class="w"> </span><span class="o">}</span>
+ip6<span class="w"> </span>nexthdr<span class="w"> </span>esp
+ip6<span class="w"> </span>nexthdr<span class="w"> </span>!<span class="o">=</span><span class="w"> </span>esp
+ip6<span class="w"> </span>nexthdr<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-44<span class="w"> </span><span class="o">}</span>
+ip6<span class="w"> </span>nexthdr<span class="w"> </span><span class="m">33</span>-44
+ip6<span class="w"> </span>nexthdr<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-44
+</pre></div>
+</td></tr>
+<tr>
+<td><i>hoplimit &lt;hoplimit&gt;</i>
+</td>
+<td>Hop limit
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip6<span class="w"> </span>hoplimit<span class="w"> </span><span class="m">1</span>
+ip6<span class="w"> </span>hoplimit<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">233</span>
+ip6<span class="w"> </span>hoplimit<span class="w"> </span><span class="m">33</span>-45
+ip6<span class="w"> </span>hoplimit<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+ip6<span class="w"> </span>hoplimit<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+ip6<span class="w"> </span>hoplimit<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>saddr &lt;ip source address&gt;</i>
+</td>
+<td>Source Address
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip6<span class="w"> </span>saddr<span class="w"> </span><span class="m">1234</span>:1234:1234:1234:1234:1234:1234:1234
+ip6<span class="w"> </span>saddr<span class="w"> </span>::1234:1234:1234:1234:1234:1234:1234
+ip6<span class="w"> </span>saddr<span class="w"> </span>::/64
+ip6<span class="w"> </span>saddr<span class="w"> </span>::1<span class="w"> </span>ip6<span class="w"> </span>daddr<span class="w"> </span>::2
+</pre></div>
+</td></tr>
+<tr>
+<td><i>daddr &lt;ip destination address&gt;</i>
+</td>
+<td>Destination Address
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip6<span class="w"> </span>daddr<span class="w"> </span><span class="m">1234</span>:1234:1234:1234:1234:1234:1234:1234
+ip6<span class="w"> </span>daddr<span class="w"> </span>!<span class="o">=</span><span class="w"> </span>::1234:1234:1234:1234:1234:1234:1234-1234:1234::1234:1234:1234:1234:1234
+</pre></div>
+</td></tr>
+<tr>
+<td><i>version &lt;version&gt;</i>
+</td>
+<td>IP header version
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ip6<span class="w"> </span>version<span class="w"> </span><span class="m">6</span>
+</pre></div>
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id="Tcp">Tcp</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">tcp match
+</th></tr>
+<tr>
+<td><i>dport &lt;destination port&gt;</i>
+</td>
+<td>Destination port
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>tcp<span class="w"> </span>dport<span class="w"> </span><span class="m">22</span>
+tcp<span class="w"> </span>dport<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+tcp<span class="w"> </span>dport<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+tcp<span class="w"> </span>dport<span class="w"> </span><span class="o">{</span><span class="w"> </span>telnet,<span class="w"> </span>http,<span class="w"> </span>https<span class="w"> </span><span class="o">}</span>
+tcp<span class="w"> </span>dport<span class="w"> </span>vmap<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">22</span><span class="w"> </span>:<span class="w"> </span>accept,<span class="w"> </span><span class="m">23</span><span class="w"> </span>:<span class="w"> </span>drop<span class="w"> </span><span class="o">}</span>
+tcp<span class="w"> </span>dport<span class="w"> </span>vmap<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">25</span>:accept,<span class="w"> </span><span class="m">28</span>:drop<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>sport &lt; source port&gt;</i>
+</td>
+<td>Source port
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>tcp<span class="w"> </span>sport<span class="w"> </span><span class="m">22</span>
+tcp<span class="w"> </span>sport<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+tcp<span class="w"> </span>sport<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+tcp<span class="w"> </span>sport<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+tcp<span class="w"> </span>sport<span class="w"> </span>vmap<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">25</span>:accept,<span class="w"> </span><span class="m">28</span>:drop<span class="w"> </span><span class="o">}</span>
+tcp<span class="w"> </span>sport<span class="w"> </span><span class="m">1024</span><span class="w"> </span>tcp<span class="w"> </span>dport<span class="w"> </span><span class="m">22</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>sequence &lt;value&gt;</i>
+</td>
+<td>Sequence number
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>tcp<span class="w"> </span>sequence<span class="w"> </span><span class="m">22</span>
+tcp<span class="w"> </span>sequence<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+</pre></div>
+</td></tr>
+<tr>
+<td><i>ackseq &lt;value&gt;</i>
+</td>
+<td>Acknowledgement number
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>tcp<span class="w"> </span>ackseq<span class="w"> </span><span class="m">22</span>
+tcp<span class="w"> </span>ackseq<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+tcp<span class="w"> </span>ackseq<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+tcp<span class="w"> </span>ackseq<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>flags &lt;flags&gt;</i>
+</td>
+<td>TCP flags
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>tcp<span class="w"> </span>flags<span class="w"> </span><span class="o">{</span><span class="w"> </span>fin,<span class="w"> </span>syn,<span class="w"> </span>rst,<span class="w"> </span>psh,<span class="w"> </span>ack,<span class="w"> </span>urg,<span class="w"> </span>ecn,<span class="w"> </span>cwr<span class="w"> </span><span class="o">}</span>
+tcp<span class="w"> </span>flags<span class="w"> </span>cwr
+tcp<span class="w"> </span>flags<span class="w"> </span>!<span class="o">=</span><span class="w"> </span>cwr
+</pre></div>
+</td></tr>
+<tr>
+<td><i>window &lt;value&gt;</i>
+</td>
+<td>Window
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>tcp<span class="w"> </span>window<span class="w"> </span><span class="m">22</span>
+tcp<span class="w"> </span>window<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+tcp<span class="w"> </span>window<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+tcp<span class="w"> </span>window<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>checksum &lt;checksum&gt;</i>
+</td>
+<td>IP header checksum
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>tcp<span class="w"> </span>checksum<span class="w"> </span><span class="m">22</span>
+tcp<span class="w"> </span>checksum<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+tcp<span class="w"> </span>checksum<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+tcp<span class="w"> </span>checksum<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>urgptr &lt;pointer&gt;</i>
+</td>
+<td>Urgent pointer
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>tcp<span class="w"> </span>urgptr<span class="w"> </span><span class="m">22</span>
+tcp<span class="w"> </span>urgptr<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+tcp<span class="w"> </span>urgptr<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>doff &lt;offset&gt;</i>
+</td>
+<td>Data offset
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>tcp<span class="w"> </span>doff<span class="w"> </span><span class="m">8</span>
+</pre></div>
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id="Udp">Udp</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">udp match
+</th></tr>
+<tr>
+<td><i>dport &lt;destination port&gt;</i>
+</td>
+<td>Destination port
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>udp<span class="w"> </span>dport<span class="w"> </span><span class="m">22</span>
+udp<span class="w"> </span>dport<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+udp<span class="w"> </span>dport<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+udp<span class="w"> </span>dport<span class="w"> </span><span class="o">{</span><span class="w"> </span>telnet,<span class="w"> </span>http,<span class="w"> </span>https<span class="w"> </span><span class="o">}</span>
+udp<span class="w"> </span>dport<span class="w"> </span>vmap<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">22</span><span class="w"> </span>:<span class="w"> </span>accept,<span class="w"> </span><span class="m">23</span><span class="w"> </span>:<span class="w"> </span>drop<span class="w"> </span><span class="o">}</span>
+udp<span class="w"> </span>dport<span class="w"> </span>vmap<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">25</span>:accept,<span class="w"> </span><span class="m">28</span>:drop<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>sport &lt; source port&gt;</i>
+</td>
+<td>Source port
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>udp<span class="w"> </span>sport<span class="w"> </span><span class="m">22</span>
+udp<span class="w"> </span>sport<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+udp<span class="w"> </span>sport<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+udp<span class="w"> </span>sport<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+udp<span class="w"> </span>sport<span class="w"> </span>vmap<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">25</span>:accept,<span class="w"> </span><span class="m">28</span>:drop<span class="w"> </span><span class="o">}</span>
+udp<span class="w"> </span>sport<span class="w"> </span><span class="m">1024</span><span class="w"> </span>udp<span class="w"> </span>dport<span class="w"> </span><span class="m">22</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>length &lt;length&gt;</i>
+</td>
+<td>Total packet length
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>udp<span class="w"> </span>length<span class="w"> </span><span class="m">6666</span>
+udp<span class="w"> </span>length<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">50</span>-65
+udp<span class="w"> </span>length<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">50</span>,<span class="w"> </span><span class="m">65</span><span class="w"> </span><span class="o">}</span>
+udp<span class="w"> </span>length<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">35</span>-50<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>checksum &lt;checksum&gt;</i>
+</td>
+<td>UDP checksum
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>udp<span class="w"> </span>checksum<span class="w"> </span><span class="m">22</span>
+udp<span class="w"> </span>checksum<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+udp<span class="w"> </span>checksum<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+udp<span class="w"> </span>checksum<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id="Udplite">Udplite</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">udplite match
+</th></tr>
+<tr>
+<td><i>dport &lt;destination port&gt;</i>
+</td>
+<td>Destination port
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>udplite<span class="w"> </span>dport<span class="w"> </span><span class="m">22</span>
+udplite<span class="w"> </span>dport<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+udplite<span class="w"> </span>dport<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+udplite<span class="w"> </span>dport<span class="w"> </span><span class="o">{</span><span class="w"> </span>telnet,<span class="w"> </span>http,<span class="w"> </span>https<span class="w"> </span><span class="o">}</span>
+udplite<span class="w"> </span>dport<span class="w"> </span>vmap<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">22</span><span class="w"> </span>:<span class="w"> </span>accept,<span class="w"> </span><span class="m">23</span><span class="w"> </span>:<span class="w"> </span>drop<span class="w"> </span><span class="o">}</span>
+udplite<span class="w"> </span>dport<span class="w"> </span>vmap<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">25</span>:accept,<span class="w"> </span><span class="m">28</span>:drop<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>sport &lt; source port&gt;</i>
+</td>
+<td>Source port
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>udplite<span class="w"> </span>sport<span class="w"> </span><span class="m">22</span>
+udplite<span class="w"> </span>sport<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+udplite<span class="w"> </span>sport<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+udplite<span class="w"> </span>sport<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+udplite<span class="w"> </span>sport<span class="w"> </span>vmap<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">25</span>:accept,<span class="w"> </span><span class="m">28</span>:drop<span class="w"> </span><span class="o">}</span>
+udplite<span class="w"> </span>sport<span class="w"> </span><span class="m">1024</span><span class="w"> </span>udplite<span class="w"> </span>dport<span class="w"> </span><span class="m">22</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>checksum &lt;checksum&gt;</i>
+</td>
+<td>Checksum
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>udplite<span class="w"> </span>checksum<span class="w"> </span><span class="m">22</span>
+udplite<span class="w"> </span>checksum<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+udplite<span class="w"> </span>checksum<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+udplite<span class="w"> </span>checksum<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id="Sctp">Sctp</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">sctp match
+</th></tr>
+<tr>
+<td><i>dport &lt;destination port&gt;</i>
+</td>
+<td>Destination port
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>sctp<span class="w"> </span>dport<span class="w"> </span><span class="m">22</span>
+sctp<span class="w"> </span>dport<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+sctp<span class="w"> </span>dport<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+sctp<span class="w"> </span>dport<span class="w"> </span><span class="o">{</span><span class="w"> </span>telnet,<span class="w"> </span>http,<span class="w"> </span>https<span class="w"> </span><span class="o">}</span>
+sctp<span class="w"> </span>dport<span class="w"> </span>vmap<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">22</span><span class="w"> </span>:<span class="w"> </span>accept,<span class="w"> </span><span class="m">23</span><span class="w"> </span>:<span class="w"> </span>drop<span class="w"> </span><span class="o">}</span>
+sctp<span class="w"> </span>dport<span class="w"> </span>vmap<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">25</span>:accept,<span class="w"> </span><span class="m">28</span>:drop<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>sport &lt; source port&gt;</i>
+</td>
+<td>Source port
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>sctp<span class="w"> </span>sport<span class="w"> </span><span class="m">22</span>
+sctp<span class="w"> </span>sport<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+sctp<span class="w"> </span>sport<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+sctp<span class="w"> </span>sport<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+sctp<span class="w"> </span>sport<span class="w"> </span>vmap<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">25</span>:accept,<span class="w"> </span><span class="m">28</span>:drop<span class="w"> </span><span class="o">}</span>
+sctp<span class="w"> </span>sport<span class="w"> </span><span class="m">1024</span><span class="w"> </span>sctp<span class="w"> </span>dport<span class="w"> </span><span class="m">22</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>checksum &lt;checksum&gt;</i>
+</td>
+<td>Checksum
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>sctp<span class="w"> </span>checksum<span class="w"> </span><span class="m">22</span>
+sctp<span class="w"> </span>checksum<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+sctp<span class="w"> </span>checksum<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+sctp<span class="w"> </span>checksum<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>vtag &lt;tag&gt;</i>
+</td>
+<td>Verification tag
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>sctp<span class="w"> </span>vtag<span class="w"> </span><span class="m">22</span>
+sctp<span class="w"> </span>vtag<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+sctp<span class="w"> </span>vtag<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+sctp<span class="w"> </span>vtag<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>chunk &lt;type&gt;</i>
+</td>
+<td>Existence of a chunk with given type in packet
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>sctp<span class="w"> </span>chunk<span class="w"> </span>init<span class="w"> </span>exists
+sctp<span class="w"> </span>chunk<span class="w"> </span>error<span class="w"> </span>missing
+</pre></div>
+</td></tr>
+<tr>
+<td><i>chunk &lt;type&gt; &lt;field&gt;</i>
+</td>
+<td>A chunk's field value (implies chunk existence)
+</td>
+<td>&lt;sourcex lang="bash"&gt;
+<p>sctp chunk init flags 0x1
+sctp chunk data tsn 0x23
+&lt;/source&gt;
+</p>
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id="Dccp">Dccp</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">dccp match
+</th></tr>
+<tr>
+<td><i>dport &lt;destination port&gt;</i>
+</td>
+<td>Destination port
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>dccp<span class="w"> </span>dport<span class="w"> </span><span class="m">22</span>
+dccp<span class="w"> </span>dport<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+dccp<span class="w"> </span>dport<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+dccp<span class="w"> </span>dport<span class="w"> </span><span class="o">{</span><span class="w"> </span>telnet,<span class="w"> </span>http,<span class="w"> </span>https<span class="w"> </span><span class="o">}</span>
+dccp<span class="w"> </span>dport<span class="w"> </span>vmap<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">22</span><span class="w"> </span>:<span class="w"> </span>accept,<span class="w"> </span><span class="m">23</span><span class="w"> </span>:<span class="w"> </span>drop<span class="w"> </span><span class="o">}</span>
+dccp<span class="w"> </span>dport<span class="w"> </span>vmap<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">25</span>:accept,<span class="w"> </span><span class="m">28</span>:drop<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>sport &lt; source port&gt;</i>
+</td>
+<td>Source port
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>dccp<span class="w"> </span>sport<span class="w"> </span><span class="m">22</span>
+dccp<span class="w"> </span>sport<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+dccp<span class="w"> </span>sport<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+dccp<span class="w"> </span>sport<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+dccp<span class="w"> </span>sport<span class="w"> </span>vmap<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">25</span>:accept,<span class="w"> </span><span class="m">28</span>:drop<span class="w"> </span><span class="o">}</span>
+dccp<span class="w"> </span>sport<span class="w"> </span><span class="m">1024</span><span class="w"> </span>dccp<span class="w"> </span>dport<span class="w"> </span><span class="m">22</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>type &lt;type&gt;</i>
+</td>
+<td>Type of packet
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>dccp<span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="o">{</span><span class="w"> </span>request,<span class="w"> </span>response,<span class="w"> </span>data,<span class="w"> </span>ack,<span class="w"> </span>dataack,<span class="w"> </span>closereq,<span class="w"> </span>close,<span class="w"> </span>reset,<span class="w"> </span>sync,<span class="w"> </span>syncack<span class="w"> </span><span class="o">}</span>
+dccp<span class="w"> </span><span class="nb">type</span><span class="w"> </span>request
+dccp<span class="w"> </span><span class="nb">type</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span>request
+</pre></div>
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id="Ah">Ah</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">ah match
+</th></tr>
+<tr>
+<td><i>hdrlength &lt;length&gt;</i>
+</td>
+<td>AH header length
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ah<span class="w"> </span>hdrlength<span class="w"> </span><span class="m">11</span>-23
+ah<span class="w"> </span>hdrlength<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">11</span>-23
+ah<span class="w"> </span>hdrlength<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">11</span>,<span class="w"> </span><span class="m">23</span>,<span class="w"> </span><span class="m">44</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>reserved &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ah<span class="w"> </span>reserved<span class="w"> </span><span class="m">22</span>
+ah<span class="w"> </span>reserved<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+ah<span class="w"> </span>reserved<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">23</span>,<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="o">}</span>
+ah<span class="w"> </span>reserved<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>-55<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>spi &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ah<span class="w"> </span>spi<span class="w"> </span><span class="m">111</span>
+ah<span class="w"> </span>spi<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">111</span>-222
+ah<span class="w"> </span>spi<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">111</span>,<span class="w"> </span><span class="m">122</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>sequence &lt;sequence&gt;</i>
+</td>
+<td>Sequence Number
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ah<span class="w"> </span>sequence<span class="w"> </span><span class="m">123</span>
+ah<span class="w"> </span>sequence<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">23</span>,<span class="w"> </span><span class="m">25</span>,<span class="w"> </span><span class="m">33</span><span class="w"> </span><span class="o">}</span>
+ah<span class="w"> </span>sequence<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">23</span>-33
+</pre></div>
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id="Esp">Esp</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">esp match
+</th></tr>
+<tr>
+<td><i>spi &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>esp<span class="w"> </span>spi<span class="w"> </span><span class="m">111</span>
+esp<span class="w"> </span>spi<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">111</span>-222
+esp<span class="w"> </span>spi<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">111</span>,<span class="w"> </span><span class="m">122</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>sequence &lt;sequence&gt;</i>
+</td>
+<td>Sequence Number
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>esp<span class="w"> </span>sequence<span class="w"> </span><span class="m">123</span>
+esp<span class="w"> </span>sequence<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">23</span>,<span class="w"> </span><span class="m">25</span>,<span class="w"> </span><span class="m">33</span><span class="w"> </span><span class="o">}</span>
+esp<span class="w"> </span>sequence<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">23</span>-33
+</pre></div>
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id="Comp">Comp</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">comp match
+</th></tr>
+<tr>
+<td><i>nexthdr &lt;protocol&gt;</i>
+</td>
+<td>Next header protocol (Upper layer protocol)
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>comp<span class="w"> </span>nexthdr<span class="w"> </span>!<span class="o">=</span><span class="w"> </span>esp
+comp<span class="w"> </span>nexthdr<span class="w"> </span><span class="o">{</span><span class="w"> </span>esp,<span class="w"> </span>ah,<span class="w"> </span>comp,<span class="w"> </span>udp,<span class="w"> </span>udplite,<span class="w"> </span>tcp,<span class="w"> </span>tcp,<span class="w"> </span>dccp,<span class="w"> </span>sctp<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>flags &lt;flags&gt;</i>
+</td>
+<td>Flags
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>comp<span class="w"> </span>flags<span class="w"> </span>0x0
+comp<span class="w"> </span>flags<span class="w"> </span>!<span class="o">=</span><span class="w"> </span>0x33-0x45
+comp<span class="w"> </span>flags<span class="w"> </span><span class="o">{</span><span class="w"> </span>0x33,<span class="w"> </span>0x55,<span class="w"> </span>0x67,<span class="w"> </span>0x88<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>cpi &lt;value&gt;</i>
+</td>
+<td>Compression Parameter Index
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>comp<span class="w"> </span>cpi<span class="w"> </span><span class="m">22</span>
+comp<span class="w"> </span>cpi<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+comp<span class="w"> </span>cpi<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id="Icmp">Icmp</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">icmp match
+</th></tr>
+<tr>
+<td><i>type &lt;type&gt;</i>
+</td>
+<td>ICMP packet type
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>icmp<span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="o">{</span><span class="w"> </span>echo-reply,<span class="w"> </span>destination-unreachable,<span class="w"> </span>source-quench,<span class="w"> </span>redirect,<span class="w"> </span>echo-request,<span class="w"> </span>time-exceeded,<span class="w"> </span>parameter-problem,<span class="w"> </span>timestamp-request,<span class="w"> </span>timestamp-reply,<span class="w"> </span>info-request,<span class="w"> </span>info-reply,<span class="w"> </span>address-mask-request,<span class="w"> </span>address-mask-reply,<span class="w"> </span>router-advertisement,<span class="w"> </span>router-solicitation<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>code <code></code></i><code>
+</code></td>
+<td>ICMP packet code
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>icmp<span class="w"> </span>code<span class="w"> </span><span class="m">111</span>
+icmp<span class="w"> </span>code<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-55
+icmp<span class="w"> </span>code<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="m">4</span>,<span class="w"> </span><span class="m">54</span>,<span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">56</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>checksum &lt;value&gt;</i>
+</td>
+<td>ICMP packet checksum
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>icmp<span class="w"> </span>checksum<span class="w"> </span><span class="m">12343</span>
+icmp<span class="w"> </span>checksum<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">11</span>-343
+icmp<span class="w"> </span>checksum<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">1111</span>,<span class="w"> </span><span class="m">222</span>,<span class="w"> </span><span class="m">343</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>id &lt;value&gt;</i>
+</td>
+<td>ICMP packet id
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>icmp<span class="w"> </span>id<span class="w"> </span><span class="m">12343</span>
+icmp<span class="w"> </span>id<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">11</span>-343
+icmp<span class="w"> </span>id<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">1111</span>,<span class="w"> </span><span class="m">222</span>,<span class="w"> </span><span class="m">343</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>sequence &lt;value&gt;</i>
+</td>
+<td>ICMP packet sequence
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>icmp<span class="w"> </span>sequence<span class="w"> </span><span class="m">12343</span>
+icmp<span class="w"> </span>sequence<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">11</span>-343
+icmp<span class="w"> </span>sequence<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">1111</span>,<span class="w"> </span><span class="m">222</span>,<span class="w"> </span><span class="m">343</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>mtu &lt;value&gt;</i>
+</td>
+<td>ICMP packet mtu
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>icmp<span class="w"> </span>mtu<span class="w"> </span><span class="m">12343</span>
+icmp<span class="w"> </span>mtu<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">11</span>-343
+icmp<span class="w"> </span>mtu<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">1111</span>,<span class="w"> </span><span class="m">222</span>,<span class="w"> </span><span class="m">343</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>gateway &lt;value&gt;</i>
+</td>
+<td>ICMP packet gateway
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>icmp<span class="w"> </span>gateway<span class="w"> </span><span class="m">12343</span>
+icmp<span class="w"> </span>gateway<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">11</span>-343
+icmp<span class="w"> </span>gateway<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">1111</span>,<span class="w"> </span><span class="m">222</span>,<span class="w"> </span><span class="m">343</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr></tbody></table>
+<p><br />
+</p>
+<h4><span class="mw-headline" id="Icmpv6">Icmpv6</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">icmpv6 match
+</th></tr>
+<tr>
+<td><i>type &lt;type&gt;</i>
+</td>
+<td>ICMPv6 packet type
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>icmpv6<span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="o">{</span><span class="w"> </span>destination-unreachable,<span class="w"> </span>packet-too-big,<span class="w"> </span>time-exceeded,<span class="w"> </span>echo-request,<span class="w"> </span>echo-reply,<span class="w"> </span>mld-listener-query,<span class="w"> </span>mld-listener-report,<span class="w"> </span>mld-listener-reduction,<span class="w"> </span>nd-router-solicit,<span class="w"> </span>nd-router-advert,<span class="w"> </span>nd-neighbor-solicit,<span class="w"> </span>nd-neighbor-advert,<span class="w"> </span>parameter-problem,<span class="w"> </span>mld2-listener-report<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>code <code></code></i><code>
+</code></td>
+<td>ICMPv6 packet code
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>icmpv6<span class="w"> </span>code<span class="w"> </span><span class="m">4</span>
+icmpv6<span class="w"> </span>code<span class="w"> </span><span class="m">3</span>-66
+icmpv6<span class="w"> </span>code<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">5</span>,<span class="w"> </span><span class="m">6</span>,<span class="w"> </span><span class="m">7</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>checksum &lt;value&gt;</i>
+</td>
+<td>ICMPv6 packet checksum
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>icmpv6<span class="w"> </span>checksum<span class="w"> </span><span class="m">12343</span>
+icmpv6<span class="w"> </span>checksum<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">11</span>-343
+icmpv6<span class="w"> </span>checksum<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">1111</span>,<span class="w"> </span><span class="m">222</span>,<span class="w"> </span><span class="m">343</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>id &lt;value&gt;</i>
+</td>
+<td>ICMPv6 packet id
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>icmpv6<span class="w"> </span>id<span class="w"> </span><span class="m">12343</span>
+icmpv6<span class="w"> </span>id<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">11</span>-343
+icmpv6<span class="w"> </span>id<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">1111</span>,<span class="w"> </span><span class="m">222</span>,<span class="w"> </span><span class="m">343</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>sequence &lt;value&gt;</i>
+</td>
+<td>ICMPv6 packet sequence
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>icmpv6<span class="w"> </span>sequence<span class="w"> </span><span class="m">12343</span>
+icmpv6<span class="w"> </span>sequence<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">11</span>-343
+icmpv6<span class="w"> </span>sequence<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">1111</span>,<span class="w"> </span><span class="m">222</span>,<span class="w"> </span><span class="m">343</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>mtu &lt;value&gt;</i>
+</td>
+<td>ICMPv6 packet mtu
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>icmpv6<span class="w"> </span>mtu<span class="w"> </span><span class="m">12343</span>
+icmpv6<span class="w"> </span>mtu<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">11</span>-343
+icmpv6<span class="w"> </span>mtu<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">1111</span>,<span class="w"> </span><span class="m">222</span>,<span class="w"> </span><span class="m">343</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>max-delay &lt;value&gt;</i>
+</td>
+<td>ICMPv6 packet max delay
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>icmpv6<span class="w"> </span>max-delay<span class="w"> </span><span class="m">33</span>-45
+icmpv6<span class="w"> </span>max-delay<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+icmpv6<span class="w"> </span>max-delay<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr></tbody></table>
+<p><br />
+</p>
+<h4><span class="mw-headline" id="Ether">Ether</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">ether match
+</th></tr>
+<tr>
+<td><i>saddr &lt;mac address&gt;</i>
+</td>
+<td>Source mac address
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ether<span class="w"> </span>saddr<span class="w"> </span><span class="m">00</span>:0f:54:0c:11:04
+</pre></div>
+</td></tr>
+<tr>
+<td><i>type &lt;type&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ether<span class="w"> </span><span class="nb">type</span><span class="w"> </span>vlan
+</pre></div>
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id="Dst">Dst</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">dst match
+</th></tr>
+<tr>
+<td><i>nexthdr &lt;proto&gt;</i>
+</td>
+<td>Next protocol header
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>dst<span class="w"> </span>nexthdr<span class="w"> </span><span class="o">{</span><span class="w"> </span>udplite,<span class="w"> </span>ipcomp,<span class="w"> </span>udp,<span class="w"> </span>ah,<span class="w"> </span>sctp,<span class="w"> </span>esp,<span class="w"> </span>dccp,<span class="w"> </span>tcp,<span class="w"> </span>ipv6-icmp<span class="w"> </span><span class="o">}</span>
+dst<span class="w"> </span>nexthdr<span class="w"> </span><span class="m">22</span>
+dst<span class="w"> </span>nexthdr<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+</pre></div>
+</td></tr>
+<tr>
+<td><i>hdrlength &lt;length&gt;</i>
+</td>
+<td>Header Length
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>dst<span class="w"> </span>hdrlength<span class="w"> </span><span class="m">22</span>
+dst<span class="w"> </span>hdrlength<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+dst<span class="w"> </span>hdrlength<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr></tbody></table>
+<p><br />
+</p>
+<h4><span class="mw-headline" id="Frag">Frag</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">frag match
+</th></tr>
+<tr>
+<td><i>nexthdr &lt;proto&gt;</i>
+</td>
+<td>Next protocol header
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>frag<span class="w"> </span>nexthdr<span class="w"> </span><span class="o">{</span><span class="w"> </span>udplite,<span class="w"> </span>comp,<span class="w"> </span>udp,<span class="w"> </span>ah,<span class="w"> </span>sctp,<span class="w"> </span>esp,<span class="w"> </span>dccp,<span class="w"> </span>tcp,<span class="w"> </span>ipv6-icmp,<span class="w"> </span>icmp<span class="w"> </span><span class="o">}</span>
+frag<span class="w"> </span>nexthdr<span class="w"> </span><span class="m">6</span>
+frag<span class="w"> </span>nexthdr<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">50</span>-51
+</pre></div>
+</td></tr>
+<tr>
+<td><i>reserved &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>frag<span class="w"> </span>reserved<span class="w"> </span><span class="m">22</span>
+frag<span class="w"> </span>reserved<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+frag<span class="w"> </span>reserved<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>frag-off &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>frag<span class="w"> </span>frag-off<span class="w"> </span><span class="m">22</span>
+frag<span class="w"> </span>frag-off<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+frag<span class="w"> </span>frag-off<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>more-fragments &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>frag<span class="w"> </span>more-fragments<span class="w"> </span><span class="m">0</span>
+frag<span class="w"> </span>more-fragments<span class="w"> </span><span class="m">0</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>id &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>frag<span class="w"> </span>id<span class="w"> </span><span class="m">1</span>
+frag<span class="w"> </span>id<span class="w"> </span><span class="m">33</span>-45
+</pre></div>
+</td></tr></tbody></table>
+<p><br />
+</p>
+<h4><span class="mw-headline" id="Hbh">Hbh</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">hbh match
+</th></tr>
+<tr>
+<td><i>nexthdr &lt;proto&gt;</i>
+</td>
+<td>Next protocol header
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>hbh<span class="w"> </span>nexthdr<span class="w"> </span><span class="o">{</span><span class="w"> </span>udplite,<span class="w"> </span>comp,<span class="w"> </span>udp,<span class="w"> </span>ah,<span class="w"> </span>sctp,<span class="w"> </span>esp,<span class="w"> </span>dccp,<span class="w"> </span>tcp,<span class="w"> </span>icmpv6<span class="w"> </span><span class="o">}</span>
+hbh<span class="w"> </span>nexthdr<span class="w"> </span><span class="m">22</span>
+hbh<span class="w"> </span>nexthdr<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+</pre></div>
+</td></tr>
+<tr>
+<td><i>hdrlength &lt;length&gt;</i>
+</td>
+<td>Header Length
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>hbh<span class="w"> </span>hdrlength<span class="w"> </span><span class="m">22</span>
+hbh<span class="w"> </span>hdrlength<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+hbh<span class="w"> </span>hdrlength<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr></tbody></table>
+<p><br />
+</p>
+<h4><span class="mw-headline" id="Mh">Mh</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">mh match
+</th></tr>
+<tr>
+<td><i>nexthdr &lt;proto&gt;</i>
+</td>
+<td>Next protocol header
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>mh<span class="w"> </span>nexthdr<span class="w"> </span><span class="o">{</span><span class="w"> </span>udplite,<span class="w"> </span>ipcomp,<span class="w"> </span>udp,<span class="w"> </span>ah,<span class="w"> </span>sctp,<span class="w"> </span>esp,<span class="w"> </span>dccp,<span class="w"> </span>tcp,<span class="w"> </span>ipv6-icmp<span class="w"> </span><span class="o">}</span>
+mh<span class="w"> </span>nexthdr<span class="w"> </span><span class="m">22</span>
+mh<span class="w"> </span>nexthdr<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+</pre></div>
+</td></tr>
+<tr>
+<td><i>hdrlength &lt;length&gt;</i>
+</td>
+<td>Header Length
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>mh<span class="w"> </span>hdrlength<span class="w"> </span><span class="m">22</span>
+mh<span class="w"> </span>hdrlength<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+mh<span class="w"> </span>hdrlength<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>type &lt;type&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>mh<span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="o">{</span><span class="w"> </span>binding-refresh-request,<span class="w"> </span>home-test-init,<span class="w"> </span>careof-test-init,<span class="w"> </span>home-test,<span class="w"> </span>careof-test,<span class="w"> </span>binding-update,<span class="w"> </span>binding-acknowledgement,<span class="w"> </span>binding-error,<span class="w"> </span>fast-binding-update,<span class="w"> </span>fast-binding-acknowledgement,<span class="w"> </span>fast-binding-advertisement,<span class="w"> </span>experimental-mobility-header,<span class="w"> </span>home-agent-switch-message<span class="w"> </span><span class="o">}</span>
+mh<span class="w"> </span><span class="nb">type</span><span class="w"> </span>home-agent-switch-message
+mh<span class="w"> </span><span class="nb">type</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span>home-agent-switch-message
+</pre></div>
+</td></tr>
+<tr>
+<td><i>reserved &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>mh<span class="w"> </span>reserved<span class="w"> </span><span class="m">22</span>
+mh<span class="w"> </span>reserved<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+mh<span class="w"> </span>reserved<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>checksum &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>mh<span class="w"> </span>checksum<span class="w"> </span><span class="m">22</span>
+mh<span class="w"> </span>checksum<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+mh<span class="w"> </span>checksum<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr></tbody></table>
+<p><br />
+</p>
+<h4><span class="mw-headline" id="Rt">Rt</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">rt match
+</th></tr>
+<tr>
+<td><i>nexthdr &lt;proto&gt;</i>
+</td>
+<td>Next protocol header
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>rt<span class="w"> </span>nexthdr<span class="w"> </span><span class="o">{</span><span class="w"> </span>udplite,<span class="w"> </span>ipcomp,<span class="w"> </span>udp,<span class="w"> </span>ah,<span class="w"> </span>sctp,<span class="w"> </span>esp,<span class="w"> </span>dccp,<span class="w"> </span>tcp,<span class="w"> </span>ipv6-icmp<span class="w"> </span><span class="o">}</span>
+rt<span class="w"> </span>nexthdr<span class="w"> </span><span class="m">22</span>
+rt<span class="w"> </span>nexthdr<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+</pre></div>
+</td></tr>
+<tr>
+<td><i>hdrlength &lt;length&gt;</i>
+</td>
+<td>Header Length
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>rt<span class="w"> </span>hdrlength<span class="w"> </span><span class="m">22</span>
+rt<span class="w"> </span>hdrlength<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+rt<span class="w"> </span>hdrlength<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>type &lt;type&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>rt<span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="m">22</span>
+rt<span class="w"> </span><span class="nb">type</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+rt<span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>seg-left &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>rt<span class="w"> </span>seg-left<span class="w"> </span><span class="m">22</span>
+rt<span class="w"> </span>seg-left<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+rt<span class="w"> </span>seg-left<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr></tbody></table>
+<p><br />
+</p>
+<h4><span class="mw-headline" id="Vlan">Vlan</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">vlan match
+</th></tr>
+<tr>
+<td><i>id &lt;value&gt;</i>
+</td>
+<td>Vlan tag ID
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>vlan<span class="w"> </span>id<span class="w"> </span><span class="m">4094</span>
+vlan<span class="w"> </span>id<span class="w"> </span><span class="m">0</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>cfi &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>vlan<span class="w"> </span>cfi<span class="w"> </span><span class="m">0</span>
+vlan<span class="w"> </span>cfi<span class="w"> </span><span class="m">1</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>pcp &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>vlan<span class="w"> </span>pcp<span class="w"> </span><span class="m">7</span>
+vlan<span class="w"> </span>pcp<span class="w"> </span><span class="m">3</span>
+</pre></div>
+</td></tr></tbody></table>
+<p><br />
+</p>
+<h4><span class="mw-headline" id="Arp">Arp</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">arp match
+</th></tr>
+<tr>
+<td><i>ptype &lt;value&gt;</i>
+</td>
+<td>Payload type
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>arp<span class="w"> </span>ptype<span class="w"> </span>0x0800
+</pre></div>
+</td></tr>
+<tr>
+<td><i>htype &lt;value&gt;</i>
+</td>
+<td>Header type
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>arp<span class="w"> </span>htype<span class="w"> </span><span class="m">1</span>
+arp<span class="w"> </span>htype<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+arp<span class="w"> </span>htype<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>hlen &lt;length&gt;</i>
+</td>
+<td>Header Length
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>arp<span class="w"> </span>hlen<span class="w"> </span><span class="m">1</span>
+arp<span class="w"> </span>hlen<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+arp<span class="w"> </span>hlen<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>plen &lt;length&gt;</i>
+</td>
+<td>Payload length
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>arp<span class="w"> </span>plen<span class="w"> </span><span class="m">1</span>
+arp<span class="w"> </span>plen<span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="m">33</span>-45
+arp<span class="w"> </span>plen<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="m">33</span>,<span class="w"> </span><span class="m">55</span>,<span class="w"> </span><span class="m">67</span>,<span class="w"> </span><span class="m">88</span><span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>operation &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>arp<span class="w"> </span>operation<span class="w"> </span><span class="o">{</span><span class="w"> </span>nak,<span class="w"> </span>inreply,<span class="w"> </span>inrequest,<span class="w"> </span>rreply,<span class="w"> </span>rrequest,<span class="w"> </span>reply,<span class="w"> </span>request<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr></tbody></table>
+<p><br />
+</p>
+<h4><span class="mw-headline" id="Ct">Ct</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">ct match
+</th></tr>
+<tr>
+<td><i>state &lt;state&gt;</i>
+</td>
+<td>State of the connection
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ct<span class="w"> </span>state<span class="w"> </span><span class="o">{</span><span class="w"> </span>new,<span class="w"> </span>established,<span class="w"> </span>related,<span class="w"> </span>untracked<span class="w"> </span><span class="o">}</span>
+ct<span class="w"> </span>state<span class="w"> </span>!<span class="o">=</span><span class="w"> </span>related
+ct<span class="w"> </span>state<span class="w"> </span>established
+ct<span class="w"> </span>state<span class="w"> </span><span class="m">8</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>direction &lt;value&gt;</i>
+</td>
+<td>Direction of the packet relative to the connection
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ct<span class="w"> </span>direction<span class="w"> </span>original
+ct<span class="w"> </span>direction<span class="w"> </span>!<span class="o">=</span><span class="w"> </span>original
+ct<span class="w"> </span>direction<span class="w"> </span><span class="o">{</span><span class="w"> </span>reply,<span class="w"> </span>original<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>status &lt;status&gt;</i>
+</td>
+<td>Status of the connection
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre><span></span>ct<span class="w"> </span>status<span class="w"> </span>expected
+<span class="o">(</span>ct<span class="w"> </span>status<span class="w"> </span><span class="p">&amp;</span><span class="w"> </span>expected<span class="o">)</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span>expected
+ct<span class="w"> </span>status<span class="w"> </span><span class="o">{</span><span class="w"> </span>expected,<span class="w"> </span>seen-reply,<span class="w"> </span>assured,<span class="w"> </span>confirmed,<span class="w"> </span>snat,<span class="w"> </span>dnat,<span class="w"> </span>dying<span class="w"> </span><span class="o">}</span>
+</pre></div>
+</td></tr>
+<tr>
+<td><i>mark [set] <mark></mark></i>
+</td>
+<td>Mark of the connection
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>ct mark 0
+ct mark or 0x23 == 0x11
+ct mark or 0x3&#160;!= 0x1
+ct mark and 0x23 == 0x11
+ct mark and 0x3&#160;!= 0x1
+ct mark xor 0x23 == 0x11
+ct mark xor 0x3&#160;!= 0x1
+ct mark 0x00000032
+ct mark&#160;!= 0x00000032
+ct mark 0x00000032-0x00000045
+ct mark&#160;!= 0x00000032-0x00000045
+ct mark { 0x32, 0x2222, 0x42de3 }
+ct mark { 0x32-0x2222, 0x4444-0x42de3 }
+ct mark set 0x11 xor 0x1331
+ct mark set 0x11333 and 0x11
+ct mark set 0x12 or 0x11
+ct mark set 0x11
+ct mark set mark
+ct mark set mark map { 1&#160;: 10, 2&#160;: 20, 3&#160;: 30 }</pre></div>
+</td></tr>
+<tr>
+<td><i>expiration <time></time></i>
+</td>
+<td>Connection expiration time
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>ct expiration 30
+ct expiration 30s
+ct expiration&#160;!= 233
+ct expiration&#160;!= 3m53s
+ct expiration 33-45
+ct expiration 33s-45s
+ct expiration&#160;!= 33-45
+ct expiration&#160;!= 33s-45s
+ct expiration { 33, 55, 67, 88 }
+ct expiration { 1m7s, 33s, 55s, 1m28s }</pre></div>
+</td></tr>
+<tr>
+<td><i>helper "&lt;helper&gt;"</i>
+</td>
+<td>Helper associated with the connection
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>ct helper "ftp"</pre></div>
+</td></tr>
+<tr>
+<td><i>[original | reply] bytes &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>ct original bytes &gt; 100000
+ct bytes &gt; 100000</pre></div>
+</td></tr>
+<tr>
+<td><i>[original | reply] packets &lt;value&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>ct reply packets &lt; 100</pre></div>
+</td></tr>
+<tr>
+<td><i>[original | reply] ip saddr &lt;ip source address&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>ct original ip saddr 192.168.0.1
+ct reply ip saddr 192.168.0.1
+ct original ip saddr 192.168.1.0/24
+ct reply ip saddr 192.168.1.0/24</pre></div>
+</td></tr>
+<tr>
+<td><i>[original | reply] ip daddr &lt;ip destination address&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>ct original ip daddr 192.168.0.1
+ct reply ip daddr 192.168.0.1
+ct original ip daddr 192.168.1.0/24
+ct reply ip daddr 192.168.1.0/24</pre></div>
+</td></tr>
+<tr>
+<td><i>[original | reply] l3proto &lt;protocol&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>ct original l3proto ipv4</pre></div>
+</td></tr>
+<tr>
+<td><i>[original | reply] protocol &lt;protocol&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>ct original protocol 6</pre></div>
+</td></tr>
+<tr>
+<td><i>[original | reply] proto-dst &lt;port&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>ct original proto-dst 22</pre></div>
+</td></tr>
+<tr>
+<td><i>[original | reply] proto-src &lt;port&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>ct reply proto-src 53</pre></div>
+</td></tr>
+<tr>
+<td><i>count [over] &lt;number of connections&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>ct count over 2
+
+tcp dport 22 add @ssh_flood { ip saddr ct count over 2 } reject
+[ which requires an existing ssh_flood set, ie. add set filter ssh_flood { type ipv4_addr; flags dynamic; } ]</pre></div>
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id="Meta">Meta</span></h4>
+<p><a href="/wiki-nftables/index.php/Matching_packet_metainformation" title="Matching packet metainformation"><i>meta</i></a> matches packet by metainformation.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">meta match
+</th></tr>
+<tr>
+<td><i>iifname &lt;input interface name&gt;</i>
+</td>
+<td>Input interface name
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta iifname "eth0"
+meta iifname&#160;!= "eth0"
+meta iifname { "eth0", "lo" }
+meta iifname "eth*"</pre></div>
+</td></tr>
+<tr>
+<td><i>oifname &lt;output interface name&gt;</i>
+</td>
+<td>Output interface name
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta oifname "eth0"
+meta oifname&#160;!= "eth0"
+meta oifname { "eth0", "lo" }
+meta oifname "eth*"</pre></div>
+</td></tr>
+<tr>
+<td><i>iif &lt;input interface index&gt;</i>
+</td>
+<td>Input interface index
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta iif eth0
+meta iif&#160;!= eth0</pre></div>
+</td></tr>
+<tr>
+<td><i>oif &lt;output interface index&gt;</i>
+</td>
+<td>Output interface index
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta oif lo
+meta oif&#160;!= lo
+meta oif { eth0, lo }</pre></div>
+</td></tr>
+<tr>
+<td><i>iiftype &lt;input interface type&gt;</i>
+</td>
+<td>Input interface type
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta iiftype { ether, ppp, ipip, ipip6, loopback, sit, ipgre }
+meta iiftype&#160;!= ether
+meta iiftype ether</pre></div>
+</td></tr>
+<tr>
+<td><i>oiftype &lt;output interface type&gt;</i>
+</td>
+<td>Output interface hardware type
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta oiftype { ether, ppp, ipip, ipip6, loopback, sit, ipgre }
+meta oiftype&#160;!= ether
+meta oiftype ether</pre></div>
+</td></tr>
+<tr>
+<td><i>length &lt;length&gt;</i>
+</td>
+<td>Length of the packet in bytes
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta length 1000
+meta length&#160;!= 1000
+meta length &gt; 1000
+meta length 33-45
+meta length&#160;!= 33-45
+meta length { 33, 55, 67, 88 }
+meta length { 33-55, 67-88 }</pre></div>
+</td></tr>
+<tr>
+<td><i>protocol &lt;protocol&gt;</i>
+</td>
+<td>ethertype protocol
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta protocol ip
+meta protocol&#160;!= ip
+meta protocol { ip, arp, ip6, vlan }</pre></div>
+</td></tr>
+<tr>
+<td><i>nfproto &lt;protocol&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta nfproto ipv4
+meta nfproto&#160;!= ipv6
+meta nfproto { ipv4, ipv6 }</pre></div>
+</td></tr>
+<tr>
+<td><i>l4proto &lt;protocol&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta l4proto 22
+meta l4proto&#160;!= 233
+meta l4proto 33-45
+meta l4proto { 33, 55, 67, 88 }
+meta l4proto { 33-55 }</pre></div>
+</td></tr>
+<tr>
+<td><i>mark [set] <mark></mark></i>
+</td>
+<td>Packet mark
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta mark 0x4
+meta mark 0x00000032
+meta mark and 0x03 == 0x01
+meta mark and 0x03&#160;!= 0x01
+meta mark&#160;!= 0x10
+meta mark or 0x03 == 0x01
+meta mark or 0x03&#160;!= 0x01
+meta mark xor 0x03 == 0x01
+meta mark xor 0x03&#160;!= 0x01
+meta mark set 0xffffffc8 xor 0x16
+meta mark set 0x16 and 0x16
+meta mark set 0xffffffe9 or 0x16
+meta mark set 0xffffffde and 0x16
+meta mark set 0x32 or 0xfffff
+meta mark set 0xfffe xor 0x16</pre></div>
+</td></tr>
+<tr>
+<td><i>priority [set] &lt;priority&gt;</i>
+</td>
+<td>tc class id
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta priority none
+meta priority 0x1:0x1
+meta priority 0x1:0xffff
+meta priority 0xffff:0xffff
+meta priority set 0x1:0x1
+meta priority set 0x1:0xffff
+meta priority set 0xffff:0xffff</pre></div>
+</td></tr>
+<tr>
+<td><i>skuid &lt;user id&gt;</i>
+</td>
+<td>UID associated with originating socket
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta skuid { bin, root, daemon }
+meta skuid root
+meta skuid&#160;!= root
+meta skuid lt 3000
+meta skuid gt 3000
+meta skuid eq 3000
+meta skuid 3001-3005
+meta skuid&#160;!= 2001-2005
+meta skuid { 2001-2005 }</pre></div>
+</td></tr>
+<tr>
+<td><i>skgid &lt;group id&gt;</i>
+</td>
+<td>GID associated with originating socket
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta skgid { bin, root, daemon }
+meta skgid root
+meta skgid&#160;!= root
+meta skgid lt 3000
+meta skgid gt 3000
+meta skgid eq 3000
+meta skgid 3001-3005
+meta skgid&#160;!= 2001-2005
+meta skgid { 2001-2005 }</pre></div>
+</td></tr>
+<tr>
+<td><i>rtclassid &lt;class&gt;</i>
+</td>
+<td>Routing realm
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta rtclassid cosmos</pre></div>
+</td></tr>
+<tr>
+<td><i>pkttype &lt;type&gt;</i>
+</td>
+<td>Packet type
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta pkttype broadcast
+meta pkttype&#160;!= broadcast
+meta pkttype { broadcast, unicast, multicast }</pre></div>
+</td></tr>
+<tr>
+<td><i>cpu &lt;cpu index&gt;</i>
+</td>
+<td>CPU ID
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta cpu 1
+meta cpu&#160;!= 1
+meta cpu 1-3
+meta cpu&#160;!= 1-2
+meta cpu { 2,3 }
+meta cpu { 2-3, 5-7 }</pre></div>
+</td></tr>
+<tr>
+<td><i>iifgroup &lt;input group&gt;</i>
+</td>
+<td>Input interface group
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta iifgroup 0
+meta iifgroup&#160;!= 0
+meta iifgroup default
+meta iifgroup&#160;!= default
+meta iifgroup { default }
+meta iifgroup { 11,33 }
+meta iifgroup { 11-33 }</pre></div>
+</td></tr>
+<tr>
+<td><i>oifgroup &lt;group&gt;</i>
+</td>
+<td>Output interface group
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta oifgroup 0
+meta oifgroup&#160;!= 0
+meta oifgroup default
+meta oifgroup&#160;!= default
+meta oifgroup { default }
+meta oifgroup { 11,33 }
+meta oifgroup { 11-33 }</pre></div>
+</td></tr>
+<tr>
+<td><i>cgroup &lt;group&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>meta cgroup 1048577
+meta cgroup&#160;!= 1048577
+meta cgroup { 1048577, 1048578 }
+meta cgroup 1048577-1048578
+meta cgroup&#160;!= 1048577-1048578
+meta cgroup { 1048577-1048578 }</pre></div>
+</td></tr></tbody></table>
+<h3><span class="mw-headline" id="Statements">Statements</span></h3>
+<p><b>statement</b> is the action performed when the packet match the rule. It could be <i>terminal</i> and <i>non-terminal</i>. In a certain rule we can consider several non-terminal statements but only a single terminal statement.
+</p>
+<h4><span class="mw-headline" id="Verdict_statements">Verdict statements</span></h4>
+<p>The <b>verdict statement</b> alters control flow in the ruleset and issues policy decisions for packets. The valid verdict statements are:
+</p>
+<ul><li><i>accept</i>: Accept the packet and stop the remain rules evaluation.</li>
+<li><i>drop</i>: Drop the packet and stop the remain rules evaluation.</li>
+<li><i>queue</i>: Queue the packet to userspace and stop the remain rules evaluation.</li>
+<li><i>continue</i>: Continue the ruleset evaluation with the next rule.</li>
+<li><i>return</i>: Return from the current chain and continue at the next rule of the last chain. In a base chain it is equivalent to accept</li>
+<li><i>jump &lt;chain&gt;</i>: Continue at the first rule of &lt;chain&gt;. It will continue at the next rule after a return statement is issued</li>
+<li><i>goto &lt;chain&gt;</i>: Similar to jump, but after the new chain the evaluation will continue at the last chain instead of the one containing the goto statement</li></ul>
+<h4><span class="mw-headline" id="Log">Log</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">log statement
+</th></tr>
+<tr>
+<td><i>level [over] &lt;value&gt; &lt;unit&gt; [burst &lt;value&gt; &lt;unit&gt;]</i>
+</td>
+<td>Log level
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>log
+log level emerg
+log level alert
+log level crit
+log level err
+log level warn
+log level notice
+log level info
+log level debug</pre></div>
+</td></tr>
+<tr>
+<td><i>group &lt;value&gt; [queue-threshold &lt;value&gt;] [snaplen &lt;value&gt;] [prefix "&lt;prefix&gt;"]</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>log prefix aaaaa-aaaaaa group 2 snaplen 33
+log group 2 queue-threshold 2
+log group 2 snaplen 33</pre></div>
+</td></tr></tbody></table>
+<p><br />
+</p>
+<h4><span class="mw-headline" id="Reject">Reject</span></h4>
+<p>The default <b>reject</b> will be the ICMP type <b>port-unreachable</b>. The <b>icmpx</b> is only used for inet family support.
+</p><p>More information on the <a href="/wiki-nftables/index.php/Rejecting_traffic" title="Rejecting traffic">Rejecting_traffic</a> page.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">reject statement
+</th></tr>
+<tr>
+<td><i>with &lt;protocol&gt; type &lt;type&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>reject
+reject with icmp type host-unreachable
+reject with icmp type net-unreachable
+reject with icmp type prot-unreachable
+reject with icmp type port-unreachable
+reject with icmp type net-prohibited
+reject with icmp type host-prohibited
+reject with icmp type admin-prohibited
+reject with icmpv6 type no-route
+reject with icmpv6 type admin-prohibited
+reject with icmpv6 type addr-unreachable
+reject with icmpv6 type port-unreachable
+reject with icmpx type host-unreachable
+reject with icmpx type no-route
+reject with icmpx type admin-prohibited
+reject with icmpx type port-unreachable
+ip protocol tcp reject with tcp reset</pre></div>
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id="Counter">Counter</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">counter statement
+</th></tr>
+<tr>
+<td><i>packets &lt;packets&gt; bytes &lt;bytes&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>counter
+counter packets 0 bytes 0</pre></div>
+</td></tr></tbody></table>
+<p><br />
+</p>
+<h4><span class="mw-headline" id="Limit">Limit</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">limit statement
+</th></tr>
+<tr>
+<td><i>rate [over] &lt;value&gt; &lt;unit&gt; [burst &lt;value&gt; &lt;unit&gt;]</i>
+</td>
+<td>Rate limit
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>limit rate 400/minute
+limit rate 400/hour
+limit rate over 40/day
+limit rate over 400/week
+limit rate over 1023/second burst 10 packets
+limit rate 1025 kbytes/second
+limit rate 1023000 mbytes/second
+limit rate 1025 bytes/second burst 512 bytes
+limit rate 1025 kbytes/second burst 1023 kbytes
+limit rate 1025 mbytes/second burst 1025 kbytes
+limit rate 1025000 mbytes/second burst 1023 mbytes</pre></div>
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id="Nat">Nat</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">nat statement
+</th></tr>
+<tr>
+<td><i>dnat to &lt;destination address&gt;</i>
+</td>
+<td>Destination address translation
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>dnat to 192.168.3.2
+dnat to ct mark map { 0x00000014&#160;: 1.2.3.4 }</pre></div>
+</td></tr>
+<tr>
+<td><i>snat to &lt;ip source address&gt;</i>
+</td>
+<td>Source address translation
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>snat to 192.168.3.2
+snat to 2001:838:35f:1::-2001:838:35f:2:::100</pre></div>
+</td></tr>
+<tr>
+<td><i>masquerade [&lt;type&gt;] [to&#160;:&lt;port&gt;]</i>
+</td>
+<td>Masquerade
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>masquerade
+masquerade persistent,fully-random,random
+masquerade to :1024
+masquerade to :1024-2048</pre></div>
+</td></tr></tbody></table>
+<h4><span class="mw-headline" id="Queue">Queue</span></h4>
+<table class="wikitable">
+<tbody><tr>
+<th colspan="6">queue statement
+</th></tr>
+<tr>
+<td><i>num &lt;value&gt; &lt;scheduler&gt;</i>
+</td>
+<td>
+</td>
+<td><div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>queue
+queue num 2
+queue num 2-3
+queue num 4-5 fanout bypass
+queue num 4-5 fanout
+queue num 4-5 bypass</pre></div>
+</td></tr></tbody></table>
+<h2><span class="mw-headline" id="Extras">Extras</span></h2>
+<h3><span class="mw-headline" id="Export_Configuration">Export Configuration</span></h3>
+<div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>% nft export (xml | json)</pre></div>
+<h3><span class="mw-headline" id="Monitor_Events">Monitor Events</span></h3>
+<p>Monitor events from Netlink creating filters.
+</p>
+<div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>% nft monitor [new | destroy] [tables | chains | sets | rules | elements] [xml | json]</pre></div>
+<p><br />
+</p>
+<h1><span class="mw-headline" id="Nft_scripting">Nft scripting</span></h1>
+<h2><span class="mw-headline" id="List_ruleset">List ruleset</span></h2>
+<div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>% nft list ruleset</pre></div>
+<h2><span class="mw-headline" id="Flush_ruleset">Flush ruleset</span></h2>
+<div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>% nft flush ruleset</pre></div>
+<h2><span class="mw-headline" id="Load_ruleset">Load ruleset</span></h2>
+<p>Create a command batch file and load it with the nft interpreter,
+</p>
+<div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>% echo "flush ruleset" &gt; /etc/nftables.rules
+% echo "add table filter" &gt;&gt; /etc/nftables.rules
+% echo "add chain filter input" &gt;&gt; /etc/nftables.rules
+% echo "add rule filter input meta iifname lo accept" &gt;&gt; /etc/nftables.rules
+% nft -f /etc/nftables.rules</pre></div>
+<p>or create an executable nft script file,
+</p>
+<div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>% cat &lt;&lt; EOF &gt; /etc/nftables.rules
+&gt; #!/usr/local/sbin/nft -f
+&gt; flush ruleset
+&gt; add table filter
+&gt; add chain filter input
+&gt; add rule filter input meta iifname lo accept
+&gt; EOF
+% chmod u+x /etc/nftables.rules
+% /etc/nftables.rules</pre></div>
+<p>or create an executable nft script file from an already created ruleset,
+</p>
+<div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>% nft list ruleset &gt; /etc/nftables.rules
+% nft flush ruleset
+% nft -f /etc/nftables.rules</pre></div>
+<p><br />
+</p>
+<h1><span class="mw-headline" id="Examples">Examples</span></h1>
+<h2><span id="Simple_IP.2FIPv6_Firewall"></span><span class="mw-headline" id="Simple_IP/IPv6_Firewall">Simple IP/IPv6 Firewall</span></h2>
+<div class="mw-highlight mw-highlight-lang-bash mw-content-ltr" dir="ltr"><pre>flush ruleset
+
+table firewall {
+  chain incoming {
+    type filter hook input priority 0; policy drop;
+
+    # established/related connections
+    ct state established,related accept
+
+    # loopback interface
+    iifname lo accept
+
+    # icmp
+    icmp type echo-request accept
+
+    # open tcp ports: sshd (22), httpd (80)
+    tcp dport { ssh, http } accept
+  }
+}
+
+table ip6 firewall {
+  chain incoming {
+    type filter hook input priority 0; policy drop;
+
+    # established/related connections
+    ct state established,related accept
+
+    # invalid connections
+    ct state invalid drop
+
+    # loopback interface
+    iifname lo accept
+
+    # icmp
+    # routers may also want: mld-listener-query, nd-router-solicit
+    icmpv6 type { echo-request, nd-neighbor-solicit } accept
+
+    # open tcp ports: sshd (22), httpd (80)
+    tcp dport { ssh, http } accept
+  }
+}</pre></div>
+<!-- 
+NewPP limit report
+Cached time: 20260414084758
+Cache expiry: 86400
+Reduced expiry: false
+Complications: [show‐toc]
+CPU time usage: 0.260 seconds
+Real time usage: 0.323 seconds
+Preprocessor visited node count: 881/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/100
+Expensive parser function count: 149/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 94074/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key wikidb_nftables:pcache:idhash:4-0!canonical and timestamp 20260414084758 and revision id 1132. Rendering was triggered because: page-view
+ -->
+</div>
+<div class="printfooter" data-nosnippet="">Retrieved from "<a dir="ltr" href="http://wiki.nftables.org/wiki-nftables/index.php?title=Quick_reference-nftables_in_10_minutes&amp;oldid=1132">http://wiki.nftables.org/wiki-nftables/index.php?title=Quick_reference-nftables_in_10_minutes&amp;oldid=1132</a>"</div></div>
+		<div id="catlinks" class="catlinks" data-mw="interface"><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/wiki-nftables/index.php/Special:Categories" title="Special:Categories">Categories</a>: <ul><li><a href="/wiki-nftables/index.php?title=Category:Pages_using_deprecated_source_tags&amp;action=edit&amp;redlink=1" class="new" title="Category:Pages using deprecated source tags (page does not exist)">Pages using deprecated source tags</a></li><li><a href="/wiki-nftables/index.php?title=Category:Pages_with_too_many_expensive_parser_function_calls&amp;action=edit&amp;redlink=1" class="new" title="Category:Pages with too many expensive parser function calls (page does not exist)">Pages with too many expensive parser function calls</a></li></ul></div></div>
+	</div>
+</div>
+
+<div id="mw-navigation">
+	<h2>Navigation menu</h2>
+	<div id="mw-head">
+		
+<nav id="p-personal" class="mw-portlet mw-portlet-personal vector-user-menu-legacy vector-menu" aria-labelledby="p-personal-label"  >
+	<h3
+		id="p-personal-label"
+		
+		class="vector-menu-heading "
+	>
+		<span class="vector-menu-heading-label">Personal tools</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="pt-login" class="mw-list-item"><a href="/wiki-nftables/index.php?title=Special:UserLogin&amp;returnto=Quick+reference-nftables+in+10+minutes" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o"><span>Log in</span></a></li>
+		</ul>
+		
+	</div>
+</nav>
+
+		<div id="left-navigation">
+			
+<nav id="p-namespaces" class="mw-portlet mw-portlet-namespaces vector-menu-tabs vector-menu-tabs-legacy vector-menu" aria-labelledby="p-namespaces-label"  >
+	<h3
+		id="p-namespaces-label"
+		
+		class="vector-menu-heading "
+	>
+		<span class="vector-menu-heading-label">Namespaces</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="ca-nstab-main" class="selected mw-list-item"><a href="/wiki-nftables/index.php/Quick_reference-nftables_in_10_minutes" title="View the content page [c]" accesskey="c"><span>Page</span></a></li><li id="ca-talk" class="new mw-list-item"><a href="/wiki-nftables/index.php?title=Talk:Quick_reference-nftables_in_10_minutes&amp;action=edit&amp;redlink=1" rel="discussion" class="new" title="Discussion about the content page (page does not exist) [t]" accesskey="t"><span>Discussion</span></a></li>
+		</ul>
+		
+	</div>
+</nav>
+
+			
+<nav id="p-variants" class="mw-portlet mw-portlet-variants emptyPortlet vector-menu-dropdown vector-menu" aria-labelledby="p-variants-label"  >
+	<input type="checkbox"
+		id="p-variants-checkbox"
+		role="button"
+		aria-haspopup="true"
+		data-event-name="ui.dropdown-p-variants"
+		class="vector-menu-checkbox"
+		aria-labelledby="p-variants-label"
+	>
+	<label
+		id="p-variants-label"
+		
+		class="vector-menu-heading "
+	>
+		<span class="vector-menu-heading-label">English</span>
+	</label>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			
+		</ul>
+		
+	</div>
+</nav>
+
+		</div>
+		<div id="right-navigation">
+			
+<nav id="p-views" class="mw-portlet mw-portlet-views vector-menu-tabs vector-menu-tabs-legacy vector-menu" aria-labelledby="p-views-label"  >
+	<h3
+		id="p-views-label"
+		
+		class="vector-menu-heading "
+	>
+		<span class="vector-menu-heading-label">Views</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="ca-view" class="selected mw-list-item"><a href="/wiki-nftables/index.php/Quick_reference-nftables_in_10_minutes"><span>Read</span></a></li><li id="ca-viewsource" class="mw-list-item"><a href="/wiki-nftables/index.php?title=Quick_reference-nftables_in_10_minutes&amp;action=edit" title="This page is protected.&#10;You can view its source [e]" accesskey="e"><span>View source</span></a></li><li id="ca-history" class="mw-list-item"><a href="/wiki-nftables/index.php?title=Quick_reference-nftables_in_10_minutes&amp;action=history" title="Past revisions of this page [h]" accesskey="h"><span>View history</span></a></li>
+		</ul>
+		
+	</div>
+</nav>
+
+			
+<nav id="p-cactions" class="mw-portlet mw-portlet-cactions emptyPortlet vector-menu-dropdown vector-menu" aria-labelledby="p-cactions-label"  title="More options" >
+	<input type="checkbox"
+		id="p-cactions-checkbox"
+		role="button"
+		aria-haspopup="true"
+		data-event-name="ui.dropdown-p-cactions"
+		class="vector-menu-checkbox"
+		aria-labelledby="p-cactions-label"
+	>
+	<label
+		id="p-cactions-label"
+		
+		class="vector-menu-heading "
+	>
+		<span class="vector-menu-heading-label">More</span>
+	</label>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			
+		</ul>
+		
+	</div>
+</nav>
+
+			
+<div id="p-search" role="search" class="vector-search-box-vue  vector-search-box-show-thumbnail vector-search-box-auto-expand-width vector-search-box">
+	<h3 >Search</h3>
+	<form action="/wiki-nftables/index.php" id="searchform" class="vector-search-box-form">
+		<div id="simpleSearch"
+			class="vector-search-box-inner"
+			 data-search-loc="header-navigation">
+			<input class="vector-search-box-input"
+				 type="search" name="search" placeholder="Search nftables wiki" aria-label="Search nftables wiki" autocapitalize="sentences" title="Search nftables wiki [f]" accesskey="f" id="searchInput"
+			>
+			<input type="hidden" name="title" value="Special:Search">
+			<input id="mw-searchButton"
+				 class="searchButton mw-fallbackSearchButton" type="submit" name="fulltext" title="Search the pages for this text" value="Search">
+			<input id="searchButton"
+				 class="searchButton" type="submit" name="go" title="Go to a page with this exact name if it exists" value="Go">
+		</div>
+	</form>
+</div>
+
+		</div>
+	</div>
+	
+<div id="mw-panel" class="vector-legacy-sidebar">
+	<div id="p-logo" role="banner">
+		<a class="mw-wiki-logo" href="/wiki-nftables/index.php/Main_Page"
+			title="Visit the main page"></a>
+	</div>
+	
+<nav id="p-navigation" class="mw-portlet mw-portlet-navigation vector-menu-portal portal vector-menu" aria-labelledby="p-navigation-label"  >
+	<h3
+		id="p-navigation-label"
+		
+		class="vector-menu-heading "
+	>
+		<span class="vector-menu-heading-label">Navigation</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="n-mainpage-description" class="mw-list-item"><a href="/wiki-nftables/index.php/Main_Page" title="Visit the main page [z]" accesskey="z"><span>Main page</span></a></li><li id="n-recentchanges" class="mw-list-item"><a href="/wiki-nftables/index.php/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r"><span>Recent changes</span></a></li><li id="n-randompage" class="mw-list-item"><a href="/wiki-nftables/index.php/Special:Random" title="Load a random page [x]" accesskey="x"><span>Random page</span></a></li><li id="n-help-mediawiki" class="mw-list-item"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents"><span>Help about MediaWiki</span></a></li>
+		</ul>
+		
+	</div>
+</nav>
+
+	
+<nav id="p-tb" class="mw-portlet mw-portlet-tb vector-menu-portal portal vector-menu" aria-labelledby="p-tb-label"  >
+	<h3
+		id="p-tb-label"
+		
+		class="vector-menu-heading "
+	>
+		<span class="vector-menu-heading-label">Tools</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="t-whatlinkshere" class="mw-list-item"><a href="/wiki-nftables/index.php/Special:WhatLinksHere/Quick_reference-nftables_in_10_minutes" title="A list of all wiki pages that link here [j]" accesskey="j"><span>What links here</span></a></li><li id="t-recentchangeslinked" class="mw-list-item"><a href="/wiki-nftables/index.php/Special:RecentChangesLinked/Quick_reference-nftables_in_10_minutes" rel="nofollow" title="Recent changes in pages linked from this page [k]" accesskey="k"><span>Related changes</span></a></li><li id="t-specialpages" class="mw-list-item"><a href="/wiki-nftables/index.php/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q"><span>Special pages</span></a></li><li id="t-print" class="mw-list-item"><a href="javascript:print();" rel="alternate" title="Printable version of this page [p]" accesskey="p"><span>Printable version</span></a></li><li id="t-permalink" class="mw-list-item"><a href="/wiki-nftables/index.php?title=Quick_reference-nftables_in_10_minutes&amp;oldid=1132" title="Permanent link to this revision of this page"><span>Permanent link</span></a></li><li id="t-info" class="mw-list-item"><a href="/wiki-nftables/index.php?title=Quick_reference-nftables_in_10_minutes&amp;action=info" title="More information about this page"><span>Page information</span></a></li>
+		</ul>
+		
+	</div>
+</nav>
+
+	
+</div>
+
+</div>
+
+<footer id="footer" class="mw-footer" >
+	<ul id="footer-info">
+	<li id="footer-info-lastmod"> This page was last edited on 21 April 2024, at 07:52.</li>
+	<li id="footer-info-copyright">Content is available under <a class="external" rel="nofollow" href="https://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License 1.3 or later</a> unless otherwise noted.</li>
+</ul>
+
+	<ul id="footer-places">
+	<li id="footer-places-privacy"><a href="/wiki-nftables/index.php/Nftables:Privacy_policy">Privacy policy</a></li>
+	<li id="footer-places-about"><a href="/wiki-nftables/index.php/Nftables:About">About nftables wiki</a></li>
+	<li id="footer-places-disclaimers"><a href="/wiki-nftables/index.php/Nftables:General_disclaimer">Disclaimers</a></li>
+</ul>
+
+	<ul id="footer-icons" class="noprint">
+	<li id="footer-copyrightico"><a href="https://www.gnu.org/copyleft/fdl.html" class="cdx-button cdx-button--fake-button cdx-button--size-large cdx-button--fake-button--enabled"><img src="/wiki-nftables/resources/assets/licenses/gnu-fdl.png" alt="GNU Free Documentation License 1.3 or later" width="88" height="31" loading="lazy"></a></li>
+	<li id="footer-poweredbyico"><a href="https://www.mediawiki.org/" class="cdx-button cdx-button--fake-button cdx-button--size-large cdx-button--fake-button--enabled"><img src="/wiki-nftables/resources/assets/poweredby_mediawiki.svg" alt="Powered by MediaWiki" width="88" height="31" loading="lazy"></a></li>
+</ul>
+
+</footer>
+
+<script>(RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgBackendResponseTime":274,"wgPageParseReport":{"limitreport":{"cputime":"0.260","walltime":"0.323","ppvisitednodes":{"value":881,"limit":1000000},"postexpandincludesize":{"value":0,"limit":2097152},"templateargumentsize":{"value":0,"limit":2097152},"expansiondepth":{"value":2,"limit":100},"expensivefunctioncount":{"value":149,"limit":100},"unstrip-depth":{"value":0,"limit":20},"unstrip-size":{"value":94074,"limit":5000000},"timingprofile":["100.00%    0.000      1 -total"]},"cachereport":{"timestamp":"20260414084758","ttl":86400,"transientcontent":false}}});});</script>
+</body>
+</html>
