@@ -916,6 +916,16 @@ llm chat --cid <ID>                            # resume the right one
 EOF
 }
 
+llm_bedrock_get_anthropic_modes() {
+
+  # The inference profiles are for redundancy
+  # 3 endpoint east-1, east-2, west-1
+  # later anthropic  models use this type of endpoint deployment
+  aws bedrock list-inference-profiles --profile bedrock
+
+}
+
+# echos - don't move
 [[ -z "${ANTHROPIC_API_KEY:-}" ]] && echo "***** ANTHROPIC_API_KEY not set *****" >&2
 [[ -z "${OPENROUTER_API_KEY:-}" ]] && echo "***** OPENROUTER_API_KEY not set *****" >&2
 [[ -z "${AWS_BEARER_TOKEN_BEDROCK:-}" ]] && echo "***** AWS_BEARER_TOKEN_BEDROCK not set *****" >&2
