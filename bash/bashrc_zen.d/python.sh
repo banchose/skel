@@ -1,5 +1,6 @@
 alias editpython='nvim ~/gitdir/skel/bash/bashrc_zen.d/python.sh'
-python_help() {
+
+help_python() {
 
   cat <<'EOF'
 # "introspection"
@@ -34,5 +35,23 @@ sequence(support interation methods): string, tuple, list, range
 iteration over containers
 iterator: an object representing a stream of data, repeated calls to '__inter()__' returning successive items
 every iterator is interable and can mostly be used in place of itererables are accepted
+####
+## http server
+####
+python -m http.server [OPTIONS] [port]
+
+python -m http.server 9000
+
+python -m http.server --bind 127.0.0.1
+
+python -m http.server --directory /tmp/
+python -m http.server --protocol HTTP/1.1
+### tls
+python -m http.server --tls-cert fullchain.pem
+## pass protected
+python -m http.server \
+       --tls-cert cert.pem \
+       --tls-key key.pem \
+       --tls-password-file password.txt
 EOF
 }

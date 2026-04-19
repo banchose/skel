@@ -146,3 +146,9 @@ uv tool install --upgrade --python 3.13 ipython \
   --with httpie \
   --with uv \
   --with open-terminal
+
+# cargo installs
+# cargo install atac --locked # web tui
+# cargo install slumber --locked # web tui
+# cargo install trippy --locked
+# cargo install --git https://github.com/kamiyaa/joshuto.git --force
