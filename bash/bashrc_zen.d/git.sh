@@ -10,6 +10,13 @@
 # cd ~/gitdir/aws
 # git config credential.https://github.com.username banchose
 
+# Bail early if the command isn't available (only meaningful when sourced)
+(return 0 2>/dev/null) || {
+  printf >&2 '%s: must be sourced, not executed\n' "${BASH_SOURCE[0]}"
+  exit 1
+}
+command -v git >/dev/null 2>&1 || return 0
+
 alias gitb='git branch -vv' # show detailed branch info
 alias gitr='git branch -r'  # show remote branches
 alias cdskel='cd ~/gitdir/skel'

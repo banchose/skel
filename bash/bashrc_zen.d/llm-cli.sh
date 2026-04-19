@@ -95,6 +95,7 @@ alias llm_chat_tin_bash='llm chat -t tin --sf ~/gitdir/skel/PROMPT/DEFAULT_bash.
 # }
 
 tf() {
+  # ffmpeg -i abc.mp4 -vn -ac 1 -ar 16000 -c:a flac abc.flac
   if ! command -v tinfoil >/dev/null 2>&1; then
     printf >&2 'tf: tinfoil is not installed\n'
     read -rp 'Install tinfoil-cli? [y/N] ' answer
