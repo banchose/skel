@@ -10,18 +10,48 @@ alias socat='socat -d -d'
 
 socat_help() {
   cat <<'EOF'
-  # Connect terminal to endpoint
-  socat STDIO TCP4:localhost:1234
-  # single-shot
-  socat TCP4-LISTEN:4321 TCP4:localhost:1234
-  # reuse
-  socat TCP-LISTEN:1234,reuseaddr,fork TCP:localhost:80
-  # write stdin to a file
-  socat -u FILE:test.txt,create STDIO
-  # cap at 1000 bytes
-  socat - TCP:www.blackhat.org:31337,readbytes=1000
-  # tls
-  socat TCP-LISTEN:2305,fork,reuseaddr ssl:example.com:443
+# Socat
+
+## Connect terminal to endpoint
+
+```sh
+socat STDIO TCP4:localhost:1234
+```
+
+## single-shot
+
+```sh
+socat TCP4-LISTEN:4321 TCP4:localhost:1234
+```
+
+## reuse
+
+```sh
+socat TCP-LISTEN:1234,reuseaddr,fork TCP:localhost:80
+```
+
+## write stdin to a file
+
+```sh
+socat -u FILE:test.txt,create STDIO
+```
+
+## cap at 1000 bytes
+
+```sh
+socat - TCP:www.blackhat.org:31337,readbytes=1000
+```
+## tls
+
+```sh
+socat TCP-LISTEN:2305,fork,reuseaddr ssl:example.com:443
+```
+## options
+
+-u address1 r/o, address2 w/o
+-U revese ?
+-d -d print fatal+error+warning+notice messages
+-d -d -d info too
 EOF
 }
 
