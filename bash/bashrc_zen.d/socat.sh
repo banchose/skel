@@ -46,6 +46,59 @@ socat - TCP:www.blackhat.org:31337,readbytes=1000
 ```sh
 socat TCP-LISTEN:2305,fork,reuseaddr ssl:example.com:443
 ```
+## Write to file
+
+```
+socat -u TCP-LISTEN:8005 CREATE:"$HOME"/temp/boom
+netcat localhost 8005
+tail -f "$HOME"/temp/boom
+```
+
+## OPENSSL Chat
+  
+### Make cert/key
+
+```
+openssl req -x509 -newkey rsa:2048 -keyout server.key -out server.crt \
+    -days 30 -nodes -subj "/CN=localhost"
+cat server.key server.crt > server.pem
+chmod 600 server.pem
+```
+### Start Server
+
+```
+socat OPENSSL-LISTEN:4443,reuseaddr,cert=server.pem,verify=0 -
+```
+
+### Start Client
+
+```
+socat - OPENSSL:localhost:4443,cafile=server.crt
+```
+
+### OPENSSL Chat: verify=1
+
+#### Create a cert for the client
+
+```
+openssl req -x509 -newkey rsa:2048 -keyout client.key -out client.crt \
+    -days 30 -nodes -subj "/CN=client"
+cat client.key client.crt > client.pem
+chmod 600 client.pem
+```
+
+#### Tell server about the client crt and start
+
+```
+socat OPENSSL-LISTEN:4443,reuseaddr,cert=./server.pem,cafile=./client.crt -
+```
+
+#### Client
+
+```
+socat - OPENSSL:localhost:4443,cafile=$HOME/temp/cert/server.crt,cert=$HOME/temp/cert/client.pem
+```
+
 ## options
 
 -u address1 r/o, address2 w/o
