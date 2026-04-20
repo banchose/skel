@@ -22,5 +22,11 @@ edituv() {
 uv_help() {
   cat <<'EOF'
 uv tool upgrade --all
+uv run --python 3.12 python # one-off
+uv python install 3.12
+uv python install 3.11 3.13    # multiple at once
+uv python list                  # see available/installed
+uv python run 3.12
+uv python pin 3.12
 EOF
 }
