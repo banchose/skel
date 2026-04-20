@@ -148,30 +148,60 @@ gitcredclear() {
 }
 
 gitsync() {
-
   local gitdir=~/gitdir
-  # put in subshell to avoid changing directory
   (
     cd "$gitdir" || {
       echo "Cannot cd into $gitdir"
       exit 1
     }
-    # the ./*/ will do just directories.  ./* will do files and directories
+    local threshold
+    threshold=$(date -d '1 year ago' +%s)
+
     for i in ./*/; do
-      cd "$i" >/dev/null
+      cd "$i" >/dev/null || continue
       echo "**********************************"
-      echo $'\t'"${PWD##*/}"
+      echo "    ${PWD##*/}"
       echo "**********************************"
-      #      [[ -d .git ]] && git fetch --prune && git status && git pull
-      last=$(git log -1 --format=%ct --all 2>/dev/null) # epoch seconds
-      threshold=$(date -d '1 year ago' +%s)
-      ((last < threshold)) && echo "STALE"
-      [[ -d .git ]] && git fetch --prune && git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)
+
+      if [[ -d .git ]]; then
+        last=$(git log -1 --format=%ct --all 2>/dev/null)
+        if [[ -n "$last" ]] && ((last < threshold)); then
+          echo "STALE — skipping"
+        else
+          git fetch --prune &&
+            git reset --hard "origin/$(git rev-parse --abbrev-ref HEAD)"
+        fi
+      fi
       cd ..
     done
   )
-
 }
+
+# gitsync() {
+#
+#   local gitdir=~/gitdir
+#   # put in subshell to avoid changing directory
+#   (
+#     cd "$gitdir" || {
+#       echo "Cannot cd into $gitdir"
+#       exit 1
+#     }
+#     # the ./*/ will do just directories.  ./* will do files and directories
+#     for i in ./*/; do
+#       cd "$i" >/dev/null
+#       echo "**********************************"
+#       echo $'\t'"${PWD##*/}"
+#       echo "**********************************"
+#       #      [[ -d .git ]] && git fetch --prune && git status && git pull
+#       last=$(git log -1 --format=%ct --all 2>/dev/null) # epoch seconds
+#       threshold=$(date -d '1 year ago' +%s)
+#       ((last < threshold)) && echo "STALE"
+#       [[ -d .git ]] && git fetch --prune && git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)
+#       cd ..
+#     done
+#   )
+#
+# }
 
 gitp() (
   # look for gitdir cd in and git
