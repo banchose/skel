@@ -26,9 +26,6 @@ export PATH
 #     no-op, but cargo's env script is itself idempotent) ---
 [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
-# --- uv env, if present ---
-[ -f "$HOME/.local/share/../bin/env" ] && . "$HOME/.local/share/../bin/env"
-
 # --- hand off to .bashrc for interactive bash sessions ---
 if [ -n "$BASH_VERSION" ] && [ -f "$HOME/.bashrc" ]; then
   . "$HOME/.bashrc"
