@@ -134,7 +134,7 @@ tf() {
     done
   fi
 
-  command llm "$@" -t tf_f --ta
+  command llm "$@" -t tf_f
 }
 
 ## Python funcition example

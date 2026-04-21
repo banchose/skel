@@ -34,6 +34,9 @@ if [[ -n ${INST_RUST:-} ]]; then
   cargo install cargo-update fd-find ripgrep
 fi
 
+command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install | sh
+uv self update
+
 # Simple tool installs
 uv tool install httpie
 uv tool install pgcli
@@ -71,7 +74,7 @@ uv tool install aider-chat --python 3.11
 uv tool install 'litellm[proxy]' --python 3.13
 
 uv tool install ptpython \
-  --with requests --with icecream --with pendulum --with httpx --with uv
+  --with requests --with httpx --with networkx --with flake8 --with pyflakes --with html2text --with isort --with posting --with icecream --with pendulum --with httpx --with uv --with 'litellm[proxy]' --with boto3
 
 # llm with full plugin/dependency set
 uv tool install --upgrade --python 3.13 llm \
