@@ -82,9 +82,9 @@
   api_key_name: tinfoil
   supports_tools: true
 
-- model_id: tinfoil-kimi-k2-5
+- model_id: tinfoil-kimi-k2-6
   aliases: ["kimi", "tin"]
-  model_name: kimi-k2-5
+  model_name: kimi-k2-6
   api_base: "http://127.0.0.1:8087/v1"
   api_key_name: tinfoil
   aliases: ["kimi", "kim"]
