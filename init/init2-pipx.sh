@@ -70,7 +70,7 @@ uv tool install visidata
 uv tool install esptool
 uv tool install ansible
 uv tool install glances
-uv tool install aider-chat --python 3.11
+uv tool install aider-chat --python 3.11 --with boto3
 uv tool install 'litellm[proxy]' --python 3.13
 
 uv tool install ptpython \
