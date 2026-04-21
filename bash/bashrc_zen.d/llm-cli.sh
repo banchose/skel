@@ -924,6 +924,11 @@ wl-paste | llm -t tin "can you see this"  --at - image/jpeg
 llm logs -q "keyword" | grep conversation:    # get candidate IDs
 llm logs --cid <ID> | head -5                  # peek at each one
 llm chat --cid <ID>                            # resume the right one
+## Where does openwebui/llm get the modes
+  openwebui has "connections" tab which points to the litellm IP:PORT
+  That has a litellm.conf with entries pointing to anthropic, bedrock with profile test and boto3 installed, and tinfoil confidential endpoints
+from litellm.conf and that will have tinfoil pointing to confidentail endpoint
+Either in /apps/openwebui/
 EOF
 }
 
