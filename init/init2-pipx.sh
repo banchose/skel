@@ -68,6 +68,7 @@ uv tool install esptool
 uv tool install ansible
 uv tool install glances
 uv tool install aider-chat --python 3.11
+uv tool install 'litellm[proxy]' --python 3.13
 
 uv tool install ptpython \
   --with requests --with icecream --with pendulum --with httpx --with uv
@@ -106,9 +107,9 @@ uv tool install --upgrade --python 3.13 llm \
   --with tinfoil
 
 llm install llm-docs
-llm install llm-sentence-transformers
-llm sentence-transformers register all-MiniLM-L12-v2 --alias mini-l12
-llm sentence-transformers register all-mpnet-base-v2 --alias mpnet
+# llm install llm-sentence-transformers
+# llm sentence-transformers register all-MiniLM-L12-v2 --alias mini-l12
+# llm sentence-transformers register all-mpnet-base-v2 --alias mpnet
 
 uv tool install --upgrade --python 3.13 ipython \
   --with boto3 \
