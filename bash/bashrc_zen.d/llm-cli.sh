@@ -929,6 +929,20 @@ llm chat --cid <ID>                            # resume the right one
   That has a litellm.conf with entries pointing to anthropic, bedrock with profile test and boto3 installed, and tinfoil confidential endpoints
 from litellm.conf and that will have tinfoil pointing to confidentail endpoint
 Either in /apps/openwebui/
+## Bedrock
+  via boto3
+  litellm params
+  ---------------
+  aws_access_key_id: Optional[str],
+  aws_secret_access_key: Optional[str],
+  aws_session_token: Optional[str],
+  aws_region_name: Optional[str],
+  aws_session_name: Optional[str],
+  aws_profile_name: Optional[str],
+  aws_role_name: Optional[str],
+  aws_web_identity_token: Optional[str],
+  aws_bedrock_runtime_endpoint: Optional[str],
+  api_key: Optional[str],
 EOF
 }
 
