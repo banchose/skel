@@ -22,6 +22,36 @@
 # echo "${BASH_SOURCE[0]}"
 
 # If not running interactively, don't do anything
+
+# ~/.bashrc
+
+# ============================================================
+# Section 1: environment (runs for ALL bash invocations)
+# ============================================================
+
+# XDG
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_STATE_HOME="${HOME}/.local/state"
+export XDG_PICTURES_DIR="${HOME}/Pictures"
+
+# PATH, idempotent
+path_prepend() {
+  case ":${PATH}:" in
+  *":$1:"*) ;;
+  *) [[ -d "$1" ]] && PATH="$1:${PATH}" ;;
+  esac
+}
+path_prepend "${HOME}/bin"
+path_prepend "${HOME}/.local/bin"
+path_prepend "${HOME}/.cargo/bin"
+path_prepend "${HOME}/go/bin"
+export PATH
+
+# cargo env (if present)
+[[ -f "${HOME}/.cargo/env" ]] && . "${HOME}/.cargo/env"
+
 [[ $- != *i* ]] && return
 
 umask 022
