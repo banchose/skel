@@ -130,7 +130,7 @@ tf_start_proxy() {
   tinfoil proxy \
     -r tinfoilsh/confidential-model-router \
     -e inference.tinfoil.sh \
-    -p 8080 >/dev/null 2>&1 &
+    -p 8087 >/dev/null 2>&1 &
 }
 
 tf_curl() {
