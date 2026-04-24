@@ -15,6 +15,8 @@
 #   sudo resolvectl domain eth0 corp.healthresearch.org dz.corp.healthresearch.org aws.healthresearch.org
 # }
 
+alias editresolveconf='sudo nvim /etc/resolv.conf'
+
 wsl_add_aws() {
   local domains="corp.healthresearch.org dz.corp.healthresearch.org aws.healthresearch.org"
   if grep -q "^search" /etc/resolv.conf; then
