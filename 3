@@ -16,11 +16,6 @@
 # }
 
 wsl_add_aws() {
-  local domains="corp.healthresearch.org dz.corp.healthresearch.org aws.healthresearch.org"
-  if grep -q "^search" /etc/resolv.conf; then
-    echo "search line already present in /etc/resolv.conf"
-  else
-    echo "adding to resolv.conf search: $domains"
-    sudo bash -c "echo 'search $domains' >> /etc/resolv.conf"
-  fi
+  echo "adding to resolv.conf search: corp.healthresearch.org dz.corp.healthresearch.org aws.healthresearch.org"
+  sudo bash -c 'echo search corp.healthresearch.org dz.corp.healthresearch.org aws.healthresearch.org >> /etc/resolv.conf'
 }
