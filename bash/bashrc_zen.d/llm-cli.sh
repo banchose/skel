@@ -134,7 +134,7 @@ tf() {
     done
   fi
 
-  ORT_LOG_LEVEL=3 command llm "$@" -t tf_f
+  command llm "$@" -t tf_f
 }
 
 ## Python funcition example
