@@ -15,6 +15,11 @@
 #   sudo resolvectl domain eth0 corp.healthresearch.org dz.corp.healthresearch.org aws.healthresearch.org
 # }
 
+[[ -n $WSL_DISTRO_NAME ]] || {
+  echo "******* WARNING: wsl.sh linked in zen but not sourced. Not running in WSL"
+  return 0
+}
+
 alias editresolveconf='sudo nvim /etc/resolv.conf'
 
 wsl_add_aws() {
