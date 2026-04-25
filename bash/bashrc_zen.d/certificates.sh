@@ -65,7 +65,7 @@ cert_get() {
     openssl x509 -text -noout
 }
 
-cert_make_self_signed() {
+cert_make_self_signed_CA() {
   openssl req -x509 -newkey ed25519 \
     -keyout ca.key -out ca.crt -days 3650 -nodes \
     -subj "/CN=My Local Root CA" \
@@ -110,4 +110,16 @@ EOF
 
   socat OPENSSL-LISTEN:4443,cert=server.pem,cafile=ca.crt,verify=0,reuseaddr,fork \
     EXEC:/tmp/respond.sh
+}
+
+cert_make_all() {
+
+  (
+    certdir="${HOME}/temp/cert-$(date '+%s')"
+    mkdir "${certdir}"
+    cd "${certdir}"
+    cert_make_self_signed_CA
+    cert_make_server_cert
+  )
+
 }
