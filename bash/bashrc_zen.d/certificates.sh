@@ -36,7 +36,7 @@ update_jellyfin_cert() {
     scp ./jellyfin.pfx star:/apps/jellyfin/config
 }
 
-getcn() {
+cert_get_cn() {
 
   local AHOST
   AHOST="${1}"
@@ -44,7 +44,7 @@ getcn() {
   openssl s_client -connect "${AHOST}":443 -showcerts </dev/null | sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' | openssl x509 -text -noout | grep 'CN:'
 
 }
-getcert() {
+cert_get() {
   local host="${1:-star.xaax.dev}"
   local port="${2:-443}"
 
@@ -63,4 +63,51 @@ getcert() {
   openssl s_client -connect "${host}:${port}" -showcerts </dev/null 2>/dev/null |
     sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' |
     openssl x509 -text -noout
+}
+
+cert_make_self_signed() {
+  openssl req -x509 -newkey ed25519 \
+    -keyout ca.key -out ca.crt -days 3650 -nodes \
+    -subj "/CN=My Local Root CA" \
+    -addext "basicConstraints=critical,CA:TRUE" \
+    -addext "keyUsage=critical,keyCertSign,cRLSign" &&
+    openssl x509 -in ca.crt -noout -text | grep -A1 "Issuer:\|Subject:\|Public Key Algorithm\|Basic Constraints\|Key Usage"
+}
+
+cert_make_server_cert() {
+  # if you need the ca
+  # mkdir ~/socat-ca && cd ~/socat-ca
+
+  # openssl req -x509 -newkey ed25519 \
+  # -keyout ca.key -out ca.crt -days 3650 -nodes \
+  # -subj "/CN=socat playground Root CA" \
+  # -addext "basicConstraints=critical,CA:TRUE" \
+  # -addext "keyUsage=critical,keyCertSign,cRLSign"
+  #
+  cat >server.ext <<'EOF'
+basicConstraints = CA:FALSE
+keyUsage = critical, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = DNS:localhost, IP:127.0.0.1
+EOF
+  # Server key + CSR
+  openssl req -new -newkey ed25519 -keyout server.key -out server.csr \
+    -nodes -subj "/CN=localhost"
+
+  # CA signs it
+  openssl x509 -req -in server.csr \
+    -CA ca.crt -CAkey ca.key -CAcreateserial \
+    -out server.crt -days 365 \
+    -extfile server.ext
+}
+
+cert_socat_listen_ssl() {
+  cat >/tmp/respond.sh <<'EOF'
+#!/bin/sh
+printf 'HTTP/1.1 200 OK\r\nContent-Length: 3\r\n\r\nhi\n'
+EOF
+  chmod +x /tmp/respond.sh
+
+  socat OPENSSL-LISTEN:4443,cert=server.pem,cafile=ca.crt,verify=0,reuseaddr,fork \
+    EXEC:/tmp/respond.sh
 }
