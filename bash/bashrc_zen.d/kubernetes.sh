@@ -189,5 +189,28 @@ kube_help() {
   static: a PV carring details of real storage avail for use by user
   dynamic: no PVs created by admin, then a storage class is used to provision
   Claims that request class "" effectively disable dynamic provisioning for themselves
+## Create yaml
+kubectl run mypod --image=busybox:1.36.1 -o yaml --dry-run=client \
+  pod.yaml -- /bin/sh -c "while true; do date; sleep 10; done"
+
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: mypod
+  spec:
+    containers:
+    - name: mypod
+      image: busybox:1.36.1
+      command: ["/bin/sh"]
+      args: ["-c", "while true; do date; sleep 10; done"]
+## Image
+  registry/repository:tag
+  [REGISTRY_HOST[:PORT]/][NAMESPACE/]REPOSITORY[:TAG]
+  user/org namespace
+  
+  Docker Official Images are in 'library'
+  bash -> library/bash
+  docker.io/library/bash
+  docker.io/library/bash:latest
 EOF
 }
