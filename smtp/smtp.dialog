@@ -1,0 +1,10 @@
+EHLO test
+MAIL FROM:<noreply@xyz.org>
+RCPT TO:<wjs04@xyz.org>
+DATA
+Subject: Relay Test
+
+Test body
+.
+QUIT
+
