@@ -513,6 +513,11 @@ llm_test_curl_bedrock() {
 
 }
 
+llm_bedrock_get_inference_model_ids() {
+
+  aws bedrock list-inference-profiles --query "inferenceProfileSummaries[].inferenceProfileId" --output table --region us-east-1 --profile test
+}
+
 llm_set_bedrock_model() {
 
   if [[ -z "${AWS_BEARER_TOKEN_BEDROCK+x}" ]]; then
