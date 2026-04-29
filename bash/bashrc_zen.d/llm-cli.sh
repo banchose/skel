@@ -497,6 +497,22 @@ llmbed() {
   command llm -s "It is currently ${current_date}. Please be accurate and concise." -m "${AWS_BEDROCK_DEFAULT_MODEL:?AWS_BEDROCK_DEFAULT_MODEL is not set}" "$@"
 }
 
+llm_test_curl_bedrock() {
+
+  curl -X POST "https://bedrock-runtime.us-east-1.amazonaws.com/model/us.anthropic.claude-haiku-4-5-20251001-v1:0/converse" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $AWS_BEARER_TOKEN_BEDROCK" \
+    -d '{
+    "messages": [
+        {
+            "role": "user",
+            "content": [{"text": "This is a test. Please resond with 'OK'"}]
+        }
+    ]
+  }'
+
+}
+
 llm_set_bedrock_model() {
 
   if [[ -z "${AWS_BEARER_TOKEN_BEDROCK+x}" ]]; then
