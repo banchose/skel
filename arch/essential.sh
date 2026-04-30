@@ -92,6 +92,7 @@ sudo pacman -S texinfo --needed --noconfirm
 sudo pacman -S less --needed --noconfirm
 sudo pacman -S vim --needed --noconfirm
 sudo pacman -S vi --needed --noconfirm
+sudo pacman -S ncdu --needed --noconfirm
 sudo pacman -S bash-completion --needed --noconfirm
 sudo pacman -S nano --needed --noconfirm
 sudo pacman -S lsof --needed --noconfirm
