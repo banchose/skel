@@ -1,0 +1,33 @@
+# Top-level 'services' element (key)
+# attribute = key
+services:
+  pacoloco:
+    # mounted directories need the same ownership as host user 1000
+    user: 1000:1000
+    container_name: pacoloco
+    image: ghcr.io/anatol/pacoloco
+    ports:
+      - "9129:9129"
+    # Top-level 'services' element (key)
+    # attribute = key
+    volumes:
+    # LOCAL (dir/volume) : location in the container mounted
+      - ./pacoloco-data:/var/cache/pacoloco
+      - ./pacoloco.yaml:/etc/pacoloco.yaml
+    restart: unless-stopped
+    environment:
+      - TZ=America/New_York
+# Top-level volumes declaration
+#volumes:
+  # 'shared' volume
+  #pacoloco-data:
+  # ---- attributes
+  # name: "pacoloco-data"
+  # dirver: foobar
+  # driver_opts:
+  #   type: "nfs"
+  # external # vol already defined
+  #   external: true
+  # lables:
+  #   com.example.description: "database volume"
+  #   com.example.department: "IT/Ops"
