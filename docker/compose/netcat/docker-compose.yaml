@@ -1,7 +1,14 @@
 services:
   mock-service:
-    image: nicolaka/netshoot # or any image with nc installed
-    command: nc -l -k -p 8080
+#   image: nicolaka/netshoot # or any image with nc installed
+    image: busybox # or any image with nc installed
+    command:
+      - sh
+      - -c
+      - |
+          printf '#!/bin/sh\nprintf "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n"\nls\n' > /tmp/serve.sh
+          chmod +x /tmp/serve.sh
+          nc -lkp 8080 -e /tmp/serve.sh
     ports:
       - "8080:8080"
     networks:
@@ -9,16 +16,16 @@ services:
       - blue-net
       - orange-net
 
-  nginx-1:
-    image: nginx:latest
-    networks:
-      - red-net
-
-  nginx-2:
-    image: nginx:latest
-    networks:
-      - blue-net
-      - orange-net
+#   nginx-1:
+#     image: nginx:latest
+#     networks:
+#       - red-net
+# 
+#   nginx-2:
+#     image: nginx:latest
+#     networks:
+#       - blue-net
+#       - orange-net
 
 networks:
   red-net:

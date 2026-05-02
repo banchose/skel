@@ -158,6 +158,33 @@ docker --hostname # containers hostname
 docker create --cap-drop ALL --cap-add NET_ADMIN -p 8080:8080 -ti --name bashY bash
 docker commit <containerName> my_image_yay
 docker run -it --rm --network mynet ubuntu bash -c "timeout 1 bash -c ': < /dev/tcp/registry/5000'"
+--- simple server
+docker run --rm -p 9005:9005 --name busybox  busybox nc -lkp 9005 -e sh -c 'printf "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n"'
+OR
+docker run --rm -p 9005:9005 --name busybox1 busybox sh -c '
+  echo -e "#!/bin/sh\nprintf \"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n\"\nls" > /tmp/serve.sh
+  chmod +x /tmp/serve.sh
+  nc -lkp 9005 -e /tmp/serve.sh
+'
+--- docker compose
+services:
+  mock-service:
+    image: nicolaka/netshoot # or any image with nc installed
+    container_name: mock-service
+    command:
+      - sh
+      - -c
+      - |
+          printf '#!/bin/sh\nprintf "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n"\nls\n' > /tmp/serve.sh
+          chmod +x /tmp/serve.sh
+          nc -lkp 8080 -e /tmp/serve.sh
+    ports:
+      - "8080:8080"
+    networks:
+      - red-net
+      - blue-net
+      - orange-net
+---
 EOF
   }
 
