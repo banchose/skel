@@ -1,0 +1,46 @@
+services:
+  mock-service:
+#   image: nicolaka/netshoot # or any image with nc installed
+    image: busybox # or any image with nc installed
+    command:
+      - sh
+      - -c
+      - |
+        printf 'HTTP/1.1 200 OK\r\nContent-Type: text/plain; charset=utf-8\r\nContent-Length: 4\r\nConnection: close\r\n\r\ntest' > /tmp/reply
+        while true; do nc -lp 8088 < /tmp/reply; done
+    ports:
+      - "8088:8088"
+    networks:
+      - red-net
+      - blue-net
+      - orange-net
+
+  nginx:
+    image: nginx:latest
+    networks:
+      - red-net
+#   ports:
+#     - 80:80
+#
+#   nginx-2:
+#     image: nginx:latest
+#     networks:
+#       - blue-net
+#       - orange-net
+  pipes:
+    image: nicolaka/netshoot
+    command:
+      - sh
+      - -c
+      - |
+        socat TCP4-LISTEN:9110,reuseaddr,fork TCP4:nginx:80
+    ports:
+      - 9110:9110
+    networks:
+      - red-net
+    
+  
+networks:
+  red-net:
+  blue-net:
+  orange-net:
