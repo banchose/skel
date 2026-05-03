@@ -1,0 +1,40 @@
+# Top-level 'services' element (key)
+# attribute = key
+services:
+  pacoloco:
+    # mounted directories need the same ownership as host user 1000
+    user: 1000:1000 # docker volumes my fail because created as root???, make dir and chown it
+    container_name: pacoloco
+    image: ghcr.io/anatol/pacoloco
+    ports:
+      - "9129:9129"
+    # - 9129:9129/tcp or udp, tcp default
+    # - target: <container port>
+    # - published: exposed port
+    # - protocol: tcp/udp
+    # - host_ip: 0.0.0.0 default but pick an ip for an interface
+    # -name: documentation
+    # Top-level 'services' element (key)
+    volumes:
+    # LOCAL (dir/volume) : location in the container mounted
+    # chown them if 'user' set
+      - ./pacoloco-data:/var/cache/pacoloco
+      - ./pacoloco.yaml:/etc/pacoloco.yaml
+    restart: unless-stopped
+    environment:
+      - TZ=America/New_York
+# Top-level volumes declaration
+# these are the extened options
+#volumes:
+  # 'shared' volume
+  #pacoloco-data:
+  # ---- attributes
+  # name: "pacoloco-data"
+  # dirver: foobar
+  # driver_opts:
+  #   type: "nfs"
+  # external # vol already defined
+  #   external: true
+  # lables:
+  #   com.example.description: "database volume"
+  #   com.example.department: "IT/Ops"
