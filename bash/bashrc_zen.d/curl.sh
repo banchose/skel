@@ -7,3 +7,9 @@ drudge() {
     sleep 300
   done
 }
+
+curl_help() {
+  cat <<'EOF'
+http_code="$(curl -L -o /dev/null -s -w "%{http_code}" "${host}")"
+EOF
+}
