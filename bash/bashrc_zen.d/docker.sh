@@ -185,6 +185,11 @@ services:
       - blue-net
       - orange-net
 ---
+docker compose up
+docker compose down
+docker compose logs
+docker compose ps
+---
 EOF
   }
 

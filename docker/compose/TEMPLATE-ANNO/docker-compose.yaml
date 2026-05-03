@@ -8,12 +8,12 @@ services:
     image: ghcr.io/anatol/pacoloco
     ports:
       - "9129:9129"
-    # - 9129:9129/tcp or udp, tcp default
-    # - target: <container port>
-    # - published: exposed port
-    # - protocol: tcp/udp
-    # - host_ip: 0.0.0.0 default but pick an ip for an interface
-    # -name: documentation
+    #   9129:9129/tcp or udp, tcp default
+    #   target: <container port>
+    #   published: exposed port
+    #   protocol: tcp/udp
+    #   host_ip: 0.0.0.0 default but pick an ip for an interface
+    #  name: documentation
     # Top-level 'services' element (key)
     volumes:
     # LOCAL (dir/volume) : location in the container mounted
