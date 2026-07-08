@@ -6,26 +6,12 @@
 - **Defaults:** Functions over standalone scripts; all output must be shellcheck-clean
 
 ## Critical Safety Rules
-- Quote **all** expansions: `"$var"` — use braces (`"${var}"`) when needed for disambiguation (`"${var}suffix"`, arrays, parameter expansion)
+- Quote **all** expansions: `"${var}"` not `$var`
 - Use `[[ ]]` over `[ ]` for conditionals
-- Prefer `(( ))` for arithmetic — **but see the `set -e` interaction below**
+- Prefer `(( ))` for arithmetic
 - Always set `set -euo pipefail` unless explicit error handling replaces it
 - Add `set -E` (`errtrace`) when using `trap ... ERR` — without it, ERR traps don't fire inside functions
-- Set `shopt -s nullglob` (or `failglob`) in scripts that iterate over globs — otherwise an unmatched glob passes through as a literal string
 - Shebang: `#!/usr/bin/env bash`
-
-## `set -e` Caveats (know what it does NOT catch)
-- Does **not** fire for commands in `if`/`while`/`until` conditions, or on the left of `&&`/`||`
-- Does **not** propagate into command substitution in some contexts (e.g., `local var=$(cmd)` masks the exit status — declare and assign on separate lines)
-- **Arithmetic gotcha:** `(( count++ ))` when `count=0` evaluates to 0 → exit status 1 → script dies under `set -e`
-  - Safe forms: `(( count += 1 ))`, `count=$(( count + 1 ))`, or `(( count++ )) || true`
-- `set -e` is a safety net, not error handling — still check critical commands explicitly
-
-## Functions
-- Always declare function variables with `local`
-- Declare and assign separately when capturing output: `local out; out=$(cmd)` — combined form masks the exit status
-- Return data via stdout (`result=$(fn)`) or a nameref (`declare -n`), not globals
-- Use `local -a` / `local -A` for local arrays
 
 ## Command Substitution
 - Modern syntax: `var=$(cmd)` — never backticks
@@ -62,24 +48,6 @@
 | Length         | `${#var}`                        |
 | Substring      | `${var:offset:length}`           |
 
-## Argument Parsing
-- Use `getopts` (builtin) for short options; a `while`/`case` loop over `"$@"` for long options
-- Never parse with ad-hoc positional `$1 $2 $3` beyond trivial scripts
-
-```bash
-usage() { printf 'usage: %s [-v] [-o file] arg...\n' "${0##*/}" >&2; exit 2; }
-
-verbose=0 outfile=""
-while getopts ':vo:' opt; do
-    case $opt in
-        v) verbose=1 ;;
-        o) outfile=$OPTARG ;;
-        *) usage ;;
-    esac
-done
-shift $(( OPTIND - 1 ))
-```
-
 ## Error Handling
 - Use exit status directly: `if cmd; then ...`
 - Quick bail: `cmd || die "message"`
@@ -88,7 +56,7 @@ shift $(( OPTIND - 1 ))
 
 ## Cleanup and Resource Management
 - Always use `trap cleanup EXIT` for temp files, lock files, background processes, etc.
-- In Bash, `EXIT` fires on: normal exit, `set -e` bail, and untrapped fatal signals (SIGINT, SIGTERM, SIGHUP) — one trap covers all
+- `EXIT` fires on: normal exit, `set -e` bail, SIGINT, SIGTERM, SIGHUP — one trap covers all in Bash
 - **Cannot catch:** `SIGKILL` (`kill -9`) and power loss — these are uncatchable by design
 
 ### Recommended Pattern
@@ -96,10 +64,8 @@ shift $(( OPTIND - 1 ))
 # Register trap BEFORE creating resources — if the script dies between
 # mktemp and trap registration, the file leaks
 cleanup() {
-    rm -rf "${tmpdir:-}"                                    # -rf: silent if never created
-    [[ -n ${bg_pid:-} ]] && kill "$bg_pid" 2>/dev/null
-    return 0  
-                                                # don't let cleanup change exit status
+    rm -rf "${tmpdir:-}"    # -f/-rf: no error if resource doesn't exist yet
+    kill "${bg_pid:-}" 2>/dev/null
 }
 trap cleanup EXIT
 
@@ -107,10 +73,10 @@ tmpdir=$(mktemp -d)         # prefer temp directories over individual files
 ```
 
 ### Key Details
-- Prefer `mktemp -d` (temp directory) over `mktemp` (temp file) — one `rm -rf` cleans up everything
+- Prefer `mktemp -d` (temp directory) over `mktemp` (temp file) — one `rm -rf` cleans up everything, no need to track individual files
 - Use `rm -f` / `rm -rf` in cleanup — safe even if the resource was never created (because trap was registered first)
-- For lock files, prefer `flock(1)` over manual lock files — atomic, handles stale locks, survives `SIGKILL`
-- Temp file locations: `mktemp` uses `$TMPDIR` (most portable); `$XDG_RUNTIME_DIR` for per-user runtime data on Linux
+- For lock files, prefer `flock(1)` over manual lock files — it's atomic, handles stale locks, and survives `SIGKILL`
+- Temp file locations: `mktemp` uses `$TMPDIR` (most portable), `$XDG_RUNTIME_DIR` for per-user runtime data on Linux
 
 ## Dependency Checking
 - Use `command -v` (builtin) — never `which` (external, inconsistent across distros)
@@ -124,31 +90,29 @@ require() {
         command -v "$cmd" >/dev/null 2>&1 || missing+=("$cmd")
     done
     if (( ${#missing[@]} )); then
-        printf >&2 '%s: missing required commands: %s\n' "${0##*/}" "${missing[*]}"
+        printf >&2 '%s: missing required command: %s\n' "${0##*/}" "${missing[@]}"
         exit 1
     fi
 }
 
 require curl jq rsync
 ```
-Note: `"${missing[*]}"` (single joined string) — with `"${missing[@]}"` printf would recycle the
-format string and produce garbage like `jq: missing required command: rsync`.
 
 ### Quick One-Liner (when custom messaging isn't needed)
 ```bash
 type curl jq >/dev/null || exit
 ```
-Bash's `type` prints `scriptname: line N: type: cmd: not found` for each missing command automatically.
+Bash's `type` will print `scriptname: line N: cmd: not found` for each missing command automatically.
 
 ## Built-in Networking
 - Bash intercepts `/dev/tcp/host/port` and `/dev/udp/host/port` internally — these are not filesystem paths
-- Requires Bash compiled with `--enable-net-redirections` (default on current major distros; Debian disabled it in older releases)
-- **Does not work in:** sh, zsh (has its own `ztcp`), fish — it's a Bash feature, so it works anywhere Bash runs, including WSL and containers
-- Verify support: `cat < /dev/tcp/google.com/80` — "No such file or directory" means the feature is disabled
+- Requires Bash compiled with `--enable-net-redirections` (default on all major distros)
+- **Does not work in:** sh, zsh (has its own `ztcp`), fish, or WSL
 
 ### Port Check (preferred form)
 ```bash
-# : (no-op) avoids sending data to the service
+# Use : (no-op) to avoid sending data to the service
+# Use < (read) instead of > (write) to avoid perturbing the service at all
 # Always wrap with timeout — a DROPped port hangs ~2 min otherwise
 if timeout 3 bash -c ': < /dev/tcp/host/443' 2>/dev/null; then
     echo "open"
@@ -166,23 +130,25 @@ done
 ```
 
 ### Key Details
-- `timeout` requires the `bash -c` wrapper — the redirection would otherwise be performed (and block) in the parent shell before `timeout` ever runs
+- `timeout` requires `bash -c` wrapper — the `/dev/tcp` interception is a Bash feature, not a kernel one
 - Prefer `if/then/else` over `&& ... ||` — the latter runs the "else" branch if *either* prior command fails
+- Verify support: `cat < /dev/tcp/google.com/80` — "No such file or directory" means the feature is disabled
 
 ## Remote Execution (SSH)
-- `ssh host 'cmd'` runs the command via the remote user's **login shell from `/etc/passwd`** with `-c` — which may not be Bash at all
-- No startup files are reliably sourced: `.bash_profile` never; `.bashrc` only if the distro's Bash was compiled with `SSH_SOURCE_BASHRC` (Debian/Ubuntu: yes; most others: no) — and even then, most distro `.bashrc` files exit early for non-interactive shells:
+- `ssh host 'cmd'` runs a non-interactive, non-login shell — `.bash_profile` is never sourced
+- Bash special-cases SSH: `.bashrc` **is** sourced, but most distro `.bashrc` files exit early if non-interactive:
   ```bash
-  # Default guard found in most .bashrc files
+  # Default guard found in most .bashrc files — kills sourcing for non-interactive shells
   case $- in
       *i*) ;;
         *) return;;
   esac
   ```
-- **Rule of thumb: assume nothing from the remote environment.** Set required options explicitly: `ssh host 'shopt -s globstar && ls **/*.txt'`
+- Any `shopt` or shell options set after that guard won't apply to SSH commands
 - Always single-quote the remote command to prevent **local** shell expansion: `ssh host 'ls /path/*.txt'`
-- SSH concatenates unquoted arguments with spaces into a single string — quoting gets treacherous fast
-- For complex commands, prefer piping a script (`ssh host bash < script.sh`) or copying one over — not inline quoting gymnastics
+- If you need specific shell options, set them explicitly: `ssh host 'shopt -s globstar && ls **/*.txt'`
+- SSH concatenates unquoted arguments with spaces into a single string passed to `bash -c` — quoting gets treacherous fast
+- For complex commands, prefer a remote script over inline quoting gymnastics
 
 ## Minimal Environment Fallbacks
 When working in containers or stripped-down Linux where common tools are missing:
@@ -208,35 +174,18 @@ When working in containers or stripped-down Linux where common tools are missing
 ## Common Pitfalls
 | Bug | Fix |
 |-----|-----|
-| `[ $var = val ]` | `[[ $var == val ]]` |
+| `[ $var = val ]` | `[ "$var" = val ]` |
 | `arr=( $(cmd) )` | `readarray -t arr < <(cmd)` |
 | `$var=val` or `var = val` | `var=val` |
-| `[ $var = *.txt ]` | `[[ $var == *.txt ]]` |
+| `[ $var = *.txt ]` | `[[ $var == *.txt ]]` or `[ "$var" = "*.txt" ]` |
 | `cmd \| while ...` (subshell) | `while ...; done < <(cmd)` |
 | `"~/path"` | `"$HOME/path"` |
 | `printf "$var"` (format string injection) | `printf '%s\n' "$var"` |
 | `{$a,$b}` (brace + variable) | Brace expansion happens first; use arrays or explicit args |
-| `(( x++ ))` under `set -e` when `x=0` | `(( x += 1 ))` or `x=$(( x + 1 ))` |
-| `local out=$(cmd)` (masks exit status) | `local out; out=$(cmd)` |
-| `for f in *.log` with no matches | `shopt -s nullglob` first |
 
 ## Prefer Builtins Over Subprocesses
 - **String operations:** Use parameter expansion (`${var##*/}`, `${var%.*}`) over `basename`, `dirname`, `sed`, `awk`, `cut` when the operation is a simple prefix/suffix strip
 - **Conditionals:** Use `[[ $var == pattern ]]` over `echo "$var" | grep -q pattern`
-- **Arithmetic:** Use `(( ))` over `expr` or `bc` (for integer math)
+- **Arithmetic:** Use `(( ))` over `$(( ))` piped to `expr` or `bc` (for integer math)
 - **Array operations:** Use `"${arr[@]}"` slicing/iteration over piping to external tools
-- `dirname` alternative: `${var%/*}` (but note: doesn't handle edge cases like bare filenames or `/` — use `dirname` if you need correct behavior for arbitrary paths)
-````
-
-Summary of what changed from your original:
-
-- **Fixed the `require` printf bug** — `"${missing[*]}"` instead of `"${missing[@]}"`, with a note explaining why
-- **Removed the false WSL claim** for `/dev/tcp`
-- **Rewrote the SSH section** — login shell from `/etc/passwd`, `SSH_SOURCE_BASHRC` is compile-time and distro-dependent, added "assume nothing" rule and `ssh host bash < script.sh` pattern
-- **Added `set -e` caveats section** including the `(( x++ ))` death trap
-- **Added `local` / functions section** (needed since functions are your default)
-- **Added `nullglob`/`failglob`** and a **`getopts` section**
-- **Corrected the `type` one-liner's sample output** (it includes `type:`)
-- **Hardened the cleanup pattern** — guarded `kill`, `return 0` so cleanup can't clobber the exit status
-- **Softened the mandatory-braces rule** to quoting-always, braces-when-needed
-- **Extended the pitfalls table** with the three new gotchas
+- `dirname` alternative: `${var%/*}` (but note: doesn't handle edge cases like bare filenames or `/` — use `dirname` if you need POSIX-correct behavior for arbitrary paths)
