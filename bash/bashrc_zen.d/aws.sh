@@ -109,40 +109,70 @@ set_stack_outputs() {
   local stack_name="$1"
   local region="${2:-us-east-1}"
   local profile="${3:-default}"
+  local outputs_json output_key output_value
 
-  # Get all stack outputs
-  local outputs_json
   outputs_json=$(aws cloudformation describe-stacks \
     --stack-name "$stack_name" \
     --query "Stacks[0].Outputs" \
-    --output json \
-    --region "$region" \
-    --profile "$profile") || {
-    echo "Error: Failed to retrieve stack outputs for '$stack_name'." >&2
+    --output json --no-cli-pager \
+    --region "$region" --profile "$profile") || {
+    echo "Error: Failed to retrieve stack outputs for '$stack_name'." 1>&2
     return 1
   }
 
-  # Check if the outputs JSON is empty
-  if [[ -z "$outputs_json" || "$outputs_json" == "[]" ]]; then
-    echo "No outputs found for stack: $stack_name"
+  if [[ -z "$outputs_json" || "$outputs_json" == "[]" || "$outputs_json" == "null" ]]; then
+    echo "No outputs found for stack: $stack_name" 1>&2
     return 1
   fi
 
-  # Parse outputs using a Bash array
-  local output_key output_value
-  mapfile -t outputs < <(jq -r '.[] | "\(.OutputKey) \(.OutputValue)"' <<<"$outputs_json")
-
-  for line in "${outputs[@]}"; do
-    output_key="${line%% *}"
-    output_value="${line#* }"
-
-    # Export with a prefix to avoid namespace collisions
+  while IFS=$'\t' read -r output_key output_value; do
+    if [[ ! "$output_key" =~ ^[a-zA-Z_][a-zA-Z0-9_]*$ ]]; then
+      echo "Skipping invalid key: $output_key" 1>&2
+      continue
+    fi
     export "$output_key=$output_value"
-
-    # Print for verification (optional)
-    echo "Exported $output_key=$output_value"
-  done
+    echo "Exported $output_key"
+  done < <(jq -r '.[] | [.OutputKey, .OutputValue] | @tsv' <<<"$outputs_json")
 }
+
+# set_stack_outputs() {
+#   local stack_name="$1"
+#   local region="${2:-us-east-1}"
+#   local profile="${3:-default}"
+#
+#   # Get all stack outputs
+#   local outputs_json
+#   outputs_json=$(aws cloudformation describe-stacks \
+#     --stack-name "$stack_name" \
+#     --query "Stacks[0].Outputs" \
+#     --output json \
+#     --region "$region" \
+#     --profile "$profile") || {
+#     echo "Error: Failed to retrieve stack outputs for '$stack_name'." >&2
+#     return 1
+#   }
+#
+#   # Check if the outputs JSON is empty
+#   if [[ -z "$outputs_json" || "$outputs_json" == "[]" ]]; then
+#     echo "No outputs found for stack: $stack_name"
+#     return 1
+#   fi
+#
+#   # Parse outputs using a Bash array
+#   local output_key output_value
+#   mapfile -t outputs < <(jq -r '.[] | "\(.OutputKey) \(.OutputValue)"' <<<"$outputs_json")
+#
+#   for line in "${outputs[@]}"; do
+#     output_key="${line%% *}"
+#     output_value="${line#* }"
+#
+#     # Export with a prefix to avoid namespace collisions
+#     export "$output_key=$output_value"
+#
+#     # Print for verification (optional)
+#     echo "Exported $output_key=$output_value"
+#   done
+# }
 
 hang_fire() {
   local StackName="$1"
