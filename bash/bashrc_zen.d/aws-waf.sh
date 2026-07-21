@@ -9,3 +9,11 @@ aws_get_waf_ips() {
   country: .httpRequest.country
 }'
 }
+
+aws_waf_get_ipset() {
+  aws wafv2 get-ip-set \
+    --scope REGIONAL --region us-east-1 --profile net \
+    --name HRI-APP-WAF-testsite-allowed-ips \
+    --id 4c1ecf5f-ab59-4ce8-8132-e3ecf48c0545 \
+    --query 'IPSet.Addresses'
+}
