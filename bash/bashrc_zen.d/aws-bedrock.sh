@@ -59,3 +59,22 @@ get-prompt-default() {
   [[ -f ${prompt} ]] && cat "${prompt}"
 
 }
+
+awlcost_bedrock() {
+  local START=$(date -d "$(date +%Y-%m-01)" +%Y-%m-%d)
+  local END=$(date +%Y-%m-%d)
+  aws ce get-cost-and-usage \
+    --profile man --region us-east-1 \
+    --time-period Start=${START},End=${END} \
+    --granularity MONTHLY --metrics "UnblendedCost" \
+    --group-by '[{"Type":"DIMENSION","Key":"SERVICE"}]' |
+    jq -r --arg start "$START" --arg end "$END" '
+        (.ResultsByTime[0].Groups
+         | map({service: .Keys[0], cost: (.Metrics.UnblendedCost.Amount | tonumber)})
+         | map(select(.service | test("Bedrock|Claude"; "i")))) as $b
+        | "Bedrock cost: \($start) to \($end)\n",
+          ($b | sort_by(-.cost) | .[] | select(.cost > 0) | "\(.cost)  \(.service)"),
+          "--------",
+          "TOTAL: \([$b[].cost] | add | . * 100 | round / 100)"
+      '
+}
