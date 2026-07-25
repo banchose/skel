@@ -1,5 +1,14 @@
+- model_id: bro  # name for llm
+  model_name: bedrock-opus-5 # same as model name in litellm.conf `model_name:`
+  api_base: "http://localhost:4000"
+  aliases: ["bedrock-opus-proxy"]
+  supports_tools: true
+  supports_schema: true
+  vision: true
+  audio: true
+
 - model_id: brs # seen in llm models list and llm -m
-  model_name: bedrock-sonnet # 'model_name: in litellm.conf'
+  model_name: bedrock-sonnet-5   # 'model_name: in litellm.conf'
   api_base: "http://localhost:4000" # opneai compat 
   aliases: ["bedrock-sonnet-proxy"]
   supports_tools: true
@@ -24,17 +33,8 @@
   vision: true
   audio: true
 
-- model_id: bro
-  model_name: bedrock-opus
-  api_base: "http://localhost:4000"
-  aliases: ["bedrock-opus-proxy"]
-  supports_tools: true
-  supports_schema: true
-  vision: true
-  audio: true
-
 - model_id: anto
-  model_name: claude-opus-4-6
+  model_name: claude-opus-5
   api_base: "http://localhost:4000"
   aliases: ["anthropic-opus-proxy"]
   supports_tools: true
@@ -43,7 +43,7 @@
   audio: true
 
 - model_id: ants
-  model_name: claude-sonnet-4-6
+  model_name: claude-sonnet-5
   api_base: "http://localhost:4000"
   aliases: ["anthropic-sonnet-proxy"]
   supports_tools: true
