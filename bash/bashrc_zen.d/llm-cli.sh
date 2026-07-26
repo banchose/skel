@@ -744,6 +744,32 @@ llm_test_anthropic_query() {
   }'
 }
 
+llm_test_litellm_anthropic_question() {
+  curl --location 'http://0.0.0.0:4000/chat/completions' --header 'Content-Type: application/json' --data ' {
+      "model": "claude-sonnet-5",
+      "messages": [
+        {
+          "role": "user",
+          "content": "This is a test. Repond with 'OK'"
+        }
+      ]
+    }
+'
+}
+
+llm_test_litellm_bedrock_question() {
+  curl --location 'http://0.0.0.0:4000/chat/completions' --header 'Content-Type: application/json' --data ' {
+      "model": "bedrock-sonnet-5",
+      "messages": [
+        {
+          "role": "user",
+          "content": "This is a test. Repond with 'OK'"
+        }
+      ]
+    }
+'
+}
+
 llm_help() {
 
   cat <<'EOF'
