@@ -22,7 +22,7 @@ RUN apt-get update \
        man-db manpages manpages-dev less \
   # reinstall the base packages so their previously-excluded man pages land on disk
   && apt-get install -y --reinstall --no-install-recommends \
-       bash coreutils dpkg findutils grep sed tar util-linux vim curl wget \
+       bash coreutils dpkg findutils grep iputils-ping sed tar util-linux vim curl wget \
   && rm -rf /var/lib/apt/lists/*
 
 # build the man page index so `man -k` / `apropos` work
@@ -30,7 +30,6 @@ RUN mandb -c
 
 # create the agent dir with correct ownership BEFORE it becomes a volume mountpoint
 RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
-RUN pi install git:github.com/nagisanzenin/engram
 RUN mkdir -p /home/node/.pi/agent && chown -R node:node /home/node/.pi
 RUN mkdir -p /workspace && chown node:node /workspace
 
@@ -38,5 +37,6 @@ USER node
 ENV HOME=/home/node
 ENV PAGER=less
 ENV MANPAGER=less
+RUN pi install git:github.com/nagisanzenin/engram
 WORKDIR /workspace
 ENTRYPOINT ["pi"]
