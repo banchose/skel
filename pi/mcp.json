@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "context7": {
+      "url": "https://mcp.context7.com/mcp",
+      "protocolVersion": "auto"
+    },
+     "exa": {
+      "url": "https://mcp.exa.ai/mcp",
+      "headers": {
+        "x-api-key": "7ba0437f-b85e-44fe-a697-e1d5f42404f7",
+      }
+    }
+  }
+}
