@@ -7,5 +7,7 @@ docker run --rm -it \
   -e EXA_API_KEY \
   -v "$PWD:/workspace" \
   -v pi-agent-home:/home/node/.pi/agent \
+  --build-arg UID="$(id -u)" \
+  --build-arg GID="$(id -g)" \
   --entrypoint bash \
   pi-sandbox

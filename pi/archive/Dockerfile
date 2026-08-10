@@ -9,8 +9,6 @@
 #   pi-node-user-man
 
 FROM node:24-bookworm-slim
-ARG UID=1000
-ARG GID=1000
 
 # Debian slim images ship a dpkg config that excludes man pages / docs.
 # Drop those exclusions so anything installed from here on keeps its man pages.
@@ -33,11 +31,6 @@ RUN mandb -c
 RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
 RUN mkdir -p /home/node/.pi/agent && chown -R node:node /home/node/.pi
 RUN mkdir -p /workspace && chown node:node /workspace
-
-RUN set -eux; \
-     if [ "$GID" != "$(id -g node)" ]; then groupmod -g "$GID" node; fi; \
-     if [ "$UID" != "$(id -u node)" ]; then usermod -u "$UID" -g "$GID" node; fi; \
-     chown -R "$UID:$GID" /home/node
 
 USER node
 ENV HOME=/home/node

@@ -11,5 +11,6 @@ docker run --rm \
       cat /home/node/.pi/agent/mcp.json
       pi install git:github.com/nagisanzenin/engram
       pi install npm:@dietrichgebert/ponytail
-      pi install npm:pi-mcp-adapter'
+      pi install npm:pi-mcp-adapter
+      pi install npm:@narumitw/pi-plan-mode'
 # pi install npm:@gotgenes/pi-permission-system
