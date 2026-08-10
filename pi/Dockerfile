@@ -27,7 +27,6 @@ RUN apt-get update \
 
 # build the man page index so `man -k` / `apropos` work
 RUN mandb -c
-
 # create the agent dir with correct ownership BEFORE it becomes a volume mountpoint
 RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
 RUN mkdir -p /home/node/.pi/agent && chown -R node:node /home/node/.pi
@@ -37,6 +36,8 @@ USER node
 ENV HOME=/home/node
 ENV PAGER=less
 ENV MANPAGER=less
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 RUN pi install git:github.com/nagisanzenin/engram
+ENV PATH="${HOME}/.local/bin:${PATH}"
 WORKDIR /workspace
 ENTRYPOINT ["pi"]

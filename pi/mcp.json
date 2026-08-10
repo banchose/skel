@@ -1,14 +1,27 @@
 {
   "mcpServers": {
-    "context7": {
-      "url": "https://mcp.context7.com/mcp",
-      "protocolVersion": "auto"
-    },
      "exa": {
       "url": "https://mcp.exa.ai/mcp",
       "headers": {
-        "x-api-key": "XXXXXXXXXXXXX",
+        "x-api-key": "${EXA_API_KEY}",
+      "lifecycle": "lazy"
       }
+    },
+    "awslabs.aws-documentation-mcp-server": {
+      "command": "uvx",
+      "args": ["awslabs.aws-documentation-mcp-server@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "AWS_DOCUMENTATION_PARTITION": "aws",
+        "MCP_USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "aws-knowledge-mcp-server": {
+     "url": "https://knowledge-mcp.global.api.aws",
+     "type": "http",
+     "disabled": false
     }
   }
 }
