@@ -2,13 +2,19 @@
 
 set -euo pipefail
 
-if [[ -d ~/temp ]]; then
-  cd ~/temp
-else
-  echo "~/temp does not exist"
+# if [[ -d ~/temp ]]; then
+#   cd ~/temp
+# else
+#   echo "~/temp does not exist"
+# fi
+
+ENTRYPOINT_ARGS=()
+if [[ "${1:-}" == "-b" ]]; then
+  ENTRYPOINT_ARGS=(--entrypoint bash)
 fi
 
 docker run --rm -it \
+  "${ENTRYPOINT_ARGS[@]}" \
   -e AWS_BEARER_TOKEN_BEDROCK \
   -e EXA_API_KEY \
   -v "$PWD:/workspace" \

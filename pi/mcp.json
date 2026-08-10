@@ -3,12 +3,8 @@
      "exa": {
       "url": "https://mcp.exa.ai/mcp",
       "headers": {
-<<<<<<< HEAD
-        "x-api-key": "ecacxxxxxxxxxxxxxxxxxxxxxxxxxxxa8b3d",
-=======
         "x-api-key": "${EXA_API_KEY}",
       "lifecycle": "lazy"
->>>>>>> a29e4ce763ce3275f68ed8b62335fae47ad845a7
       }
     },
     "awslabs.aws-documentation-mcp-server": {
