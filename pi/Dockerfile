@@ -55,6 +55,7 @@ USER node
 ENV HOME=/home/node
 ENV PAGER=less
 ENV MANPAGER=less
+ENV TZ=America/New_York
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 RUN pi install git:github.com/nagisanzenin/engram
 ENV PATH="${HOME}/.local/bin:${PATH}"
