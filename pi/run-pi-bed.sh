@@ -11,6 +11,7 @@ set -euo pipefail
 ENTRYPOINT_ARGS=()
 if [[ "${1:-}" == "-b" ]]; then
   ENTRYPOINT_ARGS=(--entrypoint bash)
+  shift
 fi
 
 docker run --rm -it \
@@ -22,4 +23,4 @@ docker run --rm -it \
   -e OPENWEATHER_APP_ID \
   -v "$PWD:/workspace" \
   -v pi-agent-home:/home/node/.pi/agent \
-  pi-sandbox
+  pi-sandbox "$@"
