@@ -60,5 +60,6 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 RUN pi install git:github.com/nagisanzenin/engram
 ENV PATH="${HOME}/.local/bin:${PATH}"
 RUN uv tool install httpie
+RUN uv tool install cfn-lint
 WORKDIR /workspace
 ENTRYPOINT ["pi"]
