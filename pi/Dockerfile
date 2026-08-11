@@ -24,7 +24,7 @@ RUN apt-get update \
        man-db manpages manpages-dev less \
   # reinstall the base packages so their previously-excluded man pages land on disk
   && apt-get install -y --reinstall --no-install-recommends \
-       bash coreutils dpkg findutils grep iputils-ping tmux jq bash-completion sed tar util-linux vim curl wget \
+       bash coreutils dpkg findutils grep iputils-ping tmux jq xz-utils zip tar gzip unzip 7zip bash-completion sed tar util-linux vim curl wget \
   && rm -rf /var/lib/apt/lists/*
 
 # build the man page index so `man -k` / `apropos` work
