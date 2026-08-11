@@ -9,8 +9,8 @@
 #   pi-node-user-man
 
 FROM node:24-bookworm-slim
-ARG UID=1000
-ARG GID=1000
+ARG UID=1002
+ARG GID=1002
 
 # Debian slim images ship a dpkg config that excludes man pages / docs.
 # Drop those exclusions so anything installed from here on keeps its man pages.

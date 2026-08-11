@@ -17,6 +17,9 @@ docker run --rm -it \
   "${ENTRYPOINT_ARGS[@]}" \
   -e AWS_BEARER_TOKEN_BEDROCK \
   -e EXA_API_KEY \
+  -e LAT \
+  -e LON \
+  -e OPENWEATHER_APP_ID \
   -v "$PWD:/workspace" \
   -v pi-agent-home:/home/node/.pi/agent \
   pi-sandbox
