@@ -41,6 +41,17 @@ RUN set -eux; \
     "https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-amd64"; \
   echo "${JQ_SHA256}  /usr/local/bin/jq" | sha256sum -c -; \
   chmod 0755 /usr/local/bin/jq
+
+# shellcheck: no apt package, Pi just runs the binary against scripts.
+ARG SHELLCHECK_VERSION=0.11.0
+RUN set -eux; \
+  curl -fsSL \
+    "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" \
+    | tar -xJ --strip-components=1 -C /usr/local/bin \
+        "shellcheck-v${SHELLCHECK_VERSION}/shellcheck"; \
+  chmod 0755 /usr/local/bin/shellcheck; \
+  shellcheck --version
+
 # create the agent dir with correct ownership BEFORE it becomes a volume mountpoint
 RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
 RUN mkdir -p /home/node/.pi/agent && chown -R node:node /home/node/.pi
