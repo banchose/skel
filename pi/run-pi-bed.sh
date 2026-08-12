@@ -8,6 +8,11 @@ set -euo pipefail
 #   echo "~/temp does not exist"
 # fi
 
+if ! docker info >/dev/null 2>&1; then
+  echo "docker daemon is not running" >&2
+  exit 1
+fi
+
 ENTRYPOINT_ARGS=()
 if [[ "${1:-}" == "-b" ]]; then
   ENTRYPOINT_ARGS=(--entrypoint bash)
