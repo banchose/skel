@@ -73,5 +73,6 @@ ENV PATH="${HOME}/.local/bin:${PATH}"
 RUN uv tool install httpie
 RUN uv tool install cfn-lint
 COPY ./gitconfig /home/node/.gitconfig
+COPY ./gitignore /home/node/.gitignore
 WORKDIR /workspace
 ENTRYPOINT ["pi"]

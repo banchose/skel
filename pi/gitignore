@@ -1,0 +1,64 @@
+# Maven or Gradle build directories
+target/
+build/
+.webui_secret_key
+# cert
+*.cert
+*.crt
+*.pem
+*.key
+*.jks
+*.db
+
+# Other
+*.tar
+*.gz
+*.zip
+
+# WAR files
+*.war
+
+# Logs
+*.log
+logs/
+*.out
+
+# Temporary files
+*.tmp
+*.swp
+
+# IDE-specific files (e.g., IntelliJ IDEA, Eclipse, etc.)
+*.iml
+.idea/
+.classpath
+.project
+.settings/
+
+# Tomcat deployment directories
+webapps/
+# work/
+temp/
+conf/Catalina/
+conf/Catalina/*
+logs/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+
+# Backup files
+*.bak
+*.old
+*.orig
+
+# Node.js dependencies (if applicable)
+node_modules/
+
+# Other build tools
+dist/
+out/
+
+.aider*
+
+aws-network-info/
