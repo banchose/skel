@@ -11,6 +11,7 @@
 FROM node:24-bookworm-slim
 ARG UID=1002
 ARG GID=1002
+ARG PI_VERSION=0.84.2
 
 # Debian slim images ship a dpkg config that excludes man pages / docs.
 # Drop those exclusions so anything installed from here on keeps its man pages.
@@ -24,7 +25,7 @@ RUN apt-get update \
        man-db manpages manpages-dev less \
   # reinstall the base packages so their previously-excluded man pages land on disk
   && apt-get install -y --reinstall --no-install-recommends \
-       bash coreutils dpkg findutils grep iputils-ping tmux jq xz-utils zip tar gzip unzip 7zip bash-completion sed tar util-linux vim curl wget \
+       bash coreutils dpkg findutils grep iputils-ping tmux jq xz-utils zip gzip unzip 7zip bash-completion sed tar util-linux vim curl wget \
   && rm -rf /var/lib/apt/lists/*
 
 # build the man page index so `man -k` / `apropos` work
@@ -53,7 +54,7 @@ RUN set -eux; \
   shellcheck --version
 
 # create the agent dir with correct ownership BEFORE it becomes a volume mountpoint
-RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent@${PI_VERSION}
 RUN mkdir -p /home/node/.pi/agent && chown -R node:node /home/node/.pi
 RUN mkdir -p /workspace && chown node:node /workspace
 
@@ -68,7 +69,6 @@ ENV PAGER=less
 ENV MANPAGER=less
 ENV TZ=America/New_York
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-RUN pi install git:github.com/nagisanzenin/engram
 ENV PATH="${HOME}/.local/bin:${PATH}"
 RUN uv tool install httpie
 RUN uv tool install cfn-lint
