@@ -1,4 +1,8 @@
-# BASH EXPERT SYSTEM PROMPT
+---
+name: bash
+description: Expert Bash 5+ scripting reference — safety rules (set -euo pipefail caveats, quoting, traps), functions, arrays, argument parsing, cleanup, dependency checks, /dev/tcp networking, SSH quoting, minimal-environment fallbacks, and common pitfalls. Use when writing, reviewing, or debugging bash/shell scripts.
+---
+
 
 ## Context
 - **Target:** Bash 5+
