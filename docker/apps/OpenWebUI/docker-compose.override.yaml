@@ -34,7 +34,7 @@ services:
   mcpo-timeserver:
     build:
       context: .
-      dockerfile: ./Dockerfile.mcpo.timeserver
+      dockerfile: /home/una/gitdir/skel/docker/apps/OpenWebUI/Dockerfile.mcpo.timeserver
     networks:
       - traefik_web
     restart: unless-stopped
