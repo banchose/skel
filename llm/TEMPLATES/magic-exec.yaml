@@ -1,0 +1,8 @@
+model: bro
+system: |
+  Output only the shell command to run. No explanation, no markdown, no code fences. Just the raw command.
+tools:
+  - llm_version
+  - llm_time
+  - simple_eval
+  - web_search
