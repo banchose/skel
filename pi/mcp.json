@@ -3,9 +3,9 @@
      "exa": {
       "url": "https://mcp.exa.ai/mcp",
       "headers": {
-        "x-api-key": "${EXA_API_KEY}",
-      "lifecycle": "lazy"
-      }
+        "x-api-key": "${EXA_API_KEY}"
+      },
+      "directTools": true
     },
     "awslabs.aws-documentation-mcp-server": {
       "command": "uvx",
@@ -19,9 +19,13 @@
       "autoApprove": []
     },
     "aws-knowledge-mcp-server": {
-     "url": "https://knowledge-mcp.global.api.aws",
-     "type": "http",
-     "disabled": false
+      "url": "https://knowledge-mcp.global.api.aws",
+      "type": "http",
+      "disabled": false
+    },
+    "time": {
+      "command": "uvx",
+      "args": ["mcp-server-time", "--local-timezone=America/New_York"]
     }
   }
 }
