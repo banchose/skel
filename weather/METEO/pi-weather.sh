@@ -4,7 +4,6 @@
 # See https://open-meteo.com/en/docs
 set -euo pipefail
 
-# default location: Albany NY area
 LAT=${1:-42.74283}
 LON=${2:--73.8011}
 DAYS=${3:-3}
