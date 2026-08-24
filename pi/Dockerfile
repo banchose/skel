@@ -11,7 +11,7 @@
 FROM node:24-bookworm-slim
 ARG UID=1002
 ARG GID=1002
-ARG PI_VERSION=0.84.2
+ARG PI_VERSION=latest
 
 # Debian slim images ship a dpkg config that excludes man pages / docs.
 # Drop those exclusions so anything installed from here on keeps its man pages.
