@@ -125,3 +125,21 @@ Verified against live 4.0 payloads — several of these contradict OWM's own doc
 - OWM alerts have **no severity/urgency field** (unlike NWS CAP).
 - OWM omits fields that are zero/absent, so always use `// 0` style fallbacks.
 - New OWM API keys take **up to 2 hours** to activate, and return the generic "requires a separate subscription" 401 until they do.
+
+## NWS polygon coordinates
+
+NWS warning text ends with a polygon, not a point:
+
+```
+LAT...LON 4141 10364 4155 10359 4158 10314 4123 10336
+```
+
+Pairs are lat/lon in **hundredths of a degree, west longitude positive**. So `4141 10364` is 41.41, -103.64. Average the vertices for a centroid to query. Note the issuing office is not the location: this polygon is issued by NWS Cheyenne WY but sits in the **Nebraska** panhandle (Kimball/Banner/Morrill/Cheyenne counties).
+
+## Alert classification
+
+`kind` is derived from description text because the API exposes no severity. Precedence, most urgent first: `EMERGENCY`, `WARNING`, `WARNING(upd)`, `WATCH`, `ADVISORY`, `STATEMENT`, `ALERT`. Alerts are printed in that order, so the first line is the most urgent.
+
+`WARNING(upd)` is a Severe Weather Statement — a follow-up that updates an active warning. Its text contains no "warning" keyword, only radar phrasing (`HAZARD...`, `was located`, `radar indicated`), so it is matched on that and treated as warning-level. **Report it as an active warning**, and read the hazard line for the specifics (wind speed, hail size) since those live only in the description.
+
+A bare `ALERT` means no keyword matched at all. Read the description before characterizing it; do not assume it is minor.

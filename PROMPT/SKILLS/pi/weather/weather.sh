@@ -26,8 +26,17 @@ LIB='
   # for the watch/warning distinction the API does not expose structurally.
   # ponytail: substring scan; WARNING wins ties so we escalate rather than downplay.
   def kind: (dsc | ascii_upcase) |
-    if test("WARNING") then "WARNING" elif test("WATCH") then "WATCH"
-    elif test("ADVISORY") then "ADVISORY" elif test("STATEMENT") then "STATEMENT" else "ALERT" end;
+    if test("TORNADO EMERGENCY|FLASH FLOOD EMERGENCY|PARTICULARLY DANGEROUS") then "EMERGENCY"
+    elif test("WARNING") then "WARNING"
+    # Severe Weather Statements update an active warning but carry no "WARNING" text;
+    # their radar/hazard phrasing is the only tell. Treat as warning-level, never generic.
+    elif test("HAZARD\\.\\.\\.|WAS LOCATED|RADAR INDICATED|DOPPLER RADAR") then "WARNING(upd)"
+    elif test("WATCH") then "WATCH"
+    elif test("ADVISORY") then "ADVISORY"
+    elif test("STATEMENT") then "STATEMENT" else "ALERT" end;
+  # most urgent first - the top line leads the response
+  def rank: kind | if . == "EMERGENCY" then 0 elif startswith("WARNING") then 1
+    elif . == "WATCH" then 2 elif . == "ADVISORY" then 3 elif . == "STATEMENT" then 4 else 5 end;
   def aname: if ((.event // "") | length) > 0 then .event
     elif ((.tags // []) | length) > 0 then (.tags | join("/"))
     else "unnamed" end;
@@ -146,7 +155,7 @@ fi
 if [ "$(printf '%s' "$alerts" | jq 'length')" != 0 ]; then
   echo; echo "ALERTS (national agency, via OWM)"
   printf '%s' "$alerts" | jq -r --argjson o "$(printf '%s' "$cur" | jq '.timezone_offset')" "$LIB"'
-    .[] | "  \(kind)  \(aname)  [\(.sender_name)]  \(.start|lt($o)) -> \(.end|lt($o))",
+    sort_by(rank)[] | "  \(kind)  \(aname)  [\(.sender_name)]  \(.start|lt($o)) -> \(.end|lt($o))",
           "    \(dsc | .[0:600])"'
 fi
 
