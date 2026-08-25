@@ -132,7 +132,9 @@ if [ -n "$cur" ]; then
     .timezone_offset as $o | .data[0] as $c |
     "LOCATION \(.lat),\(.lon)  \(.timezone)  OWM One Call 4.0 (OWHL model, 10-min updates) + Open-Meteo convective",
     "NOW \($c.dt|lt($o)) local  (OWM observation time)  \($c.temp|r(0))F (feels \($c.feels_like|r(0)))  dew \($c.dew_point|r(0))F  RH \($c.humidity)%  \($c.weather[0].description)",
-    "    wind \($c.wind_speed|r(0)) gust \($c.wind_gust|r(0)) mph from \($c.wind_deg|dir)  cloud \($c.clouds)%  \($c.pressure)hPa  UV \($c.uvi)  vis \((($c.visibility//0)/1609)|r(1))mi" +
+    "    wind \($c.wind_speed|r(0)) mph from \($c.wind_deg|dir)" +
+      (if (($c.wind_gust // 0) > ($c.wind_speed // 0)) then " gust \($c.wind_gust|r(0))" else "" end) +
+      "  cloud \($c.clouds)%  \($c.pressure)hPa  UV \($c.uvi)  vis \((($c.visibility//0)/1609)|r(1))mi" +
       (if (($c.rain|mm) // ($c.snow|mm)) then "  precip \((($c.rain|mm) // ($c.snow|mm)))mm/h" else "" end),
     "    sun \($c.sunrise|lt($o)|.[11:]) -> \($c.sunset|lt($o)|.[11:])"'
 else

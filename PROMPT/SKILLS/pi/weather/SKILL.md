@@ -79,6 +79,12 @@ Also pipe up for the genuinely unusual even if it is not on this list — a 30F 
 
 **But do not manufacture interest.** A boring forecast is a valid answer; "nothing notable" beats padding. If nothing crosses a threshold, stop after the standard lines. Never inflate a `weak convection` row into a storm risk, and never soften a `WATCH` into "some storms possible."
 
+## The two sources can disagree
+
+NOW is an OWM observation; NEXT 12H row one is an Open-Meteo model value. They can differ sharply during active weather — at Pueblo, NOW read 79F in light rain while the 17:00 hourly row said 92F, a 13F gap caused by rain-cooled air the hourly model didn't resolve.
+
+**For current conditions, NOW wins.** Use the hourly rows for trend and timing, not for what it is doing right now. If they disagree by more than ~8F, say so rather than quietly picking one — that gap is itself information (usually an outflow boundary or a storm sitting on the location).
+
 ## Answering the user
 
 - Plain weather question → NOW, NOWCAST, NEXT 12H, DAILY. Do not dump the CONVECTIVE table.
@@ -107,6 +113,7 @@ Verified against live 4.0 payloads — several of these contradict OWM's own doc
 - Daily records have **no `summary`** field, despite the docs implying one. Condition text comes from `weather[0].description`.
 - Daily and current records had **no `wind_gust`** at all; it is "where available" only.
 - Daily `dt` is **midnight UTC**. Do not add `timezone_offset` to it — that labels every row one day early. Sunrise/sunset *do* need the offset.
+- OWM sometimes reports `wind_gust` **below** `wind_speed` (Pueblo: gust 19.7 vs sustained 24.5), which is physically impossible. The script only prints a gust when it exceeds the sustained wind. If you need a gust figure regardless, use `gust` in NEXT 12H (Open-Meteo).
 - OWM 4.0 daily `uvi` read **0 on all ten records** while `current.uvi` was nonzero and Open-Meteo gave 6.5 for the same day. Treat OWM daily UV as broken; the script takes UV from Open-Meteo's hourly `uv_index` instead. Never tell someone UV is 0 based on OWM daily.
 - `visibility` caps at 10000 m, so `6.2mi` means "6.2 or better", not a measurement.
 - Hourly endpoint is `timeline/1h`, **not** `1hour`. Wrong paths return 401, which looks exactly like a subscription problem.
