@@ -31,7 +31,7 @@ LIB='
   def aname: if ((.event // "") | length) > 0 then .event
     elif ((.tags // []) | length) > 0 then (.tags | join("/"))
     else "unnamed" end;
-  def lt($o): if . == null then "-" else (. + $o) | strftime("%m-%dT%H:%M") end;
+  def lt($o): if . == null then "-" else (. + $o) | strftime("%Y-%m-%dT%H:%M") end;
   def dir: if . == null then "-" else ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"][((. / 22.5) | round) % 16] end;
   def moon: if . == null then "-" elif . < 0.03 or . > 0.97 then "new" elif . < 0.22 then "waxcres"
     elif . < 0.28 then "1stQ" elif . < 0.47 then "waxgib" elif . < 0.53 then "FULL"
@@ -102,7 +102,7 @@ cur=$(fetch "$(u current)")           || cur=
 nowc=$(fetch "$(u timeline/1min)")    || nowc=
 day=$(fetch "$(u timeline/1day)")     || day=
 
-OM_HOURLY=temperature_2m,apparent_temperature,dew_point_2m,relative_humidity_2m,precipitation,rain,showers,snowfall,precipitation_probability,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m,cape,convective_inhibition,lifted_index,lightning_potential,boundary_layer_height,freezing_level_height,total_column_integrated_water_vapour,vertical_velocity_700hPa,wind_speed_850hPa,wind_direction_850hPa,wind_speed_500hPa,wind_direction_500hPa,temperature_500hPa,temperature_850hPa,geopotential_height_500hPa,geopotential_height_850hPa,relative_humidity_700hPa
+OM_HOURLY=temperature_2m,apparent_temperature,dew_point_2m,relative_humidity_2m,precipitation,rain,showers,snowfall,precipitation_probability,weather_code,cloud_cover,uv_index,wind_speed_10m,wind_direction_10m,wind_gusts_10m,cape,convective_inhibition,lifted_index,lightning_potential,boundary_layer_height,freezing_level_height,total_column_integrated_water_vapour,vertical_velocity_700hPa,wind_speed_850hPa,wind_direction_850hPa,wind_speed_500hPa,wind_direction_500hPa,temperature_500hPa,temperature_850hPa,geopotential_height_500hPa,geopotential_height_850hPa,relative_humidity_700hPa
 om=$(curl -sfG 'https://api.open-meteo.com/v1/forecast' \
   --data-urlencode "latitude=$LAT" --data-urlencode "longitude=$LON" \
   --data-urlencode "current=temperature_2m" --data-urlencode "hourly=$OM_HOURLY" \
@@ -131,12 +131,13 @@ if [ -n "$cur" ]; then
   printf '%s' "$cur" | jq -r "$LIB"'
     .timezone_offset as $o | .data[0] as $c |
     "LOCATION \(.lat),\(.lon)  \(.timezone)  OWM One Call 4.0 (OWHL model, 10-min updates) + Open-Meteo convective",
-    "NOW \($c.dt|lt($o))  \($c.temp|r(0))F (feels \($c.feels_like|r(0)))  dew \($c.dew_point|r(0))F  RH \($c.humidity)%  \($c.weather[0].description)",
+    "NOW \($c.dt|lt($o)) local  (OWM observation time)  \($c.temp|r(0))F (feels \($c.feels_like|r(0)))  dew \($c.dew_point|r(0))F  RH \($c.humidity)%  \($c.weather[0].description)",
     "    wind \($c.wind_speed|r(0)) gust \($c.wind_gust|r(0)) mph from \($c.wind_deg|dir)  cloud \($c.clouds)%  \($c.pressure)hPa  UV \($c.uvi)  vis \((($c.visibility//0)/1609)|r(1))mi" +
       (if (($c.rain|mm) // ($c.snow|mm)) then "  precip \((($c.rain|mm) // ($c.snow|mm)))mm/h" else "" end),
-    "    sun \($c.sunrise|lt($o)|.[6:]) -> \($c.sunset|lt($o)|.[6:])"'
+    "    sun \($c.sunrise|lt($o)|.[11:]) -> \($c.sunset|lt($o)|.[11:])"'
 else
   echo "LOCATION $LAT,$LON  (OWM unavailable - see errors above; Open-Meteo blocks only)"
+  [ -n "$om" ] && printf '%s' "$om" | jq -r '"REFERENCE TIME \(.current.time) local  (Open-Meteo; OWM current conditions and dew point unavailable)"'
 fi
 
 # --- ALERTS ------------------------------------------------------------------
@@ -162,13 +163,13 @@ if [ -n "$om" ]; then
   echo; echo "NEXT 12H"
   o '
     .current.time as $now | .hourly as $h |
-    ["time","T","feels","Td","POP","PRCP","SNOW","gust","wind","cloud","sky"],
+    ["time","T","feels","Td","POP","PRCP","SNOW","gust","wind","cloud","UV","sky"],
     ([$h.time | to_entries[].key | select($h.time[.] >= $now[0:13])][0:12][] as $i |
       [$h.time[$i][5:16], ($h.temperature_2m[$i]|r(0)), ($h.apparent_temperature[$i]|r(0)),
        ($h.dew_point_2m[$i]|r(0)), $h.precipitation_probability[$i], ($h.precipitation[$i]|r(1)),
        ($h.snowfall[$i]|r(1)), ($h.wind_gusts_10m[$i]|r(0)),
        "\($h.wind_speed_10m[$i]|r(0))\($h.wind_direction_10m[$i]|dir)",
-       $h.cloud_cover[$i], ($h.weather_code[$i]|wx)])
+       $h.cloud_cover[$i], ($h.uv_index[$i]|r(1)), ($h.weather_code[$i]|wx)])
     | @tsv' | column -t -s $'\t'
 
   echo
@@ -202,15 +203,17 @@ fi
 # --- DAILY (OWM) -------------------------------------------------------------
 # NB: daily .dt is a midnight-UTC day bucket - label it in UTC, never shifted by
 # timezone_offset, or every row comes out one day off.
+# NB: OWM 4.0 daily .uvi read 0 on every record while current.uvi was nonzero, so
+# UV is taken from Open-Meteo in NEXT 12H instead of from this block.
 if [ -n "$day" ]; then
   echo; echo "DAILY"
   printf '%s' "$day" | jq -r "$LIB"'
     .timezone_offset as $o |
-    ["date","Tmax","Tmin","feels_day","POP","precip","wind","UV","RH","cloud","moon","sunrise","sunset","sky"],
+    ["date","Tmax","Tmin","feels_day","POP","precip","wind","RH","cloud","moon","sunrise","sunset","sky"],
     (.data[] |
-      [(.dt|lt(0)|.[0:5]), (.temp.max|r(0)), (.temp.min|r(0)), (.feels_like.day|r(0)),
+      [(.dt|lt(0)|.[5:10]), (.temp.max|r(0)), (.temp.min|r(0)), (.feels_like.day|r(0)),
        ((.pop // 0)*100|r(0)), (((.rain|mm) // 0)|r(1)),
-       (.wind_speed|r(0)), (.uvi|r(1)), .humidity, .clouds, (.moon_phase|moon),
-       (.sunrise|lt($o)|.[6:]), (.sunset|lt($o)|.[6:]), .weather[0].description])
+       (.wind_speed|r(0)), .humidity, .clouds, (.moon_phase|moon),
+       (.sunrise|lt($o)|.[11:]), (.sunset|lt($o)|.[11:]), .weather[0].description])
     | @tsv' | column -t -s $'\t'
 fi
