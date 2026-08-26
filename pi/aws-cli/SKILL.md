@@ -1,3 +1,7 @@
+---
+description: "Safe, explicit AWS CLI usage — region and profile on every command, one mutation at a time, verify before and after. Use when running, scripting, or reviewing aws cli commands."
+---
+
 # AWS CLI Command and Scripting Guidelines
 
 Safe, explicit AWS CLI usage — no ambient credentials, no silent mutations, no assumed values.
