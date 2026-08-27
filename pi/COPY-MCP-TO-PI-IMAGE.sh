@@ -2,17 +2,19 @@ docker run --rm \
   -v pi-agent-home:/home/node/.pi/agent \
   -v ~/gitdir/skel/pi/mcp.json:/tmp/mcp.json:ro \
   -v ~/gitdir/skel/pi/AGENTS.md:/tmp/AGENTS.md:ro \
+  -v ~/gitdir/skel/pi/settings.json:/tmp/settings.json:ro \
   -v ~/gitdir/skel/PROMPT/SKILLS/pi:/tmp/SKILLS:ro \
   --entrypoint bash pi-sandbox \
   -c 'set -e
       install -m 600 -o node -g node /tmp/mcp.json /home/node/.pi/agent/mcp.json
       install -m 644 -o node -g node /tmp/AGENTS.md /home/node/.pi/agent/AGENTS.md
+      install -m 644 -o node -g node /tmp/settings.json /home/node/.pi/agent/settings.json
       ls -la /home/node/.pi/agent/
       cat /home/node/.pi/agent/AGENTS.md
       cat /home/node/.pi/agent/mcp.json
       mkdir -p /home/node/.pi/agent/skills 
       cp -r /tmp/SKILLS/*/ /home/node/.pi/agent/skills
-      cp ./settings.json /home/node/.pi/agent
+      cp /tmp/settings.json /home/node/.pi/agent
       pi install git:github.com/nagisanzenin/engram
       pi install npm:@dietrichgebert/ponytail
       pi install npm:pi-mcp-adapter
