@@ -1,0 +1,23 @@
+{
+  "packages": [
+    "git:github.com/nagisanzenin/engram",
+    "npm:@dietrichgebert/ponytail",
+    "npm:pi-mcp-adapter",
+    "npm:@narumitw/pi-plan-mode",
+    "npm:@narumitw/pi-btw",
+    "npm:@narumitw/pi-stamp",
+    "npm:@ff-labs/pi-fff",
+    "npm:pi-powerline-footer"
+  ],
+  "lastChangelogVersion": "0.84.3",
+  "theme": "dark",
+  "defaultProvider": "amazon-bedrock",
+  "defaultModel": "us.anthropic.claude-opus-5",
+  "workingVibe": "star trek",
+  "defaultThinkingLevel": "medium",
+  "enabledModels": [
+    "amazon-bedrock/us.anthropic.claude-opus-5",
+    "amazon-bedrock/us.anthropic.claude-sonnet-5",
+    "amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0"
+  ]
+}
