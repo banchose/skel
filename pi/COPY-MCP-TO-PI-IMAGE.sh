@@ -25,5 +25,10 @@ docker run --rm \
       pi update --extensions
       uv tool install html2text
       uv tool install cfn-lint
+      uv tool install sqlite-utils
+      uv tool install pylint
+      uv tool install flake8
+      uv tool install litecli
+      uv tool install pgcli
       uv tool install checkov'
 # pi install npm:@gotgenes/pi-permission-system
