@@ -22,5 +22,6 @@ docker run --rm \
       pi install npm:@narumitw/pi-btw
       pi install npm:@narumitw/pi-stamp
       pi install npm:@ff-labs/pi-fff
+      pi install npm:@juicesharp/rpiv-ask-user-question
       pi update --extensions'
 # pi install npm:@gotgenes/pi-permission-system
