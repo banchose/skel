@@ -8,8 +8,9 @@
 # Calls per run: 3 OWM (current, 1min, 1day) + 1 Open-Meteo + 1 per active alert.
 set -euo pipefail
 
-LAT=${1:-${WEATHER_LAT:-42.6479239}}
-LON=${2:-${WEATHER_LON:--73.9349937}}
+# env precedence: LAT/LON, then WEATHER_LAT/WEATHER_LON, then the built-in default
+LAT=${1:-${LAT:-${WEATHER_LAT:-42.6479239}}}
+LON=${2:-${LON:-${WEATHER_LON:--73.9349937}}}
 DAYS=${3:-${WEATHER_DAYS:-3}}
 RAW=${4:-}
 OWM=https://api.openweathermap.org/data/4.0/onecall
