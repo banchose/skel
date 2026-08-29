@@ -73,6 +73,15 @@ ENV PATH="${HOME}/.local/bin:${PATH}"
 RUN uv tool install httpie
 RUN uv tool install cfn-lint
 RUN uv tool install csvkit
+RUN uv tool install litecli
+RUN uv tool install pgcli
+RUN uv tool install sqlite-utils
+RUN uv tool install pylint
+RUN uv tool install flake8
+RUN uv tool install mycli
+RUN uv tool install psutils
+RUN uv tool install strip-tags
+RUN uv tool install visidata
 COPY ./gitconfig /home/node/.gitconfig
 COPY ./gitignore /home/node/.gitignore
 WORKDIR /workspace

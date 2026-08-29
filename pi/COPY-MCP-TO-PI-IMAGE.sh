@@ -22,13 +22,5 @@ docker run --rm \
       pi install npm:@narumitw/pi-btw
       pi install npm:@narumitw/pi-stamp
       pi install npm:@ff-labs/pi-fff
-      pi update --extensions
-      uv tool install html2text
-      uv tool install cfn-lint
-      uv tool install sqlite-utils
-      uv tool install pylint
-      uv tool install flake8
-      uv tool install litecli
-      uv tool install pgcli
-      uv tool install checkov'
+      pi update --extensions'
 # pi install npm:@gotgenes/pi-permission-system

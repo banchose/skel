@@ -1,13 +1,14 @@
 ---
 name: weather
 description: Current conditions, 60-minute precipitation nowcast, official weather alerts, and a convective/severe-storm outlook (CAPE, CIN, bulk shear, lapse rate, mid-level ascent) for any location. Use whenever the user asks about weather, temperature, rain, wind, storms, thunderstorms, severe weather risk, alerts/warnings, or "is it going to storm".
-compatibility: Requires bash, curl, jq, column, and OPENWEATHER_APP_ID with a One Call by Call subscription. Open-Meteo needs no key. Degrades to Open-Meteo-only if OWM fails.
+compatibility: Requires bash, curl, jq, column, and OPENWEATHER_APP_ID with a One Call by Call subscription. Open-Meteo needs no key. Degrades to Open-Meteo-only if OWM fails. Default location comes from WEATHER_LAT/WEATHER_LON (falls back to Albany NY area).
 ---
 
 # Weather
 
 ```bash
-./weather.sh                            # default location (Troy/Albany NY)
+./weather.sh                            # default: $WEATHER_LAT/$WEATHER_LON, else Albany NY area
+# set once in your shell/pi env: export WEATHER_LAT=39.7392 WEATHER_LON=-104.9903 WEATHER_DAYS=5
 ./weather.sh 39.7392 -104.9903 5        # lat lon days   (days affects the Open-Meteo blocks)
 ./weather.sh 42.74 -73.80 3 --json      # all raw payloads, merged
 ./weather.sh --selftest                 # offline check of the shear/lapse/verdict math
