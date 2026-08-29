@@ -84,5 +84,6 @@ RUN uv tool install strip-tags
 RUN uv tool install visidata
 COPY ./gitconfig /home/node/.gitconfig
 COPY ./gitignore /home/node/.gitignore
+COPY ./inputrc /home/node/.inputrc
 WORKDIR /workspace
 ENTRYPOINT ["pi"]
