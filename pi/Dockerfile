@@ -96,5 +96,6 @@ RUN uv tool install pynvim
 COPY ./gitconfig /home/node/.gitconfig
 COPY ./gitignore /home/node/.gitignore
 COPY ./inputrc /home/node/.inputrc
+COPY ./bash_aliases /home/node/.bash_aliases
 WORKDIR /workspace
 ENTRYPOINT ["pi"]
