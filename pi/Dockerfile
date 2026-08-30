@@ -62,6 +62,7 @@ RUN set -eux; \
      if [ "$GID" != "$(id -g node)" ]; then groupmod -g "$GID" node; fi; \
      if [ "$UID" != "$(id -u node)" ]; then usermod -u "$UID" -g "$GID" node; fi; \
      chown -R "$UID:$GID" /home/node
+RUN npm install -g neovim
 
 USER node
 ENV HOME=/home/node
@@ -72,7 +73,8 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="${HOME}/.local/bin:${PATH}"
 # neovim: no usable apt version. Official static tarball unpacked straight into
 # ~/.local (bin/ lib/ share/), so nvim lands on the PATH set above.
-ARG NVIM_VERSION=v0.11.4
+# ARG NVIM_VERSION=v0.11.4
+ARG NVIM_VERSION=v0.12.5
 RUN set -eux; \
   mkdir -p "$HOME/.local"; \
   curl -fsSL \
