@@ -70,6 +70,16 @@ ENV MANPAGER=less
 ENV TZ=America/New_York
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="${HOME}/.local/bin:${PATH}"
+# neovim: no usable apt version. Official static tarball unpacked straight into
+# ~/.local (bin/ lib/ share/), so nvim lands on the PATH set above.
+ARG NVIM_VERSION=v0.11.4
+RUN set -eux; \
+  mkdir -p "$HOME/.local"; \
+  curl -fsSL \
+    "https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-x86_64.tar.gz" \
+    | tar -xz --strip-components=1 -C "$HOME/.local"; \
+  nvim --version
+
 RUN uv tool install httpie
 RUN uv tool install cfn-lint
 RUN uv tool install csvkit
@@ -82,6 +92,7 @@ RUN uv tool install mycli
 RUN uv tool install psutils
 RUN uv tool install strip-tags
 RUN uv tool install visidata
+RUN uv tool install pynvim
 COPY ./gitconfig /home/node/.gitconfig
 COPY ./gitignore /home/node/.gitignore
 COPY ./inputrc /home/node/.inputrc
