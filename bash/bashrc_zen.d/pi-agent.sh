@@ -1,3 +1,4 @@
+alias cdpi='cd ~/gitdir/skel/pi'
 pi-bed() {
   if ! docker info >/dev/null 2>&1; then
     echo "docker daemon is not running" 1>&2
