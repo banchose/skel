@@ -1,9 +1,11 @@
+# You will be the 'node' user as per the image build
 docker run --rm \
   -v pi-agent-home:/home/node/.pi/agent \
   -v ~/gitdir/skel/pi/mcp.json:/tmp/mcp.json:ro \
   -v ~/gitdir/skel/pi/AGENTS.md:/tmp/AGENTS.md:ro \
   -v ~/gitdir/skel/pi/settings.json:/tmp/settings.json:ro \
   -v ~/gitdir/skel/PROMPT/SKILLS/pi:/tmp/SKILLS:ro \
+  -v ~/gitdir/skel/pi/extensions/:/tmp/extensions:ro \
   --entrypoint bash pi-sandbox \
   -c 'set -e
       install -m 600 -o node -g node /tmp/mcp.json /home/node/.pi/agent/mcp.json
@@ -12,8 +14,10 @@ docker run --rm \
       ls -la /home/node/.pi/agent/
       cat /home/node/.pi/agent/AGENTS.md
       cat /home/node/.pi/agent/mcp.json
-      mkdir -p /home/node/.pi/agent/skills 
+      mkdir -p /home/node/.pi/agent/skills
       cp -r /tmp/SKILLS/*/ /home/node/.pi/agent/skills
+      mkdir -p /home/node/.pi/agent/extensions
+      cp -r /tmp/extensions/*/ /home/node/.pi/agent/extensions
       cp /tmp/settings.json /home/node/.pi/agent
       pi install git:github.com/nagisanzenin/engram
       pi install npm:@dietrichgebert/ponytail
