@@ -8,10 +8,10 @@
     "npm:@narumitw/pi-stamp",
     "npm:@ff-labs/pi-fff",
     "npm:pi-powerline-footer",
-    "npm:@juicesharp/rpiv-ask-user-question"
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:awesome-pi-themes"
   ],
   "lastChangelogVersion": "0.84.4",
-  "theme": "dark",
   "defaultProvider": "amazon-bedrock",
   "defaultModel": "us.anthropic.claude-opus-5",
   "workingVibe": "star trek",
@@ -22,5 +22,6 @@
     "amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0",
     "tinfoil/kimi-k3",
     "anthropic/claude-fable-5"
-  ]
+  ],
+  "theme": "midnight-orchid"
 }
