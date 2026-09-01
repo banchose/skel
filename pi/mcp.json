@@ -26,6 +26,10 @@
     "time": {
       "command": "uvx",
       "args": ["mcp-server-time", "--local-timezone=America/New_York"]
+    },
+    "yahoo-finance": {
+      "url": "https://gateway.mcpservers.org/yahoo-finance/mcp",
+      "type": "http"
     }
   }
 }
