@@ -9,8 +9,7 @@
     "npm:@ff-labs/pi-fff",
     "npm:pi-powerline-footer",
     "npm:@juicesharp/rpiv-ask-user-question",
-    "npm:@juicesharp/rpiv-todo",
-    "npm:awesome-pi-themes"
+    "npm:@juicesharp/rpiv-todo"
   ],
   "lastChangelogVersion": "0.84.4",
   "defaultProvider": "amazon-bedrock",

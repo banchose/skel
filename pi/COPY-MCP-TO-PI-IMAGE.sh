@@ -28,9 +28,10 @@ docker run --rm \
       pi install npm:@ff-labs/pi-fff
       pi install npm:@juicesharp/rpiv-ask-user-question
       pi install npm:@juicesharp/rpiv-todo
-      pi install npm:awesome-pi-themes
       pi install npm:@firstpick/pi-themes-bundle
       pi update --extensions
       pi update --models'
+
+#      pi install npm:awesome-pi-themes
 # pi install npm:@gotgenes/pi-permission-system
 # npm ci
