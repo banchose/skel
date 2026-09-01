@@ -15,10 +15,9 @@ docker run --rm \
       cat /home/node/.pi/agent/AGENTS.md
       cat /home/node/.pi/agent/mcp.json
       mkdir -p /home/node/.pi/agent/skills
-      cp -r /tmp/SKILLS/*/ /home/node/.pi/agent/skills
+      cp -rv /tmp/SKILLS/*/ /home/node/.pi/agent/skills
       mkdir -p /home/node/.pi/agent/extensions
-      cp -r /tmp/extensions/*/ /home/node/.pi/agent/extensions
-      cp /tmp/settings.json /home/node/.pi/agent
+      cp -rv /tmp/extensions/*/ /home/node/.pi/agent/extensions
       pi install git:github.com/nagisanzenin/engram
       pi install npm:@dietrichgebert/ponytail
       pi install npm:pi-mcp-adapter
