@@ -7,6 +7,9 @@ description: Gotchas for the OpenRouter MCP server (mcp.openrouter.ai) — model
 
 Configured in `~/.pi/agent/mcp.json` with `Authorization: Bearer ${OPENROUTER_API_KEY}`.
 22 tools, all prefixed `openrouter_`. OAuth does not work here (no OS keyring) — key only.
+Static key = no 7-day expiry / $10 cap that the OAuth flow imposes, and no re-auth step.
+Read-only except `send-message`, `generate-image`, `generate-speech`, `transcribe-audio` (billable inference)
+and `send-feedback` (writes).
 
 ## Three gotchas that cost calls
 
@@ -25,6 +28,13 @@ Configured in `~/.pi/agent/mcp.json` with `Authorization: Bearer ${OPENROUTER_AP
 - `category` cannot combine with `modality`, `context_bucket`, or `language_type`.
 - Defaults to a 30-day window; pass `start_date`/`end_date` (YYYY-MM-DD, floor 2025-01-01).
 - Latest bucket only: filter to `max(date)` before ranking, and there's an `other` bucket row — don't read it as a model.
+
+## send-message
+
+Slug suffixes work: `:online` (web search), `:nitro` (speed), `:floor` (cheapest), `:free`.
+Every reply carries a generation id — pass it to `get-generation` for real cost/provider.
+Never name a model from memory for "which model should I use" — use `list-benchmarks`,
+`list-daily-model-rankings`, `list-models`.
 
 ## Tool map
 
