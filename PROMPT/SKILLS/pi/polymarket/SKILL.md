@@ -75,7 +75,7 @@ curl -s "https://data-api.polymarket.com/holders?market=$CONDITION_ID&limit=10" 
 curl -s "https://data-api.polymarket.com/trades?market=$CONDITION_ID&limit=50"    # matched-trade tape
 curl -s "https://data-api.polymarket.com/trades?limit=50"                  # global firehose
 curl -s "https://data-api.polymarket.com/activity?user=$WALLET&limit=20"   # one wallet's full history
-curl -s "https://data-api.polymarket.com/positions?user=$WALLET"           # open book
+curl -s "https://data-api.polymarket.com/positions?user=$WALLET&sortBy=CURRENT&sortDirection=DESC"  # open book
 curl -s "https://data-api.polymarket.com/closed-positions?user=$WALLET"
 curl -s "https://data-api.polymarket.com/value?user=$WALLET"               # [{user, value}]
 curl -s "https://data-api.polymarket.com/oi?market=$CONDITION_ID"          # open interest
@@ -83,6 +83,10 @@ curl -s "https://data-api.polymarket.com/live-volume?id=$EVENT_ID"
 ```
 
 **`period=` on `/v1/leaderboard` is silently ignored.** `1d`, `1w`, `1m`, `all`, and `garbage` all return byte-identical payloads (verified). The docs advertise `period`; the API does not honor it. Treat the leaderboard as one undocumented window and **never label it "24-hour" or "all-time"** — say "current leaderboard".
+
+**`/positions` is unsorted and padded with settled $0 rows.** Without `sortBy=CURRENT&sortDirection=DESC` a `limit=5` pull can return five worthless resolved positions for a wallet holding a six-figure book — silently the wrong answer. Always sort, and filter `currentValue > 0`. (`sortBy=VALUE` is not valid; it returns a bare string.)
+
+**`public-search` returns duplicate market objects** — stale copies with degenerate `outcomePrices` of `["0","1"]` and `volume24hr: 0` sit alongside the live ones. Filter on `volume24hr > 0` or you will quote 0% / 100% on an active market.
 
 `holders` returns `[{token, holders:[…]}]` — nested one level deeper than you expect, and keyed per outcome token, so top holders of Yes and No come back separately.
 
@@ -93,6 +97,12 @@ curl -s "https://data-api.polymarket.com/live-volume?id=$EVENT_ID"
 It's a public order book **with social identity attached**. The leaderboard gives PnL-ranked traders by name; `/activity` gives any wallet's complete history; `/holders` gives whales with their usernames, bios, and avatars. Traditional venues anonymize prints. Here they don't.
 
 So the high-value query is rarely "what's the price". It's **cross-referencing the leaderboard against `/holders` on a market**: are the consistently profitable wallets on one side? That signal doesn't exist on a regulated exchange.
+
+**But read the leaderboard for what it is: a settlement ladder, not a forecast panel.** Observed live, seven of the top ten were sports/esports scalpers whose edge is per-match and unrepeatable, and rank 1 held **$0 open** — fully redeemed, nothing to copy. The useful wallets are the ones with large open books relative to volume. Check `/value?user=` before reading anything into a rank.
+
+**Decompose a big position against its price before calling it conviction.** A $3.07M NO position in an outcome trading at 0.55% is a *carry trade* — buy at 99.45¢, collect 100¢, ~0.55% yield — not a bet on the outcome. Real conviction lives near the middle of the book. Always pull the market price for a position before characterizing it, or you will report yield harvesting as a macro call.
+
+Two wallets holding **both sides** of one market at complementary sizes (e.g. $150k NO + $50k YES) is negative-risk arbitrage or market-making. Not a view. Skip it.
 
 Corollary worth telling a user who asks about trading there: their own positions and PnL are equally public to everyone running the same queries.
 
