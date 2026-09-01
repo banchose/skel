@@ -21,6 +21,13 @@ and `send-feedback` (writes).
    written to `/tmp/pi-mcp-output-*/mcp-result-*.txt` — read that path with python/jq, don't retry the call.
    Payload shape: `data.content[0].text` is a **JSON string**; parse it, then `["data"]` is the row array.
 
+## Capability checks: never trust model-level `supported_parameters`
+
+It is not the whole story. `tool_choice` is absent from that array even on models that fully support it —
+the truth lives per-endpoint in `openrouter_list-model-endpoints` as `supports_tool_choice:
+{none, auto, required, function}`. Same for `structured_outputs`, which can differ between providers of the
+same model. Before claiming a model lacks a feature, check the endpoints call.
+
 ## Rankings specifics
 
 `openrouter_list-daily-model-rankings` — rows are `{date, model_permaslug, total_tokens}` (tokens are strings).
