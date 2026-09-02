@@ -16,6 +16,7 @@ Data is **delayed ~10 minutes** (`exchangeDataDelayedBy: 10`) — say so when qu
 | "price history / trend / chart" | `get_chart` — takes **`symbol` (string)** |
 | P/E, margins, dividend, holders, financials | `quote_summary` + `modules` |
 | "what's the ticker for…" | `search` — but see the warning below |
+| "is X open / trading now?" | `get_quote` → `marketState`; see "Is the market open?" |
 
 Param names are inconsistent across these tools: `get_quote` wants `symbols: string[]`,
 the other three want `symbol: string`. There is no `get_ticker_info` — that's the Python
@@ -73,9 +74,11 @@ contract month — **on every row**, not just the first:
 | Brent (BZ=F, Nov 26) | $95.25 | +0.60 (+0.63%) | 95.20–95.48 |
 ```
 
-**Get the month from `underlyingSymbol`, not `shortName`.** `shortName` is truncated at 31 chars,
-so `BZ=F` returns `"Brent Crude Oil Last Day Financ"` — no month at all, while `CL=F` gives
-`"Crude Oil Oct 26"`. Decode the month code instead (verified on CL/BZ/NG/GC):
+**Get the month from `underlyingSymbol` — not `shortName`, not `expireDate`.** `shortName` is
+truncated at 31 chars, so `BZ=F` returns `"Brent Crude Oil Last Day Financ"` — no month at all,
+while `CL=F` gives `"Crude Oil Oct 26"`. And `expireDate` is **not** the contract month: `BZX26`
+is the *November* contract but expires **1 Oct 2026**, so reading the month off `expireDate`
+silently labels Brent a month early. Decode the code instead (verified on CL/BZ/NG/GC):
 
 ```js
 const CODES = {F:'Jan',G:'Feb',H:'Mar',J:'Apr',K:'May',M:'Jun',
@@ -111,38 +114,74 @@ emit(JSON.parse(r.data.content[0].text).map(q => ({
 
 Two symbols is ~4.6 KB — safely inline, no chunking needed.
 
+## Is the market open?
+
+Read it off the payload rather than reasoning from the clock. `marketState` is
+`REGULAR` / `PRE` / `POST` / `CLOSED`, and `market` is the class discriminator (verified):
+
+| `market` | Class | `REGULAR` means |
+|---|---|---|
+| `us24_market` | CME futures | trading — near-24/5, so `REGULAR` at 03:00 ET is normal, not a glitch |
+| `ccy_market` | spot FX | trading — continuous 24/5 (note Yahoo reports its tz as London/BST) |
+| `us_market` | equities, cash indices | the 9:30 am – 4:00 pm ET cash session only |
+
+**`marketState` alone is not enough — always check `regularMarketTime`.** Verified pre-market:
+`^GSPC` and `AAPL` both report `PRE` while `regularMarketTime` is the *previous* session's close,
+so `regularMarketPrice` is yesterday's number. `hasPrePostMarketData` tells you whether
+extended-hours fields exist at all — `true` for equities, **`false` for cash indices**, which
+means an index in `PRE`/`POST` has no live price to give you. Say "last close, <date>", not
+"currently."
+
+A fresh `regularMarketTime` (within minutes, allowing for the ~10-min delay) plus `REGULAR` is
+the only combination that justifies "trading right now." For the current wall time use the
+`time` MCP server (`get_current_time`, `America/Chicago` for CME, `America/New_York` for
+equities) instead of assuming it.
+
+### Session hours by instrument class
+
+CME Globex runs on **Central Time** and its whole week is defined in CT — converting to ET
+first is the usual source of off-by-one-hour errors.
+
+| Class | Session | Halts |
+|---|---|---|
+| CME futures — energy, metals, rates, FX (`CL=F` `BZ=F` `NG=F` `GC=F` `SI=F` `HG=F`) | Sun 5:00 pm – Fri 4:00 pm CT | daily 4:00–5:00 pm CT maintenance |
+| Equity-index futures (`ES=F` `NQ=F`) | same | + 15-min halt 3:15–3:30 pm CT |
+| Grains (`ZC=F` `ZW=F`) | split: Sun–Fri 7:00 pm–8:45 am **and** Mon–Fri 8:30 am–1:20 pm CT | — |
+| US equities (`AAPL`) | 9:30 am – 4:00 pm ET | pre 4:00–9:30 am, post 4:00–8:00 pm ET |
+| Cash indices (`^GSPC` `^IXIC` `^DJI`) | 9:30 am – 4:00 pm ET | no pre/post data at all |
+| Spot FX (`EURUSD=X`) | continuous Sun evening – Fri evening | — |
+| Crypto (`BTC-USD`) | 24/7, no close | — |
+
+The weekend gap for futures is **Fri 4:00 pm CT → Sun 5:00 pm CT**; during it `CL=F` returns
+Friday's settle. Cash indices close Fri 4:00 pm ET even while the futures on them keep trading —
+so quoting `^GSPC` on a Saturday hands back a two-day-old number.
+
+Holidays are what this table can't cover: CME runs ~10 *modified* days a year (early halts, often
+~12:00 pm CT) where US equities are shut but Globex is not, and Good Friday is a full closure.
+Don't infer a holiday schedule — report what `marketState` and `regularMarketTime` show, and
+point at <https://www.cmegroup.com/trading-hours.html> for the calendar.
+
+Sources: CFTC rule filing 021422cmedcm007 (Globex core hours; daily 4:00–5:00 pm CT maintenance),
+cmegroup.com/trading-hours.html (crypto 24/7, FX Spot+, holidays).
+
 ## Futures return the front-month contract, not spot
 
 `CL=F` resolves to a dated contract — check `underlyingSymbol` (`CLV26.NYM` → Oct 2026) and
 `expireDate`. For "the price of oil" that's the right answer, but:
 
-- **Name the contract month** when reporting, so the number is reproducible. Decode it from
-  `underlyingSymbol`; `shortName` is truncated at 31 chars and omits the month on longer names
-  like `BZ=F`. See the decoder under "Generic requests" above.
-- `expireDate` tells you how close the rollover is; near expiry, volume migrates to the next
-  contract and `regularMarketVolume` on the front month looks anomalously thin.
+- **Name the contract month** when reporting, so the number is reproducible — decode it from
+  `underlyingSymbol` with the function above.
+- `expireDate` is for measuring rollover distance, **never for naming the month** (it can fall in
+  the prior calendar month — see above). Near expiry, volume migrates to the next contract and
+  `regularMarketVolume` on the front month looks anomalously thin.
 - Don't call it "spot." Front-month futures ≠ spot, and in steep contango/backwardation the gap is real.
 
 ## Project the fields you need — responses are fat
 
 `get_quote` returns ~90 fields per symbol, **~3.4 KB each** for equities. Reading that into
 context to quote one number is waste — and past ~4 symbols it doesn't just bloat, it **breaks**
-(see "Omitted results"). Use `mcpScript` to project:
-
-```js
-const r = await tools.call('yahoo-finance_get_quote', { symbols: ['CL=F','BZ=F'] });
-const rows = JSON.parse(r.data.content[0].text);   // content[0].text is a JSON STRING
-emit(rows.map(q => ({
-  symbol:  q.symbol,
-  name:    q.shortName,
-  price:   q.regularMarketPrice,
-  change:  q.regularMarketChange,
-  pct:     q.regularMarketChangePercent,
-  prevCls: q.regularMarketPreviousClose,
-  range52: `${q.fiftyTwoWeekLow}–${q.fiftyTwoWeekHigh}`,
-  asOf:    q.regularMarketTime,
-})));
-```
+(see "Omitted results"). Use `mcpScript` to project down to the fields below — see the benchmark
+example above for the shape.
 
 Payload shape below the size limit is the same for all four tools: `data.content[0].text` is a
 JSON **string** — parse it before indexing. `get_quote` parses to an **array** (order matches
@@ -272,7 +311,7 @@ Do not re-issue the call hoping for a smaller response — chunk it instead.
 
 - State the as-of time and the ~10-min delay. `regularMarketTime` is UTC ISO; the exchange's
   local zone is in `exchangeTimezoneName` / `exchangeTimezoneShortName`.
-- `marketState` (`REGULAR`, `CLOSED`, `PRE`, `POST`) — if `CLOSED`, the "price" is the last close.
+- If `marketState` isn't `REGULAR`, the "price" is a last close — date it. See "Is the market open?"
 - Check `currency` before comparing across exchanges; `.T` and `.L` quotes are not USD
   (and London prices are often **pence**, not pounds).
-- For futures, name the contract month (see above).
+- For futures, name the contract month, decoded from `underlyingSymbol`.

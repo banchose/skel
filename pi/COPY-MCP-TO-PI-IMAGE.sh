@@ -18,6 +18,7 @@ docker run --rm \
       cp -rv /tmp/SKILLS/*/ /home/node/.pi/agent/skills
       mkdir -p /home/node/.pi/agent/extensions
       cp -rv /tmp/extensions/*/ /home/node/.pi/agent/extensions
+      [[ -d /home/node/.pi/agent/extensions/tinfoil ]] && ( cd /home/node/.pi/agent/extensions/tinfoil && npm ci )
       pi install git:github.com/nagisanzenin/engram
       pi install npm:@dietrichgebert/ponytail
       pi install npm:pi-mcp-adapter
