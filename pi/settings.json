@@ -9,7 +9,8 @@
     "npm:@ff-labs/pi-fff",
     "npm:pi-powerline-footer",
     "npm:@juicesharp/rpiv-ask-user-question",
-    "npm:@juicesharp/rpiv-todo"
+    "npm:@juicesharp/rpiv-todo",
+    "npm:@firstpick/pi-themes-bundle"
   ],
   "lastChangelogVersion": "0.84.4",
   "defaultProvider": "amazon-bedrock",
@@ -23,5 +24,5 @@
     "tinfoil/kimi-k3",
     "anthropic/claude-fable-5"
   ],
-  "theme": "midnight-orchid"
+  "theme": "dracula"
 }

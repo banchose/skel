@@ -30,6 +30,13 @@
     "yahoo-finance": {
       "url": "https://gateway.mcpservers.org/yahoo-finance/mcp",
       "type": "http"
+    },
+    "tomtom-maps": {
+      "url": "https://mcp.tomtom.com/maps",
+      "type": "http",
+      "headers": {
+        "tomtom-api-key": "${TOMTOM_API_KEY}"
+      }
     }
   }
 }
