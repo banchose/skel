@@ -60,9 +60,48 @@ half-fare section below for who qualifies and where to get the card.
 
 ## The Navigator card / app
 
-**Navigator app** (iOS App Store + Google Play): buy fare, reload, manage the
-account, and board with contactless mobile tickets. Free and instant — usually
-the easiest start. Half-fare riders still need the physical photo ID card.
+**Navigator app** (iPhone + Android): buy fare, activate rides, plan trips, live
+bus locations, and book FLEX. Free and instant. **But it is not a full substitute
+for the card** — see the limits below.
+
+### App limits that matter (as of the site's 10/2025 update)
+
+- **Half-fare riders cannot pay with the app.** Full-fare only. If you're a
+  senior/disabled/veteran rider, you need the plastic photo ID card, period.
+- **Card and app balances are separate wallets.** Money on the card is not
+  spendable in the app or vice versa. CDTA says unified PAYG is "in the future."
+  Don't split your funds across both.
+- **No AutoBuy in the app** — set it up on the web portal (nav.cdta.org) or by
+  phone.
+- **No Apple Pay / Google Wallet.** You buy fare inside the app with a payment
+  card. Tap-to-pay is "future."
+- **Your phone must be online to pay.** No signal at the stop = no fare. This is
+  the strongest argument for carrying a plastic card as backup.
+- Email address can only be changed on the web portal, not in the app.
+
+### App essentials
+
+- Works on regular routes, BusPlus, NX/TX commuter, and FLEX.
+- **No account needed** for trip planning, alerts and arrivals. Account **is**
+  required to pay or use FLEX. Login = phone number → SMS code → email + password.
+- **Paying**: Home → Activate next to Pay As You Go or Frequent Rider → confirm →
+  QR code. Valid **10 minutes only** — activate when you see the bus. Closed the
+  window? The active pass is on the Home page, tap to reopen.
+- **Scanning**: hold the phone flat, centered, ~1 inch above the reader; rotate a
+  large phone 90°. If it fails: max screen brightness, clean/unbroken screen (some
+  screen protectors interfere), and **phone clock set to automatic** — wrong device
+  time makes the farebox reject the barcode as expired.
+- **Paying for a companion works in the app**: scan your own fare, then Activate
+  again for them ($1.30, doesn't count toward your $3.90 cap). Repeat per person.
+  *(Reddit claims otherwise — CDTA's own FAQ says yes.)*
+- **New phone**: log in on it; the old device is logged out automatically. Account
+  registration is what protects the balance if the phone is lost.
+- **Promo codes**: add product to cart → *+Add Promo Code* on the confirm page, no
+  spaces.
+- **Trip preferences**: Settings → Trip Plan trades least-walking vs fewer
+  transfers; Walk Options sets max walk duration and a slower pace; also transit
+  type filters and accessibility filters. Trip planning can include CDPHP Cycle!
+  and FLEX.
 
 Reloadable smart card (same fare products as the app). Works on regular route, BusPlus and
 NX commuter service. Cards are free online; **$2 fee** in person and for
@@ -124,7 +163,17 @@ Point-to-point on-demand service (not a fixed route) in **Guilderland**,
 Pickups and dropoffs happen at main roadways with transit connections, not
 wherever you like.
 
+*Zone naming is inconsistent across CDTA's own pages: the app FAQ (10/2025) calls
+them "Colonie-Guilderland-Latham" and "Southern Saratoga County" and describes
+the service as curb-to-curb, while the FLEX page (03/2026) lists three zones and
+says point-to-point at main roadways. Trust the app's live zone map.*
+
 **Requesting**: Navigator app, or call 1 (518) 482-8822 — pick a time and place.
+In the app: Home → FLEX section → Order next to your zone (log in first, or the
+section won't appear), or from trip-planning results. Set pickup then dropoff on
+the map, *Find a Ride*; use **Edit** to declare extra passengers or a
+wheelchair/walker. You get estimated pickup/dropoff times — **watch notifications,
+the pickup estimate can change**.
 **Paying**: Navigator Pay As You Go or Frequent Rider — $1.30, or free if your
 monthly pass is active. Same fare as regular route.
 
@@ -267,17 +316,17 @@ BRT lines shadow a local on the same corridor: **1/905** (Route 5) and **12/910*
 - **App fare flow**: home screen → "activate" next to Pay As You Go → confirm. The
   QR is valid **10 minutes**, so activate as the bus comes into view, not earlier.
   Hold the phone to the reader; it beeps.
-- **The app can't pay for a group** — one activation, one rider. A *plastic card*
-  can pay for companions from PAYG. Group of visitors → everyone needs the app, a
-  card each, or a pile of quarters.
+- **The app CAN pay for a group** — activate once per companion (Reddit says it
+  can't; CDTA's FAQ says it can). Visitors could also each get a card, or bring
+  quarters.
 - **Which direction?** The destination sign reads first stop / last stop in order,
   so "Kiernan Plaza / Crossgates Mall" is heading toward Crossgates.
 - **Rear doors need a push.** The driver unlocks them; a gentle push and they
   power open.
 - Fareboxes are forgiving with crumpled bills and coins — unlike vending machines.
 - **Free rides exist**: SUNY / former St. Rose student IDs, some employers'
-  commuter passes, and NYS employees who pay OGS for parking. Ask before paying —
-  this is the Universal Access program.
+  commuter passes, and NYS employees who pay OGS for parking — that's the
+  Universal Access program (see below); you swipe your existing work/school ID.
 - **All buses have bike racks and are wheelchair accessible** (racks fill up; two
   wheelchairs max). Bike + bus is a common combo for the last mile.
 - **Where service falls apart**: evenings and weekends, suburb-to-suburb trips,
@@ -288,6 +337,23 @@ BRT lines shadow a local on the same corridor: **1/905** (Route 5) and **12/910*
 - Reputation is better than the stigma suggests: high ridership, cheap fare,
   frequent service inside Albany. Cleanliness complaints are common; safety
   complaints are mostly about waiting at certain stops, not riding.
+
+## Universal Access
+
+Employer/school-sponsored unlimited riding. If your workplace, hospital, college
+or school is a partner, you **swipe your company or school ID at the farebox** —
+no Navigator product needed (though partners can use Navigator cards or mobile
+tickets too). Covers the whole network: local, express, commuter, BRT.
+
+The employer pays an annual fee based on measured ridership at a discounted
+per-ride rate, usually with a price ceiling; some organizations pass part of the
+cost to employees or students. Riders typically pay nothing at the farebox.
+
+**Check this before buying any fare product** — you may already be covered.
+Organizations wanting to set it up: Business Development, 1 (518) 437-8300.
+
+CDTA also brokers adjacent mobility options through these partnerships: **CDPHP
+Cycle!** bike share, FLEX On Demand, group **vanpools**, and electric car sharing.
 
 ## Riding it
 
