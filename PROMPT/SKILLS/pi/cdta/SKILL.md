@@ -306,25 +306,41 @@ North Lake Ave) were removed when BRT stations opened a block either side.
 From r/Albany, ~2 months before 2026-02. Unverified, but consistent enough to
 plan around:
 
-- **Real-time predictions drift.** Common complaint: app says "6 minutes," then
-  re-predicts to 14, repeatedly. Riders report the **cdta.org stop-detail page**
-  (and the third-party **Transit** app) as more reliable than the Navigator app
-  for tracking. Cross-check before assuming a bus vanished.
-- When no live vehicle data is available, apps fall back to **scheduled** times —
-  which is why predictions can look confident and still be wrong. A rider claimed
-  drivers toggle GPS manually; a CDTA employee in the same thread said GPS can't
-  be disabled and a failed unit forces a bus swap. Treat the manual-GPS story as
-  false.
+- **Read the color of the time.** In the Navigator app, times shown in **green**
+  with the animated icon are real GPS-based predictions; times in **black** are
+  just the printed schedule and are often meaningless. Real-time only exists once
+  the bus has **started its route**, so early-in-the-line stops show schedule
+  times only. This explains most "the app lied to me" complaints.
+- **Cross-check with something else.** Riders consistently report the
+  **cdta.org stop-detail page in a browser** as more accurate than the app, and
+  recommend **Google Maps** transit directions or the third-party **Transit** app
+  (crowdsources rider locations, also shows CDPHP Cycle!). **transsee.ca**
+  (`https://transsee.ca/routelist?a=cdta`) is another rider-favorite tracker.
+- **Buses are rarely early on purpose.** Operators can be written up for running
+  early, so a bus that reaches a stop ahead of schedule may sit and wait. Expect
+  "on time or late," not early — but still arrive ~5 min ahead.
 - Buses running **"Drop Off Only"** or **"Not In Service"** can still show up as
   your bus in the app, then sail past.
 - **Flag the bus.** Riders report being passed in the dark or rain. Stand visible,
   raise your hand — CDTA's own guide says to do this.
-- Downtown Albany routes (the 1, Madison/State corridors) and the **100** draw the
-  most reliability complaints. Frequent BRT lines fare better.
+- **Service was cut** as COVID-era funding ran out: riders report formerly frequent
+  lines dropping to **30-minute headways**, even at rush hour, which makes a missed
+  bus expensive. Downtown Albany routes (the 1, Madison/State), the **100**, the
+  **10** and the **370** draw the most complaints. Frequent BRT lines fare better.
+- A CDTA employee's list of real causes: route changes, breakdowns (a mechanic
+  must deliver a replacement bus), farebox jams needing an ITS tech, operators not
+  reaching the bus in time for pre-trip, accidents and road closures. Dispatch
+  *can* see any bus's location — if they bother to look it up.
+- Calling dispatch may get you "you misread the schedule." Written complaints often
+  go unanswered. Don't count on the phone to locate a bus.
 - **Fareboxes make no change and drivers may refuse riders who are short.** Being
-  a quarter light can cost you the trip. Card or app removes that risk entirely —
-  and a dead phone means no mobile ticket, so a plastic card is a real backup.
-- Buses can run slightly **early**. Be at the stop ~5 min ahead.
+  a quarter light can cost you the trip. Card or app removes that risk — and a dead
+  or broken phone means no mobile ticket, so a plastic card is a real backup.
+- Reputation is better than the stigma suggests: record ridership, cheap fare,
+  frequent service inside Albany, and generally rated among the better systems in
+  NY outside NYC. Cleanliness complaints are common; safety complaints are mostly
+  about waiting at certain stops, not riding. BusPlus shelter heaters are widely
+  reported as not working.
 
 ## Route numbering (rider-supplied, unverified)
 
