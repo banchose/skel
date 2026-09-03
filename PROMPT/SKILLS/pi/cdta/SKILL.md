@@ -8,9 +8,10 @@ description: Riding CDTA buses in New York's Capital Region (Albany/Troy/Schenec
 Capital District Transportation Authority. Bus service across Albany, Rensselaer,
 Schenectady and Saratoga counties.
 
-Fares below are as posted on cdta.org, captured **2026-02**. Approximate is fine
-for planning; **verify exact prices at cdta.org or 1-518-482-8822 before quoting
-them as fact**, and re-check anything here that's more than a year old.
+Fares below are as posted on cdta.org (CDTA's fare page states they're valid as of
+**April 1, 2024**), captured **2026-02**. Approximate is fine for planning;
+**verify exact prices at cdta.org or 1-518-482-8822 before quoting them as
+fact**, and re-check anything here that's more than a year old.
 
 - Customer Information Center: **1 (518) 482-8822** (M–F 9–5) — the answer to
   most questions. Main office 1 (518) 437-8300.
@@ -27,8 +28,9 @@ them as fact**, and re-check anything here that's more than a year old.
 | BusPlus (bus rapid transit lines) | $2.00 cash |
 | FLEX on-demand | $1.50 |
 | STAR (paratransit) | $2.50 |
-| Senior / disabled / veteran half fare | $0.75, all day every day |
+| Senior / disabled / veteran half fare | $0.75 regular route, $1.00 BusPlus (with half-fare card) |
 | Kids 46" and under | Free with a fare-paying adult, max 3 kids |
+| Summer Fun Pass | $44 — kids 17 and under, unlimited regular routes **July 1 – Aug 31** |
 
 Cash costs more per ride than the card and has no daily cap. That's the whole
 argument for the card.
@@ -43,6 +45,8 @@ falls back to Pay As You Go. Minimum **online** PAYG load is $10; at a retail
 outlet you can load any amount.
 
 ### Northway Xpress (NX) commuter — zone fares, not flat
+
+Commuter coaches with high-back luxury seating, climate controlled.
 
 | Zone | Pay As You Go | Frequent Rider |
 |---|---|---|
@@ -134,14 +138,18 @@ CDTA's bus rapid transit: limited stops, traffic-signal priority, queue-jump
 lanes, larger sheltered stations, free Wi-Fi and charging ports. ~40 miles of it,
 producing 60%+ of the region's transit trips (~8M boardings/yr). Three lines:
 
-- **905 Red Line** — Route 5, downtown Schenectady ↔ downtown Albany (17 mi) via
-  Colonie and Niskayuna. Proctors, SCCC, Colonie Center, Empire State Plaza.
+- **905 Red Line** — Central Ave / State St (NY Route 5), downtown Schenectady ↔
+  downtown Albany (17 mi) via Colonie and Niskayuna. Proctors, SCCC, Colonie
+  Center, Empire State Plaza.
 - **910 Purple Line** (launched Nov 2023) — Washington/Western: downtown Albany ↔
   UAlbany ↔ Crossgates Mall. 14 purple stations with tall pylon signs, 60-ft
   articulated buses, Park & Ride. Weekdays 5:00am–1:30am, Sat 5:30am–2:30am,
   Sun 6:00am–1:30am; every 10–20 min depending on time of day.
-- **922 Blue Line** — Hudson River / Route 32 corridor (15 mi): Albany, Menands,
-  Watervliet, Cohoes, Waterford, Troy.
+- **922/923 Blue Line** — Hudson River / Route 32 corridor (15 mi): Albany,
+  Menands, Watervliet, Cohoes, Waterford, Troy.
+
+Station amenities: real-time info displays, free Wi-Fi, charging ports, and free
+TimesUnion.com access while riding.
 
 Fare: **$2.00 cash, but $1.30 on Navigator card or app** — same as any other
 fixed route. Another reason to carry the card. Contactless fares work in the
@@ -191,15 +199,45 @@ website may differ slightly.
 
 ## STAR paratransit
 
-ADA paratransit, $2.50/ride. Eligibility is an application — call Customer Info.
+ADA paratransit — **S**pecial **T**ransit **A**vailable by **R**equest — for people
+who at times can't use, or are substantially limited in using, the fixed-route bus
+because of a disability or impairment. Shared-ride, origin-to-destination (work,
+appointments, shopping, social). **Fare $2.50.**
+
+**The coverage rule is strict and geometric**: STAR runs within **3/4 mile of a
+fixed route**, on the **same days and hours that route operates**. If a bus runs
+6am–7pm weekdays, STAR along that corridor runs 6am–7pm weekdays — requests
+outside the corridor or the clock are **refused**. Thin evening/weekend
+fixed-route service shrinks STAR with it.
+
+You can be certified while living *outside* the service area but may only travel
+*within* it. ADA standard: "prevents or prevented travel" covers not only
+impossible travel but travel where the disability substantially limits one or more
+major life activities.
+
+Certification and info: **(518) 482-2022, option 4** (Intake) — not the general
+customer line. See CDTA's STAR Handbook and Booking Guide.
+
 STAR riders get the half-fare Navigator photo ID card, which also discounts
 regular-route products.
 
 STAR fare comes as a **STAR Trip Book** — magnetic tickets, not loaded on a smart
 card: **13 tickets for the price of 12**. Order online under Ride Passes → Add
 Rider Passes → View Cart. For multiple books, check out one book, then use **Add
-Another Card** on the Purchase Summary and repeat. **All ride-pass sales are
-final.** FLEX multi-ride passes, by contrast, load onto the Navigator card.
+Another Card** on the Purchase Summary and repeat. Also sold at Capital Region
+Price Choppers. **All ride-pass sales are final.** FLEX multi-ride passes, by
+contrast, load onto the Navigator card.
+
+## Accessibility
+
+- **Low-floor buses on every fixed route.** All buses are wheelchair accessible
+  (two wheelchairs max) and carry bike racks.
+- Front seats are reserved for seniors and riders with disabilities — give them up
+  when needed or when asked by an operator or supervisor.
+- **Schedules and info in large print, Braille and audio** on request — Intake
+  Department, **(518) 482-2022 option 4**.
+- Navigator app has accessibility filters plus walk-distance and slower-pace
+  options (Settings → Trip Plan → Walk Options).
 
 ## Half fare (seniors, disabilities, veterans)
 
@@ -389,5 +427,4 @@ Safety concern or suspicious activity: tell the operator, or call
 
 Specific route numbers, stop-level timetables, real-time arrivals, and trip
 planning — fetch cdta.org's schedule pages or use the Navigator app; don't guess
-route numbers from memory. Universal Access (fare paid by a college or employer)
-and STAR eligibility criteria: call Customer Info.
+route numbers from memory. STAR eligibility detail: (518) 482-2022 option 4.
