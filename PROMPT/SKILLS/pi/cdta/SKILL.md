@@ -193,6 +193,102 @@ an agency is in or out.
 Albany is the only site open full weekdays; the rest are narrow windows, some
 monthly. Call before traveling to one.
 
+## Rider's home stop
+
+User's nearest stop: **Western Ave & Chapman Dr, stop ID 00408** (Guilderland).
+Has a shelter, bike rack, wheelchair accessible. Served by **local routes only**:
+
+- Western Avenue — Crossgates Mall ↔ Downtown Albany (likely **route 12**, the
+  local paired with the 910 Purple Line — confirm)
+- **114** Madison Ave–Western Ave — Crossgates ↔ Rensselaer Rail Station via
+  Western/Madison *(page layout makes the 114–route pairing slightly ambiguous)*
+
+**Not** a Purple Line stop — 910 BRT uses its own stations along Western, so BRT
+is a short walk, not this corner. The stop is inside the **Guilderland FLEX**
+on-demand zone. Default assumption for trip questions unless they say otherwise.
+
+Live arrivals: `https://www.cdta.org/schedules-stop-detail?stop_id=00408` — shows
+real-time upcoming trips only, so it reads "may not be in service" outside
+service hours. Fetch it rather than guessing times.
+
+Note: four local Western Ave stops (Pine Ave, West Lawrence St, Ontario St,
+North Lake Ave) were removed when BRT stations opened a block either side.
+
+## Field notes (rider anecdotes, not CDTA official)
+
+From r/Albany, ~2 months before 2026-02. Unverified, but consistent enough to
+plan around:
+
+- **Real-time predictions drift.** Common complaint: app says "6 minutes," then
+  re-predicts to 14, repeatedly. Riders report the **cdta.org stop-detail page**
+  (and the third-party **Transit** app) as more reliable than the Navigator app
+  for tracking. Cross-check before assuming a bus vanished.
+- When no live vehicle data is available, apps fall back to **scheduled** times —
+  which is why predictions can look confident and still be wrong. A rider claimed
+  drivers toggle GPS manually; a CDTA employee in the same thread said GPS can't
+  be disabled and a failed unit forces a bus swap. Treat the manual-GPS story as
+  false.
+- Buses running **"Drop Off Only"** or **"Not In Service"** can still show up as
+  your bus in the app, then sail past.
+- **Flag the bus.** Riders report being passed in the dark or rain. Stand visible,
+  raise your hand — CDTA's own guide says to do this.
+- Downtown Albany routes (the 1, Madison/State corridors) and the **100** draw the
+  most reliability complaints. Frequent BRT lines fare better.
+- **Fareboxes make no change and drivers may refuse riders who are short.** Being
+  a quarter light can cost you the trip. Card or app removes that risk entirely —
+  and a dead phone means no mobile ticket, so a plastic card is a real backup.
+- Buses can run slightly **early**. Be at the stop ~5 min ahead.
+
+## Route numbering (rider-supplied, unverified)
+
+A long-time rider's decoding — useful for orienting, confirm against cdta.org:
+
+| Range | Meaning |
+|---|---|
+| Under 100 | Trunk / legacy routes |
+| 100s | Albany County locals |
+| 200s | Rensselaer County locals |
+| 300s | Schenectady County locals |
+| 400s | Saratoga County locals |
+| 500s | Express — point to point, often no immediate return trip |
+| 600s | Montgomery County (formerly shuttles) |
+| 700s | Commuter |
+| 800s | Infrequent rural |
+| 900s | BusPlus BRT — limited stop, ~1-mile spacing, named stations |
+
+BRT lines shadow a local on the same corridor: **1/905** (Route 5) and **12/910**
+(Western Ave). If the BRT isn't running, the local covers the same ground slower.
+
+## Practical tips from riders
+
+- **Google Maps transit directions** are widely recommended over the Navigator
+  app for planning and wait times. The app does have a route planner (helpful for
+  transfers) and a stop map, but its real-time predictions are the weak part.
+- **App fare flow**: home screen → "activate" next to Pay As You Go → confirm. The
+  QR is valid **10 minutes**, so activate as the bus comes into view, not earlier.
+  Hold the phone to the reader; it beeps.
+- **The app can't pay for a group** — one activation, one rider. A *plastic card*
+  can pay for companions from PAYG. Group of visitors → everyone needs the app, a
+  card each, or a pile of quarters.
+- **Which direction?** The destination sign reads first stop / last stop in order,
+  so "Kiernan Plaza / Crossgates Mall" is heading toward Crossgates.
+- **Rear doors need a push.** The driver unlocks them; a gentle push and they
+  power open.
+- Fareboxes are forgiving with crumpled bills and coins — unlike vending machines.
+- **Free rides exist**: SUNY / former St. Rose student IDs, some employers'
+  commuter passes, and NYS employees who pay OGS for parking. Ask before paying —
+  this is the Universal Access program.
+- **All buses have bike racks and are wheelchair accessible** (racks fill up; two
+  wheelchairs max). Bike + bus is a common combo for the last mile.
+- **Where service falls apart**: evenings and weekends, suburb-to-suburb trips,
+  and connections — some routes stop running by 6–7pm, some suburban trips run
+  30-min headways even at rush hour, and a missed connection can cost 30+ min.
+  Second/third-shift work is genuinely hard to cover. Check the *last* trip of the
+  day before relying on a return leg.
+- Reputation is better than the stigma suggests: high ridership, cheap fare,
+  frequent service inside Albany. Cleanliness complaints are common; safety
+  complaints are mostly about waiting at certain stops, not riding.
+
 ## Riding it
 
 Schedules: cdta.org schedule page, onboard the bus, or hundreds of pickup points
