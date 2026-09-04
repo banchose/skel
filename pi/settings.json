@@ -12,9 +12,9 @@
     "npm:@juicesharp/rpiv-todo",
     "npm:@firstpick/pi-themes-bundle"
   ],
-  "lastChangelogVersion": "0.84.4",
+  "lastChangelogVersion": "0.85.0",
   "defaultProvider": "amazon-bedrock",
-  "defaultModel": "us.anthropic.claude-opus-5",
+  "defaultModel": "amazon-bedrock/us.anthropic.claude-opus-5",
   "workingVibe": "star trek",
   "defaultThinkingLevel": "medium",
   "enabledModels": [
@@ -22,7 +22,8 @@
     "amazon-bedrock/us.anthropic.claude-sonnet-5",
     "amazon-bedrock/us.anthropic.claude-haiku-4-5-20251001-v1:0",
     "tinfoil/kimi-k3",
-    "anthropic/claude-fable-5-1"
+    "anthropic/claude-fable-5-1",
+    "tinfoil/glm-5-3"
   ],
   "theme": "dracula"
 }
