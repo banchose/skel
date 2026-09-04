@@ -54,7 +54,7 @@ RUN set -eux; \
   shellcheck --version
 
 # create the agent dir with correct ownership BEFORE it becomes a volume mountpoint
-RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent@${PI_VERSION}
+RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
 RUN mkdir -p /home/node/.pi/agent && chown -R node:node /home/node/.pi
 RUN mkdir -p /workspace && chown node:node /workspace
 
