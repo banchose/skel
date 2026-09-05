@@ -25,7 +25,7 @@ RUN apt-get update \
        man-db manpages manpages-dev less \
   # reinstall the base packages so their previously-excluded man pages land on disk
   && apt-get install -y --reinstall --no-install-recommends \
-       bash coreutils ffmpeg sox libsox-fmt-all dpkg dnsutils bc qalc ipcalc iproute2 fd-find findutils grep iputils-ping tmux jq xz-utils zip gzip unzip 7zip python3 bash-completion sed tar util-linux vim curl wget \
+       bash coreutils gpg socat ffmpeg sox libsox-fmt-all dpkg dnsutils bc qalc ipcalc iproute2 fd-find findutils grep iputils-ping tmux jq xz-utils zip gzip unzip 7zip python3 bash-completion sed tar util-linux vim curl wget \
   && rm -rf /var/lib/apt/lists/*
 
 # build the man page index so `man -k` / `apropos` work
@@ -95,6 +95,8 @@ RUN uv tool install psutils
 RUN uv tool install strip-tags
 RUN uv tool install visidata
 RUN uv tool install pynvim
+RUN uv tool install ruff
+RUN uv tool install html2text
 COPY ./gitconfig /home/node/.gitconfig
 COPY ./gitignore /home/node/.gitignore
 COPY ./inputrc /home/node/.inputrc
