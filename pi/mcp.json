@@ -37,6 +37,13 @@
       "headers": {
         "tomtom-api-key": "${TOMTOM_API_KEY}"
       }
+    },
+    "fastmail": {
+      "url": "https://api.fastmail.com/mcp",
+      "type": "http",
+      "headers": {
+        "Authorization": "Bearer ${FASTMAIL_API_TOKEN}"
+      }
     }
   }
 }
