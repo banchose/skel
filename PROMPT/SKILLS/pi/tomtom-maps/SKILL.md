@@ -257,12 +257,15 @@ None of these raise an exception, and only one is a real error object:
 The last row is the dangerous one — a silent wrong answer. Check coordinate order and category
 before believing an empty result.
 
-## Timestamps are unreliable
+## Timestamps are UTC
 
-`routing` returns `departureTime` / `arrivalTime` resolved against a server clock that reported
-**2026** dates during testing. Durations (`travelTimeInSeconds`, `trafficDelayInSeconds`) are
-sound; absolute timestamps are not. Report "about 1 h 48 min" and, if you need a wall-clock ETA,
-get the current time from the `time` MCP server rather than echoing `arrivalTime`.
+`routing` returns `departureTime` / `arrivalTime` as **UTC with a trailing `Z`**
+(`2026-09-06T14:49:34.000Z` = 10:49 EDT). Verified correct against the `time` MCP server, and
+`arrivalTime - departureTime` matches `travelTimeInSeconds`. Convert to the route's local zone
+before quoting a clock time, or report the duration ("about 57 min") and skip the ETA.
+
+An earlier version of this note claimed the server clock was wrong because it "reported 2026
+dates." It isn't — it is 2026. Do not hedge on correct data.
 
 ## Worked example: geocode then route
 
