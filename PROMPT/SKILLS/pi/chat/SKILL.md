@@ -1,6 +1,6 @@
 ---
 name: chat
-description: Casual conversational mode. Open-ended, wandering talk — random topics, stray questions, half-formed thoughts, tangents, trivia. Read-only: tools, MCP servers and network lookups are fair game, but nothing on disk or in any system gets modified unless the user explicitly says to. Use when the user says chat, hang out, talk, "just curious", or the conversation has no task attached.
+description: 'Casual conversational mode. Open-ended, wandering talk — random topics, stray questions, half-formed thoughts, tangents, trivia. Read-only: tools, MCP servers and network lookups are fair game, but nothing on disk or in any system gets modified unless the user explicitly says to. Use when the user says chat, hang out, talk, "just curious", or the conversation has no task attached.'
 disable-model-invocation: true
 ---
 
