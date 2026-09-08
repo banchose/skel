@@ -9,30 +9,30 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 
 # For Alpine Linux
-# if grep -q 'ID=alpine' /etc/os-release; then
-#   apk update
-#   apk add \
-#     python3-dev py3-pip pipx \
-#     rust cargo \
-#     git make gcc musl-dev cmake ninja \
-#     nmap gettext-dev curl tmux jq gawk sed grep iproute2
-# fi
-#
-# # Amazon AWS
-# if grep -q 'ID="amzn"' /etc/os-release; then
-#   sudo yum update
-#   sudo yum -y install \
-#     git tmux jq bash-completion zip unzip \
-#     ninja-build gcc cmake make gettext \
-#     python3.13 python3.13-pip
-# fi
-#
-# if [[ -n ${INST_RUST:-} ]]; then
-#   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-#   # shellcheck source=/dev/null
-#   source "$HOME/.cargo/env"
-#   cargo install cargo-update fd-find ripgrep
-# fi
+if grep -q 'ID=alpine' /etc/os-release; then
+  apk update
+  apk add \
+    python3-dev py3-pip pipx \
+    rust cargo \
+    git make gcc musl-dev cmake ninja \
+    nmap gettext-dev curl tmux jq gawk sed grep iproute2
+fi
+
+# Amazon AWS
+if grep -q 'ID="amzn"' /etc/os-release; then
+  sudo yum update
+  sudo yum -y install \
+    git tmux jq bash-completion zip unzip \
+    ninja-build gcc cmake make gettext \
+    python3.13 python3.13-pip
+fi
+
+if [[ -n ${INST_RUST:-} ]]; then
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  # shellcheck source=/dev/null
+  source "$HOME/.cargo/env"
+  cargo install cargo-update fd-find ripgrep
+fi
 
 command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install | sh
 uv self update
