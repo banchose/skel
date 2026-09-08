@@ -201,8 +201,11 @@ a one-line way to say whether a move is extended or normal.
 
 ## get_chart
 
-`period1` is typed as bare `string`; **`'YYYY-MM-DD'` works** (verified). `period2` defaults to now.
-Response is compact — `{meta, quotes}`, ~2.9 KB for a week of daily bars.
+`period1` is **required** — omitting it fails validation. Typed as bare `string`; **`'YYYY-MM-DD'` works**
+(verified). `period2` defaults to now. Response is compact — `{meta, quotes}`, ~2.9 KB for a week of daily bars.
+
+**There is no `range` param.** `meta.validRanges` lists `1d…max`, which reads like an accepted
+argument; it isn't. For full history pass `period1: '2000-01-01'` (Yahoo clamps to `meta.firstTradeDate`).
 
 ```js
 const c = await tools.call('yahoo-finance_get_chart',
@@ -219,6 +222,25 @@ emit({ bars: quotes.length,
   For anything older than a month use `1d` or coarser.
 - Use `adjclose` for multi-year equity returns (splits/dividends); `close` is fine for futures and FX.
 - `events: 'div,split'` adds corporate actions. `includePrePost: true` for extended hours.
+- **Long ranges blow the output guard.** Full history at `1mo` is ~66 KB and gets truncated to a
+  spill file. Reduce inside `mcpScript` rather than reading bars into context:
+
+```js
+const c = await tools.call('yahoo-finance_get_chart',
+  { symbol: 'HG=F', period1: '2000-01-01', interval: '1mo' });
+const { quotes } = JSON.parse(c.data.content[0].text);
+const ath = quotes.reduce((a, b) => (b.high > a.high ? b : a));
+emit({ ath: ath.high, when: ath.date.slice(0, 7), bars: quotes.length });
+```
+
+### "Is it an all-time high?"
+
+Answer from the chart max, not from `fiftyTwoWeekHigh` — that only covers a year. Two caveats to
+state: continuous futures history starts at `meta.firstTradeDate` (2000 for most `=F`), so
+"all-time" means *since then*, and it's **nominal**, not inflation-adjusted. A news "record high"
+is often an intraday print on a different venue (LME cash, spot) than the COMEX contract `HG=F`
+resolves to — if the current price sits under the chart max, say near-record and name the date of
+the actual high.
 
 ## quote_summary
 
