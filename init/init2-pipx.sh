@@ -45,6 +45,8 @@ uv tool install mycli
 uv tool install pycowsay
 uv tool install html2text
 uv tool install ruff
+uv tool install yamllint
+uv tool install jc
 uv tool install black
 uv tool install isort
 uv tool install s3cmd

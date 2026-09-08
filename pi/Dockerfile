@@ -94,7 +94,11 @@ RUN set -eux; \
      if [ "$GID" != "$(id -g node)" ]; then groupmod -g "$GID" node; fi; \
      if [ "$UID" != "$(id -u node)" ]; then usermod -u "$UID" -g "$GID" node; fi; \
      chown -R "$UID:$GID" /home/node
+
 RUN npm install -g neovim
+
+RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq && \
+    chmod +x /usr/local/bin/yq
 
 USER node
 ENV HOME=/home/node
@@ -127,7 +131,12 @@ RUN uv tool install psutils
 RUN uv tool install strip-tags
 RUN uv tool install visidata
 RUN uv tool install pynvim
+RUN uv tool install yamllint
+RUN uv tool install shell-functools
 RUN uv tool install ruff
+RUN uv tool install black
+RUN uv tool install git-filter-repo
+RUN uv tool install jc
 RUN uv tool install html2text
 COPY ./gitconfig /home/node/.gitconfig
 COPY ./gitignore /home/node/.gitignore
