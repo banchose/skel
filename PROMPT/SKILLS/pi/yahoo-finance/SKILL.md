@@ -1,6 +1,6 @@
 ---
 name: yahoo-finance
-description: Gotchas and worked examples for the yahoo-finance MCP server — quotes, charts, fundamentals, symbol resolution for commodities/indices/FX/crypto, futures front-month caveat, and the output-guard limit that silently drops `content` above ~14KB. Use when asked for the price of a stock, commodity (oil, gold, gas), index, currency pair, or crypto, or for historical prices, fundamentals, or market comparisons.
+description: "ALWAYS read this file before the first yahoo-finance call — get_quote takes symbols:[\"CL=F\"] (array), NOT symbol:\"CL=F\"; get_chart/quote_summary/search take symbol (string). Gotchas and worked examples for the yahoo-finance MCP server — quotes, charts, fundamentals, symbol resolution for commodities/indices/FX/crypto, futures front-month caveat, and the output-guard limit that silently drops `content` above ~14KB. Use when asked for the price of a stock, commodity (oil, gold, gas), index, currency pair, or crypto, or for historical prices, fundamentals, or market comparisons."
 ---
 
 # yahoo-finance MCP
@@ -19,7 +19,8 @@ Data is **delayed ~10 minutes** (`exchangeDataDelayedBy: 10`) — say so when qu
 | "is X open / trading now?" | `get_quote` → `marketState`; see "Is the market open?" |
 
 Param names are inconsistent across these tools: `get_quote` wants `symbols: string[]`,
-the other three want `symbol: string`. There is no `get_ticker_info` — that's the Python
+the other three want `symbol: string`. This holds on **every** call path — `mcp`,
+`mcp__yahoo_finance` (`{tool:'get_quote', args:{symbols:[…]}}`), and `mcpScript`. There is no `get_ticker_info` — that's the Python
 yfinance API, not this server. Guessing it wastes two round trips.
 
 ## Resolve the symbol from this table, not with `search`
