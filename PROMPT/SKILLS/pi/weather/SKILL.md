@@ -40,13 +40,15 @@ One Call 4.0 carries no upper-air data at all — no CAPE, CIN, bulk shear, laps
 
 **DAILY rows are UTC day buckets, not local days.** At UTC-4 the `08-25` row covers 08-24 20:00 -> 08-25 20:00 local, so its POP/precip can reflect rain that fell last evening. For "will it rain today" prefer NEXT 12H, NOWCAST, and the CONVECTIVE table; use DAILY for the multi-day trend.
 
+**Every time column carries its weekday** (`Sat 09-12T14:00`, `NOW Sat 2026-09-12T10:46`, DAILY `Sun 09-13`). Use those labels verbatim. **Never compute a weekday from a date yourself, and never say "today"/"tomorrow"/"tonight" without checking which weekday the `NOW` line names** — the model's sense of the current date is unreliable and has mislabeled the forecast by a full day more than once. "Tomorrow" means the DAILY row immediately after the `NOW` row's date, and it must be named with the weekday printed there. If the weekday is missing from the output, the script is stale — rerun it, do not guess.
+
 Weather codes are decoded to text (`TSTORM+hail`, `frzrain`, `snow+`, `pcloudy`) — never report a raw WMO number.
 
 ## Presenting the answer
 
 Default to **curt**. A plain "what's the weather" gets four or five lines, no tables:
 
-1. **Observation time and source, first.** Lead with the timestamp the primary source returned — the `NOW` line's OWM observation time, in the location's local time. Weather data is only as good as its age, so the reader sees it before any number. If OWM failed, the `REFERENCE TIME` line is Open-Meteo's instead — say which one you used.
+1. **Observation time, weekday, and source, first.** Lead with the full `NOW` label including its weekday — the `NOW` line's OWM observation time, in the location's local time. Weather data is only as good as its age, so the reader sees it before any number. If OWM failed, the `REFERENCE TIME` line is Open-Meteo's instead — say which one you used.
 2. **Now:** temperature (and feels-like when it differs by 3F+), **dew point**, RH, sky, wind with gusts.
 3. **Rest of today / tonight:** trend, precip timing, overnight low.
 4. **Tomorrow:** high/low, precip, anything that changes plans.
