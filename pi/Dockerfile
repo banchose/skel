@@ -27,6 +27,7 @@ RUN apt-get update \
   && apt-get install -y --reinstall --no-install-recommends \
        bash \
        coreutils \
+       procps \
        gpg \
        socat \
        python3 \
