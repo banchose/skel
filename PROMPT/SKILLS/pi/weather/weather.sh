@@ -42,6 +42,8 @@ LIB='
     elif ((.tags // []) | length) > 0 then (.tags | join("/"))
     else "unnamed" end;
   def lt($o): if . == null then "-" else (. + $o) | strftime("%Y-%m-%dT%H:%M") end;
+  def wd($o): (. + $o) | strftime("%a ");                                  # epoch -> "Sat "
+  def wds: (.[0:16] | strptime("%Y-%m-%dT%H:%M") | mktime | strftime("%a ")); # ISO string -> "Sat "
   def dir: if . == null then "-" else ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"][((. / 22.5) | round) % 16] end;
   def moon: if . == null then "-" elif . < 0.03 or . > 0.97 then "new" elif . < 0.22 then "waxcres"
     elif . < 0.28 then "1stQ" elif . < 0.47 then "waxgib" elif . < 0.53 then "FULL"
@@ -150,7 +152,7 @@ if [ -n "$cur" ]; then
   printf '%s' "$cur" | jq -r "$LIB"'
     .timezone_offset as $o | .data[0] as $c |
     "LOCATION \(.lat),\(.lon)  \(.timezone)  OWM One Call 4.0 (OWHL model, 10-min updates) + Open-Meteo convective",
-    "NOW \($c.dt|lt($o)) local  (OWM observation time)  \($c.temp|r(0))F (feels \($c.feels_like|r(0)))  dew \($c.dew_point|r(0))F  RH \($c.humidity)%  \($c.weather[0].description)",
+    "NOW \($c.dt|wd($o))\($c.dt|lt($o)) local  (OWM observation time)  \($c.temp|r(0))F (feels \($c.feels_like|r(0)))  dew \($c.dew_point|r(0))F  RH \($c.humidity)%  \($c.weather[0].description)",
     "    wind \($c.wind_speed|r(0)) mph from \($c.wind_deg|dir)" +
       (if (($c.wind_gust // 0) > ($c.wind_speed // 0)) then " gust \($c.wind_gust|r(0))" else "" end) +
       "  cloud \($c.clouds)%  \($c.pressure)hPa  UV \($c.uvi)  vis \((($c.visibility//0)/1609)|r(1))mi" +
@@ -189,7 +191,7 @@ if [ -n "$om" ]; then
     .current.time as $now | .hourly as $h |
     ["time","T","feels","Td","POP","PRCP","SNOW","gust","wind","cloud","UV","sky"],
     ([$h.time | to_entries[].key | select($h.time[.] >= $now[0:13])][0:12][] as $i |
-      [$h.time[$i][5:16], ($h.temperature_2m[$i]|r(0)), ($h.apparent_temperature[$i]|r(0)),
+      [($h.time[$i]|wds) + $h.time[$i][5:16], ($h.temperature_2m[$i]|r(0)), ($h.apparent_temperature[$i]|r(0)),
        ($h.dew_point_2m[$i]|r(0)), $h.precipitation_probability[$i], ($h.precipitation[$i]|r(1)),
        ($h.snowfall[$i]|r(1)), ($h.wind_gusts_10m[$i]|r(0)),
        "\($h.wind_speed_10m[$i]|r(0))\($h.wind_direction_10m[$i]|dir)",
@@ -214,7 +216,7 @@ EOF
       shear($h.wind_speed_10m[$i]; $h.wind_direction_10m[$i]; $h.wind_speed_850hPa[$i]; $h.wind_direction_850hPa[$i]) as $s1 |
       lapse($h.temperature_850hPa[$i]; $h.temperature_500hPa[$i]; $h.geopotential_height_850hPa[$i]; $h.geopotential_height_500hPa[$i]) as $lr |
       select(($cape // 0) >= 250 or ($h.precipitation[$i] // 0) > 0) |
-      [$h.time[$i][5:16], ($h.temperature_2m[$i]|r(0)), ($h.dew_point_2m[$i]|r(0)),
+      [($h.time[$i]|wds) + $h.time[$i][5:16], ($h.temperature_2m[$i]|r(0)), ($h.dew_point_2m[$i]|r(0)),
        $h.precipitation_probability[$i], ($h.precipitation[$i]|r(1)), ($h.snowfall[$i]|r(1)), ($h.wind_gusts_10m[$i]|r(0)),
        $h.cloud_cover[$i], ($cape|r(0)), ($cin|r(0)), ($h.lifted_index[$i]|r(1)),
        ($h.vertical_velocity_700hPa[$i]|r(2)), ($s6|r(0)), ($s1|r(0)), ($lr|r(1)),
@@ -236,7 +238,7 @@ if [ -n "$day" ]; then
     .timezone_offset as $o |
     ["date","Tmax","Tmin","feels_day","POP","precip","wind","RH","cloud","moon","sunrise","sunset","sky"],
     (.data[] |
-      [(.dt|lt(0)|.[5:10]), (.temp.max|r(0)), (.temp.min|r(0)), (.feels_like.day|r(0)),
+      [(.dt|wd(0)) + (.dt|lt(0)|.[5:10]), (.temp.max|r(0)), (.temp.min|r(0)), (.feels_like.day|r(0)),
        ((.pop // 0)*100|r(0)), (((.rain|mm) // 0)|r(1)),
        (.wind_speed|r(0)), .humidity, .clouds, (.moon_phase|moon),
        (.sunrise|lt($o)|.[11:]), (.sunset|lt($o)|.[11:]), .weather[0].description])
