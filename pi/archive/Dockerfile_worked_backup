@@ -12,8 +12,6 @@ FROM node:24-bookworm-slim
 ARG UID=1002
 ARG GID=1002
 ARG PI_VERSION=latest
-# set automatically by buildkit: amd64 | arm64
-ARG TARGETARCH
 
 # Debian slim images ship a dpkg config that excludes man pages / docs.
 # Drop those exclusions so anything installed from here on keeps its man pages.
@@ -69,24 +67,20 @@ RUN mandb -c
 # apt only has jq 1.6; ship the official static 1.8.2 binary in /usr/local/bin,
 # which precedes /usr/bin on PATH. apt's jq stays for `man jq`.
 ARG JQ_VERSION=1.8.2
-# verify against the release's own sha256sum.txt so it works on any arch
+# sha256 of jq-linux-amd64 from
+# https://github.com/jqlang/jq/releases/download/jq-1.8.2/sha256sum.txt
+ARG JQ_SHA256=b1c22172dd303f3be49e935aa56aa48a8b7a46e0bc838b4997d3bb451495870f
 RUN set -eux; \
-  base="https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}"; \
-  f="jq-linux-${TARGETARCH}"; \
-  cd /tmp; \
-  curl -fsSLo "$f" "$base/$f"; \
-  curl -fsSLo sha256sum.txt "$base/sha256sum.txt"; \
-  grep " $f\$" sha256sum.txt | sha256sum -c -; \
-  install -m 0755 "$f" /usr/local/bin/jq; \
-  rm -f "$f" sha256sum.txt; \
-  jq --version
+  curl -fsSLo /usr/local/bin/jq \
+    "https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-amd64"; \
+  echo "${JQ_SHA256}  /usr/local/bin/jq" | sha256sum -c -; \
+  chmod 0755 /usr/local/bin/jq
 
 # shellcheck: no apt package, Pi just runs the binary against scripts.
 ARG SHELLCHECK_VERSION=0.11.0
 RUN set -eux; \
-  case "$TARGETARCH" in amd64) sc_arch=x86_64 ;; arm64) sc_arch=aarch64 ;; *) echo "unsupported arch: $TARGETARCH" >&2; exit 1 ;; esac; \
   curl -fsSL \
-    "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.linux.${sc_arch}.tar.xz" \
+    "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" \
     | tar -xJ --strip-components=1 -C /usr/local/bin \
         "shellcheck-v${SHELLCHECK_VERSION}/shellcheck"; \
   chmod 0755 /usr/local/bin/shellcheck; \
@@ -104,8 +98,8 @@ RUN set -eux; \
 
 RUN npm install -g neovim
 
-RUN wget "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_${TARGETARCH}" -O /usr/local/bin/yq && \
-    chmod +x /usr/local/bin/yq && yq --version
+RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq && \
+    chmod +x /usr/local/bin/yq
 
 USER node
 ENV HOME=/home/node
@@ -119,10 +113,9 @@ ENV PATH="${HOME}/.local/bin:${PATH}"
 # ARG NVIM_VERSION=v0.11.4
 ARG NVIM_VERSION=v0.12.5
 RUN set -eux; \
-  case "$TARGETARCH" in amd64) nv_arch=x86_64 ;; arm64) nv_arch=arm64 ;; *) echo "unsupported arch: $TARGETARCH" >&2; exit 1 ;; esac; \
   mkdir -p "$HOME/.local"; \
   curl -fsSL \
-    "https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-${nv_arch}.tar.gz" \
+    "https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-x86_64.tar.gz" \
     | tar -xz --strip-components=1 -C "$HOME/.local"; \
   nvim --version
 
