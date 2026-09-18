@@ -1,4 +1,4 @@
-# Ensure BASH environment
+# :Ensure BASH environment
 
 # Global settings
 
@@ -8,12 +8,12 @@ type aws &>/dev/null || {
   return 0
 }
 
-export AWS_PROFILE=bedrock
+# export AWS_PROFILE=bedrock
 export AWS_DEFAULT_REGION=us-east-1
 export AwsRegion=us-east-1 # needed to set region for aliases when they expand. This will always be set in the current shell if this file loads
 export MANINSTANCE=i-0a495644db9737bf6
-export REPORTSECURITYID=i-004cab037c820cdf3
-export WAREHOUSEID=i-0fb732c77d7d7d4ff
+# export REPORTSECURITYID=i-004cab037c820cdf3
+# export WAREHOUSEID=i-0fb732c77d7d7d4ff
 #
 # AWS Regions to check
 REGIONS=("us-east-1" "us-west-2")
