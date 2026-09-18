@@ -228,15 +228,3 @@ When working in containers or stripped-down Linux where common tools are missing
 - `dirname` alternative: `${var%/*}` (but note: doesn't handle edge cases like bare filenames or `/` — use `dirname` if you need correct behavior for arbitrary paths)
 ````
 
-Summary of what changed from your original:
-
-- **Fixed the `require` printf bug** — `"${missing[*]}"` instead of `"${missing[@]}"`, with a note explaining why
-- **Removed the false WSL claim** for `/dev/tcp`
-- **Rewrote the SSH section** — login shell from `/etc/passwd`, `SSH_SOURCE_BASHRC` is compile-time and distro-dependent, added "assume nothing" rule and `ssh host bash < script.sh` pattern
-- **Added `set -e` caveats section** including the `(( x++ ))` death trap
-- **Added `local` / functions section** (needed since functions are your default)
-- **Added `nullglob`/`failglob`** and a **`getopts` section**
-- **Corrected the `type` one-liner's sample output** (it includes `type:`)
-- **Hardened the cleanup pattern** — guarded `kill`, `return 0` so cleanup can't clobber the exit status
-- **Softened the mandatory-braces rule** to quoting-always, braces-when-needed
-- **Extended the pitfalls table** with the three new gotchas

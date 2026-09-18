@@ -12,7 +12,7 @@ services:
       - traefik_web
 
   litellm:
-    image: ghcr.io/berriai/litellm:main-latest
+    image: ghcr.io/berriai/litellm:main-stable
     command: ["--config", "/app/config.yaml", "--port", "4000"]
     volumes:
       - ./litellm_config.yaml:/app/config.yaml
@@ -34,7 +34,7 @@ services:
   mcpo-timeserver:
     build:
       context: .
-      dockerfile: ./Dockerfile.mcpo.timeserver
+      dockerfile: /home/una/gitdir/skel/docker/apps/OpenWebUI/Dockerfile.mcpo.timeserver
     networks:
       - traefik_web
     restart: unless-stopped
@@ -48,7 +48,7 @@ services:
   mcpo-awsdoc:
     build:
       context: .
-      dockerfile: ./Dockerfile.mcpo.awsdoc
+      dockerfile: /home/una/gitdir/skel/docker/apps/OpenWebUI/Dockerfile.mcpo.awsdoc
     networks:
       - traefik_web
     restart: unless-stopped
@@ -66,7 +66,7 @@ services:
   mcpo-aws-knowledge:
     build:
       context: .
-      dockerfile: ./Dockerfile.mcpo.aws-know
+      dockerfile: /home/una/gitdir/skel/docker/apps/OpenWebUI/Dockerfile.mcpo.aws-know
     networks:
       - traefik_web
     restart: unless-stopped

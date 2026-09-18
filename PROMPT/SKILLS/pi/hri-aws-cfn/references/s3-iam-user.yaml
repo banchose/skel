@@ -1,0 +1,73 @@
+# Edit --profile (and --region if needed) for the target environment.
+# aws cloudformation deploy \
+#   --stack-name HRI-NETBACKUP-ALB-NB-2 \
+#   --template-file HRI-NETBACKUP-ALB-NB-2.yaml \
+#   --capabilities CAPABILITY_NAMED_IAM \
+#   --region us-east-1 --profile PICKPROFILE
+#
+# Validate before deploy:
+#   cfn-lint HRI-NETBACKUP-ALB-NB-2.yaml
+#   aws cloudformation validate-template --template-body file://HRI-NETBACKUP-ALB-NB-2.yaml --region us-east-1 --profile PICKPROFILE
+#
+# After deploy, create access key for the IAM user:
+#   aws iam create-access-key --user-name Netbackup-ALB-NB-2-User --profile PICKPROFILE
+# (Access keys are intentionally NOT in the template — they would
+#  land in stack outputs / describe-stacks history.)
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Netbackup ALB backup bucket and IAM user
+
+Resources:
+  rNetbackupBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: TransitionToIntelligentTiering
+            Status: Enabled
+            Transitions:
+              - StorageClass: INTELLIGENT_TIERING
+                TransitionInDays: 0
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-bucket"
+        - Key: ManagedBy
+          Value: CloudFormation
+
+  rNetbackupUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: Netbackup-ALB-NB-2-User
+      Tags:
+        - Key: Name
+          Value: Netbackup-ALB-NB-2-User
+        - Key: ManagedBy
+          Value: CloudFormation
+
+Outputs:
+  rNetbackupBucket:
+    Value: !Ref rNetbackupBucket
+    Export:
+      Name: !Sub "${AWS::StackName}-rNetbackupBucket"
+  rNetbackupBucketArn:
+    Value: !GetAtt rNetbackupBucket.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-rNetbackupBucketArn"
+  rNetbackupUser:
+    Value: !Ref rNetbackupUser
+    Export:
+      Name: !Sub "${AWS::StackName}-rNetbackupUser"
+  rNetbackupUserArn:
+    Value: !GetAtt rNetbackupUser.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-rNetbackupUserArn"

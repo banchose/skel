@@ -1,0 +1,49 @@
+{
+  "mcpServers": {
+     "exa": {
+      "url": "https://mcp.exa.ai/mcp",
+      "headers": {
+        "x-api-key": "${EXA_API_KEY}"
+      },
+      "directTools": true
+    },
+    "aws-documentation-mcp-server": {
+      "command": "uvx",
+      "args": ["awslabs.aws-documentation-mcp-server@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "AWS_DOCUMENTATION_PARTITION": "aws",
+        "MCP_USER_AGENT": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "aws-knowledge-mcp-server": {
+      "url": "https://knowledge-mcp.global.api.aws",
+      "type": "http",
+      "disabled": false
+    },
+    "time": {
+      "command": "uvx",
+      "args": ["mcp-server-time", "--local-timezone=America/New_York"]
+    },
+    "yahoo-finance": {
+      "url": "https://gateway.mcpservers.org/yahoo-finance/mcp",
+      "type": "http"
+    },
+    "tomtom-maps": {
+      "url": "https://mcp.tomtom.com/maps",
+      "type": "http",
+      "headers": {
+        "tomtom-api-key": "${TOMTOM_API_KEY}"
+      }
+    },
+    "fastmail": {
+      "url": "https://api.fastmail.com/mcp",
+      "type": "http",
+      "headers": {
+        "Authorization": "Bearer ${FASTMAIL_API_TOKEN}"
+      }
+    }
+  }
+}

@@ -1,0 +1,147 @@
+# Same as Dockerfile.pi.node-user, but with man pages available.
+#
+# docker build -f Dockerfile.pi.node-user-man -t pi-node-user-man .
+#
+# docker run --rm -it \
+#   -e ANTHROPIC_API_KEY \
+#   -v "$PWD:/workspace" \
+#   -v pi-agent-home:/home/node/.pi/agent \
+#   pi-node-user-man
+
+FROM node:24-bookworm-slim
+ARG UID=1002
+ARG GID=1002
+ARG PI_VERSION=latest
+
+# Debian slim images ship a dpkg config that excludes man pages / docs.
+# Drop those exclusions so anything installed from here on keeps its man pages.
+RUN set -eux; \
+  if [ -e /etc/dpkg/dpkg.cfg.d/docker ]; then rm -f /etc/dpkg/dpkg.cfg.d/docker; fi; \
+  if [ -e /etc/dpkg/dpkg.cfg.d/excludes ]; then rm -f /etc/dpkg/dpkg.cfg.d/excludes; fi
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+       bash ca-certificates git ripgrep \
+       man-db manpages manpages-dev less \
+  # reinstall the base packages so their previously-excluded man pages land on disk
+  && apt-get install -y --reinstall --no-install-recommends \
+       bash \
+       coreutils \
+       procps \
+       gpg \
+       socat \
+       python3 \
+       python3-pip \
+       python3-yaml \
+       ffmpeg \
+       sox \
+       libsox-fmt-all \
+       dpkg \
+       dnsutils \
+       bc \
+       qalc \
+       ipcalc \
+       iproute2 \
+       fd-find \
+       findutils \
+       grep \
+       iputils-ping \
+       tmux \
+       jq \
+       xz-utils \
+       zip \
+       gzip \
+       unzip \
+       7zip \
+       bash-completion \
+       sed \
+       tar util-linux \
+       vim \
+       curl \
+       wget \
+  && rm -rf /var/lib/apt/lists/*
+
+# build the man page index so `man -k` / `apropos` work
+RUN mandb -c
+
+# apt only has jq 1.6; ship the official static 1.8.2 binary in /usr/local/bin,
+# which precedes /usr/bin on PATH. apt's jq stays for `man jq`.
+ARG JQ_VERSION=1.8.2
+# sha256 of jq-linux-amd64 from
+# https://github.com/jqlang/jq/releases/download/jq-1.8.2/sha256sum.txt
+ARG JQ_SHA256=b1c22172dd303f3be49e935aa56aa48a8b7a46e0bc838b4997d3bb451495870f
+RUN set -eux; \
+  curl -fsSLo /usr/local/bin/jq \
+    "https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-amd64"; \
+  echo "${JQ_SHA256}  /usr/local/bin/jq" | sha256sum -c -; \
+  chmod 0755 /usr/local/bin/jq
+
+# shellcheck: no apt package, Pi just runs the binary against scripts.
+ARG SHELLCHECK_VERSION=0.11.0
+RUN set -eux; \
+  curl -fsSL \
+    "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" \
+    | tar -xJ --strip-components=1 -C /usr/local/bin \
+        "shellcheck-v${SHELLCHECK_VERSION}/shellcheck"; \
+  chmod 0755 /usr/local/bin/shellcheck; \
+  shellcheck --version
+
+# create the agent dir with correct ownership BEFORE it becomes a volume mountpoint
+RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+RUN mkdir -p /home/node/.pi/agent && chown -R node:node /home/node/.pi
+RUN mkdir -p /workspace && chown node:node /workspace
+
+RUN set -eux; \
+     if [ "$GID" != "$(id -g node)" ]; then groupmod -g "$GID" node; fi; \
+     if [ "$UID" != "$(id -u node)" ]; then usermod -u "$UID" -g "$GID" node; fi; \
+     chown -R "$UID:$GID" /home/node
+
+RUN npm install -g neovim
+
+RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq && \
+    chmod +x /usr/local/bin/yq
+
+USER node
+ENV HOME=/home/node
+ENV PAGER=less
+ENV MANPAGER=less
+ENV TZ=America/New_York
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+ENV PATH="${HOME}/.local/bin:${PATH}"
+# neovim: no usable apt version. Official static tarball unpacked straight into
+# ~/.local (bin/ lib/ share/), so nvim lands on the PATH set above.
+# ARG NVIM_VERSION=v0.11.4
+ARG NVIM_VERSION=v0.12.5
+RUN set -eux; \
+  mkdir -p "$HOME/.local"; \
+  curl -fsSL \
+    "https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-x86_64.tar.gz" \
+    | tar -xz --strip-components=1 -C "$HOME/.local"; \
+  nvim --version
+
+RUN uv tool install httpie
+RUN uv tool install cfn-lint
+RUN uv tool install csvkit
+RUN uv tool install litecli
+RUN uv tool install pgcli
+RUN uv tool install sqlite-utils
+RUN uv tool install pylint
+RUN uv tool install flake8
+RUN uv tool install mycli
+RUN uv tool install psutils
+RUN uv tool install strip-tags
+RUN uv tool install visidata
+RUN uv tool install pynvim
+RUN uv tool install yamllint
+RUN uv tool install shell-functools
+RUN uv tool install ruff
+RUN uv tool install black
+RUN uv tool install git-filter-repo
+RUN uv tool install jc
+RUN uv tool install html2text
+COPY ./gitconfig /home/node/.gitconfig
+COPY ./gitignore /home/node/.gitignore
+COPY ./inputrc /home/node/.inputrc
+COPY ./bash_aliases /home/node/.bash_aliases
+WORKDIR /workspace
+ENTRYPOINT ["pi"]

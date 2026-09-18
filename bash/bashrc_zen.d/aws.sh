@@ -839,6 +839,33 @@ tailwafraw() {
 }
 
 tailwaf() {
+  aws logs tail aws-waf-logs-HRI-APP-WAF --follow --since "${1:-0m}" \
+    --region us-east-1 --profile net |
+    awk 'match($0, /{/) { print substr($0, RSTART) }' |
+    jq -r --unbuffered '
+    (.timestamp / 1000 | localtime | strftime("%H:%M:%S")) as $time |
+    ([.labels[]?.name | select(test("geo"))]
+       | map(sub("awswaf:clientip:geo:"; "")) | join(" | ")) as $geo |
+    ([ .nonTerminatingMatchingRules[]?.ruleId,
+       .ruleGroupList[]?.nonTerminatingMatchingRules[]?.ruleId ]
+       | unique | join(", ")) as $matched |
+    ([ .ruleGroupList[]?.terminatingRule?.ruleId // empty ] | join(", ")) as $subrule |
+
+    (if   .action == "BLOCK"                     then "🚫"
+     elif .action == "CAPTCHA"
+       or .action == "CHALLENGE"                 then "🧩"
+     elif ($matched != "")                       then "👀"
+     elif .terminatingRuleId != "Default_Action" then "⚠️ "
+     else                                             "✅" end) as $icon |
+
+    "\($icon) \($time) | \(.httpRequest.clientIp) | \($geo) | \(.action) | \(.terminatingRuleId)"
+    + (if $subrule != "" then " [\($subrule)]" else "" end)
+    + " | \(.httpRequest.host // "-") | \(.httpRequest.httpMethod) \(.httpRequest.uri)"
+    + (if $matched != "" then " | Counted: \($matched)" else "" end)
+  '
+}
+
+tailwafblock() {
   aws logs tail aws-waf-logs-HRI-APP-WAF --follow --since "${1:-0m}" --region us-east-1 --profile net | awk '{print substr($0, index($0, "{"))}' | jq -r --unbuffered '
     select(.action == "BLOCK" or (.nonTerminatingMatchingRules | length > 0) or .terminatingRuleId != "Default_Action") |
 

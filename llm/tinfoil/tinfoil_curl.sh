@@ -9,7 +9,7 @@ set -exuo pipefail
 # llama3-3-70b
 
 curl -sS https://inference.tinfoil.sh/v1/chat/completions -H "Authorization: Bearer ${TINFOIL_API_KEY}" -H "Content-Type: application/json" -d '{
-  "model": "kimi-k2-5",
+  "model": "kimi-k3",
   "messages": [{"role": "user", "content": "Hello, world!"}],
   "temperature": 0
 }'

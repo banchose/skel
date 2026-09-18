@@ -1,0 +1,29 @@
+{
+  "packages": [
+    "git:github.com/nagisanzenin/engram",
+    "npm:@dietrichgebert/ponytail",
+    "npm:pi-mcp-adapter",
+    "npm:@narumitw/pi-plan-mode",
+    "npm:@narumitw/pi-btw",
+    "npm:@narumitw/pi-stamp",
+    "npm:@ff-labs/pi-fff",
+    "npm:pi-powerline-footer",
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:@juicesharp/rpiv-todo",
+    "npm:@firstpick/pi-themes-bundle"
+  ],
+  "lastChangelogVersion": "0.85.1",
+  "defaultProvider": "anthropic",
+  "defaultModel": "claude-opus-5",
+  "workingVibe": "star trek",
+  "defaultThinkingLevel": "medium",
+  "enabledModels": [
+    "anthropic/claude-sonnet-5",
+    "anthropic/claude-haiku-4-5",
+    "anthropic/claude-fable-5-1",
+    "tinfoil/kimi-k3",
+    "tinfoil/glm-5-3",
+    "anthropic/claude-opus-5"
+  ],
+  "theme": "dracula"
+}

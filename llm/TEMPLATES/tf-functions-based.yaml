@@ -26,7 +26,7 @@ functions: |
   NOMINATIM_EMAIL = os.environ.get("NOMINATIM_EMAIL", "dark.book0043@fastmail.com")
   DEFAULT_LAT = os.environ.get("LAT")
   DEFAULT_LON = os.environ.get("LON")
-  WOLFRAMALPHA_APP_ID = os.environ["WOLFRAMALPHA_API_KEY"]
+  WOLFRAM_APP_ID = os.environ["WOLFRAM_APP_ID"]
 
   def get_current_datetime() -> str:
       """Return the current date, time, and timezone."""
@@ -119,7 +119,7 @@ functions: |
       url = (
           f"https://www.wolframalpha.com/api/v1/llm-api"
           f"?input={quote_plus(query_string)}"
-          f"&appid={WOLFRAMALPHA_APP_ID}"
+          f"&appid={WOLFRAM_APP_ID}"
           f"&maxchars=6800"
       )
       response = requests.get(url, timeout=30)
