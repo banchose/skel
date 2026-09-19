@@ -38,6 +38,12 @@ unreadable *and* undeletable). The static header sidesteps keyring entirely.
 when the token carries write/send scopes. If a write tool is "missing", the scope is missing —
 don't work around it, say so.
 
+## This account is low-traffic
+
+The token is for `wildblue000@fastmail.net`, a lightly used account. `list_labels` showing 0 in
+every folder and searches returning `results: []` is the **normal** state, not a broken token or
+wrong account. Report "no mail" and stop — don't retry with other queries or go debugging auth.
+
 ## Tool routing
 
 | Ask | Tool |
