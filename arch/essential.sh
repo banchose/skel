@@ -57,6 +57,7 @@ sudo pacman -S freeipmi --needed --noconfirm
 sudo pacman -S ipmitool --needed --noconfirm
 sudo pacman -S uv --needed --noconfirm
 sudo pacman -S iostat --needed --noconfirm
+sudo pacman -S wpa_supplicant --needed --noconfirm
 sudo pacman -S wireguard-tools --needed --noconfirm
 sudo pacman -S iw --needed --noconfirm
 sudo pacman -S iwd --needed --noconfirm
@@ -240,7 +241,6 @@ sudo pacman -S shellcheck --needed --noconfirm
 sudo pacman -S bash-language-server --needed --noconfirm
 sudo pacman -S dive --needed --noconfirm # docker
 # sudo pacman -S yt-dlp --needed --noconfirm
-# sudo pacman -S aws-cli --needed --noconfirm
 # sudo pacman -S neofetch  --needed --noconfirm
 # sudo pacman -S parallel parallel-docs --needed --noconfirm
 
@@ -248,6 +248,9 @@ sudo pacman -S fzf --needed --noconfirm
 # sudo pacman -S bolt --needed --noconfirm
 # sudo pacman -S mpv --needed --noconfirm
 # sudo pacman -S imagemagik --needed --noconfirm
+
+# Amazon AWS
+sudo pacman -S aws-cli-v2 --needed --noconfirm
 
 # yay
 if ! command -v yay &>/dev/null; then
@@ -412,7 +415,6 @@ pipx ensurepath
 #### ###LEGACY#### Wireless ####LEGACY#
 #### sudo pacman -S dialog --needed --noconfirm
 #### sudo pacman -S wifi-menu --needed --noconfirm
-#### sudo pacman -S wpa_supplicant --needed --noconfirm
 
 #
 if (sudo dmidecode | grep -iq "Manufacturer: QEMU"); then
