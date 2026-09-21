@@ -19,13 +19,16 @@ pi-bed() {
     -e TINFOIL_API_KEY \
     -e OPENROUTER_API_KEY \
     -e EDITOR="nvim" \
+    -e ENGRAM_HOME="/home/node/.engram" \
     -e ANTHROPIC_API_KEY \
     -e AWS_BEARER_TOKEN_BEDROCK \
-    -e EXA_API_KEY -e LAT \
+    -e EXA_API_KEY \
+    -e LAT \
     -e LON \
     -e OPENWEATHER_APP_ID \
     -e SHELL=/bin/bash \
     -v "$PWD:/workspace" \
+    -v "$HOME/gitdir/skel/engram":/home/node/.engram \
     -v pi-agent-home:/home/node/.pi/agent \
     pi-sandbox "$@"
 }

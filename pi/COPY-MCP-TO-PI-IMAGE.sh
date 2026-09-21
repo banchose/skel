@@ -19,7 +19,6 @@ docker run --rm \
       mkdir -p /home/node/.pi/agent/extensions
       cp -rv /tmp/extensions/*/ /home/node/.pi/agent/extensions
       [[ -d /home/node/.pi/agent/extensions/tinfoil ]] && ( cd /home/node/.pi/agent/extensions/tinfoil && npm ci )
-      pi install git:github.com/nagisanzenin/engram
       pi install npm:@dietrichgebert/ponytail
       pi install npm:pi-mcp-adapter
       pi install npm:@narumitw/pi-plan-mode
@@ -34,4 +33,5 @@ docker run --rm \
 
 #      pi install npm:awesome-pi-themes
 # pi install npm:@gotgenes/pi-permission-system
+# pi install git:github.com/nagisanzenin/engram
 # npm ci

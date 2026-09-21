@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "created": "2026-09-21",
+  "memory": {
+    "fsrs_params": null,
+    "desired_retention": 0.9,
+    "interval_multiplier": 1.0,
+    "last_refit": null
+  },
+  "challenge_band": {
+    "target_success": 0.85,
+    "hint_budget": 2
+  },
+  "interests": [],
+  "goals": [
+    "Pass an AWS cert exam (SAA/CCP-level): recall IGW vs NAT vs egress-only, gotchas, limits"
+  ],
+  "strategy_weights": {
+    "derivation_first": 0.6,
+    "example_first": 0.4
+  },
+  "settings": {
+    "default_mode": "standard",
+    "artifacts": "threshold-only",
+    "ambient": "quiet",
+    "momentum": "on",
+    "profile": null,
+    "commitment": null,
+    "decay_notice": "on",
+    "relearning": "on",
+    "srl": "on"
+  },
+  "accessibility": []
+}

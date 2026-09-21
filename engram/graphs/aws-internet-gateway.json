@@ -1,0 +1,846 @@
+{
+  "topic": "aws-internet-gateway",
+  "title": "AWS Internet Gateway and the VPC Egress Family — mechanism-level, exam-ready (SAA/CCP)",
+  "goal": "Pass an AWS certification exam at SAA/CCP level with solid recall of IGW vs NAT gateway vs egress-only IGW, the common gotchas, and the quotas — understanding the mechanism, not just the console clicks",
+  "order": [
+    "igw-not-a-device",
+    "igw-attachment-1-per-vpc",
+    "route-table-default-target",
+    "public-subnet-definition",
+    "igw-1to1-nat",
+    "public-ip-and-route-both-required",
+    "ephemeral-vs-elastic-ip",
+    "igw-does-not-filter",
+    "sg-stateful-nacl-stateless",
+    "nat-gateway-purpose",
+    "nat-gw-zonal-ha",
+    "nat-gw-connection-limits",
+    "nat-gw-vs-nat-instance",
+    "ipv6-globally-routable-no-nat",
+    "egress-only-igw",
+    "vpc-endpoint-no-igw",
+    "choose-egress-path",
+    "capstone"
+  ],
+  "nodes": {
+    "igw-not-a-device": {
+      "claim": "An internet gateway is a horizontally scaled, redundant, region-wide VPC component — not an instance or appliance — so it imposes no bandwidth bottleneck, has no Availability Zone to fail with, and has nothing to patch or scale.",
+      "probe": "What kind of thing is an internet gateway inside AWS's architecture, and which three operational concerns does that nature remove from the operator?",
+      "rubric": [
+        "states it is an AWS-managed, horizontally scaled and redundant VPC component rather than an EC2 instance or network appliance",
+        "names that it introduces no bandwidth or throughput constraint on VPC traffic",
+        "names that availability (no single AZ to lose) and patching/scaling are not the operator's responsibility"
+      ],
+      "transfer_probe": "After an AZ outage scare, a colleague proposes deploying a second internet gateway 'for redundancy across AZs'. What is wrong with the premise, and what component in the same design actually does need per-AZ duplication?",
+      "why_chain": [],
+      "edges": {
+        "requires": [],
+        "derives_from": [],
+        "contrasts_with": [
+          "nat-gw-zonal-ha"
+        ],
+        "analogous_to": []
+      },
+      "arbitrary": false,
+      "threshold": true,
+      "kind": "concept",
+      "contrast": {
+        "deep_feature": "how much of the capacity and failure-domain planning AWS owns versus the operator",
+        "cases": [
+          "A NAT instance on a t3.micro: its throughput ceiling is the instance type's network allowance, you patch its AMI on your own schedule, and it stops forwarding when its Availability Zone is impaired",
+          "A NAT gateway: AWS patches it and scales it from 5 Gbps toward 100 Gbps on its own, but it is created inside one subnet in one Availability Zone and stops forwarding when that zone is impaired",
+          "An internet gateway: there is no instance type to pick, no subnet or Availability Zone to place it in, no maintenance window, and no published throughput figure to plan against"
+        ],
+        "invite": "Commit to a rule that tells you, for any VPC networking component, whether you must plan its capacity and duplicate it for failure — and what property of the component your rule reads."
+      },
+      "viz": null,
+      "fsrs": {
+        "s": 1.4003,
+        "d": 6.3916,
+        "due": "2026-09-22",
+        "last": "2026-09-21",
+        "reps": 1,
+        "lapses": 0,
+        "dose": true
+      },
+      "state": "learning",
+      "artifact": null,
+      "arc": 1
+    },
+    "igw-attachment-1-per-vpc": {
+      "claim": "An internet gateway can be attached to only one VPC at a time and a VPC can have only one internet gateway attached, and the attachment cannot be removed while resources in the VPC still hold public IPv4 or Elastic IP addresses in use.",
+      "probe": "How many internet gateways can one VPC have attached at a time, how many VPCs can a single internet gateway serve at once, and what condition blocks you from detaching one?",
+      "rubric": [
+        "at most one internet gateway attached per VPC",
+        "an internet gateway serves at most one VPC at a time (the attachment is 1:1)",
+        "detachment is blocked while resources in the VPC still have public IPv4 addresses or Elastic IPs in use"
+      ],
+      "transfer_probe": "Two VPCs in the same account and region each need internet access. Can they share one internet gateway, and what is the minimum set of objects you must create to give both of them a path out?",
+      "why_chain": [
+        "igw-not-a-device"
+      ],
+      "edges": {
+        "requires": [
+          "igw-not-a-device"
+        ],
+        "derives_from": [
+          "igw-not-a-device"
+        ],
+        "contrasts_with": [],
+        "analogous_to": []
+      },
+      "arbitrary": true,
+      "threshold": false,
+      "kind": "fact",
+      "viz": null,
+      "fsrs": {
+        "s": 1.4003,
+        "d": 6.3916,
+        "due": "2026-09-22",
+        "last": "2026-09-21",
+        "reps": 1,
+        "lapses": 0,
+        "dose": true
+      },
+      "state": "learning",
+      "artifact": null,
+      "arc": 1
+    },
+    "route-table-default-target": {
+      "claim": "A subnet's route table sends each packet to the target of the most specific matching route — the unremovable local VPC-CIDR route always wins inside the VPC — and the target chosen for 0.0.0.0/0 or ::/0 (an internet gateway, a NAT gateway, an egress-only internet gateway, a virtual private gateway, a peering connection, or nothing) is what determines whether an off-VPC path exists and of what kind.",
+      "probe": "How does a subnet's route table decide where a non-local packet goes when several routes could match, what path does a 0.0.0.0/0 route to an internet gateway create compared with the same route pointing at a NAT gateway, and what happens if no default route exists at all?",
+      "rubric": [
+        "the most specific / longest-prefix matching route wins, and the local VPC CIDR route is always present and cannot be overridden",
+        "an internet-gateway target creates a bidirectional internet path for publicly routable addresses",
+        "a NAT-gateway target creates a source-translated, outbound-initiated-only path",
+        "with no matching default route the packet is dropped inside the VPC — nothing leaves"
+      ],
+      "transfer_probe": "A subnet's route table has 0.0.0.0/0 pointing at a NAT gateway and 10.0.0.0/8 pointing at a virtual private gateway. Where does a packet to 10.4.2.9 go, and where does one to 52.94.1.1 go? Justify each by the matching rule.",
+      "why_chain": [],
+      "edges": {
+        "requires": [],
+        "derives_from": [],
+        "contrasts_with": [],
+        "analogous_to": []
+      },
+      "arbitrary": false,
+      "threshold": false,
+      "kind": "concept",
+      "viz": {
+        "affordance": "high",
+        "kind": "causal-parameter",
+        "hook": "Swap the 0.0.0.0/0 target between internet gateway, NAT gateway, and none while the same packet from the same unchanged instance is replayed, so the learner sees the path — not the instance — decide success, translation, or silent drop."
+      },
+      "fsrs": {
+        "s": 1.4003,
+        "d": 6.3916,
+        "due": "2026-09-22",
+        "last": "2026-09-21",
+        "reps": 1,
+        "lapses": 0,
+        "dose": true
+      },
+      "state": "learning",
+      "artifact": null,
+      "arc": 1
+    },
+    "public-subnet-definition": {
+      "claim": "A subnet is 'public' solely because its associated route table carries a default route (0.0.0.0/0 or ::/0) whose target is an internet gateway; there is no public-or-private attribute on a subnet itself.",
+      "probe": "What exactly makes one subnet public and another private in a VPC, and on which object is that property actually configured?",
+      "rubric": [
+        "states there is no public/private flag or attribute on the subnet — the name and the CIDR decide nothing",
+        "identifies the associated route table's default route (0.0.0.0/0 or ::/0) targeting the internet gateway as the property that decides it"
+      ],
+      "transfer_probe": "An instance holding an Elastic IP sits in a subnet named 'public-1a' and cannot be reached from the internet. Name the most likely cause given how publicness is actually defined, and the one screen you would check to confirm it.",
+      "why_chain": [
+        "route-table-default-target"
+      ],
+      "edges": {
+        "requires": [
+          "route-table-default-target",
+          "igw-attachment-1-per-vpc"
+        ],
+        "derives_from": [
+          "route-table-default-target"
+        ],
+        "contrasts_with": [
+          "nat-gateway-purpose"
+        ],
+        "analogous_to": []
+      },
+      "arbitrary": false,
+      "threshold": true,
+      "kind": "concept",
+      "contrast": {
+        "deep_feature": "what the subnet's associated route table lists as the target for 0.0.0.0/0",
+        "cases": [
+          "Subnet 10.0.1.0/24 in eu-west-1a, one instance with an Elastic IP, associated route table holds only the local 10.0.0.0/16 route",
+          "Subnet 10.0.2.0/24 in eu-west-1a, one instance with an Elastic IP, associated route table holds the local route plus 0.0.0.0/0 → igw-0a1b2c",
+          "Subnet 10.0.3.0/24 in eu-west-1a, one instance with an Elastic IP, associated route table holds the local route plus 0.0.0.0/0 → nat-0d4e5f"
+        ],
+        "invite": "Across these three otherwise identical subnets, commit to a one-line test you could run on any subnet to classify it — and say what the test must read."
+      },
+      "viz": null,
+      "fsrs": {
+        "s": 1.4003,
+        "d": 6.3916,
+        "due": "2026-09-22",
+        "last": "2026-09-21",
+        "reps": 1,
+        "lapses": 0,
+        "dose": true
+      },
+      "state": "learning",
+      "artifact": null,
+      "arc": 1
+    },
+    "igw-1to1-nat": {
+      "claim": "For an instance with a public IPv4 address the internet gateway performs one-to-one NAT — rewriting the private source address to the public one on the way out and the public destination back to the private one on the way in — so the instance's operating system is only ever configured with its private address.",
+      "probe": "What address translation does an internet gateway perform for an instance that has a public IPv4 address, in each direction, and what address does the operating system's own interface configuration therefore show?",
+      "rubric": [
+        "outbound: the private source address is rewritten to the instance's public or Elastic IP",
+        "inbound: the public destination address is rewritten back to the private address",
+        "the instance's interface only ever carries the private address — the public IP never appears inside the OS"
+      ],
+      "transfer_probe": "An application reads its own address from the operating system and registers that value in a service registry; internet peers then fail to reach it. Explain the mechanism producing the bug and where the process can read its actual internet-facing address.",
+      "why_chain": [
+        "public-subnet-definition"
+      ],
+      "edges": {
+        "requires": [
+          "public-subnet-definition"
+        ],
+        "derives_from": [
+          "public-subnet-definition"
+        ],
+        "contrasts_with": [
+          "ipv6-globally-routable-no-nat",
+          "nat-gateway-purpose"
+        ],
+        "analogous_to": []
+      },
+      "arbitrary": false,
+      "threshold": true,
+      "kind": "concept",
+      "viz": {
+        "affordance": "high",
+        "kind": "dynamic-process",
+        "hook": "Step one packet from the instance through the gateway and back while both the header fields and the instance's interface configuration stay visible, so the learner who predicted the public IP is bound to the NIC watches the header change while the NIC never does."
+      },
+      "contrast": {
+        "deep_feature": "whether the gateway rewrites addresses and in which direction a flow can start",
+        "cases": [
+          "An instance with private 10.0.1.5 and Elastic IP 52.1.1.1 behind an internet gateway: an inbound packet to 52.1.1.1:443 arrives at 10.0.1.5:443, and an outbound packet leaves showing 52.1.1.1",
+          "An instance with private 10.0.9.5 and no public address behind a NAT gateway holding 52.2.2.2: an outbound packet leaves showing 52.2.2.2 with a rewritten source port, and an unsolicited inbound packet to 52.2.2.2 matches no mapping",
+          "An instance with IPv6 2600:1f18::5 behind an internet gateway: packets leave and arrive with 2600:1f18::5 in the header unchanged in both directions"
+        ],
+        "invite": "Commit to a rule for what the gateway does to a packet's addresses in each of these cases, and to what that rewriting (or its absence) implies about who can start a connection."
+      },
+      "fsrs": {
+        "s": 3.7145,
+        "d": 5.1618,
+        "due": "2026-09-25",
+        "last": "2026-09-21",
+        "reps": 1,
+        "lapses": 0,
+        "dose": true
+      },
+      "state": "review",
+      "artifact": "/workspace/igw-1to1-translation.html",
+      "arc": 1
+    },
+    "public-ip-and-route-both-required": {
+      "claim": "IPv4 internet reachability requires both halves at once — a publicly routable address on the instance's network interface and a subnet route to the internet gateway — and either one alone produces no connectivity.",
+      "probe": "Name the two independent conditions an EC2 instance needs before any IPv4 internet traffic can flow, and describe the symptom when each one is present without the other.",
+      "rubric": [
+        "a public IPv4 address or Elastic IP on the instance's network interface",
+        "a route in the subnet's route table sending 0.0.0.0/0 to the internet gateway",
+        "states that each alone yields no connectivity: with an address but no route the packet is dropped in the VPC; with a route but no public address the gateway has nothing to translate to"
+      ],
+      "transfer_probe": "An instance in a correctly routed public subnet was launched without auto-assign public IP. What is the shortest fix that does not require relaunching it, and why does the missing piece break the path?",
+      "why_chain": [
+        "public-subnet-definition",
+        "igw-1to1-nat"
+      ],
+      "edges": {
+        "requires": [
+          "igw-1to1-nat"
+        ],
+        "derives_from": [
+          "igw-1to1-nat"
+        ],
+        "contrasts_with": [],
+        "analogous_to": []
+      },
+      "arbitrary": false,
+      "threshold": false,
+      "kind": "concept",
+      "viz": null,
+      "fsrs": {
+        "s": 1.4003,
+        "d": 6.3916,
+        "due": "2026-09-22",
+        "last": "2026-09-21",
+        "reps": 1,
+        "lapses": 0,
+        "dose": true
+      },
+      "state": "learning",
+      "artifact": null,
+      "arc": 1
+    },
+    "ephemeral-vs-elastic-ip": {
+      "claim": "An auto-assigned public IPv4 address comes from the subnet's auto-assign setting, is released on stop and replaced by a different one on start, and is lost on termination, whereas an Elastic IP is allocated to the account and stays with the instance across stop/start.",
+      "probe": "Where does an auto-assigned public IPv4 address come from, what happens to it across an instance stop and start and across a termination, and how does an Elastic IP behave differently on those same points?",
+      "rubric": [
+        "it comes from the subnet-level auto-assign-public-IPv4 setting (overridable at launch), not from the instance",
+        "it is released on stop and a different address is assigned on start (and it is gone on termination)",
+        "an Elastic IP is allocated to the account and remains the same address across stop/start"
+      ],
+      "transfer_probe": "A DNS A record points at the public IPv4 address of an instance that is stopped nightly to save cost, and the record breaks each morning. Name the underlying address behaviour and the change that fixes it.",
+      "why_chain": [
+        "public-ip-and-route-both-required"
+      ],
+      "edges": {
+        "requires": [
+          "public-ip-and-route-both-required"
+        ],
+        "derives_from": [
+          "public-ip-and-route-both-required"
+        ],
+        "contrasts_with": [],
+        "analogous_to": []
+      },
+      "arbitrary": true,
+      "threshold": false,
+      "kind": "fact",
+      "viz": null,
+      "fsrs": {
+        "s": 1.4003,
+        "d": 6.3916,
+        "due": "2026-09-22",
+        "last": "2026-09-21",
+        "reps": 1,
+        "lapses": 0,
+        "dose": true
+      },
+      "state": "learning",
+      "artifact": null,
+      "arc": 1,
+      "revised": [
+        {
+          "at": "2026-09-21",
+          "fields": [
+            "probe"
+          ],
+          "receipts_under_previous": 1
+        }
+      ]
+    },
+    "igw-does-not-filter": {
+      "claim": "The internet gateway applies no filtering of its own: every allow-or-deny decision at the VPC edge belongs to security groups and network ACLs, so adding a route to an internet gateway is a routing decision rather than an exposure decision by itself.",
+      "probe": "What filtering does an internet gateway itself apply to traffic crossing it, and which two mechanisms actually decide what is allowed to reach an instance from the internet?",
+      "rubric": [
+        "the internet gateway filters nothing — it has no rule set, allow list, or deny list",
+        "security groups (per network interface) and network ACLs (per subnet) make the allow/deny decision"
+      ],
+      "transfer_probe": "An auditor claims that attaching an internet gateway 'opened the VPC to the internet'. Correct the claim precisely, and name what would actually have to be true for a host to be exposed.",
+      "why_chain": [
+        "igw-1to1-nat"
+      ],
+      "edges": {
+        "requires": [
+          "igw-1to1-nat"
+        ],
+        "derives_from": [],
+        "contrasts_with": [],
+        "analogous_to": []
+      },
+      "arbitrary": false,
+      "threshold": false,
+      "kind": "concept",
+      "viz": null,
+      "fsrs": {
+        "s": 1.4003,
+        "d": 6.3916,
+        "due": "2026-09-22",
+        "last": "2026-09-21",
+        "reps": 1,
+        "lapses": 0,
+        "dose": true
+      },
+      "state": "learning",
+      "artifact": null,
+      "arc": 1
+    },
+    "sg-stateful-nacl-stateless": {
+      "claim": "Security groups are stateful, so the reply to an allowed outbound flow is permitted with no matching inbound rule, while network ACLs are stateless and evaluate each direction independently, so a network ACL must explicitly allow the ephemeral-port return traffic.",
+      "probe": "An instance's outbound HTTPS request leaves a subnet whose security group allows it, but the reply never arrives. Explain the stateful-versus-stateless difference between security groups and network ACLs, and name the specific rule the network ACL is missing.",
+      "rubric": [
+        "security groups are stateful: replies to allowed outbound traffic are permitted without an inbound rule",
+        "network ACLs are stateless: each direction is evaluated separately against its own rules",
+        "the network ACL needs an inbound allow rule for the ephemeral port range (1024–65535) from the remote address"
+      ],
+      "transfer_probe": "A subnet's network ACL allows inbound TCP 443 and denies everything else inbound; outbound is allow-all. Instances there can serve HTTPS but cannot download OS patches over HTTPS. Explain why, and name the rule to add.",
+      "why_chain": [
+        "igw-does-not-filter"
+      ],
+      "edges": {
+        "requires": [
+          "igw-does-not-filter"
+        ],
+        "derives_from": [
+          "igw-does-not-filter"
+        ],
+        "contrasts_with": [],
+        "analogous_to": []
+      },
+      "arbitrary": false,
+      "threshold": false,
+      "kind": "concept",
+      "viz": {
+        "affordance": "some",
+        "kind": "comparative",
+        "hook": "Run the same request/reply pair past a security group and past a network ACL side by side, so the learner who expects symmetric behaviour watches only the ACL drop the reply."
+      },
+      "fsrs": {
+        "s": 1.4003,
+        "d": 6.3916,
+        "due": "2026-09-22",
+        "last": "2026-09-21",
+        "reps": 1,
+        "lapses": 0,
+        "dose": true
+      },
+      "state": "learning",
+      "artifact": null,
+      "arc": 1
+    },
+    "nat-gateway-purpose": {
+      "claim": "A NAT gateway gives private-subnet instances outbound-only IPv4 access by source-translating many private addresses to its own Elastic IP; it must itself sit in a public subnet, and it is the private subnet's route table — never its own — that points 0.0.0.0/0 at it.",
+      "probe": "How does a NAT gateway give a private-subnet instance outbound internet access: in which kind of subnet does the NAT gateway itself have to be created, which route table receives the 0.0.0.0/0 entry that targets it, and why can no host on the internet initiate a connection inward through it?",
+      "rubric": [
+        "the NAT gateway is created in a public subnet (one routed to the internet gateway) and holds an Elastic IP",
+        "the private subnet's route table gets 0.0.0.0/0 → the NAT gateway id, while the NAT gateway's own subnet keeps its 0.0.0.0/0 → internet gateway route",
+        "translation is many-to-one source NAT with state created only by outbound flows, so an inbound-initiated packet matches no mapping and is dropped"
+      ],
+      "transfer_probe": "An engineer created the NAT gateway in the same subnet as the application servers and pointed that subnet's 0.0.0.0/0 at it. Describe what happens to the traffic and why the design cannot work.",
+      "why_chain": [
+        "igw-1to1-nat",
+        "public-subnet-definition"
+      ],
+      "edges": {
+        "requires": [
+          "public-subnet-definition",
+          "igw-1to1-nat"
+        ],
+        "derives_from": [
+          "igw-1to1-nat"
+        ],
+        "contrasts_with": [
+          "igw-1to1-nat",
+          "egress-only-igw"
+        ],
+        "analogous_to": []
+      },
+      "arbitrary": false,
+      "threshold": false,
+      "kind": "concept",
+      "viz": {
+        "affordance": "some",
+        "kind": "structural",
+        "hook": "Drag the NAT gateway between the public and private subnet and watch the private subnet's egress path form or collapse into a route pointing at itself."
+      },
+      "fsrs": {
+        "s": 1.4003,
+        "d": 6.3916,
+        "due": "2026-09-22",
+        "last": "2026-09-21",
+        "reps": 1,
+        "lapses": 0,
+        "dose": true
+      },
+      "state": "learning",
+      "artifact": null,
+      "arc": 1
+    },
+    "nat-gw-zonal-ha": {
+      "claim": "A NAT gateway is a zonal resource created in one subnet in one Availability Zone and it fails with that zone, so a fault-tolerant design places one NAT gateway per Availability Zone with each zone's private route table targeting its local one.",
+      "probe": "What is the availability scope of a single NAT gateway, what exactly breaks when that scope is impaired, and what is the standard multi-AZ pattern — including what must be duplicated per zone besides the gateway itself?",
+      "rubric": [
+        "a NAT gateway is zonal: it lives in one subnet in one Availability Zone and is redundant only inside that zone",
+        "if that zone is impaired, private subnets in other zones routed through it lose egress entirely (and cross-zone routing also incurs cross-AZ data charges)",
+        "the pattern is one NAT gateway per Availability Zone plus a separate route table per zone pointing at that zone's local NAT gateway"
+      ],
+      "transfer_probe": "A three-AZ workload shares a single NAT gateway in AZ-a and its bill shows steady cross-AZ data transfer. Name both problems this design has and the change that removes them together.",
+      "why_chain": [
+        "nat-gateway-purpose"
+      ],
+      "edges": {
+        "requires": [
+          "nat-gateway-purpose"
+        ],
+        "derives_from": [
+          "nat-gateway-purpose"
+        ],
+        "contrasts_with": [
+          "igw-not-a-device"
+        ],
+        "analogous_to": []
+      },
+      "arbitrary": false,
+      "threshold": false,
+      "kind": "concept",
+      "viz": null,
+      "fsrs": {
+        "s": 3.7145,
+        "d": 5.1618,
+        "due": "2026-09-25",
+        "last": "2026-09-21",
+        "reps": 1,
+        "lapses": 0,
+        "dose": true
+      },
+      "state": "review",
+      "artifact": null,
+      "arc": 1
+    },
+    "nat-gw-connection-limits": {
+      "claim": "A NAT gateway starts at 5 Gbps and automatically scales to 100 Gbps, and each of its IPv4 addresses supports up to 55,000 simultaneous connections to each unique destination (destination IP, destination port, protocol), raisable by associating additional addresses up to 8 in total.",
+      "probe": "State a NAT gateway's starting and maximum bandwidth, the number of simultaneous connections one of its IPv4 addresses supports and per what unit that number is counted, and the way to raise that ceiling.",
+      "rubric": [
+        "5 Gbps baseline, automatically scaling up to 100 Gbps",
+        "55,000 simultaneous connections per IPv4 address to each unique destination, where a unique destination is destination IP plus destination port plus protocol",
+        "associate additional IPv4 addresses (up to 8 total: 1 primary plus 7 secondary) — or split the workload across NAT gateways in more subnets"
+      ],
+      "transfer_probe": "A fleet behind one NAT gateway opens tens of thousands of connections to a single partner API endpoint and begins seeing port-allocation errors while total bandwidth stays low. Explain which limit was reached and give two ways to raise headroom.",
+      "why_chain": [
+        "nat-gateway-purpose"
+      ],
+      "edges": {
+        "requires": [
+          "nat-gateway-purpose"
+        ],
+        "derives_from": [
+          "nat-gateway-purpose"
+        ],
+        "contrasts_with": [
+          "igw-not-a-device"
+        ],
+        "analogous_to": []
+      },
+      "arbitrary": true,
+      "threshold": false,
+      "kind": "fact",
+      "viz": null,
+      "fsrs": {
+        "s": 0.4872,
+        "d": 7.6214,
+        "due": "2026-09-22",
+        "last": "2026-09-21",
+        "reps": 1,
+        "lapses": 0,
+        "dose": true
+      },
+      "state": "learning",
+      "artifact": null,
+      "arc": 1
+    },
+    "nat-gw-vs-nat-instance": {
+      "claim": "A NAT gateway is AWS-managed, takes no security group, and cannot act as a bastion or forward ports, whereas a NAT instance is an EC2 instance you size, patch, and fail over yourself, requires its source/destination check to be disabled, accepts a security group, and can double as a bastion or port forwarder.",
+      "probe": "Compare a NAT gateway with a NAT instance on four points: who owns availability and scaling, whether a security group applies, what non-obvious EC2 setting the instance requires, and what a NAT instance can do that a NAT gateway cannot.",
+      "rubric": [
+        "NAT gateway: AWS manages patching and scales bandwidth automatically; NAT instance: the operator chooses size, patches it, and scripts its failover",
+        "a security group applies to a NAT instance but not to a NAT gateway, where only the subnet's network ACL filters",
+        "a NAT instance requires source/destination check to be disabled on its interface",
+        "a NAT instance can serve as a bastion host or forward ports; a NAT gateway supports neither"
+      ],
+      "transfer_probe": "A team replaced a NAT instance with a NAT gateway and their break-glass SSH path plus a security-group rule referencing the old NAT's group both stopped working. Explain which two properties of the NAT gateway caused each failure.",
+      "why_chain": [
+        "nat-gateway-purpose"
+      ],
+      "edges": {
+        "requires": [
+          "nat-gateway-purpose"
+        ],
+        "derives_from": [],
+        "contrasts_with": [
+          "nat-gateway-purpose",
+          "sg-stateful-nacl-stateless"
+        ],
+        "analogous_to": []
+      },
+      "arbitrary": false,
+      "threshold": false,
+      "kind": "concept",
+      "viz": null,
+      "fsrs": {
+        "s": 1.4003,
+        "d": 6.3916,
+        "due": "2026-09-22",
+        "last": "2026-09-21",
+        "reps": 1,
+        "lapses": 0,
+        "dose": true
+      },
+      "state": "learning",
+      "artifact": null,
+      "arc": 1
+    },
+    "ipv6-globally-routable-no-nat": {
+      "claim": "IPv6 addresses assigned inside a VPC are globally unique, so the internet gateway forwards IPv6 traffic with no translation at all, and an instance holding one becomes routable from the internet as soon as a ::/0 route to the internet gateway exists.",
+      "probe": "Why does an internet gateway translate no addresses for IPv6 traffic, and what consequence follows for an instance that merely holds an IPv6 address in a subnet with a ::/0 route to that gateway - both at the routing layer, and in terms of what is then the only thing left standing between that instance and the internet?",
+      "rubric": [
+        "VPC IPv6 addresses are globally unique and publicly routable, so there is no private-to-public mapping to perform",
+        "such an instance is reachable inbound from the internet as far as routing is concerned — only security groups and network ACLs stand between it and the internet"
+      ],
+      "transfer_probe": "A team enables IPv6 on subnets that previously had only private IPv4 and adds ::/0 to the internet gateway 'so patching works'. State the exposure they just created and why no equivalent exposure existed for IPv4.",
+      "why_chain": [
+        "igw-1to1-nat"
+      ],
+      "edges": {
+        "requires": [
+          "igw-1to1-nat"
+        ],
+        "derives_from": [
+          "igw-1to1-nat"
+        ],
+        "contrasts_with": [
+          "igw-1to1-nat"
+        ],
+        "analogous_to": []
+      },
+      "arbitrary": false,
+      "threshold": false,
+      "kind": "concept",
+      "viz": null,
+      "fsrs": {
+        "s": 1.4003,
+        "d": 6.3916,
+        "due": "2026-09-22",
+        "last": "2026-09-21",
+        "reps": 1,
+        "lapses": 0,
+        "dose": true
+      },
+      "state": "learning",
+      "artifact": null,
+      "arc": 1,
+      "revised": [
+        {
+          "at": "2026-09-21",
+          "fields": [
+            "probe"
+          ],
+          "receipts_under_previous": 1
+        }
+      ]
+    },
+    "egress-only-igw": {
+      "claim": "An egress-only internet gateway is the IPv6 counterpart of a NAT gateway: a stateful, VPC-level component with no address, no Elastic IP, and no hourly charge, targeted by a ::/0 route, that permits outbound-initiated IPv6 traffic and its replies while blocking internet-initiated inbound — and it performs no translation.",
+      "probe": "What does an egress-only internet gateway allow that a plain internet gateway does not restrict, which address family and route entry does it use, and how does it keep internet-initiated connections out given that it translates no addresses?",
+      "rubric": [
+        "it handles IPv6 only and is reached by a ::/0 route in the subnet's route table (IPv4 still needs a NAT gateway)",
+        "it permits outbound-initiated IPv6 flows and their replies while blocking connections initiated from the internet",
+        "it is stateful — it tracks outbound flows to admit replies — and performs no address translation, since the IPv6 addresses stay globally unique"
+      ],
+      "transfer_probe": "Dual-stack private instances must fetch from IPv6-only package mirrors and IPv4 mirrors while never being reachable from the internet. Name the component you attach for each address family and the route table entry each one needs.",
+      "why_chain": [
+        "ipv6-globally-routable-no-nat",
+        "nat-gateway-purpose"
+      ],
+      "edges": {
+        "requires": [
+          "ipv6-globally-routable-no-nat",
+          "nat-gateway-purpose"
+        ],
+        "derives_from": [
+          "ipv6-globally-routable-no-nat"
+        ],
+        "contrasts_with": [
+          "nat-gateway-purpose",
+          "igw-1to1-nat"
+        ],
+        "analogous_to": [
+          "nat-gateway-purpose"
+        ]
+      },
+      "arbitrary": false,
+      "threshold": false,
+      "kind": "concept",
+      "viz": null,
+      "fsrs": {
+        "s": 1.4003,
+        "d": 6.3916,
+        "due": "2026-09-22",
+        "last": "2026-09-21",
+        "reps": 1,
+        "lapses": 0,
+        "dose": true
+      },
+      "state": "learning",
+      "artifact": null,
+      "arc": 1
+    },
+    "vpc-endpoint-no-igw": {
+      "claim": "A gateway VPC endpoint for Amazon S3 or DynamoDB adds a prefix-list route to a subnet's route table and carries that traffic over the AWS network, so a private subnet can reach those services with no internet gateway, no NAT gateway, and no public address anywhere.",
+      "probe": "How does a private subnet with no internet gateway and no NAT gateway reach Amazon S3 in the same region — what object is created, what appears in the route table, and which per-gigabyte cost of the alternative path does it remove?",
+      "rubric": [
+        "a gateway VPC endpoint for the service is created in the VPC and associated with the route tables",
+        "the route table gains a route whose destination is the service's managed prefix list and whose target is the endpoint id",
+        "traffic stays on the AWS network rather than crossing a NAT gateway, removing NAT gateway data-processing charges (and needing no public address)"
+      ],
+      "transfer_probe": "A nightly job in private subnets copies terabytes to S3 through a NAT gateway and the data-processing line on the bill dominates. Name the change that eliminates that line and what must be edited for it to take effect.",
+      "why_chain": [
+        "route-table-default-target",
+        "nat-gateway-purpose"
+      ],
+      "edges": {
+        "requires": [
+          "route-table-default-target",
+          "nat-gateway-purpose"
+        ],
+        "derives_from": [
+          "route-table-default-target"
+        ],
+        "contrasts_with": [
+          "nat-gateway-purpose",
+          "public-subnet-definition"
+        ],
+        "analogous_to": []
+      },
+      "arbitrary": false,
+      "threshold": false,
+      "kind": "concept",
+      "viz": null,
+      "fsrs": {
+        "s": null,
+        "d": null,
+        "due": null,
+        "last": null,
+        "reps": 0,
+        "lapses": 0
+      },
+      "state": "new",
+      "artifact": null,
+      "arc": 1
+    },
+    "choose-egress-path": {
+      "claim": "Given a stated connectivity requirement, the selection procedure resolves it to exactly one mechanism per address family and destination — internet gateway for bidirectional public traffic, NAT gateway for outbound-only IPv4, egress-only internet gateway for outbound-only IPv6, gateway VPC endpoint for S3/DynamoDB with no internet path — and produces the concrete route table entries that implement the choice.",
+      "probe": "A private subnet in eu-west-1a holds application servers with both IPv4 and IPv6 addresses. They must (1) download OS patches from IPv4 internet mirrors, (2) fetch a feed served only over IPv6, (3) write objects to S3 in the same region, and (4) never be reachable from anything on the internet. State every gateway or endpoint you create and where each one lives, every route table entry you add and to which route table, and how you would verify that requirement (4) still holds.",
+      "rubric": [
+        "setup: keeps the app subnet private (no 0.0.0.0/0 or ::/0 route to the internet gateway) and treats the three access needs as three separate mechanisms",
+        "method: NAT gateway for (1), egress-only internet gateway for (2), gateway VPC endpoint for S3 for (3)",
+        "execution: private route table gets 0.0.0.0/0 → nat-…, ::/0 → eigw-…, and the S3 prefix list → vpce-…; the NAT gateway is placed in a public subnet whose route table keeps 0.0.0.0/0 → igw-…",
+        "verification: confirms no route from the private subnet targets the internet gateway and no instance there holds a public IPv4 or Elastic IP or a routable ::/0 path in, so no inbound-initiated flow can exist"
+      ],
+      "transfer_probe": null,
+      "why_chain": [
+        "route-table-default-target",
+        "nat-gateway-purpose",
+        "egress-only-igw",
+        "vpc-endpoint-no-igw"
+      ],
+      "edges": {
+        "requires": [
+          "egress-only-igw",
+          "vpc-endpoint-no-igw",
+          "nat-gw-zonal-ha",
+          "public-ip-and-route-both-required"
+        ],
+        "derives_from": [
+          "route-table-default-target"
+        ],
+        "contrasts_with": [],
+        "analogous_to": []
+      },
+      "arbitrary": false,
+      "threshold": false,
+      "kind": "procedure",
+      "practice": {
+        "problem_frame": "Keep the cover story fixed — an application tier in private subnets that must not be inbound-reachable — and vary: which of the four needs are present (IPv4 egress, IPv6 egress, S3/DynamoDB access, inbound public service for a subset of hosts), the address families enabled on the subnet, the number of Availability Zones (1–3, driving how many NAT gateways and route tables), and whether an existing misconfiguration must be repaired rather than built fresh. The answer is always a list of components with placements plus the exact route table entries.",
+        "discriminates_from": [
+          "nat-gateway-purpose",
+          "egress-only-igw",
+          "vpc-endpoint-no-igw",
+          "public-subnet-definition"
+        ],
+        "verify": "Take each requirement's destination in turn and resolve it against the route tables by longest-prefix match, following the packet to its target and back; then check the reverse direction cannot be initiated because no route or address grants it.",
+        "error_bank": [
+          {
+            "error": "Places the NAT gateway in the private subnet it is meant to serve, or points that subnet's 0.0.0.0/0 at a NAT gateway living in the same subnet",
+            "misconception": "Treats the NAT gateway as belonging with the hosts it protects, rather than as a host that itself needs a route to the internet gateway"
+          },
+          {
+            "error": "Routes ::/0 at the NAT gateway, or expects the egress-only internet gateway to carry the IPv4 patch traffic",
+            "misconception": "Assumes one egress mechanism covers both address families, because the console words look interchangeable"
+          },
+          {
+            "error": "Adds 0.0.0.0/0 → internet gateway to the private subnet to let it reach S3, while claiming the tier is still private",
+            "misconception": "Believes outbound-initiated traffic through an internet gateway is not inbound exposure, conflating routing direction with reachability — and misses that a public path is not needed for S3 at all"
+          }
+        ]
+      },
+      "viz": null,
+      "fsrs": {
+        "s": null,
+        "d": null,
+        "due": null,
+        "last": null,
+        "reps": 0,
+        "lapses": 0
+      },
+      "state": "new",
+      "artifact": null,
+      "arc": 1
+    },
+    "capstone": {
+      "claim": "You can USE AWS Internet Gateway and the VPC Egress Family — mechanism-level, exam-ready (SAA/CCP) in your own work, not just explain it.",
+      "probe": "Build the thing. In your real repo, your real notes, your real argument — produce something that only works if you actually understand AWS Internet Gateway and the VPC Egress Family — mechanism-level, exam-ready (SAA/CCP). Your stated goal: Pass an AWS certification exam at SAA/CCP level with solid recall of IGW vs NAT gateway vs egress-only IGW, the common gotchas, and the quotas — understanding the mechanism, not just the console clicks. Ship it, then explain which concept made which decision.",
+      "rubric": [
+        "the artifact exists and works (or the argument stands on its own)",
+        "names at least two concepts from this topic that DECIDED something in it",
+        "identifies where the model broke down or needed more than the topic gave"
+      ],
+      "transfer_probe": null,
+      "why_chain": [],
+      "arbitrary": false,
+      "threshold": false,
+      "viz": null,
+      "capstone": true,
+      "edges": {
+        "requires": [
+          "choose-egress-path",
+          "egress-only-igw",
+          "ephemeral-vs-elastic-ip",
+          "igw-1to1-nat",
+          "igw-attachment-1-per-vpc",
+          "igw-does-not-filter",
+          "igw-not-a-device",
+          "ipv6-globally-routable-no-nat",
+          "nat-gateway-purpose",
+          "nat-gw-connection-limits",
+          "nat-gw-vs-nat-instance",
+          "nat-gw-zonal-ha",
+          "public-ip-and-route-both-required",
+          "public-subnet-definition",
+          "route-table-default-target",
+          "sg-stateful-nacl-stateless",
+          "vpc-endpoint-no-igw"
+        ]
+      },
+      "state": "new",
+      "fsrs": {
+        "s": null,
+        "d": null,
+        "due": null,
+        "last": null,
+        "reps": 0,
+        "lapses": 0
+      },
+      "artifact": null
+    }
+  },
+  "schema": 1,
+  "created": "2026-09-21"
+}

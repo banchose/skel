@@ -1,0 +1,90 @@
+[
+  {
+    "id": "m_1790003931908_1499_000",
+    "ts": "2026-09-21",
+    "topic": "aws-internet-gateway",
+    "node": "nat-gateway-purpose",
+    "description": "Held at CERTAIN confidence: inbound connections are blocked by a NAT gateway because it is a single IP with no open ports / no room for services, rather than because no inbound-initiated packet matches an existing outbound-created state entry in the translation table.",
+    "status": "open"
+  },
+  {
+    "id": "m_1790004654136_1716_000",
+    "ts": "2026-09-21",
+    "topic": "aws-internet-gateway",
+    "node": "route-table-default-target",
+    "description": "Believes a VPC drops an unroutable packet with an ICMP unreachable sent back to the source; in fact the VPC router discards it silently, which is why \"no default route\" failures present as timeouts rather than as immediate connection-refused errors.",
+    "status": "open"
+  },
+  {
+    "id": "m_1790010251006_2821_000",
+    "ts": "2026-09-21",
+    "topic": "aws-internet-gateway",
+    "node": "igw-attachment-1-per-vpc",
+    "description": "Detachment is blocked because the IGW is still a target/destination in a VPC route table (assessor, blind second opinion). In fact routes pointing at a detached IGW simply blackhole; the DependencyViolation comes from resources still holding in-use public IPv4 or Elastic IP addresses.",
+    "status": "open"
+  },
+  {
+    "id": "m_1790010420883_2896_000",
+    "ts": "2026-09-21",
+    "topic": "aws-internet-gateway",
+    "node": "egress-only-igw",
+    "description": "Volunteered cold, before the node was taught: believes an egress-only internet gateway performs 1:1 address translation like an IGW while refusing inbound connections. In fact it performs no translation at all - VPC IPv6 addresses are already globally routable - it only routes and allows return traffic for outbound-initiated flows.",
+    "status": "open"
+  },
+  {
+    "id": "m_1790011975751_3950_000",
+    "ts": "2026-09-21",
+    "topic": "aws-internet-gateway",
+    "node": "ephemeral-vs-elastic-ip",
+    "description": "Assessor (blind second opinion): places the auto-assigned public IP's origin in the AWS address pool itself, rather than in the subnet-level auto-assign-public-IPv4 setting that decides whether one is attached at all.",
+    "status": "open"
+  },
+  {
+    "id": "m_1790011975886_3952_000",
+    "ts": "2026-09-21",
+    "topic": "aws-internet-gateway",
+    "node": "ephemeral-vs-elastic-ip",
+    "description": "Assessor (blind second opinion): treats the auto-assigned address as something that 'can change' across stop/start - possible rather than certain. It is released on stop and a different address is assigned on start.",
+    "status": "open"
+  },
+  {
+    "id": "m_1790012142675_4129_000",
+    "ts": "2026-09-21",
+    "topic": "aws-internet-gateway",
+    "node": "igw-does-not-filter",
+    "description": "Held at CERTAIN confidence: names the ROUTE TABLE (subnet-attached) as one of the two mechanisms that decide what internet traffic is allowed to reach an instance, alongside the security group. The subnet-level filtering object is the network ACL; a route table decides reachability (where a packet can go), never permission (whether it is allowed). Right structure - one per-ENI object plus one per-subnet object - with the wrong object in the subnet slot.",
+    "status": "open"
+  },
+  {
+    "id": "m_1790015200093_5656_000",
+    "ts": "2026-09-21",
+    "topic": "aws-internet-gateway",
+    "node": "nat-gw-vs-nat-instance",
+    "description": "Assessor (blind): treats NACLs as a NAT-instance capability the NAT gateway lacks. NACLs are subnet-level and govern both equally - for a NAT gateway the NACL is the ONLY filter, precisely because no security group can attach. Third instance in this topic of attaching a subnet-level object to the wrong actor.",
+    "status": "open"
+  },
+  {
+    "id": "m_1790016741458_6329_000",
+    "ts": "2026-09-21",
+    "topic": "aws-internet-gateway",
+    "node": "nat-gw-connection-limits",
+    "description": "Assessor (blind): treats 55,000 simultaneous connections as a single global ceiling for the NAT gateway derived from the 65,536-port space, rather than a limit per IPv4 address per unique destination (dst IP + dst port + protocol).",
+    "status": "open"
+  },
+  {
+    "id": "m_1790016741592_6330_000",
+    "ts": "2026-09-21",
+    "topic": "aws-internet-gateway",
+    "node": "nat-gw-connection-limits",
+    "description": "Assessor (blind): believes additional IPv4 addresses are added automatically ('they autoscale up to 8'); the bandwidth autoscales 5-100 Gbps but secondary addresses must be associated deliberately, up to 8 total.",
+    "status": "open"
+  },
+  {
+    "id": "m_1790016741726_6331_000",
+    "ts": "2026-09-21",
+    "topic": "aws-internet-gateway",
+    "node": "egress-only-igw",
+    "description": "Assessor (blind): believes a single route table cannot hold two default routes one per address family, and read the need for 'a different default gw per protocol' as evidence the design was wrong. One route table holding 0.0.0.0/0 and ::/0 simultaneously is the correct dual-stack design; longest-prefix matching happens within an address family.",
+    "status": "open"
+  }
+]
