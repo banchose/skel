@@ -6,6 +6,9 @@
     email = a_gitmail@ownmail.net
     name = banchose
 
+[credential "https://github.com"]
+	username = banchose
+
 [credential]
     # https://github.com/GitCredentialManager/git-credential-manager/blob/main/docs/configuration.md
     # git config credential.helper to see what is being used
