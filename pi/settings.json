@@ -1,6 +1,5 @@
 {
   "packages": [
-    "git:github.com/nagisanzenin/engram",
     "npm:@dietrichgebert/ponytail",
     "npm:pi-mcp-adapter",
     "npm:@narumitw/pi-plan-mode",
@@ -12,9 +11,9 @@
     "npm:@juicesharp/rpiv-todo",
     "npm:@firstpick/pi-themes-bundle"
   ],
-  "lastChangelogVersion": "0.85.1",
-  "defaultProvider": "anthropic",
-  "defaultModel": "claude-opus-5",
+  "lastChangelogVersion": "0.87.1",
+  "defaultProvider": "amazon-bedrock",
+  "defaultModel": "us.anthropic.claude-opus-5-5",
   "workingVibe": "star trek",
   "defaultThinkingLevel": "medium",
   "enabledModels": [
@@ -23,7 +22,8 @@
     "anthropic/claude-fable-5-1",
     "tinfoil/kimi-k3",
     "tinfoil/glm-5-3",
-    "anthropic/claude-opus-5"
+    "anthropic/claude-opus-5",
+    "amazon-bedrock/us.anthropic.claude-opus-5-5"
   ],
   "theme": "dracula"
 }
