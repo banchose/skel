@@ -1,0 +1,6 @@
+[user]
+    name = wjs04-hri
+    email = william.stewart@healthresearch.org
+
+[credential "https://github.com"]
+    username = wjs04-hri
