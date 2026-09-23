@@ -26,6 +26,7 @@ pi-bed() {
     -e LAT \
     -e LON \
     -e OPENWEATHER_APP_ID \
+    -e PONYTAIL_DEFAULT_MODE=off \
     -e SHELL=/bin/bash \
     -v "$PWD:/workspace" \
     -v "$HOME/gitdir/skel/engram":/home/node/.engram \

@@ -2,5 +2,5 @@
 
 set -xeuo pipefail
 
-docker build --build-arg UID="$(id -u)" --build-arg GID="$(id -g)" -t pi-sandbox .
+docker build --no-cache --build-arg UID="$(id -u)" --build-arg GID="$(id -g)" -t pi-sandbox .
 ./COPY-MCP-TO-PI-IMAGE.sh
