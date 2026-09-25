@@ -121,11 +121,17 @@ nowc=$(fetch "$(u timeline/1min)") || nowc=
 day=$(fetch "$(u timeline/1day)") || day=
 
 OM_HOURLY=temperature_2m,apparent_temperature,dew_point_2m,relative_humidity_2m,precipitation,rain,showers,snowfall,precipitation_probability,weather_code,cloud_cover,uv_index,wind_speed_10m,wind_direction_10m,wind_gusts_10m,cape,convective_inhibition,lifted_index,lightning_potential,boundary_layer_height,freezing_level_height,total_column_integrated_water_vapour,vertical_velocity_700hPa,wind_speed_850hPa,wind_direction_850hPa,wind_speed_500hPa,wind_direction_500hPa,temperature_500hPa,temperature_850hPa,geopotential_height_500hPa,geopotential_height_850hPa,relative_humidity_700hPa
-om=$(curl -sfG 'https://api.open-meteo.com/v1/forecast' \
-  --data-urlencode "latitude=$LAT" --data-urlencode "longitude=$LON" \
-  --data-urlencode "current=temperature_2m" --data-urlencode "hourly=$OM_HOURLY" \
-  --data-urlencode "timezone=${TZ_NAME:-auto}" --data-urlencode "forecast_days=$DAYS" \
-  --data-urlencode "wind_speed_unit=mph" --data-urlencode "temperature_unit=fahrenheit") || om=
+om_get() {
+  curl -sfG --max-time 15 'https://api.open-meteo.com/v1/forecast' \
+    --data-urlencode "latitude=$LAT" --data-urlencode "longitude=$LON" \
+    --data-urlencode "current=temperature_2m" --data-urlencode "hourly=$OM_HOURLY" \
+    --data-urlencode "timezone=${TZ_NAME:-auto}" --data-urlencode "forecast_days=$DAYS" \
+    --data-urlencode "wind_speed_unit=mph" --data-urlencode "temperature_unit=fahrenheit"
+}
+# Open-Meteo once answered with a non-JSON body. Check the response, retry once, else skip its blocks.
+om=$(om_get) && jq -e . <<<"$om" >/dev/null 2>&1 \
+  || { sleep 2; om=$(om_get) && jq -e . <<<"$om" >/dev/null 2>&1; } \
+  || { echo "OPEN-METEO ERROR: bad response after retry" >&2; om=; }
 
 # alert IDs live on every record; the current record's set is what's active now
 ids=$(printf '%s' "${cur:-{\}}" | jq -r '.data[0].alerts[]? // empty' | sort -u)

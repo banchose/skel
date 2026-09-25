@@ -1,18 +1,23 @@
 ---
 name: weather
 description: Current conditions, 60-minute precipitation nowcast, official weather alerts, and a convective/severe-storm outlook (CAPE, CIN, bulk shear, lapse rate, mid-level ascent) for any location. Use whenever the user asks about weather, temperature, rain, wind, storms, thunderstorms, severe weather risk, alerts/warnings, or "is it going to storm".
-compatibility: Requires bash, curl, jq, column, and OPENWEATHER_APP_ID with a One Call by Call subscription. Open-Meteo needs no key. Degrades to Open-Meteo-only if OWM fails. Default location comes from LAT/LON (or WEATHER_LAT/WEATHER_LON; falls back to Albany NY area).
+compatibility: Requires bash, curl, jq, column, and OPENWEATHER_APP_ID with a One Call by Call subscription. Open-Meteo needs no key. Degrades to Open-Meteo-only if OWM fails. Default location is the user's LAT/LON env vars (then WEATHER_LAT/WEATHER_LON, then a hard-coded point near Guilderland NY).
 ---
 
 # Weather
 
 ```bash
-./weather.sh                            # default: $LAT/$LON, else $WEATHER_LAT/$WEATHER_LON, else Albany NY area
+./weather.sh                            # default: $LAT/$LON, else $WEATHER_LAT/$WEATHER_LON, else near Guilderland NY
 # set once in your shell/pi env: export LAT=39.7392 LON=-104.9903 WEATHER_DAYS=5
 ./weather.sh 39.7392 -104.9903 5        # lat lon days   (days affects the Open-Meteo blocks)
 ./weather.sh 42.74 -73.80 3 --json      # all raw payloads, merged
 ./weather.sh --selftest                 # offline check of the shear/lapse/verdict math
 ```
+
+**The user's own location is `$LAT`/`$LON`.** When they ask about "here", home,
+or the town those coordinates sit in, run `./weather.sh` with **no arguments**.
+Passed arguments override the env vars. Only pass coordinates or geocode for
+a place clearly elsewhere. Don't round coordinates by hand.
 
 For a named place, geocode first: `curl -s 'https://geocoding-api.open-meteo.com/v1/search?name=Denver&count=1' | jq '.results[0]|{latitude,longitude}'`
 
@@ -97,6 +102,8 @@ NOW is an OWM observation; NEXT 12H row one is an Open-Meteo model value. They c
 - Winter: rain vs snow vs freezing rain comes from `sky` and `SNOW`, not from `PRCP` alone.
 - An empty CONVECTIVE table means no instability and no precip in range. Say that plainly.
 - `LTNG` is `-` outside Europe (ICON-D2 only). Not a sign of calm weather.
+- If stderr shows `OPEN-METEO ERROR`, the report has no NEXT 12H or CONVECTIVE
+  blocks. Say so, and don't claim "no storms".
 - If stderr shows `OWM ERROR`, say so — the report is Open-Meteo-only and has no alerts, nowcast, or dew point in it. Never present a degraded run as complete.
 - Never invent values the tables don't have (no helicity/STP/EHI — neither API has them).
 
