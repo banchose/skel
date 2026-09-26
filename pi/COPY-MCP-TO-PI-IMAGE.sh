@@ -19,14 +19,10 @@ docker run --rm \
       mkdir -p /home/node/.pi/agent/extensions
       cp -rv /tmp/extensions/*/ /home/node/.pi/agent/extensions
       [[ -d /home/node/.pi/agent/extensions/tinfoil ]] && ( cd /home/node/.pi/agent/extensions/tinfoil && npm ci )
-      pi install npm:@dietrichgebert/ponytail
       pi install npm:pi-mcp-adapter
-      pi install npm:@narumitw/pi-plan-mode
       pi install npm:@narumitw/pi-btw
       pi install npm:@narumitw/pi-stamp
-      pi install npm:@ff-labs/pi-fff
       pi install npm:@juicesharp/rpiv-ask-user-question
-      pi install npm:@juicesharp/rpiv-todo
       pi install npm:@firstpick/pi-themes-bundle
       pi update --extensions
       pi update --models'
@@ -34,4 +30,8 @@ docker run --rm \
 #      pi install npm:awesome-pi-themes
 # pi install npm:@gotgenes/pi-permission-system
 # pi install git:github.com/nagisanzenin/engram
+# pi install npm:@ff-labs/pi-fff
+# pi install npm:@dietrichgebert/ponytail
+# pi install npm:@juicesharp/rpiv-todo
+# pi install npm:@narumitw/pi-plan-mode
 # npm ci
