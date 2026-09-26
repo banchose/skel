@@ -22,6 +22,7 @@
     "anthropic/claude-fable-5-1",
     "tinfoil/kimi-k3",
     "tinfoil/glm-5-3",
+    "tinfoil/glm-5-3-flash",
     "amazon-bedrock/us.anthropic.claude-opus-5-5",
     "anthropic/claude-opus-5-5"
   ],
