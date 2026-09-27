@@ -2,6 +2,11 @@
 
 The static import declaration is used to import read-only live bindings which are exported by another module.
 
+## Types
+
+- TypeScript is JavaScript’s runtime with a compile-time type checker
+- TypeScript checks a program for errors before execution, and does so based on the **kinds of values**, making it a static type checker.
+
 ## import
 
 - Can only appear in a module
