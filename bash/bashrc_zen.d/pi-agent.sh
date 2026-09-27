@@ -33,3 +33,5 @@ pi-bed() {
     -v pi-agent-home:/home/node/.pi/agent \
     pi-sandbox "$@"
 }
+
+alias pi-pic='grim -t jpeg -g "$(slurp -d)" - | tee ./pi-pic-"$(date "+%s").jpg" | wl-copy'
