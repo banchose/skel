@@ -7,11 +7,9 @@
     "npm:@narumitw/pi-stamp",
     "npm:@ff-labs/pi-fff",
     "npm:pi-powerline-footer",
-    "npm:@juicesharp/rpiv-ask-user-question",
-    "npm:@juicesharp/rpiv-todo",
     "npm:@firstpick/pi-themes-bundle"
   ],
-  "lastChangelogVersion": "0.87.1",
+  "lastChangelogVersion": "0.99.0",
   "defaultProvider": "anthropic",
   "defaultModel": "claude-opus-5-5",
   "workingVibe": "star trek",
