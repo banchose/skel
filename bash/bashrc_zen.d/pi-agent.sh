@@ -28,6 +28,7 @@ pi-bed() {
     -e OPENWEATHER_APP_ID \
     -e PONYTAIL_DEFAULT_MODE=off \
     -e SHELL=/bin/bash \
+    -e TERM \
     -v "$PWD:/workspace" \
     -v "$HOME/gitdir/skel/engram":/home/node/.engram \
     -v pi-agent-home:/home/node/.pi/agent \

@@ -1,154 +1,81 @@
-# Same as Dockerfile.pi.node-user, but with man pages available.
-#
-# docker build -f Dockerfile.pi.node-user-man -t pi-node-user-man .
-#
-# docker run --rm -it \
-#   -e ANTHROPIC_API_KEY \
-#   -v "$PWD:/workspace" \
-#   -v pi-agent-home:/home/node/.pi/agent \
-#   pi-node-user-man
-
 FROM node:24-bookworm-slim
 ARG UID=1002
 ARG GID=1002
-ARG PI_VERSION=latest
-# set automatically by buildkit: amd64 | arm64
 ARG TARGETARCH
 
-# Debian slim images ship a dpkg config that excludes man pages / docs.
-# Drop those exclusions so anything installed from here on keeps its man pages.
 RUN set -eux; \
-  if [ -e /etc/dpkg/dpkg.cfg.d/docker ]; then rm -f /etc/dpkg/dpkg.cfg.d/docker; fi; \
-  if [ -e /etc/dpkg/dpkg.cfg.d/excludes ]; then rm -f /etc/dpkg/dpkg.cfg.d/excludes; fi
+  rm -f /etc/dpkg/dpkg.cfg.d/docker /etc/dpkg/dpkg.cfg.d/excludes
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
        bash ca-certificates git ripgrep \
        man-db manpages manpages-dev less \
-  # reinstall the base packages so their previously-excluded man pages land on disk
   && apt-get install -y --reinstall --no-install-recommends \
-       bash \
-       coreutils \
-       procps \
-       gpg \
-       socat \
-       python3 \
-       python3-pip \
-       python3-yaml \
-       ffmpeg \
-       sox \
-       libsox-fmt-all \
-       dpkg \
-       dnsutils \
-       bc \
-       qalc \
-       ipcalc \
-       iproute2 \
-       fd-find \
-       findutils \
-       grep \
-       iputils-ping \
-       tmux \
-       jq \
-       xz-utils \
-       zip \
-       gzip \
-       unzip \
-       7zip \
-       bash-completion \
-       sed \
-       tar util-linux \
-       vim \
-       curl \
-       wget \
+       bash coreutils procps gpg socat python3 python3-pip python3-yaml \
+       ffmpeg sox libsox-fmt-all dpkg dnsutils bc qalc ipcalc iproute2 \
+       fd-find findutils grep iputils-ping tmux jq xz-utils zip gzip unzip \
+       7zip bash-completion sed tar util-linux vim curl wget \
   && rm -rf /var/lib/apt/lists/*
 
-# build the man page index so `man -k` / `apropos` work
 RUN mandb -c
 
-# apt only has jq 1.6; ship the official static 1.8.2 binary in /usr/local/bin,
-# which precedes /usr/bin on PATH. apt's jq stays for `man jq`.
 ARG JQ_VERSION=1.8.2
-# verify against the release's own sha256sum.txt so it works on any arch
 RUN set -eux; \
   base="https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}"; \
-  f="jq-linux-${TARGETARCH}"; \
-  cd /tmp; \
-  curl -fsSLo "$f" "$base/$f"; \
-  curl -fsSLo sha256sum.txt "$base/sha256sum.txt"; \
+  f="jq-linux-${TARGETARCH}"; cd /tmp; \
+  curl -fsSLo "$f" "$base/$f"; curl -fsSLo sha256sum.txt "$base/sha256sum.txt"; \
   grep " $f\$" sha256sum.txt | sha256sum -c -; \
-  install -m 0755 "$f" /usr/local/bin/jq; \
-  rm -f "$f" sha256sum.txt; \
-  jq --version
+  install -m 0755 "$f" /usr/local/bin/jq; rm -f "$f" sha256sum.txt; jq --version
 
-# shellcheck: no apt package, Pi just runs the binary against scripts.
 ARG SHELLCHECK_VERSION=0.11.0
 RUN set -eux; \
   case "$TARGETARCH" in amd64) sc_arch=x86_64 ;; arm64) sc_arch=aarch64 ;; *) echo "unsupported arch: $TARGETARCH" >&2; exit 1 ;; esac; \
-  curl -fsSL \
-    "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.linux.${sc_arch}.tar.xz" \
-    | tar -xJ --strip-components=1 -C /usr/local/bin \
-        "shellcheck-v${SHELLCHECK_VERSION}/shellcheck"; \
-  chmod 0755 /usr/local/bin/shellcheck; \
-  shellcheck --version
+  curl -fsSL "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.linux.${sc_arch}.tar.xz" \
+    | tar -xJ --strip-components=1 -C /usr/local/bin "shellcheck-v${SHELLCHECK_VERSION}/shellcheck"; \
+  chmod 0755 /usr/local/bin/shellcheck; shellcheck --version
 
-# create the agent dir with correct ownership BEFORE it becomes a volume mountpoint
-RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
-RUN mkdir -p /home/node/.pi/agent && chown -R node:node /home/node/.pi
-RUN mkdir -p /workspace && chown node:node /workspace
-
-RUN set -eux; \
-     if [ "$GID" != "$(id -g node)" ]; then groupmod -g "$GID" node; fi; \
-     if [ "$UID" != "$(id -u node)" ]; then usermod -u "$UID" -g "$GID" node; fi; \
-     chown -R "$UID:$GID" /home/node
+# pin instead of /latest/ — bump deliberately
+ARG YQ_VERSION=v4.47.1
+RUN wget -qO /usr/local/bin/yq "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_${TARGETARCH}" \
+  && chmod +x /usr/local/bin/yq && yq --version
 
 RUN npm install -g neovim
 
-RUN wget "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_${TARGETARCH}" -O /usr/local/bin/yq && \
-    chmod +x /usr/local/bin/yq && yq --version
+RUN mkdir -p /home/node/.pi/agent /workspace && chown -R node:node /home/node/.pi /workspace
+RUN set -eux; \
+  if [ "$GID" != "$(id -g node)" ]; then groupmod -g "$GID" node; fi; \
+  if [ "$UID" != "$(id -u node)" ]; then usermod -u "$UID" -g "$GID" node; fi; \
+  chown -R "$UID:$GID" /home/node
 
 USER node
-ENV HOME=/home/node
-ENV PAGER=less
-ENV MANPAGER=less
-ENV TZ=America/New_York
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="${HOME}/.local/bin:${PATH}"
-# neovim: no usable apt version. Official static tarball unpacked straight into
-# ~/.local (bin/ lib/ share/), so nvim lands on the PATH set above.
-# ARG NVIM_VERSION=v0.11.4
+ENV HOME=/home/node PAGER=less MANPAGER=less TZ=America/New_York
+ENV PATH="/home/node/.local/bin:${PATH}"
+
+# astral publishes versioned installer URLs; pin it
+ARG UV_VERSION=0.12.20
+RUN curl -LsSf "https://astral.sh/uv/${UV_VERSION}/install.sh" | sh
+
 ARG NVIM_VERSION=v0.12.5
 RUN set -eux; \
   case "$TARGETARCH" in amd64) nv_arch=x86_64 ;; arm64) nv_arch=arm64 ;; *) echo "unsupported arch: $TARGETARCH" >&2; exit 1 ;; esac; \
   mkdir -p "$HOME/.local"; \
-  curl -fsSL \
-    "https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-${nv_arch}.tar.gz" \
+  curl -fsSL "https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-${nv_arch}.tar.gz" \
     | tar -xz --strip-components=1 -C "$HOME/.local"; \
   nvim --version
 
-RUN uv tool install httpie
-RUN uv tool install cfn-lint
-RUN uv tool install csvkit
-RUN uv tool install litecli
-RUN uv tool install pgcli
-RUN uv tool install sqlite-utils
-RUN uv tool install pylint
-RUN uv tool install flake8
-RUN uv tool install mycli
-RUN uv tool install psutils
-RUN uv tool install strip-tags
-RUN uv tool install visidata
-RUN uv tool install pynvim
-RUN uv tool install yamllint
-RUN uv tool install shell-functools
-RUN uv tool install ruff
-RUN uv tool install black
-RUN uv tool install git-filter-repo
-RUN uv tool install jc
-RUN uv tool install html2text
-COPY ./gitconfig /home/node/.gitconfig
-COPY ./gitignore /home/node/.gitignore
-COPY ./inputrc /home/node/.inputrc
-COPY ./bash_aliases /home/node/.bash_aliases
+RUN for t in httpie cfn-lint csvkit litecli pgcli sqlite-utils pylint flake8 mycli psutils \
+             strip-tags visidata pynvim yamllint shell-functools ruff black git-filter-repo jc html2text; do \
+      uv tool install "$t"; done
+
+# ---- Pi: last expensive layer. Only this and below rebuild on a version bump. ----
+USER root
+ARG PI_VERSION=latest
+RUN HOME=/root npm install -g --ignore-scripts "@earendil-works/pi-coding-agent@${PI_VERSION}"
+USER node
+
+COPY --chown=node:node gitconfig /home/node/.gitconfig
+COPY --chown=node:node gitignore /home/node/.gitignore
+COPY --chown=node:node inputrc /home/node/.inputrc
+COPY --chown=node:node bash_aliases /home/node/.bash_aliases
 WORKDIR /workspace
 ENTRYPOINT ["pi"]
