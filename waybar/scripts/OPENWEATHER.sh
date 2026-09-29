@@ -58,7 +58,7 @@ if echo "${ONECALL_DATA}" | jq -e '.alerts' >/dev/null; then
     FIRST_ALERT=$(echo "${ONECALL_DATA}" | jq -r '.alerts[0].event')
     ALERT_TEXT="\nALERT: ${FIRST_ALERT}"
     if [ "${ALERT_COUNT}" -gt 1 ]; then
-      ALERT_TEXT="${ALERT_TEXT} (and ${ALERT_COUNT-1} more)"
+      ALERT_TEXT="${ALERT_TEXT} (and $((ALERT_COUNT - 1)) more)"
     fi
   fi
 fi
@@ -166,10 +166,8 @@ get_wind_icon() {
     echo "💨"                                     # strong wind
   elif (($(echo "$speed > 12.0" | bc -l))); then # Moderate breeze
     echo "🍃"                                     # moderate wind
-  elif (($(echo "$speed > 5.0" | bc -l))); then  # Light breeze
-    echo "🌬️"                                    # light wind
   else
-    echo "🌫️" # very light/calm
+    echo "" # light/calm: no icon (🌬️ has no glyph in most fonts; 🌫️ means fog)
   fi
 }
 

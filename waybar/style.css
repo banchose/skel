@@ -1,0 +1,116 @@
+* {
+    font-size: 26px;
+    font-family: "JetBrainsMono Nerd Font", monospace;
+}
+
+window#waybar {
+    background-color: rgba(0, 0, 0, 0.75);
+    color: #eeeeee;
+    border-top: 1px solid black;
+}
+
+label {
+    padding: 0 4px;
+}
+
+/* ---- Workspaces ---- */
+#workspaces button {
+    padding: 0 2px;
+    color: #fe0000;
+}
+#workspaces button.focused {
+    color: #ff9cfa;
+}
+#workspaces button:hover {
+    background: #1a1a1a;
+    border: #1a1a1a;
+    padding: 0 3px;
+    box-shadow: inherit;
+    text-shadow: inherit;
+}
+
+/* ---- Market indicators (market_indicator.sh) ---- */
+/* Oil, Gold, 10Y: green up, red down */
+#custom-oil.oil-up,
+#custom-gold.gold-up,
+#custom-tnx.tnx-up {
+    color: #39FF14;
+}
+#custom-oil.oil-down,
+#custom-gold.gold-down,
+#custom-tnx.tnx-down {
+    color: #FF073A;
+}
+/* VIX is inverted: up is bad */
+#custom-vix.vix-up-bad {
+    color: #FF073A;
+}
+#custom-vix.vix-down-good {
+    color: #39FF14;
+}
+/* Stale / no data */
+#custom-oil.stale,
+#custom-gold.stale,
+#custom-vix.stale,
+#custom-tnx.stale {
+    color: #6c7086;
+}
+
+/* ---- Ping modules (ping_*.sh emit class UP / DOWN) ---- */
+#custom-Ping_fios.UP,
+#custom-Ping_firewall.UP,
+#custom-Ping_GW.UP {
+    color: #39FF14;
+}
+#custom-Ping_fios.WARN,
+#custom-Ping_firewall.WARN,
+#custom-Ping_GW.WARN {
+    color: #FFFF33;
+}
+#custom-Ping_fios.CRIT,
+#custom-Ping_firewall.CRIT,
+#custom-Ping_GW.CRIT {
+    color: #FF6700;
+}
+#custom-Ping_fios.DOWN,
+#custom-Ping_firewall.DOWN,
+#custom-Ping_GW.DOWN {
+    color: #FF073A;
+}
+
+/* ---- System modules ---- */
+#custom-weather {
+    color: #ffffff;
+}
+#idle_inhibitor {
+    color: #f8fc03;
+}
+#pulseaudio {
+    color: #5b00e1;
+}
+#pulseaudio.muted {
+    color: #bf616a;
+    background-color: red;
+}
+#memory {
+    color: #00eb10;
+}
+
+#temperature {
+    padding: 0 10px;
+    margin: 0 4px;
+    color: #ffffff;
+}
+#temperature.critical {
+    color: #bf616a;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+@keyframes blink {
+    to {
+        color: #ffffff;
+    }
+}

@@ -5,9 +5,9 @@
     // "width": 1280, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
-    "modules-left": ["hyprland/workspaces", "custom/librewolf-default", "custom/firefox-Super-Default", "custom/firefox-youtube", "custom/firefox-TV","custom/firefox-Other", "custom/librewolf-default", "custom/pinger", "custom/1min","custom/5min","custom/15min", "cpu", "custom/weather", "custom/oil"],
+    "modules-left": ["hyprland/workspaces", "custom/librewolf-default", "custom/firefox-Super-Default", "custom/firefox-youtube", "custom/firefox-TV","custom/firefox-Other", "custom/pinger", "custom/1min","custom/5min","custom/15min", "custom/weather", "custom/oil"],
     "modules-center": ["clock"],
-    "modules-right": ["custom/gold","custom/vix","custom/tnx","custom/Ping_GW","custom/Ping_fios", "custom/Ping_firewall", "idle_inhibitor", "custom/clearmako", "pulseaudio", "cpu", "memory", "temperature", "tray"],
+    "modules-right": ["custom/gold","custom/vix","custom/tnx","custom/Ping_GW","custom/Ping_fios", "custom/Ping_firewall", "idle_inhibitor", "custom/clearmako", "pulseaudio", "memory", "temperature", "tray"],
     // Modules configuration
     // "sway/workspaces": {
     //     "disable-scroll": true,
@@ -99,7 +99,7 @@
 //     },
     "cpu": {
         "interval": 1,
-        "format": "{icon0}{icon1}{icon2}{icon2} {usage:>2}% ",
+        "format": "{icon0}{icon1}{icon2}{icon3} {usage:>2}% ",
         "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
     },
     "memory": {
@@ -241,7 +241,7 @@
         }
     },
     "custom/Ping_firewall": {
-      "exec" : "/home/una/.config/waybar/scripts/ping_firewall.sh",
+      "exec" : "~/.config/waybar/scripts/ping_firewall.sh",
       "format":"{icon} {0}",
       "return-type": "json",
       "interval": 10,
@@ -252,7 +252,7 @@
       }
     },
     "custom/Ping_fios": {
-      "exec" : "/home/una/.config/waybar/scripts/ping_fios.sh",
+      "exec" : "~/.config/waybar/scripts/ping_fios.sh",
       "format":"{icon} {0}",
       "return-type": "json",
       "interval": 10,
@@ -263,7 +263,7 @@
       }
     },
     "custom/Ping_GW": {
-      "exec" : "/home/una/.config/waybar/scripts/ping_gw.sh",
+      "exec" : "~/.config/waybar/scripts/ping_gw.sh",
       "format":"{icon} {0}",
       "return-type": "json",
       "interval": 10,
