@@ -79,7 +79,7 @@ fi
 
 if [[ "${WIND_GUST}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
   WIND_GUST_MPH=$(awk "BEGIN {printf \"%.1f\", ${WIND_GUST} * 2.237}")
-  GUST_DISPLAY=" ${WIND_GUST_MPH}"
+  GUST_DISPLAY=" G$(printf '%.0f' "${WIND_GUST_MPH}")"
 else
   WIND_GUST_MPH="N/A"
   GUST_DISPLAY=""
@@ -100,7 +100,11 @@ get_wind_direction() {
   echo "${directions[index]}"
 }
 
-WIND_DIR=$(get_wind_direction "${WIND_DEG}")
+if [[ "${WIND_DEG}" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+  WIND_DIR=$(get_wind_direction "${WIND_DEG}")
+else
+  WIND_DIR=""
+fi
 
 # Check if temperature is a valid number
 if [[ ! "${TEMP_C}" =~ ^-?[0-9]+(\.[0-9]+)?$ ]]; then
@@ -164,7 +168,7 @@ get_wind_icon() {
     echo "🌪️"                                    # hurricane
   elif (($(echo "$speed > 30.0" | bc -l))); then # Gale/near gale
     echo "💨"                                     # strong wind
-  elif (($(echo "$speed > 12.0" | bc -l))); then # Moderate breeze
+  elif (($(echo "$speed > 20.0" | bc -l))); then # Fresh breeze
     echo "🍃"                                     # moderate wind
   else
     echo "" # light/calm: no icon (🌬️ has no glyph in most fonts; 🌫️ means fog)
@@ -225,6 +229,13 @@ get_dew_point_comfort() {
 WEATHER_ICON=$(get_icon "${WEATHER_ICON}")
 WIND_ICON=$(get_wind_icon "${ICON_SPEED}")
 
+# Bar wind display: "NW 4", plus " G18" when gusting, plus icon only when notable (>20 mph)
+if [[ "${WIND_SPEED_MPH}" != "N/A" ]]; then
+  WIND_DISPLAY=" ${WIND_DIR} $(printf '%.0f' "${WIND_SPEED_MPH}")${GUST_DISPLAY}${WIND_ICON:+ ${WIND_ICON}}"
+else
+  WIND_DISPLAY=""
+fi
+
 # Get dew point icon and comfort level if dew point is available
 if [[ "${DEW_POINT_F}" != "N/A" ]]; then
   DEW_POINT_ICON=$(get_dew_point_icon "${DEW_POINT_F}")
@@ -236,4 +247,4 @@ else
 fi
 
 # Create JSON output with weather icon, wind icon, gust info, and dew point in the main text
-echo "{\"text\":\"${TEMP_C}°C / ${TEMP_F}°F ${WEATHER_ICON} ${WIND_ICON}${GUST_DISPLAY}${DEW_POINT_DISPLAY}${ALERT_ICON}\", \"tooltip\":\"${CITY_NAME}: ${WEATHER_DESC}\nPressure: ${PRESSURE}\nWind: ${WIND_SPEED_MPH} mph ${WIND_DIR}\nGust: ${WIND_GUST_MPH} mph\nDew Point: ${DEW_POINT_F}°F (${DEW_POINT_C}°C)\nHumidity Feel: ${DEW_POINT_COMFORT}\nData time: ${DATA_TIME}${ALERT_TEXT}\", \"class\":\"weather\"}"
+echo "{\"text\":\"${TEMP_C}°C / ${TEMP_F}°F ${WEATHER_ICON}${WIND_DISPLAY}${DEW_POINT_DISPLAY}${ALERT_ICON}\", \"tooltip\":\"${CITY_NAME}: ${WEATHER_DESC}\nPressure: ${PRESSURE}\nWind: ${WIND_SPEED_MPH} mph ${WIND_DIR}\nGust: ${WIND_GUST_MPH} mph\nDew Point: ${DEW_POINT_F}°F (${DEW_POINT_C}°C)\nHumidity Feel: ${DEW_POINT_COMFORT}\nData time: ${DATA_TIME}${ALERT_TEXT}\", \"class\":\"weather\"}"
