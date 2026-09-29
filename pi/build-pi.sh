@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Resolve the real version so the cache key changes only when upstream does.
-PI_VERSION="${PI_VERSION:-$(npm view @earendil-works/pi-coding-agent version)}"
+PI_VERSION="${PI_VERSION:-$(curl -fsSL https://registry.npmjs.org/@earendil-works/pi-coding-agent/latest | jq -r .version)}"
+[[ -n "$PI_VERSION" && "$PI_VERSION" != null ]] || {
+  echo "Could not resolve PI_VERSION" >&2
+  exit 1
+}
 
 args=(
   --build-arg UID="$(id -u)"
