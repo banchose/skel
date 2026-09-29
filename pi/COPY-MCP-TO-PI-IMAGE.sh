@@ -2,7 +2,7 @@
 docker run --rm \
   -v pi-agent-home:/home/node/.pi/agent \
   -v ~/gitdir/skel/pi/mcp-adapter.json:/tmp/mcp-adapter.json:ro \
-  -v ~/gitdir/skel/pi/AGENTS.md:/tmp/AGENTS.md:ro \
+  -v ~/gitdir/skel/pi/AGENTS/AGENTS.md:/tmp/AGENTS.md:ro \
   -v ~/gitdir/skel/pi/settings.json:/tmp/settings.json:ro \
   -v ~/gitdir/skel/PROMPT/SKILLS/pi:/tmp/SKILLS:ro \
   -v ~/gitdir/skel/pi/extensions/:/tmp/extensions:ro \
