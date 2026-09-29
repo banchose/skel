@@ -8,7 +8,7 @@ docker run --rm \
   -v ~/gitdir/skel/pi/extensions/:/tmp/extensions:ro \
   --entrypoint bash pi-sandbox \
   -c 'set -e
-      install -m 600 -o node -g node /tmp/mcp.json /home/node/.pi/agent/mcp.json
+      install -m 600 -o node -g node /tmp/mcp-adapter.json /home/node/.pi/agent/mcp-adapter.json
       install -m 644 -o node -g node /tmp/AGENTS.md /home/node/.pi/agent/AGENTS.md
       install -m 644 -o node -g node /tmp/settings.json /home/node/.pi/agent/settings.json
       ls -la /home/node/.pi/agent/
