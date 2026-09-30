@@ -9,73 +9,6 @@
     "modules-center": ["clock"],
     "modules-right": ["custom/gold","custom/vix","custom/tnx","custom/Ping_GW","custom/Ping_fios", "custom/Ping_firewall", "idle_inhibitor", "custom/clearmako", "pulseaudio", "memory", "temperature", "tray"],
     // Modules configuration
-    // "sway/workspaces": {
-    //     "disable-scroll": true,
-    //     "all-outputs": true,
-    //     "format": "{name}: {icon}",
-    //     "format-icons": {
-    //         "1": "",
-    //         "2": "",
-    //         "3": "",
-    //         "4": "",
-    //         "5": "",
-    //         "urgent": "",
-    //         "focused": "",
-    //         "default": ""
-    //     }
-    // },
-    "keyboard-state": {
-        "numlock": true,
-        "capslock": true,
-        "format": "{name} {icon}",
-        "format-icons": {
-            "locked": "",
-            "unlocked": ""
-        }
-    },
-    "sway/mode": {
-        "format": "<span style=\"italic\">{}</span>"
-    },
-    "sway/scratchpad": {
-        "format": "{icon} {count}",
-        "show-empty": false,
-        "format-icons": ["", ""],
-        "tooltip": true,
-        "tooltip-format": "{app}: {title}"
-    },
-    "mpd": {
-        "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
-        "format-disconnected": "Disconnected ",
-        "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
-        "unknown-tag": "N/A",
-        "interval": 2,
-        "artist-len": 5,
-        "album-len": 5,
-        "album-artist-len": 5,
-        "title-len": 5,
-        "consume-icons": {
-            "on": " "
-        },
-        "random-icons": {
-            "off": "<span color=\"#f53c3c\"></span> ",
-            "on": " "
-        },
-        "repeat-icons": {
-            "on": " "
-        },
-        "single-icons": {
-            "on": "1 "
-        },
-        "state-icons": {
-            "paused": "",
-            "playing": ""
-        },
-        "tooltip-format": "MPD (connected)",
-        "tooltip-format-disconnected": "MPD (disconnected)",
-        "on-click": "mpc toggle",
-        "on-click-middle": "mpc pause;mpc seek +00:00:15;mpc play",
-        "on-click-right": "mpc pause;mpc seek -00:00:15;mpc play"
-    },
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
@@ -93,15 +26,6 @@
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}"
     },
-//     "cpu": {
-//         "format": "{avg_frequency}GHz ",
-//         "tooltip": false
-//     },
-    "cpu": {
-        "interval": 1,
-        "format": "{icon0}{icon1}{icon2}{icon3} {usage:>2}% ",
-        "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
-    },
     "memory": {
         "format": "{}% "
     },
@@ -112,37 +36,6 @@
         // "format-critical": "{temperatureC}°C {icon}",
         "format": "{temperatureC}°C {icon}",
         "format-icons": ["", "", ""]
-    },
-    "backlight": {
-        // "device": "acpi_video1",
-        "format": "{percent}% {icon}",
-        "format-icons": ["", "", "", "", "", "", "", "", ""]
-    },
-    "battery": {
-        "states": {
-            // "good": 95,
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "{capacity}% {icon}",
-        "format-charging": "{capacity}% ",
-        "format-plugged": "{capacity}% ",
-        "format-alt": "{time} {icon}",
-        // "format-good": "", // An empty format will hide the module
-        // "format-full": "",
-        "format-icons": ["", "", "", "", ""]
-    },
-    "battery#bat2": {
-        "bat": "BAT2"
-    },
-    "network": {
-        // "interface" : "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "{essid} ({signalStrength}%) ",
-        "format-ethernet": "{ipaddr}/{cidr} ",
-        "tooltip-format": "{ifname} via {gwaddr} ",
-        "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": "Disconnected ⚠",
-        "format-alt": "{ifname}: {ipaddr}/{cidr}"
     },
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float
@@ -183,11 +76,6 @@
         "on-click": "firefox -P LastPass",
         "on-click-right": "firefox --ProfileManager"
     },
-    "custom/firefox-PIA": {
-        "format": "",
-        "on-click": "firefox -P PIA-Attempt",
-        "on-click-right": "firefox --ProfileManager"
-    },
     "custom/librewolf-default": {
         "format": "",
         "on-click": "/usr/bin/librewolf -P Super-Default",
@@ -200,7 +88,7 @@
         "on-scroll-down": "hyprctl dispatch workspace e-1"
     },
     "custom/pinger": {
-        "exec" : "~/.config/waybar/pinger.sh",
+        "exec" : "~/.config/waybar/scripts/pinger.sh",
         "format":"{icon} {0}",
         "interval": 10,
         "return-type": "json",
@@ -241,7 +129,7 @@
         }
     },
     "custom/Ping_firewall": {
-      "exec" : "~/.config/waybar/scripts/ping_firewall.sh",
+      "exec" : "~/.config/waybar/scripts/ping_host.sh 192.168.2.1 21",
       "format":"{icon} {0}",
       "return-type": "json",
       "interval": 10,
@@ -252,7 +140,7 @@
       }
     },
     "custom/Ping_fios": {
-      "exec" : "~/.config/waybar/scripts/ping_fios.sh",
+      "exec" : "~/.config/waybar/scripts/ping_host.sh 192.168.1.1 11",
       "format":"{icon} {0}",
       "return-type": "json",
       "interval": 10,
@@ -263,7 +151,7 @@
       }
     },
     "custom/Ping_GW": {
-      "exec" : "~/.config/waybar/scripts/ping_gw.sh",
+      "exec" : "~/.config/waybar/scripts/ping_host.sh 108.44.37.1 GW",
       "format":"{icon} {0}",
       "return-type": "json",
       "interval": 10,
@@ -276,18 +164,6 @@
     "custom/clearmako": {
         "format": "🔊",
         "on-click": "makoctl dismiss --all"
-    },
-    "custom/media": {
-        "format": "{icon}",
-        "return-type": "json",
-        "max-length": 40,
-        "format-icons": {
-            "spotify": "",
-            "default": "🎜"
-        },
-        "escape": true,
-        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
-        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
     },
     "custom/weather": {
         "exec": "~/.config/waybar/scripts/OPENWEATHER.sh",

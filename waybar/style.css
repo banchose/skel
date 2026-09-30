@@ -48,30 +48,41 @@ label {
 #custom-vix.vix-down-good {
     color: #39FF14;
 }
-/* Stale / no data */
+/* Stale: cached data (fetch failed / market closed). Dim the direction colour. */
 #custom-oil.stale,
 #custom-gold.stale,
 #custom-vix.stale,
 #custom-tnx.stale {
     color: #6c7086;
 }
+#custom-oil.stale-up,
+#custom-gold.stale-up,
+#custom-tnx.stale-up,
+#custom-vix.stale-down-good {
+    color: #2e7d32;
+}
+#custom-oil.stale-down,
+#custom-gold.stale-down,
+#custom-tnx.stale-down,
+#custom-vix.stale-up-bad {
+    color: #8b1a2b;
+}
 
-/* ---- Ping modules (ping_*.sh emit class UP / DOWN) ---- */
+/* ---- Ping modules ----
+   ping_host.sh emits UP / DOWN; pinger.sh emits UP / WARN / CRIT / DOWN */
+#custom-pinger.UP,
 #custom-Ping_fios.UP,
 #custom-Ping_firewall.UP,
 #custom-Ping_GW.UP {
     color: #39FF14;
 }
-#custom-Ping_fios.WARN,
-#custom-Ping_firewall.WARN,
-#custom-Ping_GW.WARN {
+#custom-pinger.WARN {
     color: #FFFF33;
 }
-#custom-Ping_fios.CRIT,
-#custom-Ping_firewall.CRIT,
-#custom-Ping_GW.CRIT {
+#custom-pinger.CRIT {
     color: #FF6700;
 }
+#custom-pinger.DOWN,
 #custom-Ping_fios.DOWN,
 #custom-Ping_firewall.DOWN,
 #custom-Ping_GW.DOWN {

@@ -28,28 +28,17 @@ readonly ENCODED_SYMBOL="${SYMBOL//^/%5E}"
 readonly URL="https://query1.finance.yahoo.com/v8/finance/chart/${ENCODED_SYMBOL}?range=1d&interval=1d"
 readonly CACHE_FILE="${XDG_RUNTIME_DIR:-/tmp}/market_${ID}_cache.json"
 
-# Simple weekend check — skip fetching Sat/Sun to avoid pointless requests.
-# No per-market hours logic; Yahoo returns last known price anyway and
-# the cache handles staleness gracefully.
-is_weekend() {
-  local dow
-  dow=$(date '+%u')
-  ((dow == 6 || dow == 7))
-}
-
+# No market-hours logic: Yahoo returns the last known price when closed, and
+# a failed fetch falls back to the cache with the class rewritten to stale-*
+# (e.g. oil-up -> stale-up) so CSS can dim it.
 serve_cache() {
   if [[ -f "${CACHE_FILE}" ]]; then
-    cat "${CACHE_FILE}"
+    sed -E "s/\"class\":\"${ID}-/\"class\":\"stale-/" "${CACHE_FILE}"
   else
     printf '{"text":"%s --","tooltip":"%s: no data cached","class":"stale"}\n' \
       "${ICON}" "${LABEL}"
   fi
 }
-
-if is_weekend; then
-  serve_cache
-  exit 0
-fi
 
 data=$(curl -sf --max-time 10 "${URL}" 2>/dev/null) || {
   serve_cache
