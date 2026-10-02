@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # You will be the 'node' user as per the image build
 docker run --rm \
   -v pi-agent-home:/home/node/.pi/agent \

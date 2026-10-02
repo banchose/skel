@@ -9,9 +9,9 @@
     "npm:pi-powerline-footer",
     "npm:@firstpick/pi-themes-bundle"
   ],
-  "lastChangelogVersion": "0.99.0",
-  "defaultProvider": "anthropic",
-  "defaultModel": "claude-opus-5-5",
+  "lastChangelogVersion": "1.0.0",
+  "defaultProvider": "amazon-bedrock",
+  "defaultModel": "us.anthropic.claude-opus-5-5",
   "workingVibe": "star trek",
   "defaultThinkingLevel": "medium",
   "enabledModels": [
@@ -24,5 +24,8 @@
     "amazon-bedrock/us.anthropic.claude-opus-5-5",
     "anthropic/claude-opus-5-5"
   ],
-  "theme": "dracula"
+  "theme": "dracula",
+  "extensions": [
+    "-builtin:mcp"
+  ]
 }
