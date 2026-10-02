@@ -1,4 +1,6 @@
 alias cdpi='cd ~/gitdir/skel/pi'
+alias cdpis='cd ~/gitdir/skel/pi/skills'
+alias cdmoon='cd ~/temp/moon'
 pi-bed() {
   if ! docker info >/dev/null 2>&1; then
     echo "docker daemon is not running" 1>&2
