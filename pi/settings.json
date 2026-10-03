@@ -2,11 +2,9 @@
   "packages": [
     "npm:@dietrichgebert/ponytail",
     "npm:pi-mcp-adapter",
-    "npm:@narumitw/pi-plan-mode",
     "npm:@narumitw/pi-btw",
     "npm:@narumitw/pi-stamp",
     "npm:@ff-labs/pi-fff",
-    "npm:pi-powerline-footer",
     "npm:@firstpick/pi-themes-bundle"
   ],
   "lastChangelogVersion": "1.0.0",
