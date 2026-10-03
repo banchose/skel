@@ -7,7 +7,7 @@
     "npm:@ff-labs/pi-fff",
     "npm:@firstpick/pi-themes-bundle"
   ],
-  "lastChangelogVersion": "1.0.0",
+  "lastChangelogVersion": "1.0.1",
   "defaultProvider": "amazon-bedrock",
   "defaultModel": "us.anthropic.claude-opus-5-5",
   "workingVibe": "star trek",
