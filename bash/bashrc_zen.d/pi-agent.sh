@@ -1,6 +1,9 @@
 alias cdpi='cd ~/gitdir/skel/pi'
 alias cdpis='cd ~/gitdir/skel/pi/skills'
 alias cdmoon='cd ~/temp/moon'
+alias cdbills='cd ~/gitdir/configs/pi-dirs/bills'
+alias editpi='nvim ~/gitdir/skel/bash/bashrc_zen.d/pi-agent.sh'
+
 pi-bed() {
   if ! docker info >/dev/null 2>&1; then
     echo "docker daemon is not running" 1>&2
@@ -38,4 +41,11 @@ pi-bed() {
 }
 
 alias pi-pic='grim -t jpeg -g "$(slurp -d)" - | tee ./pi-pic-"$(date "+%s").jpg" | wl-copy'
-alias pi-nfl='grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pi-pic-"$(date "+%s").jpg" | wl-copy'
+
+pp() {
+
+  rm ~/gitdir/configs/pi-dirs/bills/pics/*.jpg
+  # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
+  grim -t jpeg -g "$(slurp -d)" - | tee "$HOME/gitdir/configs/pi-dirs/bills/pics/pi-pic-one-shot.jpg" | wl-copy
+
+}
