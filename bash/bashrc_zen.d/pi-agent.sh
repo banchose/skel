@@ -38,3 +38,4 @@ pi-bed() {
 }
 
 alias pi-pic='grim -t jpeg -g "$(slurp -d)" - | tee ./pi-pic-"$(date "+%s").jpg" | wl-copy'
+alias pi-nfl='grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pi-pic-"$(date "+%s").jpg" | wl-copy'
