@@ -42,10 +42,18 @@ pi-bed() {
 
 alias pi-pic='grim -t jpeg -g "$(slurp -d)" - | tee ./pi-pic-"$(date "+%s").jpg" | wl-copy'
 
-pp() {
+pb() {
 
   rm ~/gitdir/configs/pi-dirs/bills/pics/*.jpg
   # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
   grim -t jpeg -g "$(slurp -d)" - | tee "$HOME/gitdir/configs/pi-dirs/bills/pics/pi-pic-one-shot.jpg" | wl-copy
+
+}
+
+px() {
+
+  rm ~/gitdir/configs/pi-dirs/bills/pics/*.jpg
+  # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
+  grim -t jpeg -g "$(slurp -d)" - | tee "$HOME/gitdir/configs/pi-dirs/xeyes/pics/pi-pic-one-shot.jpg" | wl-copy
 
 }
