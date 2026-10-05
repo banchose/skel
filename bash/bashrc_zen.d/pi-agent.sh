@@ -41,6 +41,23 @@ pi-bed() {
 }
 
 alias pi-pic='grim -t jpeg -g "$(slurp -d)" - | tee ./pi-pic-"$(date "+%s").jpg" | wl-copy'
+alias pp='grim -t jpeg -g "$(slurp -d)" - | tee ./pi-pic-"$(date "+%s").jpg" | wl-copy'
+
+pm() {
+  llmpic="$HOME/temp/moon/pi-pic-one-shot.jpg"
+  rm "${llmpic}"
+  # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
+  grim -t jpeg -g "$(slurp -d)" - | tee "${llmpic}" | wl-copy
+
+}
+
+pt() {
+  llmpic="$HOME/temp/pi-pic-one-shot.jpg"
+  rm "${llmpic}"
+  # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
+  grim -t jpeg -g "$(slurp -d)" - | tee "${llmpic}" | wl-copy
+
+}
 
 pb() {
 
@@ -51,9 +68,9 @@ pb() {
 }
 
 px() {
-
-  rm ~/gitdir/configs/pi-dirs/bills/pics/*.jpg
+  llmpic="$HOME/gitdir/configs/pi-dirs/xeyes/pics/pi-pic-one-shot.jpg"
+  rm "${llmpic}"
   # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
-  grim -t jpeg -g "$(slurp -d)" - | tee "$HOME/gitdir/configs/pi-dirs/xeyes/pics/pi-pic-one-shot.jpg" | wl-copy
+  grim -t jpeg -g "$(slurp -d)" - | tee "${llmpic}" | wl-copy
 
 }
