@@ -1,5 +1,6 @@
 alias cdpi='cd ~/gitdir/skel/pi'
 alias cdpis='cd ~/gitdir/skel/pi/skills'
+alias cdpid='cd ~/gitdir/configs/pi-dirs'
 alias cdmoon='cd ~/temp/moon'
 alias cdbills='cd ~/gitdir/configs/pi-dirs/bills'
 alias editpi='nvim ~/gitdir/skel/bash/bashrc_zen.d/pi-agent.sh'
