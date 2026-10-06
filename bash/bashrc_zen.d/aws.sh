@@ -243,6 +243,10 @@ set_aws_envs() {
   set_stack_outputs HRI-BIGNETWORK-TGWRT-ASSC-INFRA-VPC-PROD us-east-1 net
   #  echo "HRI-ONE-VPC-PROD"
   #  set_stack_outputs HRI-ONE-VPC-PROD us-east-1 production
+  echo "HRI-APP-VPC"
+  set_stack_outputs HRI-APP-VPC us-east-1 production
+  echo "HRI-APP-VPC-TGWRT-ASSC"
+  set_stack_outputs HRI-APP-VPC-TGWRT-ASSC us-east-1 net
 }
 
 get_aws_context() {
