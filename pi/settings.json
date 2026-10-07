@@ -7,20 +7,20 @@
     "npm:@ff-labs/pi-fff",
     "npm:@firstpick/pi-themes-bundle"
   ],
-  "lastChangelogVersion": "1.0.1",
-  "defaultProvider": "amazon-bedrock",
-  "defaultModel": "us.anthropic.claude-opus-5-5",
+  "lastChangelogVersion": "1.0.4",
+  "defaultProvider": "tinfoil",
+  "defaultModel": "glm-5-3",
   "workingVibe": "star trek",
   "defaultThinkingLevel": "medium",
+  "modelThinkingLevels": {                                                                                                          │ 
+    "tinfoil/glm-5-3": "high",                                                                                                      │ 
+    "tinfoil/deepseek-v4-1-flash": "xhigh",                                                                                         │ 
+    "anthropic/claude-opus-5-5": "high"                                                                                              │ 
   "enabledModels": [
-    "anthropic/claude-sonnet-5",
-    "anthropic/claude-haiku-4-5",
-    "anthropic/claude-fable-5-1",
-    "tinfoil/kimi-k3",
     "tinfoil/glm-5-3",
-    "tinfoil/glm-5-3-flash",
-    "amazon-bedrock/us.anthropic.claude-opus-5-5",
-    "anthropic/claude-opus-5-5"
+    "tinfoil/deepseek-v4-1-flash",
+    "anthropic/claude-opus-5-5",
+    "amazon-bedrock/us.anthropic.claude-opus-5-5"
   ],
   "theme": "dracula",
   "extensions": [
