@@ -11,9 +11,9 @@
   "defaultProvider": "tinfoil",
   "defaultModel": "glm-5-3",
   "workingVibe": "star trek",
-  "defaultThinkingLevel": "medium",
+  "defaultThinkingLevel": "high",
   "modelThinkingLevels": {
-    "tinfoil/glm-5-3": "high",
+    "tinfoil/glm-5-3": "xhigh",
     "tinfoil/deepseek-v4-1-flash": "xhigh",
     "anthropic/claude-opus-5-5": "high"
   },
