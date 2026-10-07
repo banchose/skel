@@ -1,3 +1,5 @@
+tmp/
+pics/
 mongo_data/
 meilisearch_data/
 mongodb_data/
