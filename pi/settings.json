@@ -12,10 +12,11 @@
   "defaultModel": "glm-5-3",
   "workingVibe": "star trek",
   "defaultThinkingLevel": "medium",
-  "modelThinkingLevels": {                                                                                                          │ 
-    "tinfoil/glm-5-3": "high",                                                                                                      │ 
-    "tinfoil/deepseek-v4-1-flash": "xhigh",                                                                                         │ 
-    "anthropic/claude-opus-5-5": "high"                                                                                              │ 
+  "modelThinkingLevels": {
+    "tinfoil/glm-5-3": "high",
+    "tinfoil/deepseek-v4-1-flash": "xhigh",
+    "anthropic/claude-opus-5-5": "high"
+  },
   "enabledModels": [
     "tinfoil/glm-5-3",
     "tinfoil/deepseek-v4-1-flash",
