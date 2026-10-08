@@ -42,6 +42,7 @@ aws_check_bedrock_events() {
 
 alias editaws='nvim ~/gitdir/skel/bash/bashrc_zen.d/aws.sh'
 alias awcd='cd ~/gitdir/aws'
+alias cdawsl='cd ~/gitdir/aws/learn'
 alias cdaws='cd ~/gitdir/aws'
 alias awcdskel='cd ~/gitdir/skel/bash/bashrc_zen.d/'
 alias awcdeks='cd ~/gitdir/aws/PHRIBIGNETWORK/EKSALB/'
