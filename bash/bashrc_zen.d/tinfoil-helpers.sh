@@ -8,6 +8,74 @@
 # command -v tf &>/dev/null || return 0
 
 # Was: curl -fsSL https://github.com/tinfoilsh/tinfoil-cli/raw/main/install.sh | sh
+## Tinfoil
+TF_PORT=8087
+
+# Any HTTP response (even 404) means the port is serving; no endpoint assumptions
+_tf_proxy_up() {
+  curl -s --connect-timeout 1 -o /dev/null "http://127.0.0.1:${TF_PORT}/"
+}
+
+tf_proxy_ensure() {
+  _tf_proxy_up && return 0
+
+  if ! command -v tinfoil-proxy >/dev/null 2>&1; then
+    local answer
+    printf >&2 'tinfoil-proxy is not installed\n'
+    read -rp 'Install to ~/.local/bin? [y/N] ' answer
+    [[ ${answer,,} == y ]] || return 1
+    mkdir -p "${HOME}/.local/bin" || return 1
+    curl -fsSL https://github.com/tinfoilsh/tinfoil-proxy/raw/main/install.sh |
+      INSTALL_DIR="${HOME}/.local/bin" sh || return 1
+    hash -r
+  fi
+
+  local log_file="${XDG_RUNTIME_DIR:-/tmp}/tinfoil-proxy.log"
+  local pid
+  # Started inside $( ) so it is not a job of this shell: no [1] PID / Exit noise
+  pid=$(
+    tinfoil-proxy -p "${TF_PORT}" >"${log_file}" 2>&1 &
+    printf '%s' "$!"
+  )
+
+  local -i attempts=0
+  until _tf_proxy_up; do
+    if ! kill -0 "${pid}" 2>/dev/null; then
+      printf >&2 'tinfoil-proxy exited during startup (log: %s):\n' "${log_file}"
+      tail -n 20 "${log_file}" >&2
+      return 1
+    fi
+    if ((++attempts >= 20)); then
+      printf >&2 'tinfoil-proxy not ready after 10s (log: %s)\n' "${log_file}"
+      return 1
+    fi
+    sleep 0.5
+  done
+}
+
+tf_proxy_stop() {
+  pkill -x tinfoil-proxy || printf >&2 'tinfoil-proxy not running\n'
+}
+
+tf() {
+  tf_proxy_ensure || return 1
+  command llm "$@" -t tf_f
+}
+
+tf_curl_local() {
+  local tinfoil_model=kimi-k2-5
+  curl -X POST "http://127.0.0.1:${TF_PORT}/v1/chat/completions" \
+    -H "Authorization: Bearer ${TINFOIL_API_KEY}" \
+    -H "Content-Type: application/json" \
+    -d '{
+    "model": "'"${tinfoil_model}"'",
+    "messages": [{"role": "user", "content": "This is a test. Respond with \"OK\""}]
+  }'
+}
+
+tf_help() {
+  printf 'curl http://127.0.0.1:%s/v1/models\n' "${TF_PORT}"
+}
 
 alias tf_help_zathura='tf -f ~/gitdir/skel/zathura/zathura-help.md'
 
@@ -25,140 +93,139 @@ tf_get_docs_md() {
   curl -s https://docs.tinfoil.sh/llms-full.txt -o tinfoil-docs-full.md
 }
 
-
 tf_whisper_transcribe() {
-    local file="${1:?Usage: tf_whisper_transcribe <audio_file> [segment_seconds]}"
-    local segment_time="${2:-570}"
-    local port=8087
-    local model='whisper-large-v3-turbo'
-    local req_timeout=900
+  local file="${1:?Usage: tf_whisper_transcribe <audio_file> [segment_seconds]}"
+  local segment_time="${2:-570}"
+  local port=8087
+  local model='whisper-large-v3-turbo'
+  local req_timeout=900
 
-    [[ -f "${file}" ]] || {
-        printf 'Error: file not found: %s\n' "${file}" >&2
-        return 1
-    }
+  [[ -f "${file}" ]] || {
+    printf 'Error: file not found: %s\n' "${file}" >&2
+    return 1
+  }
 
-    local -a missing=()
-    local dep
-    for dep in ffmpeg ffprobe curl jq; do
-        command -v "${dep}" >/dev/null 2>&1 || missing+=("${dep}")
-    done
-    if ((${#missing[@]})); then
-        printf 'Error: missing required commands: %s\n' "${missing[*]}" >&2
-        return 1
+  local -a missing=()
+  local dep
+  for dep in ffmpeg ffprobe curl jq; do
+    command -v "${dep}" >/dev/null 2>&1 || missing+=("${dep}")
+  done
+  if ((${#missing[@]})); then
+    printf 'Error: missing required commands: %s\n' "${missing[*]}" >&2
+    return 1
+  fi
+
+  local api_key
+  api_key="$(llm keys get tinfoil 2>/dev/null)" || {
+    printf 'Error: could not retrieve tinfoil API key (run: llm keys set tinfoil)\n' >&2
+    return 1
+  }
+  [[ -n "${api_key}" ]] || {
+    printf 'Error: tinfoil API key is empty\n' >&2
+    return 1
+  }
+
+  curl -sf --connect-timeout 4 "http://127.0.0.1:${port}/health" >/dev/null 2>&1 || {
+    printf 'Tinfoil proxy not running on port %s. Start it with: tf\n' "${port}" >&2
+    return 1
+  }
+
+  # Subshell + EXIT trap: tmpdir is cleaned up on success, on error, and on Ctrl-C.
+  (
+    local tmpdir
+    trap 'command rm -rf "${tmpdir:-}" 2>/dev/null' EXIT
+    tmpdir="$(mktemp -d)" || exit 1
+
+    # --- normalise to mp3 -------------------------------------------------
+    local mp3_file="${tmpdir}/audio.mp3"
+    if [[ "${file##*.}" == [Mm][Pp]3 ]]; then
+      mp3_file="${file}"
+    else
+      printf 'Converting to mp3...\n' >&2
+      ffmpeg -hide_banner -loglevel error -y -i "${file}" -vn -b:a 64k "${mp3_file}" || {
+        printf 'Error: ffmpeg conversion failed\n' >&2
+        exit 1
+      }
     fi
 
-    local api_key
-    api_key="$(llm keys get tinfoil 2>/dev/null)" || {
-        printf 'Error: could not retrieve tinfoil API key (run: llm keys set tinfoil)\n' >&2
-        return 1
+    # --- duration, not bytes, is what the endpoint limits -----------------
+    local duration
+    duration="$(ffprobe -v error -show_entries format=duration \
+      -of default=noprint_wrappers=1:nokey=1 "${mp3_file}")" || {
+      printf 'Error: ffprobe failed on %s\n' "${mp3_file}" >&2
+      exit 1
     }
-    [[ -n "${api_key}" ]] || {
-        printf 'Error: tinfoil API key is empty\n' >&2
-        return 1
-    }
-
-    curl -sf --connect-timeout 4 "http://127.0.0.1:${port}/health" >/dev/null 2>&1 || {
-        printf 'Tinfoil proxy not running on port %s. Start it with: tf\n' "${port}" >&2
-        return 1
+    duration="${duration%%.*}"
+    [[ "${duration}" =~ ^[0-9]+$ ]] || {
+      printf 'Error: could not determine duration (ffprobe gave: %s)\n' "${duration}" >&2
+      exit 1
     }
 
-    # Subshell + EXIT trap: tmpdir is cleaned up on success, on error, and on Ctrl-C.
-    (
-        local tmpdir
-        trap 'command rm -rf "${tmpdir:-}" 2>/dev/null' EXIT
-        tmpdir="$(mktemp -d)" || exit 1
+    # --- split if needed --------------------------------------------------
+    local -a chunks=()
+    if ((duration <= segment_time)); then
+      chunks=("${mp3_file}")
+    else
+      printf 'Audio is %ds (limit %ds), splitting...\n' "${duration}" "${segment_time}" >&2
+      ffmpeg -hide_banner -loglevel error -y -i "${mp3_file}" \
+        -f segment -segment_time "${segment_time}" -reset_timestamps 1 \
+        -c copy "${tmpdir}/chunk-%03d.mp3" || {
+        printf 'Error: ffmpeg split failed\n' >&2
+        exit 1
+      }
 
-        # --- normalise to mp3 -------------------------------------------------
-        local mp3_file="${tmpdir}/audio.mp3"
-        if [[ "${file##*.}" == [Mm][Pp]3 ]]; then
-            mp3_file="${file}"
-        else
-            printf 'Converting to mp3...\n' >&2
-            ffmpeg -hide_banner -loglevel error -y -i "${file}" -vn -b:a 64k "${mp3_file}" || {
-                printf 'Error: ffmpeg conversion failed\n' >&2
-                exit 1
-            }
-        fi
+      shopt -s nullglob
+      chunks=("${tmpdir}"/chunk-*.mp3) # zero-padded, so glob order is correct
+      shopt -u nullglob
 
-        # --- duration, not bytes, is what the endpoint limits -----------------
-        local duration
-        duration="$(ffprobe -v error -show_entries format=duration \
-            -of default=noprint_wrappers=1:nokey=1 "${mp3_file}")" || {
-            printf 'Error: ffprobe failed on %s\n' "${mp3_file}" >&2
-            exit 1
-        }
-        duration="${duration%%.*}"
-        [[ "${duration}" =~ ^[0-9]+$ ]] || {
-            printf 'Error: could not determine duration (ffprobe gave: %s)\n' "${duration}" >&2
-            exit 1
-        }
+      ((${#chunks[@]})) || {
+        printf 'Error: no chunks produced\n' >&2
+        exit 1
+      }
+      printf 'Transcribing %d chunks...\n' "${#chunks[@]}" >&2
+    fi
 
-        # --- split if needed --------------------------------------------------
-        local -a chunks=()
-        if ((duration <= segment_time)); then
-            chunks=("${mp3_file}")
-        else
-            printf 'Audio is %ds (limit %ds), splitting...\n' "${duration}" "${segment_time}" >&2
-            ffmpeg -hide_banner -loglevel error -y -i "${mp3_file}" \
-                -f segment -segment_time "${segment_time}" -reset_timestamps 1 \
-                -c copy "${tmpdir}/chunk-%03d.mp3" || {
-                printf 'Error: ffmpeg split failed\n' >&2
-                exit 1
-            }
+    # --- transcribe -------------------------------------------------------
+    local chunk body_file http_code curl_rc i=0
+    for chunk in "${chunks[@]}"; do
+      ((++i))
+      ((${#chunks[@]} > 1)) && printf '[chunk %d/%d]\n' "${i}" "${#chunks[@]}" >&2
 
-            shopt -s nullglob
-            chunks=("${tmpdir}"/chunk-*.mp3)   # zero-padded, so glob order is correct
-            shopt -u nullglob
+      body_file="${tmpdir}/resp-${i}.json"
 
-            ((${#chunks[@]})) || {
-                printf 'Error: no chunks produced\n' >&2
-                exit 1
-            }
-            printf 'Transcribing %d chunks...\n' "${#chunks[@]}" >&2
-        fi
+      http_code="$(curl -sS --max-time "${req_timeout}" \
+        -o "${body_file}" -w '%{http_code}' \
+        "http://127.0.0.1:${port}/v1/audio/transcriptions" \
+        -F file=@"${chunk}" \
+        -F model="${model}" \
+        -F response_format=json \
+        -H "Authorization: Bearer ${api_key}")"
+      curl_rc=$?
 
-        # --- transcribe -------------------------------------------------------
-        local chunk body_file http_code curl_rc i=0
-        for chunk in "${chunks[@]}"; do
-            ((++i))
-            ((${#chunks[@]} > 1)) && printf '[chunk %d/%d]\n' "${i}" "${#chunks[@]}" >&2
+      if ((curl_rc != 0)); then
+        printf 'Error: curl failed on chunk %d/%d (exit %d)\n' \
+          "${i}" "${#chunks[@]}" "${curl_rc}" >&2
+        exit 1
+      fi
 
-            body_file="${tmpdir}/resp-${i}.json"
+      if [[ "${http_code}" != 2?? ]]; then
+        printf 'Error: chunk %d/%d returned HTTP %s\n' \
+          "${i}" "${#chunks[@]}" "${http_code}" >&2
+        jq -er '.error.message' "${body_file}" >&2 2>/dev/null ||
+          head -c 2000 "${body_file}" >&2
+        printf '\n' >&2
+        exit 1
+      fi
 
-            http_code="$(curl -sS --max-time "${req_timeout}" \
-                -o "${body_file}" -w '%{http_code}' \
-                "http://127.0.0.1:${port}/v1/audio/transcriptions" \
-                -F file=@"${chunk}" \
-                -F model="${model}" \
-                -F response_format=json \
-                -H "Authorization: Bearer ${api_key}")"
-            curl_rc=$?
-
-            if ((curl_rc != 0)); then
-                printf 'Error: curl failed on chunk %d/%d (exit %d)\n' \
-                    "${i}" "${#chunks[@]}" "${curl_rc}" >&2
-                exit 1
-            fi
-
-            if [[ "${http_code}" != 2?? ]]; then
-                printf 'Error: chunk %d/%d returned HTTP %s\n' \
-                    "${i}" "${#chunks[@]}" "${http_code}" >&2
-                jq -er '.error.message' "${body_file}" >&2 2>/dev/null \
-                    || head -c 2000 "${body_file}" >&2
-                printf '\n' >&2
-                exit 1
-            fi
-
-            jq -er '.text' "${body_file}" || {
-                printf 'Error: chunk %d/%d returned no .text field\n' \
-                    "${i}" "${#chunks[@]}" >&2
-                head -c 2000 "${body_file}" >&2
-                printf '\n' >&2
-                exit 1
-            }
-        done
-    )
+      jq -er '.text' "${body_file}" || {
+        printf 'Error: chunk %d/%d returned no .text field\n' \
+          "${i}" "${#chunks[@]}" >&2
+        head -c 2000 "${body_file}" >&2
+        printf '\n' >&2
+        exit 1
+      }
+    done
+  )
 }
 
 # tf_whisper_transcribe() {
@@ -166,35 +233,35 @@ tf_whisper_transcribe() {
 #   local segment_time="${2:-600}"
 #   local port=8087
 #   local max_bytes=25000000
-# 
+#
 #   [[ -f "${file}" ]] || {
 #     printf >&2 'Error: file not found: %s\n' "${file}"
 #     return 1
 #   }
-# 
+#
 #   local api_key
 #   api_key="$(llm keys get tinfoil 2>/dev/null)" ||
 #     {
 #       printf >&2 'Error: could not retrieve tinfoil API key (run: llm keys set tinfoil)\n'
 #       return 1
 #     }
-# 
+#
 #   type ffmpeg >/dev/null 2>&1 ||
 #     {
 #       printf >&2 'Error: ffmpeg not found\n'
 #       return 1
 #     }
-# 
+#
 #   curl -sf --connect-timeout 4 "http://localhost:${port}/health" >/dev/null 2>&1 ||
 #     {
 #       printf >&2 'Tinfoil proxy not running on port %s. Start it with: tf\n' "${port}"
 #       return 1
 #     }
-# 
+#
 #   local tmpdir
 #   tmpdir="$(mktemp -d)" || return 1
 #   # NO trap — explicit cleanup via command rm (bypasses rm -v alias)
-# 
+#
 #   local mp3_file="${tmpdir}/audio.mp3"
 #   if [[ "${file##*.}" == [Mm][Pp]3 ]]; then
 #     mp3_file="${file}"
@@ -206,16 +273,16 @@ tf_whisper_transcribe() {
 #       return 1
 #     fi
 #   fi
-# 
+#
 #   local file_size
 #   file_size="$(stat --printf='%s' "${mp3_file}" 2>/dev/null || stat -f '%z' "${mp3_file}")" || {
 #     printf >&2 'Error: could not stat %s\n' "${mp3_file}"
 #     command rm -rf "${tmpdir}"
 #     return 1
 #   }
-# 
+#
 #   local -a chunks=()
-# 
+#
 #   if ((file_size <= max_bytes)); then
 #     chunks=("${mp3_file}")
 #   else
@@ -235,7 +302,7 @@ tf_whisper_transcribe() {
 #     fi
 #     printf >&2 'Transcribing %d chunks...\n' "${#chunks[@]}"
 #   fi
-# 
+#
 #   local i=0
 #   for chunk in "${chunks[@]}"; do
 #     ((++i))
@@ -250,7 +317,7 @@ tf_whisper_transcribe() {
 #     fi
 #     printf '\n'
 #   done
-# 
+#
 #   command rm -rf "${tmpdir}"
 # }
 
@@ -312,13 +379,6 @@ tf_llm_img() {
 
 edittf() {
   "${EDITOR}" ~/gitdir/skel/bash/bashrc_zen.d/tinfoil-helpers.sh
-}
-
-tf_help() {
-
-  cat <<'EOF'
-curl http://127.0.0.1:8080/v1/models
-EOF
 }
 
 echo "BASH COMPLETIONS: added for tinfoil"
