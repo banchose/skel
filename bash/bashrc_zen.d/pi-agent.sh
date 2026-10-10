@@ -87,6 +87,12 @@ px() {
 pi-backup() (
   # The ( ) body runs in a subshell, so set -e, the trap and umask don't leak into your shell.
   # That's also why there's no `local`: these variables never reach your shell.
+  # mkdir -p /tmp/w-restore
+  #
+  # gpg --batch --quiet --no-symkey-cache --pinentry-mode loopback --passphrase-fd 3 \
+  #     -d ~/Dropbox/pi-w/pi-w-1760070000.tar.xz.gpg 3<<<"$PI_W_ENC_KEY" \
+  #   | tar -xJf - -C /tmp/w-restore
+
   set -euo pipefail
   shopt -s nullglob
   umask 077
