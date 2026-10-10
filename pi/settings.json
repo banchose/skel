@@ -7,7 +7,7 @@
     "npm:@ff-labs/pi-fff",
     "npm:@firstpick/pi-themes-bundle"
   ],
-  "lastChangelogVersion": "1.0.4",
+  "lastChangelogVersion": "1.1.0",
   "defaultProvider": "tinfoil",
   "defaultModel": "glm-5-3",
   "workingVibe": "star trek",
@@ -19,9 +19,10 @@
   },
   "enabledModels": [
     "tinfoil/glm-5-3",
-    "tinfoil/deepseek-v4-1-flash",
     "anthropic/claude-opus-5-5",
-    "amazon-bedrock/us.anthropic.claude-opus-5-5"
+    "amazon-bedrock/us.anthropic.claude-opus-5-5",
+    "anthropic/claude-fable-5-1",
+    "tinfoil/kimi-k3"
   ],
   "theme": "dracula",
   "extensions": [
