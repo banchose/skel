@@ -43,6 +43,11 @@ pi-bed() {
 alias pi-pic='grim -t jpeg -g "$(slurp -d)" - | tee ./pi-pic-"$(date "+%s").jpg" | wl-copy'
 alias pp='grim -t jpeg -g "$(slurp -d)" - | tee ./pi-pic-"$(date "+%s").jpg" | wl-copy'
 
+pi-get-key() {
+
+  echo "sk-$(openssl rand -hex 32)"
+}
+
 pm() {
   llmpic="$HOME/temp/moon/pi-pic-one-shot.jpg"
   rm "${llmpic}"

@@ -1,0 +1,27 @@
+{
+  "packages": [
+    "npm:pi-mcp-adapter",
+    "npm:@narumitw/pi-btw",
+    "npm:@narumitw/pi-stamp",
+    "npm:@ff-labs/pi-fff",
+    "npm:@firstpick/pi-themes-bundle"
+  ],
+  "lastChangelogVersion": "1.0.4",
+  "defaultProvider": "tinfoil",
+  "defaultModel": "glm-5-3",
+  "workingVibe": "star trek",
+  "defaultThinkingLevel": "high",
+  "modelThinkingLevels": {
+    "tinfoil/glm-5-3": "xhigh",
+    "tinfoil/deepseek-v4-1-flash": "xhigh"
+  },
+  "enabledModels": [
+    "tinfoil/glm-5-3",
+    "tinfoil/deepseek-v4-1-flash",
+    "tinfoil/kimi-k3"
+  ],
+  "theme": "dracula",
+  "extensions": [
+    "-builtin:mcp"
+  ]
+}

@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# You will be the 'node' user as per the image build
+docker run --rm \
+  -v pi-agent-home-w:/home/node/.pi/agent \
+  -v ~/gitdir/skel/pi/mcp-adapter-w.json:/tmp/mcp-adapter.json:ro \
+  -v ~/gitdir/skel/pi/AGENTS/AGENTS.md:/tmp/AGENTS.md:ro \
+  -v ~/gitdir/skel/pi/settings-w.json:/tmp/settings.json:ro \
+  -v ~/gitdir/skel/PROMPT/SKILLS/pi:/tmp/SKILLS:ro \
+  -v ~/gitdir/skel/pi/extensions/:/tmp/extensions:ro \
+  --entrypoint bash pi-sandbox-w \
+  -c 'set -e
+      install -m 600 -o node -g node /tmp/mcp-adapter.json /home/node/.pi/agent/mcp-adapter.json
+      install -m 644 -o node -g node /tmp/AGENTS.md /home/node/.pi/agent/AGENTS.md
+      install -m 644 -o node -g node /tmp/settings.json /home/node/.pi/agent/settings.json
+      ls -la /home/node/.pi/agent/
+      cat /home/node/.pi/agent/AGENTS.md
+      cat /home/node/.pi/agent/mcp-adapter.json
+      mkdir -p /home/node/.pi/agent/skills
+      cp -rv /tmp/SKILLS/*/ /home/node/.pi/agent/skills
+      mkdir -p /home/node/.pi/agent/extensions
+      cp -rv /tmp/extensions/*/ /home/node/.pi/agent/extensions
+      [[ -d /home/node/.pi/agent/extensions/tinfoil ]] && ( cd /home/node/.pi/agent/extensions/tinfoil && npm ci )
+      pi install npm:pi-mcp-adapter
+      pi install npm:pi-web-access
+      pi install npm:@narumitw/pi-btw
+      pi install npm:@narumitw/pi-stamp
+      pi install npm:@firstpick/pi-themes-bundle
+      pi update --extensions
+      pi update --models'
+
+# pi install npm:awesome-pi-themes
+# pi install npm:@gotgenes/pi-permission-system
+# pi install git:github.com/nagisanzenin/engram
+# pi install npm:@ff-labs/pi-fff
+# pi install npm:@dietrichgebert/ponytail
+# pi install npm:@juicesharp/rpiv-todo
+# pi install npm:@narumitw/pi-plan-mode
+# pi install npm:@juicesharp/rpiv-ask-user-question
+# npm ci
