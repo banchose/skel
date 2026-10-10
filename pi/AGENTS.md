@@ -2,21 +2,39 @@
 
 ## When a command fails
 
-Stop. Do not try a different command.
+The point of this rule: a failure is often the first sign a model has gone
+off on a tangent, and cheaper models route around failures instead of
+fixing causes. So the default is **stop and report**, not "try another way."
 
-Report, in this order:
+### Stop and report (wait for me)
+
 1. the command that failed
 2. the actual error output
 3. why you think it failed
 4. what you propose next, as a single option
 
-Then wait for me.
+Stop when:
+- a **write, edit, delete, deploy, install, or any state-changing command** fails
+- the **same goal fails twice**, whatever the commands were
+- you are about to **change approach** — different tool, package manager,
+  flag, fallback, or "let me try another way"
+- a result makes you **reconsider the plan**, even if nothing errored
+- you're not sure which bucket you're in
 
-This applies to any non-zero exit, unexpected empty output, or any result that
-made you reconsider your approach. One diagnostic read/grep to understand the
-error is fine. A second *attempt* at the goal is not — that needs my go-ahead.
+One diagnostic read/grep to understand the error is fine before reporting.
+If the fix looks obvious, say it and wait anyway — I usually want to fix
+the cause, not route around it.
 
-Never work around a failure silently: no switching package managers, no
-alternate flags, no fallback tool, no "let me try another way" without asking.
-If the fix looks obvious, say it and wait anyway — I usually want to fix the
-cause, not route around it.
+### Carry on (mention it, don't stop)
+
+- a **read-only probe** returns non-zero or empty because the answer is
+  "nothing there": `grep -c` → 0, `ls` of a path that doesn't exist yet,
+  `tail` on a blank line, a dedup check with no hits
+- a **tool/mode isn't available in this environment** (model not enabled,
+  server not connected, optional feature missing) and the same tool has an
+  equivalent mode that reaches the **same goal** — use it, note that you did
+- a transient network/fetch error on a read, **once** — retry once, then
+  it's a stop
+
+"Carry on" never covers writes, and never covers a second failure.
+Say what failed in one line so I can see it in the transcript.
