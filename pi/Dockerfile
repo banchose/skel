@@ -70,6 +70,16 @@ RUN for t in httpie cfn-lint csvkit litecli pgcli sqlite-utils pylint flake8 myc
 
 # ---- Pi: last expensive layer. Only this and below rebuild on a version bump. ----
 USER root
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      poppler-utils \
+      tesseract-ocr tesseract-ocr-eng \
+      ocrmypdf \
+      python3-pip \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir --break-system-packages \
+      pypdf pdfplumber pymupdf pdfminer.six pytesseract pdf2image
+
 ARG PI_VERSION=latest
 RUN HOME=/root npm install -g --ignore-scripts "@earendil-works/pi-coding-agent@${PI_VERSION}"
 USER node
