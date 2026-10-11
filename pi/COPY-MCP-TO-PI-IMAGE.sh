@@ -5,6 +5,7 @@ docker run --rm \
   -v ~/gitdir/skel/pi/mcp-adapter.json:/tmp/mcp-adapter.json:ro \
   -v ~/gitdir/skel/pi/AGENTS/AGENTS.md:/tmp/AGENTS.md:ro \
   -v ~/gitdir/skel/pi/settings.json:/tmp/settings.json:ro \
+  -v ~/gitdir/skel/pi/keybindings.json:/tmp/keybindings.json:ro \
   -v ~/gitdir/skel/PROMPT/SKILLS/pi:/tmp/SKILLS:ro \
   -v ~/gitdir/skel/pi/extensions/:/tmp/extensions:ro \
   --entrypoint bash pi-sandbox \
@@ -12,6 +13,7 @@ docker run --rm \
       install -m 600 -o node -g node /tmp/mcp-adapter.json /home/node/.pi/agent/mcp-adapter.json
       install -m 644 -o node -g node /tmp/AGENTS.md /home/node/.pi/agent/AGENTS.md
       install -m 644 -o node -g node /tmp/settings.json /home/node/.pi/agent/settings.json
+      install -m 644 -o node -g node /tmp/keybindings.json /home/node/.pi/agent/keybindings.json
       ls -la /home/node/.pi/agent/
       cat /home/node/.pi/agent/AGENTS.md
       cat /home/node/.pi/agent/mcp-adapter.json
