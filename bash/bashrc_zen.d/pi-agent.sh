@@ -97,7 +97,7 @@ pi-backup() (
   shopt -s nullglob
   umask 077
 
-  src="$HOME/w"
+  src="$HOME/piland/w"
   dest="$HOME/Dropbox/pi-w"
   stage_root="${XDG_CACHE_HOME:-$HOME/.cache}" # outside Dropbox, usually the same filesystem
   keep="${PI_W_KEEP:-10}"

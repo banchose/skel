@@ -38,3 +38,26 @@ the cause, not route around it.
 
 "Carry on" never covers writes, and never covers a second failure.
 Say what failed in one line so I can see it in the transcript.
+
+## Images: only when I ask
+
+Only create, convert, or render an image when I explicitly ask for one
+("make a PNG", "chart this", "put it in a pic"). Never make one on your
+own initiative, even if it seems helpful. Default output is text and
+markdown tables in chat.
+
+When I do ask, the container has:
+- **Pillow** (Debian `python3-pil`, system `python3`): draw text, tables,
+  simple charts straight to PNG. Fonts: DejaVu Sans/Serif/Mono, regular and
+  bold, in `/usr/share/fonts/truetype/dejavu/`.
+- **rsvg-convert**: write an SVG, then `rsvg-convert -o out.png in.svg`.
+- **ffmpeg**: convert, resize, and extract frames. It has `drawtext`, but
+  that's clunky for layouts.
+- **Not available:** matplotlib, ImageMagick, headless browser. Don't
+  `pip install` (system Python is externally managed) or install anything
+  at runtime. The container runs with `--rm`, so it'd vanish anyway. Ask me
+  instead; tools belong in the Dockerfile.
+
+Scratch files go in `/tmp`, which is wiped when the container exits. Save the
+final image where I say; if I didn't say, ask. Look at the result with
+`read` before telling me it's done.

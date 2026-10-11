@@ -10,10 +10,11 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends \
        bash ca-certificates git ripgrep \
        man-db manpages manpages-dev less \
+       python3-pil librsvg2-bin \
   && apt-get install -y --reinstall --no-install-recommends \
        bash coreutils procps gpg socat python3 python3-pip python3-yaml \
        ffmpeg sox libsox-fmt-all dpkg dnsutils bc qalc ipcalc iproute2 \
-       fd-find findutils grep iputils-ping tmux jq xz-utils zip gzip unzip \
+       fd-find findutils grep iputils-ping tmux xz-utils zip gzip unzip \
        7zip bash-completion sed tar util-linux vim curl wget \
   && rm -rf /var/lib/apt/lists/*
 
