@@ -9,7 +9,7 @@
   ],
   "lastChangelogVersion": "1.1.0",
   "defaultProvider": "tinfoil",
-  "defaultModel": "glm-5-3",
+  "defaultModel": "kimi-k3",
   "workingVibe": "star trek",
   "defaultThinkingLevel": "high",
   "modelThinkingLevels": {
@@ -18,11 +18,11 @@
     "anthropic/claude-opus-5-5": "high"
   },
   "enabledModels": [
-    "tinfoil/glm-5-3",
     "anthropic/claude-opus-5-5",
     "amazon-bedrock/us.anthropic.claude-opus-5-5",
     "anthropic/claude-fable-5-1",
-    "tinfoil/kimi-k3"
+    "tinfoil/kimi-k3",
+    "anthropic/claude-sonnet-5-5"
   ],
   "theme": "dracula",
   "extensions": [
