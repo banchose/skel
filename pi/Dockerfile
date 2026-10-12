@@ -74,6 +74,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       poppler-utils \
       tesseract-ocr tesseract-ocr-eng \
       ocrmypdf \
+      pandoc \
+      sqlite3 \
+      sqlite3-tools \
+      sqlite3-doc \
       python3-pip \
  && rm -rf /var/lib/apt/lists/*
 
