@@ -39,22 +39,6 @@ the cause, not route around it.
 "Carry on" never covers writes, and never covers a second failure.
 Say what failed in one line so I can see it in the transcript.
 
-## Container toolbox
-
-Installed and fine to use: `python3` 3.11 (stdlib + Pillow only - no pip),
-`node`/`npm`, `rg`, `fdfind` (not `fd`), `jq`, `yq`, `xmllint`, `csvlook`
-(csvkit), `sqlite3` 3.40, `pandoc` 2.17, `pdftotext`, `unzip`, `git`,
-`curl`, `wget`, `sed`, `awk`, `ffmpeg`, `rsvg-convert`. **Not installed:**
-bat - don't install it; ask, it belongs in the Dockerfile.
-
-How to edit files:
-- **Default to pi's `edit`/`write` tools** - the change is visible in the
-  transcript as a before/after.
-- Use a Python/sed script only for bulk or multi-file mechanical changes,
-  and then: dry-run to /tmp first, add a check that content wasn't lost,
-  and show `git diff --stat` before committing.
-- If the same `edit` fails twice, stop and show me the exact old/new text.
-
 ## Images: only when I ask
 
 Only create, convert, or render an image when I explicitly ask for one
