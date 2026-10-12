@@ -78,6 +78,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       sqlite3 \
       sqlite3-tools \
       sqlite3-doc \
+      libxml2-utils \
       python3-pip \
  && rm -rf /var/lib/apt/lists/*
 
