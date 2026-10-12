@@ -5,6 +5,16 @@ alias cdm='cd ~/temp/moon'
 alias cdbills='cd ~/gitdir/configs/pi-dirs/bills'
 alias editpi='nvim ~/gitdir/skel/bash/bashrc_zen.d/pi-agent.sh'
 
+pim() {
+
+  pidr=~/temp/moon
+  cd ~/temp/moon || {
+    echo "No ${pidir}"
+    return 1
+  }
+  pi-bed
+}
+
 pi-bed() {
   if ! docker info >/dev/null 2>&1; then
     echo "docker daemon is not running" 1>&2
