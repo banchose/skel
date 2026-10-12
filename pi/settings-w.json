@@ -4,11 +4,12 @@
     "npm:@narumitw/pi-btw",
     "npm:@narumitw/pi-stamp",
     "npm:@ff-labs/pi-fff",
-    "npm:@firstpick/pi-themes-bundle"
+    "npm:@firstpick/pi-themes-bundle",
+    "npm:pi-web-access"
   ],
-  "lastChangelogVersion": "1.0.4",
-  "defaultProvider": "tinfoil",
-  "defaultModel": "glm-5-3",
+  "lastChangelogVersion": "1.1.0",
+  "defaultProvider": "anthropic",
+  "defaultModel": "claude-opus-5-5",
   "workingVibe": "star trek",
   "defaultThinkingLevel": "high",
   "modelThinkingLevels": {
@@ -18,7 +19,10 @@
   "enabledModels": [
     "tinfoil/glm-5-3",
     "tinfoil/deepseek-v4-1-flash",
-    "tinfoil/kimi-k3"
+    "tinfoil/kimi-k3",
+    "anthropic/claude-fable-5-1",
+    "anthropic/claude-sonnet-5-5",
+    "anthropic/claude-opus-5-5"
   ],
   "theme": "dracula",
   "extensions": [
