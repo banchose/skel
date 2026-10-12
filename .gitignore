@@ -4,6 +4,7 @@ mongo_data/
 meilisearch_data/
 mongodb_data/
 privatebin-data/
+node_modules/
 homer/
 .aider*
 *.gz
@@ -18,7 +19,6 @@ homer/
 *.cert
 *.key
 *.tmp
-node_modules/
 
 # Logs
 logs
