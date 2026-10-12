@@ -3,7 +3,7 @@
 docker run --rm \
   -v pi-agent-home-w:/home/node/.pi/agent \
   -v ~/gitdir/skel/pi/mcp-adapter-w.json:/tmp/mcp-adapter.json:ro \
-  -v ~/gitdir/skel/pi/AGENTS/AGENTS.md:/tmp/AGENTS.md:ro \
+  -v ~/gitdir/skel/pi/AGENTS/AGENTS-w.md:/tmp/AGENTS.md:ro \
   -v ~/gitdir/skel/pi/settings-w.json:/tmp/settings.json:ro \
   -v ~/gitdir/skel/pi/keybindings.json:/tmp/keybindings.json:ro \
   -v ~/gitdir/skel/PROMPT/SKILLS/pi:/tmp/SKILLS:ro \
