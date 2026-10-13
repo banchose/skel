@@ -6,6 +6,7 @@ mongodb_data/
 privatebin-data/
 node_modules/
 homer/
+npm/
 .aider*
 *.gz
 *.db
