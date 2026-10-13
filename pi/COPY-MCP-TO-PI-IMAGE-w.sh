@@ -26,7 +26,6 @@ docker run --rm \
       pi install npm:pi-web-access
       pi install npm:@narumitw/pi-btw
       pi install npm:@narumitw/pi-stamp
-      pi install npm:@firstpick/pi-themes-bundle
       pi update --extensions
       pi update --models'
 
@@ -38,4 +37,5 @@ docker run --rm \
 # pi install npm:@juicesharp/rpiv-todo
 # pi install npm:@narumitw/pi-plan-mode
 # pi install npm:@juicesharp/rpiv-ask-user-question
+# pi install npm:@firstpick/pi-themes-bundle
 # npm ci

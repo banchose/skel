@@ -4,12 +4,11 @@
     "npm:pi-mcp-adapter",
     "npm:@narumitw/pi-btw",
     "npm:@narumitw/pi-stamp",
-    "npm:@ff-labs/pi-fff",
-    "npm:@firstpick/pi-themes-bundle"
+    "npm:@ff-labs/pi-fff"
   ],
-  "lastChangelogVersion": "1.1.0",
-  "defaultProvider": "tinfoil",
-  "defaultModel": "kimi-k3",
+  "lastChangelogVersion": "1.2.0",
+  "defaultProvider": "amazon-bedrock",
+  "defaultModel": "us.anthropic.claude-opus-5-5",
   "workingVibe": "star trek",
   "defaultThinkingLevel": "high",
   "modelThinkingLevels": {
@@ -25,8 +24,8 @@
     "anthropic/claude-sonnet-5-5",
     "tinfoil/glm-5-3"
   ],
-  "theme": "dracula",
   "extensions": [
     "-builtin:mcp"
-  ]
+  ],
+  "theme": "dark"
 }
