@@ -5,6 +5,9 @@ UserAgent='Mozilla/5.0 (iPhone; CPU iPhone OS 12_0 like Mac OS X) AppleWebKit/60
 TestLink='https://www.youtube.com/watch?v=_7dfFtAPVHE'
 
 VidDir=~/y/youtube-down/
+
+alias cdy='cd /dsk/n1/youtube-down'
+
 mm() {
   cd ~/y/youtube-down/ || return
 
