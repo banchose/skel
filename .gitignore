@@ -1,11 +1,14 @@
-tmp/
-pics/
 mongo_data/
 meilisearch_data/
 mongodb_data/
 privatebin-data/
 node_modules/
 homer/
+npm/
+tmp/
+pics/
+build/
+scratch/
 npm/
 .aider*
 *.gz
@@ -19,7 +22,18 @@ npm/
 *.crt
 *.cert
 *.key
-*.tmp
+*.jpg
+*.png
+*.gif
+
+# hri certs
+# *star-chain*
+# 
+# *-secret*
+# *-SECRET*
+# *-credential*
+# *-CREDENTIAL*
+# *-tls*
 
 # Logs
 logs
@@ -159,5 +173,3 @@ dist
 .pnp.*
 
 
-# Tmux plugins (managed separately)
-docker/builds/*/tmux/plugins/*
