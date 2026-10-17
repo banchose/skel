@@ -9,7 +9,8 @@
         "-skills/ponytail-gain/SKILL.md",
         "-skills/ponytail-help/SKILL.md",
         "-skills/ponytail-review/SKILL.md"
-      ]
+      ],
+      "extensions": []
     },
     "npm:pi-mcp-adapter",
     "npm:@narumitw/pi-btw",
@@ -22,8 +23,8 @@
     }
   ],
   "lastChangelogVersion": "1.3.0",
-  "defaultProvider": "amazon-bedrock",
-  "defaultModel": "us.anthropic.claude-opus-5-5",
+  "defaultProvider": "tinfoil",
+  "defaultModel": "glm-5-3",
   "workingVibe": "star trek",
   "defaultThinkingLevel": "high",
   "modelThinkingLevels": {
