@@ -45,7 +45,7 @@
   "extensions": [
     "-builtin:mcp"
   ],
-  "theme": "light",
+  "theme": "dark",
   "skills": [
     "-skills/huggingface-mcp/SKILL.md"
   ]
