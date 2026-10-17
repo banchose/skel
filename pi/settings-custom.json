@@ -1,0 +1,49 @@
+{
+  "packages": [
+    {
+      "source": "npm:@dietrichgebert/ponytail",
+      "skills": [
+        "-skills/ponytail/SKILL.md",
+        "-skills/ponytail-audit/SKILL.md",
+        "-skills/ponytail-debt/SKILL.md",
+        "-skills/ponytail-gain/SKILL.md",
+        "-skills/ponytail-help/SKILL.md",
+        "-skills/ponytail-review/SKILL.md"
+      ]
+    },
+    "npm:pi-mcp-adapter",
+    "npm:@narumitw/pi-btw",
+    "npm:@narumitw/pi-stamp",
+    {
+      "source": "npm:@ff-labs/pi-fff",
+      "extensions": [
+        "-src/index.ts"
+      ]
+    }
+  ],
+  "lastChangelogVersion": "1.3.0",
+  "defaultProvider": "amazon-bedrock",
+  "defaultModel": "us.anthropic.claude-opus-5-5",
+  "workingVibe": "star trek",
+  "defaultThinkingLevel": "high",
+  "modelThinkingLevels": {
+    "tinfoil/glm-5-3": "xhigh",
+    "tinfoil/deepseek-v4-1-flash": "xhigh",
+    "anthropic/claude-opus-5-5": "high"
+  },
+  "enabledModels": [
+    "anthropic/claude-opus-5-5",
+    "amazon-bedrock/us.anthropic.claude-opus-5-5",
+    "anthropic/claude-fable-5-1",
+    "tinfoil/kimi-k3",
+    "anthropic/claude-sonnet-5-5",
+    "tinfoil/glm-5-3"
+  ],
+  "extensions": [
+    "-builtin:mcp"
+  ],
+  "theme": "light",
+  "skills": [
+    "-skills/huggingface-mcp/SKILL.md"
+  ]
+}
