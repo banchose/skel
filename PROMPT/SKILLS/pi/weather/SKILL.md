@@ -2,6 +2,7 @@
 name: weather
 description: Current conditions, 60-minute precipitation nowcast, official weather alerts, and a convective/severe-storm outlook (CAPE, CIN, bulk shear, lapse rate, mid-level ascent) for any location. Use whenever the user asks about weather, temperature, rain, wind, storms, thunderstorms, severe weather risk, alerts/warnings, or "is it going to storm".
 compatibility: Requires bash, curl, jq, column, and OPENWEATHER_APP_ID with a One Call by Call subscription. Open-Meteo needs no key. Degrades to Open-Meteo-only if OWM fails. Default location is the user's LAT/LON env vars (then WEATHER_LAT/WEATHER_LON, then a hard-coded point near Guilderland NY).
+disable-model-invocation: true
 ---
 
 # Weather

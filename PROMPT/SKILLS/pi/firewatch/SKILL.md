@@ -1,6 +1,7 @@
 ---
 name: firewatch
 description: Live US wildfire incidents (NIFC WFIGS, 15-min refresh) via the FireWatch MCP endpoint — search active fires by state/acreage, get incident detail, list containment updates. Use when asked about wildfires, fire perimeters, containment, acres burned, or fire activity near a place.
+disable-model-invocation: true
 ---
 
 # FireWatch

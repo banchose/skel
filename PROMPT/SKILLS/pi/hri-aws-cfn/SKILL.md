@@ -1,6 +1,7 @@
 ---
 name: hri-aws-cfn
 description: Author AWS CloudFormation YAML templates in the HRI house style — commented deploy header with PICKPROFILE, p/r naming prefixes, exported outputs feeding a set_stack_outputs shell pipeline, Retain only on EBS volumes and S3 buckets, S3 hardening defaults. Use whenever asked to create, scaffold, review, or modify a CloudFormation template or stack YAML. Authoring only — never deploys.
+disable-model-invocation: true
 ---
 
 # CloudFormation Template Author (HRI style)

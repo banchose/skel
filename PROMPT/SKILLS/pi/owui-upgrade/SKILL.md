@@ -1,6 +1,7 @@
 ---
 name: owui-upgrade
 description: Upgrade the HRI OpenWebUI Helm release on EKS (namespace openwebui, cluster EksTest) — pre-flight gates, read-only helm diff recon, RDS snapshot, the OPENAI_API duplicate-env STOP gate, Alembic log verification, functional tests, rollback. Use whenever asked to upgrade, bump, diff, or roll back OpenWebUI / the open-webui chart, or to plan an OpenWebUI version change.
+disable-model-invocation: true
 ---
 
 # OpenWebUI upgrade (HRI / EksTest)

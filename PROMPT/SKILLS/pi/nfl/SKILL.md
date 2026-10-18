@@ -2,6 +2,7 @@
 name: nfl
 description: Live NFL scores and game detail from ESPN's free public API — scoreboard for the week, down & distance, win probability, box score, scoring plays, leaders, current drive, injuries. Use when asked for an NFL score, how a game is going, who's playing, "how are the Bills doing", or live game stats.
 compatibility: Requires bash 5+, curl, jq. No API key. Uses ESPN's undocumented site API (site.api.espn.com), which could change without notice.
+disable-model-invocation: true
 ---
 
 # NFL live scores

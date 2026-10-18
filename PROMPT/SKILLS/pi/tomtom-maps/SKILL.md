@@ -1,6 +1,7 @@
 ---
 name: tomtom-maps
 description: Gotchas and worked examples for the tomtom-maps MCP server — geocoding, POI and EV search, routing, traffic incidents, static map images and GeoJSON visualization. Covers the [lon, lat] coordinate trap that silently returns Antarctica, tools that need a category to return anything, filters that silently zero results, and which endpoints the API key can't reach. Use when asked to geocode an address, find places or EV chargers near somewhere, plan a driving route or travel time, check traffic or road closures, or render a map.
+disable-model-invocation: true
 ---
 
 # tomtom-maps MCP

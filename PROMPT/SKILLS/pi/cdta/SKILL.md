@@ -1,6 +1,7 @@
 ---
 name: cdta
 description: Riding CDTA buses in New York's Capital Region (Albany/Troy/Schenectady/Saratoga) — Navigator smart card vs cash fares, what a trip costs, where to buy and reload, service types (regular route, BusPlus, NX, FLEX, STAR), and onboard rules and boarding protocol. Use when asked about CDTA, Navigator cards, Capital Region bus fares, whether a monthly pass is worth it, or how to actually ride the bus.
+disable-model-invocation: true
 ---
 
 # CDTA

@@ -1,6 +1,7 @@
 ---
-name: careful-operations-discipline
+name: careful-ops
 description: 'Two-speed operating discipline for technical work: batch reads and reversible edits to move fast, then downshift to one-at-a-time confirm-before-acting for irreversible operations. Discover values instead of assuming them, syntax-test complex commands on static input, and flag blast radius. Use when scripting, debugging, changing infrastructure or config, or running destructive or production commands.'
+disable-model-invocation: true
 ---
 # Careful Operations Discipline
 

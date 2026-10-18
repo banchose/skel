@@ -1,6 +1,7 @@
 ---
 name: fastmail
 description: Gotchas and worked examples for the Fastmail MCP server (api.fastmail.com/mcp) — email search with Gmail-style qualifiers, threads, contacts, calendar events, notes, plus the query-syntax traps that hard-error instead of returning nothing. Use when asked to search, read, or summarize the user's Fastmail mail, find a contact, check their calendar, or read their notes.
+disable-model-invocation: true
 ---
 
 # Fastmail MCP

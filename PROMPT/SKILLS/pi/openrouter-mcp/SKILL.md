@@ -1,6 +1,7 @@
 ---
 name: openrouter-mcp
 description: Gotchas for the OpenRouter MCP server (mcp.openrouter.ai) — model catalog, pricing, rankings, credits, send-message/image/speech/transcribe, docs search. Use when querying OpenRouter model rankings, prices, provider endpoints, uptime, credit balance, or calling a model through OpenRouter.
+disable-model-invocation: true
 ---
 
 # OpenRouter MCP

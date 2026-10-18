@@ -1,6 +1,7 @@
 ---
 name: ansi-cli
 description: Writing terminal output that doesn't look broken — ANSI escape codes, color-depth and NO_COLOR detection, why ANSI 16 lies, progress bars, CLI flag/exit-code/stderr conventions, TUI framework picks. Use when writing or reviewing a CLI or TUI, colorizing output, adding a progress bar or spinner, or debugging garbled/invisible terminal output.
+disable-model-invocation: true
 ---
 
 # ANSI & CLI output

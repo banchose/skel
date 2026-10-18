@@ -2,6 +2,7 @@
 name: polymarket
 description: Read Polymarket prediction-market data with curl — market discovery and search, live prices and order books, price history, plus the public activity surface (PnL leaderboard, per-market whale holders, any wallet's full trade history and open positions). All reads are unauthenticated. Use when asked about prediction markets, betting odds on an event, implied probabilities, what traders are betting on, smart-money positioning, or Polymarket specifically.
 compatibility: Requires bash, curl, and jq (python3 works too). No API key, no account, no wallet. Read-only — this skill never places an order.
+disable-model-invocation: true
 ---
 
 # Polymarket

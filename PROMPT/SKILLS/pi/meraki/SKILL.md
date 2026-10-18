@@ -1,6 +1,7 @@
 ---
 name: meraki
 description: Read Cisco Meraki Dashboard API v1 data with curl — org/network/device discovery and MX firewall rules (L3, L7, inbound, cellular, port forwarding, 1:1 and 1:many NAT, site-to-site VPN firewall). Read-only GETs, jq formatting, rate-limit and pagination handling. Use when asked to inspect, audit, list, or compare Meraki firewall rules, networks, devices, or uplink addresses.
+disable-model-invocation: true
 ---
 
 # Meraki Dashboard API v1 via curl

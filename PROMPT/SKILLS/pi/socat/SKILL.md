@@ -1,6 +1,7 @@
 ---
 name: socat
 description: 'socat reference: address grammar, address types, option groups, TLS/UDP/PTY/EXEC options, canonical relay and tunnel one-liners, SOCAT_* env vars, and the pitfalls that break commands (fork on connectors, missing -T on UDP, raw vs rawer, su= vs su-d=, wait-slave). Use when writing, reading, or debugging socat commands, port forwards, TLS termination, serial/PTY bridges, or UDP/multicast relays.'
+disable-model-invocation: true
 ---
 
 # socat

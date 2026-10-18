@@ -1,6 +1,7 @@
 ---
 name: huggingface-mcp
 description: Gotchas for the Hugging Face MCP server (huggingface.co/mcp) — hf_fs virtual filesystem for models, datasets, Spaces, papers, docs; trending listings; MCP Spaces discovery; the read_* skill loaders. Use when searching or reading Hub models/datasets/Spaces/papers, searching HF docs, finding MCP-compatible Spaces, or loading an HF skill.
+disable-model-invocation: true
 ---
 
 # Hugging Face MCP
