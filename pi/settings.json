@@ -1,25 +1,12 @@
 {
+  "theme": "dark",
+  "terminal": {
+    "trueColor": true
+  },
   "packages": [
-    {
-      "source": "npm:@dietrichgebert/ponytail",
-      "skills": [
-        "-skills/ponytail/SKILL.md",
-        "-skills/ponytail-audit/SKILL.md",
-        "-skills/ponytail-debt/SKILL.md",
-        "-skills/ponytail-gain/SKILL.md",
-        "-skills/ponytail-help/SKILL.md",
-        "-skills/ponytail-review/SKILL.md"
-      ]
-    },
     "npm:pi-mcp-adapter",
     "npm:@narumitw/pi-btw",
-    "npm:@narumitw/pi-stamp",
-    {
-      "source": "npm:@ff-labs/pi-fff",
-      "extensions": [
-        "-src/index.ts"
-      ]
-    }
+    "npm:@narumitw/pi-stamp"
   ],
   "lastChangelogVersion": "1.2.0",
   "defaultProvider": "amazon-bedrock",
@@ -41,9 +28,5 @@
   ],
   "extensions": [
     "-builtin:mcp"
-  ],
-  "theme": "dark",
-  "terminal": {
-    "trueColor": true
-  }
+  ]
 }
