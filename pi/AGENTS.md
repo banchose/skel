@@ -1,40 +1,32 @@
-# Global instructions
+# Subject: the pi image and agent-config build
 
-## When a command fails
+This directory (`~/gitdir/skel/pi` on the host) is the source of truth for
+the `pi-sandbox` container and the `pi-agent-home` volume. The global
+instructions in `~/.pi/agent/AGENTS.md` still apply here.
 
-The point of this rule: a failure is often the first sign a model has gone
-off on a tangent, and cheaper models route around failures instead of
-fixing causes. So the default is **stop and report**, not "try another way."
+## Layout
 
-### Stop and report (wait for me)
+- `Dockerfile`, `build-pi.sh`: build the image. `FULL=1` refreshes apt layers.
+- `COPY-MCP-TO-PI-IMAGE.sh`: seeds the `pi-agent-home` volume from this dir
+  (settings, keybindings, AGENTS/AGENTS.md, mcp-adapter.json, skills,
+  extensions, npm packages). Skills and extensions in the volume are wiped
+  and recopied, so this dir is authoritative for them.
+- `settings.json`, `mcp-adapter.json`, `keybindings.json`, `AGENTS/AGENTS.md`:
+  the files that get installed. `settings-*.json` are local variants kept
+  for reference, not installed.
+- `skills -> ../PROMPT/SKILLS/pi/`: the skills that get installed.
+- `pi-agent.sh`: the host shell function (`pi-bed`) that runs the container.
+- `diff-jsons.sh`: compares installed settings/keybindings against this dir.
+- `*-w.*` files are a separate variant. Ignore them unless asked.
 
-1. the command that failed
-2. the actual error output
-3. why you think it failed
-4. what you propose next, as a single option
+## How to work here
 
-Stop when:
-- a **write, edit, delete, deploy, install, or any state-changing command** fails
-- the **same goal fails twice**, whatever the commands were
-- you are about to **change approach** — different tool, package manager,
-  flag, fallback, or "let me try another way"
-- a result makes you **reconsider the plan**, even if nothing errored
-- you're not sure which bucket you're in
-
-One diagnostic read/grep to understand the error is fine before reporting.
-If the fix looks obvious, say it and wait anyway — I usually want to fix
-the cause, not route around it.
-
-### Carry on (mention it, don't stop)
-
-- a **read-only probe** returns non-zero or empty because the answer is
-  "nothing there": `grep -c` → 0, `ls` of a path that doesn't exist yet,
-  `tail` on a blank line, a dedup check with no hits
-- a **tool/mode isn't available in this environment** (model not enabled,
-  server not connected, optional feature missing) and the same tool has an
-  equivalent mode that reaches the **same goal** — use it, note that you did
-- a transient network/fetch error on a read, **once** — retry once, then
-  it's a stop
-
-"Carry on" never covers writes, and never covers a second failure.
-Say what failed in one line so I can see it in the transcript.
+- Anything changed at runtime in the volume (`/mcp-adapter enable`,
+  `/settings`, `pi install`) is overwritten on the next
+  `COPY-MCP-TO-PI-IMAGE.sh`. Changes that should stick go in this dir.
+- The live state is right here to check: `~/.pi/agent/`, `pi --version`,
+  `env | grep ^PI_`. Compare against this dir instead of guessing.
+- Never print `mcp-adapter.json` or `~/.pi/agent/auth.json`; they hold
+  tokens. Use `jq` to inspect structure or boolean fields only.
+- You can't reach the host; no docker, no git. `~` in host scripts is
+  `/home/una`.

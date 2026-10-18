@@ -17,9 +17,13 @@ docker run --rm \
       ls -la /home/node/.pi/agent/
       cat /home/node/.pi/agent/AGENTS.md
       cat /home/node/.pi/agent/mcp-adapter.json
+      # skills and extensions in the volume are derived from skel: wipe, then copy,
+      # so renamed/removed directories do not linger and collide
       mkdir -p /home/node/.pi/agent/skills
+      rm -rf /home/node/.pi/agent/skills/*
       cp -rv /tmp/SKILLS/*/ /home/node/.pi/agent/skills
       mkdir -p /home/node/.pi/agent/extensions
+      rm -rf /home/node/.pi/agent/extensions/*
       cp -rv /tmp/extensions/*/ /home/node/.pi/agent/extensions
       [[ -d /home/node/.pi/agent/extensions/tinfoil ]] && ( cd /home/node/.pi/agent/extensions/tinfoil && npm ci )
       pi install npm:pi-mcp-adapter
