@@ -1,10 +1,25 @@
 {
   "packages": [
-    "npm:@dietrichgebert/ponytail",
+    {
+      "source": "npm:@dietrichgebert/ponytail",
+      "skills": [
+        "-skills/ponytail/SKILL.md",
+        "-skills/ponytail-audit/SKILL.md",
+        "-skills/ponytail-debt/SKILL.md",
+        "-skills/ponytail-gain/SKILL.md",
+        "-skills/ponytail-help/SKILL.md",
+        "-skills/ponytail-review/SKILL.md"
+      ]
+    },
     "npm:pi-mcp-adapter",
     "npm:@narumitw/pi-btw",
     "npm:@narumitw/pi-stamp",
-    "npm:@ff-labs/pi-fff"
+    {
+      "source": "npm:@ff-labs/pi-fff",
+      "extensions": [
+        "-src/index.ts"
+      ]
+    }
   ],
   "lastChangelogVersion": "1.2.0",
   "defaultProvider": "amazon-bedrock",
