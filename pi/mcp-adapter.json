@@ -6,7 +6,13 @@
         "x-api-key": "${EXA_API_KEY}"
       },
       "directTools": true,
-      "disabled": true
+      "disabled": false,
+      "excludeTools": [
+        "agent_run",
+        "read_tools_list",
+        "read_agent_research_guide",
+        "read_agent_schema_templates"
+      ]
     },
     "aws-documentation-mcp-server": {
       "command": "uvx",
