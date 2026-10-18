@@ -12,8 +12,8 @@ instructions in `~/.pi/agent/AGENTS.md` still apply here.
   extensions, npm packages). Skills and extensions in the volume are wiped
   and recopied, so this dir is authoritative for them.
 - `settings.json`, `mcp-adapter.json`, `keybindings.json`, `AGENTS/AGENTS.md`:
-  the files that get installed. `settings-*.json` are local variants kept
-  for reference, not installed.
+  the files that get installed. `OTHER-SETTINGS/` holds old settings
+  variants kept for reference, not installed.
 - `skills -> ../PROMPT/SKILLS/pi/`: the skills that get installed.
 - `pi-agent.sh`: the host shell function (`pi-bed`) that runs the container.
 - `diff-jsons.sh`: compares installed settings/keybindings against this dir.
@@ -28,5 +28,6 @@ instructions in `~/.pi/agent/AGENTS.md` still apply here.
   `env | grep ^PI_`. Compare against this dir instead of guessing.
 - Never print `mcp-adapter.json` or `~/.pi/agent/auth.json`; they hold
   tokens. Use `jq` to inspect structure or boolean fields only.
-- You can't reach the host; no docker, no git. `~` in host scripts is
-  `/home/una`.
+- You can't reach the host, and there is no docker. `git` is installed but
+  `/workspace` is not a repo from in here (`.git` is above the mount), so
+  git commands fail. `~` in host scripts is `/home/una`.

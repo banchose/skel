@@ -27,5 +27,8 @@
   "extensions": [
     "-builtin:mcp"
   ],
-  "theme": "dark"
+  "theme": "dark",
+  "terminal": {
+    "trueColor": true
+  }
 }
