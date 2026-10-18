@@ -1,34 +1,10 @@
 {
   "packages": [
-    {
-      "source": "npm:@dietrichgebert/ponytail",
-      "skills": [
-        "-skills/ponytail-audit/SKILL.md",
-        "-skills/ponytail-debt/SKILL.md",
-        "-skills/ponytail-gain/SKILL.md",
-        "-skills/ponytail-help/SKILL.md",
-        "-skills/ponytail-review/SKILL.md",
-        "-skills/ponytail/SKILL.md"
-      ],
-      "extensions": [
-        "-pi-extension/index.js"
-      ]
-    },
-    "npm:pi-mcp-adapter",
-    "npm:@narumitw/pi-btw",
-    "npm:@narumitw/pi-stamp",
-    {
-      "source": "npm:@ff-labs/pi-fff",
-      "extensions": [
-        "-src/index.ts"
-      ]
-    }
   ],
   "lastChangelogVersion": "1.3.0",
   "defaultProvider": "tinfoil",
   "defaultModel": "glm-5-3",
-  "workingVibe": "star trek",
-  "defaultThinkingLevel": "high",
+  "defaultThinkingLevel": "medium",
   "modelThinkingLevels": {
     "tinfoil/glm-5-3": "xhigh",
     "tinfoil/deepseek-v4-1-flash": "xhigh",
@@ -45,8 +21,5 @@
   "extensions": [
     "-builtin:mcp"
   ],
-  "theme": "dark",
-  "skills": [
-    "-skills/huggingface-mcp/SKILL.md"
-  ]
+  "theme": "dark"
 }
