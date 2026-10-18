@@ -8,7 +8,6 @@
     "npm:@narumitw/pi-btw",
     "npm:@narumitw/pi-stamp"
   ],
-  "lastChangelogVersion": "1.2.0",
   "defaultProvider": "amazon-bedrock",
   "defaultModel": "us.anthropic.claude-opus-5-5",
   "workingVibe": "star trek",
