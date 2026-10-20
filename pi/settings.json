@@ -18,12 +18,13 @@
     "anthropic/claude-opus-5-5": "high"
   },
   "enabledModels": [
-    "anthropic/claude-opus-5-5",
     "amazon-bedrock/us.anthropic.claude-opus-5-5",
+    "anthropic/claude-opus-5-5",
+    "anthropic/claude-sonnet-5-5",
     "anthropic/claude-fable-5-1",
     "tinfoil/kimi-k3",
-    "anthropic/claude-sonnet-5-5",
-    "tinfoil/glm-5-3"
+    "tinfoil/glm-5-3",
+    "tinfoil/deepseek-v4-1-flash"
   ],
   "extensions": [
     "-builtin:mcp"
