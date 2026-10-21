@@ -1,10 +1,12 @@
 # export heliospass
 
-user=api
+auser=api
 # user=admin
 
+alias catchup='gitseal;gitsync;uv tool upgrade --all;pi-backup;yay -w'
+
 function getjwt() {
-  curl -X POST -s -k -u "${user}:${heliospass}" https://helios.example.net/api/v2/auth/jwt
+  curl -X POST -s -k -u "${auser}:${heliospass}" https://helios.example.net/api/v2/auth/jwt
 }
 # getjwt  | jq -r '.data.token'
 
