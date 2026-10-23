@@ -6,6 +6,14 @@ alias cdm='cd ~/moon'
 alias cdbills='cd ~/gitdir/configs/pi-dirs/bills'
 alias editpi='nvim ~/gitdir/skel/bash/bashrc_zen.d/pi-agent.sh'
 
+moon() {
+  cd ~/moon || {
+    echo "no ~/moon"
+    return 1
+  }
+  pi-bed
+}
+
 pim() {
 
   pidr=~/temp/moon
