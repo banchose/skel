@@ -1,0 +1,21 @@
+# docker run --rm -it \
+#   -e ANTHROPIC_API_KEY \
+#   -v "$PWD:/workspace" \
+#   -v pi-agent-home:/home/node/.pi/agent \
+#   pi-node-user
+
+FROM node:24-bookworm-slim
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends bash ca-certificates git ripgrep \
+  && rm -rf /var/lib/apt/lists/*
+RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+
+# create the agent dir with correct ownership BEFORE it becomes a volume mountpoint
+RUN mkdir -p /home/node/.pi/agent && chown -R node:node /home/node/.pi
+RUN mkdir -p /workspace && chown node:node /workspace
+
+USER node
+ENV HOME=/home/node
+WORKDIR /workspace
+ENTRYPOINT ["pi"]

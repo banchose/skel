@@ -1,0 +1,5 @@
+# build
+
+```sh
+npm ci
+```
