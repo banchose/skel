@@ -7,7 +7,7 @@ pages=(
   introduction quickstart get-api-key resources/feature-status
   models/overview models/chat models/vision
   sdk/overview sdk/javascript-sdk sdk/cli-sdk sdk/direct-api-access sdk/prompt-caching sdk/error-handling
-  guides/reasoning guides/proxy-server local-proxy/cli
+  guides/reasoning guides/proxy-server guides/web-search guides/mcp-websearch local-proxy/cli
   verification/verification-in-tinfoil verification/attestation-architecture resources/ehbp
 )
 rc=0

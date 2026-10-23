@@ -15,6 +15,7 @@
 | https://docs.tinfoil.sh/sdk/prompt-caching.md | caching |
 | https://docs.tinfoil.sh/local-proxy/cli.md | tinfoil-proxy |
 | https://docs.tinfoil.sh/sdk/cli-sdk.md (pasted by user) | cli.md |
+| https://docs.tinfoil.sh/guides/web-search.md, guides/mcp-websearch.md | web-search.md |
 | https://docs.tinfoil.sh/verification/verification-in-tinfoil.md | verification |
 | https://docs.tinfoil.sh/verification/attestation-architecture.md | supply chain, modelwrap |
 | https://docs.tinfoil.sh/guides/proxy-server.md | EHBP proxy pattern |
@@ -26,7 +27,7 @@ markdown by appending `.md` to its path.
 
 ## Cached raw pages
 
-`references/docs/` holds verbatim markdown for 19 pages (see `scripts/sync-docs.sh`
+`references/docs/` holds verbatim markdown for 21 pages (see `scripts/sync-docs.sh`
 for the list). Last sync date: `references/docs/.synced`.
 
 ## Not yet covered (candidates)

@@ -55,7 +55,7 @@ releases (Inferact, RedHatAI), not the original lab's weights.
 | `pii-filter` | safety | `/redact` | $0.005 / request | PII span detection + redaction, 8K ctx |
 | `nomic-embed-text` | embedding | `/v1/embeddings` | 0.05 in | 8K ctx |
 | `doc-upload` | document | `/v1/convert/file` | $0.05 / request | document → text conversion |
-| `websearch` | tool | chat/completions, responses | $0.05 / request | private web search for chat models (queries go to 3rd-party provider) |
+| `websearch` | tool | chat/completions, responses; MCP at `websearch.tinfoil.sh/mcp` | $0.05 / request | private web search (Exa, ZDR, enclave-held key) — see web-search.md |
 | `voxtral-small-24b` | audio | transcriptions, translations, chat/completions | 0.20 in / 0.60 out | Mistral Small 3.1-based; 32K ctx |
 | `whisper-large-v3-turbo` | audio | `/v1/audio/transcriptions` | $0.01 / request | |
 | `voxtral-mini-4b-realtime` | audio | `/v1/realtime` (WS) | $0.002 / request | streaming STT |

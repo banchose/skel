@@ -20,6 +20,8 @@ Nothing is retained after the response (except prompt-cache KV in enclave GPU RA
 - `tinfoil` CLI is **not** installed here. Use the JS SDK via
   `~/.pi/agent/extensions/tinfoil/node_modules` — run scripts *from that directory*
   (Node resolves imports relative to the script, not cwd). See `scripts/models.sh`.
+- Private web search is wired in: use `tinfoil-websearch_search` / `_fetch` instead of `exa_*`
+  when profiling matters (Exa backend via enclave, shared key; $0.05 + $0.005 PII filter per search).
 - Docs: every page at `https://docs.tinfoil.sh/<path>.md`; index `https://docs.tinfoil.sh/llms.txt`.
 
 ## Chat models (snapshot 2026-10-23 — `references/models.md` for full table)
@@ -72,6 +74,7 @@ value the model rejects. Enabled in settings: `tinfoil/glm-5-3`, `tinfoil/kimi-k
 | `references/verification.md` | attestation steps, chained enclaves, Sigstore/modelwrap, EHBP, V3 beta |
 | `references/sdk-js.md` | `TinfoilAI`, `SecureClient` options, exports, proxy pattern, other SDKs |
 | `references/cli.md` | `tinfoil` CLI: http/attestation/pinning/trust policy |
+| `references/web-search.md` | web search: `web_search_options` in chat, Responses `web_search` tool, standalone MCP server at `websearch.tinfoil.sh/mcp` (Exa backend, $0.05/req) |
 | `references/pi-integration.md` | extension walkthrough + maintenance checklist |
 | `references/troubleshooting.md` | symptom → cause → fix |
 | `references/sources.md` | provenance, uncovered topics, refresh procedures |
@@ -79,7 +82,7 @@ value the model rejects. Enabled in settings: `tinfoil/glm-5-3`, `tinfoil/kimi-k
 
 ## Cached raw docs (`references/docs/`)
 
-Verbatim markdown of the 19 docs pages that matter for inference + SDK + verification
+Verbatim markdown of the 21 docs pages that matter for inference + SDK + verification
 (not Containers/Chat/other SDKs). Grep here **before** fetching the web:
 `grep -ril "<term>" references/docs/`. File names = doc path with `/` → `__`
 (e.g. `sdk__error-handling.md`, `guides__reasoning.md`, `resources__ehbp.md`).
