@@ -7,8 +7,10 @@ alias cdbills='cd ~/gitdir/configs/pi-dirs/bills'
 alias editpi='nvim ~/gitdir/skel/bash/bashrc_zen.d/pi-agent.sh'
 
 moon() {
-  cd ~/moon || {
-    echo "no ~/moon"
+
+  local PIDIR=~/moon
+  cd "${PIDIR}" || {
+    echo "no ${PIDIR}"
     return 1
   }
   pi-bed
@@ -16,9 +18,9 @@ moon() {
 
 pim() {
 
-  pidr=~/temp/moon
-  cd ~/temp/moon || {
-    echo "No ${pidir}"
+  local PIDIR=~/moon
+  cd "${PIDIR}" || {
+    echo "No ${PIDIR}"
     return 1
   }
   pi-bed
