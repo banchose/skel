@@ -14,6 +14,15 @@
         "read_agent_schema_templates"
       ]
     },
+    "tinfoil-websearch": {
+      "url": "https://websearch.tinfoil.sh/mcp",
+      "type": "http",
+      "headers": {
+        "Authorization": "Bearer ${TINFOIL_API_KEY}"
+      },
+      "directTools": true,
+      "disabled": false
+    },
     "aws-documentation-mcp-server": {
       "command": "uvx",
       "args": [
