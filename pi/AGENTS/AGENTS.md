@@ -39,6 +39,18 @@ the cause, not route around it.
 "Carry on" never covers writes, and never covers a second failure.
 Say what failed in one line so I can see it in the transcript.
 
+## Web search: which tool
+
+- **Default: Exa** (`exa_*` tools). Use it for routine technical/public lookups:
+  docs, APIs, error messages, libraries, products, news, prices.
+- **Use `tinfoil-websearch_search` / `_fetch` instead** when the query touches
+  anything personal or sensitive: health, legal, finances, named private
+  individuals, my own identifiers/accounts/locations, or anything I'd not want
+  tied to an account. Also whenever I say "private search" or "use tinfoil".
+- If unsure whether a query is sensitive, use Tinfoil.
+- Never put sensitive values in fetch URLs (neither tool filters URLs).
+- Tinfoil costs ~$0.055 per call, so don't search more than the question needs.
+
 ## Images: only when I ask
 
 Only create, convert, or render an image when I explicitly ask for one
