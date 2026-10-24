@@ -1,3 +1,10 @@
+# This file is hardlinked into configs/pi-dirs/mypi so the model can edit it from the container.
+# -ef is true when both paths are the same inode. If git ever replaces one side, this says so.
+if [[ ! ~/gitdir/skel/bash/bashrc_zen.d/pi-agent.sh -ef ~/gitdir/configs/pi-dirs/mypi/scripts/pi-agent.sh ]]; then
+  echo "pi-agent.sh: hardlink to mypi/scripts/pi-agent.sh is broken; diff both, then fix with:" >&2
+  echo "  ln -f ~/gitdir/skel/bash/bashrc_zen.d/pi-agent.sh ~/gitdir/configs/pi-dirs/mypi/scripts/pi-agent.sh" >&2
+fi
+
 alias cdpi='cd ~/gitdir/skel/pi'
 alias cdpis='cd ~/gitdir/skel/pi/skills'
 alias cdpid='cd ~/gitdir/configs/pi-dirs'
@@ -17,13 +24,7 @@ moon() {
 }
 
 pim() {
-
-  local PIDIR=~/moon
-  cd "${PIDIR}" || {
-    echo "No ${PIDIR}"
-    return 1
-  }
-  pi-bed
+  moon
 }
 
 pi-bed() {
@@ -71,7 +72,7 @@ pi-get-key() {
 
 pm() {
   llmpic="$HOME/temp/moon/pi-pic-one-shot.jpg"
-  rm "${llmpic}"
+  rm -f "${llmpic}"
   # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
   grim -t jpeg -g "$(slurp -d)" - | tee "${llmpic}" | wl-copy
 
@@ -79,7 +80,7 @@ pm() {
 
 pt() {
   llmpic="$HOME/temp/pi-pic-one-shot.jpg"
-  rm "${llmpic}"
+  rm -f "${llmpic}"
   # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
   grim -t jpeg -g "$(slurp -d)" - | tee "${llmpic}" | wl-copy
 
@@ -87,7 +88,7 @@ pt() {
 
 pb() {
 
-  rm ~/gitdir/configs/pi-dirs/bills/pics/*.jpg
+  rm -f ~/gitdir/configs/pi-dirs/bills/pics/*.jpg
   # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
   grim -t jpeg -g "$(slurp -d)" - | tee "$HOME/gitdir/configs/pi-dirs/bills/pics/pi-pic-one-shot.jpg" | wl-copy
 
@@ -95,24 +96,27 @@ pb() {
 
 px() {
   llmpic="$HOME/gitdir/configs/pi-dirs/xeyes/pics/pi-pic-one-shot.jpg"
-  rm "${llmpic}"
+  rm -f "${llmpic}"
   # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
   grim -t jpeg -g "$(slurp -d)" - | tee "${llmpic}" | wl-copy
 
 }
 
-# pi-backup: tar + xz + gpg (AES-256) ~/w -> ~/Dropbox/pi-w/pi-w-<epoch>.tar.xz.gpg
+# pi-backup: tar + xz + gpg (AES-256) ~/piland -> ~/Dropbox/pi-backup/pi-backup-<epoch>.tar.xz.gpg
+# Every directory under ~/piland is a git repo with no remote, so this archive is
+# the only off-disk copy of those repos, their history, and their untracked files.
 # Usage: pi-backup [-k N] [-n]
 #   -k N  keep the newest N backups (default $PI_W_KEEP or 10; 0 = keep all)
 #   -n    skip the check that decrypts and reads the new backup
 pi-backup() (
   # The ( ) body runs in a subshell, so set -e, the trap and umask don't leak into your shell.
   # That's also why there's no `local`: these variables never reach your shell.
-  # mkdir -p /tmp/w-restore
   #
-  # gpg --batch --quiet --no-symkey-cache --pinentry-mode loopback --passphrase-fd 3 \
-  #     -d ~/Dropbox/pi-w/pi-w-1760070000.tar.xz.gpg 3<<<"$PI_W_ENC_KEY" \
-  #   | tar -xJf - -C /tmp/w-restore
+  # Restore (creates /tmp/pi-restore/piland/<repo>/...):
+  #   mkdir -p /tmp/pi-restore
+  #   gpg --batch --quiet --no-symkey-cache --pinentry-mode loopback --passphrase-fd 3 \
+  #       -d ~/Dropbox/pi-backup/pi-backup-1760070000.tar.xz.gpg 3<<<"$PI_W_ENC_KEY" \
+  #     | tar -xJf - -C /tmp/pi-restore
 
   set -euo pipefail
   shopt -s nullglob
@@ -150,6 +154,7 @@ pi-backup() (
     echo "pi-backup: -k must be a non-negative integer" >&2
     return 2
   fi
+  keep=$((10#$keep)) # force base 10: a leading 0 would otherwise mean octal and break on 08/09
 
   # Dependency check: report everything that's missing at once
   missing=()
@@ -166,8 +171,10 @@ pi-backup() (
     echo "pi-backup: PI_W_ENC_KEY is not set" >&2
     return 1
   fi
+  # Hard error: the security of a file left on a public endpoint rests entirely on this key being random
   if [[ ! $PI_W_ENC_KEY =~ ^sx-[0-9a-f]{64}$ ]]; then
-    echo "pi-backup: warning: PI_W_ENC_KEY doesn't look like sx-<64 hex> (continuing)" >&2
+    echo "pi-backup: PI_W_ENC_KEY must be sx-<64 hex> (make one with pi-get-key)" >&2
+    return 1
   fi
 
   # Source checks
@@ -191,7 +198,7 @@ pi-backup() (
 
   # Register the cleanup trap before creating the temp folder
   cleanup() {
-    if [[ -n $tmpdir ]]; then rm -rf -- "$tmpdir"; fi
+    if [[ -n $tmpdir ]]; then command rm -rf -- "$tmpdir"; fi
     return 0
   }
   trap cleanup EXIT
@@ -207,24 +214,28 @@ pi-backup() (
       --passphrase-fd 3 --symmetric --cipher-algo AES256 \
       --compress-algo none -o "$tmp" 3<<<"$PI_W_ENC_KEY"
 
-  # Check the file decrypts and the tar inside is readable before it goes anywhere near Dropbox
+  # Check the file decrypts and the tar inside is readable before it goes anywhere near Dropbox,
+  # and print the top-level entries (the repos) so you can see they all made it
   if ((verify)); then
     gpg --batch --quiet --no-symkey-cache --pinentry-mode loopback \
       --passphrase-fd 3 -d "$tmp" 3<<<"$PI_W_ENC_KEY" |
       xz -dc |
-      tar -tf - >/dev/null
+      tar -tf - |
+      awk -F/ 'NF >= 2 && $2 != "" { print $2 }' | sort -u | paste -sd ' ' |
+      sed 's/^/pi-backup: contains: /' >&2
   fi
 
   # Same filesystem: instant rename. Different filesystem: copy, then delete
-  mv -- "$tmp" "$final"
-  printf 'pi-backup: wrote %s (%s)\n' "$final" "$(du -h -- "$final" | cut -f1)"
+  # `command` skips shell aliases (mv -v, du -c, ...) that would otherwise be baked into this function
+  command mv -- "$tmp" "$final"
+  printf 'pi-backup: wrote %s (%s)\n' "$final" "$(command du -h -- "$final" | cut -f1)"
 
   # Delete old backups. Names sort oldest to newest because all epoch stamps are 10 digits
   if ((keep > 0)); then
     backups=("$dest"/pi-backup-[0-9]*.tar.xz.gpg)
     n=${#backups[@]}
     if ((n > keep)); then
-      rm -fv -- "${backups[@]:0:n-keep}"
+      command rm -fv -- "${backups[@]:0:n-keep}"
     fi
   fi
 )
