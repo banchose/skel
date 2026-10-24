@@ -118,8 +118,8 @@ pi-backup() (
   shopt -s nullglob
   umask 077
 
-  src="$HOME/piland/w"
-  dest="$HOME/Dropbox/pi-w"
+  src="$HOME/piland"
+  dest="$HOME/Dropbox/pi-backup"
   stage_root="${XDG_CACHE_HOME:-$HOME/.cache}" # outside Dropbox, usually the same filesystem
   keep="${PI_W_KEEP:-10}"
   verify=1
@@ -181,7 +181,7 @@ pi-backup() (
   fi
 
   stamp="$EPOCHSECONDS"
-  final="$dest/pi-w-${stamp}.tar.xz.gpg"
+  final="$dest/pi-backup-${stamp}.tar.xz.gpg"
   if [[ -e $final ]]; then
     echo "pi-backup: $final already exists (two runs in the same second?)" >&2
     return 1
@@ -221,7 +221,7 @@ pi-backup() (
 
   # Delete old backups. Names sort oldest to newest because all epoch stamps are 10 digits
   if ((keep > 0)); then
-    backups=("$dest"/pi-w-[0-9]*.tar.xz.gpg)
+    backups=("$dest"/pi-backup-[0-9]*.tar.xz.gpg)
     n=${#backups[@]}
     if ((n > keep)); then
       rm -fv -- "${backups[@]:0:n-keep}"
