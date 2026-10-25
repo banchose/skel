@@ -239,3 +239,9 @@ pi-backup() (
     fi
   fi
 )
+
+piland-backup() {
+
+  rsync -avu --exclude='/.git/' /home/una/piland/proj-tmpl/ ~/gitdir/configs/pi-dirs/proj-tmpl/
+  rsync -avu --exclude='/.git/' /home/una/piland/ufo/ ~/gitdir/configs/pi-dirs/ufo/
+}
