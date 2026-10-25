@@ -20,6 +20,7 @@ moon() {
     echo "no ${PIDIR}"
     return 1
   }
+  printf '%s\n' "$(pwd)"
   pi-bed
 }
 
@@ -40,6 +41,7 @@ pi-bed() {
     entrypoint_args=(-u 0 --entrypoint bash)
     shift
   fi
+  printf '%s\n' "$(pwd)"
   docker run --rm -it "${entrypoint_args[@]}" \
     -e WOLFRAM_APP_ID \
     -e FASTMAIL_API_TOKEN \
