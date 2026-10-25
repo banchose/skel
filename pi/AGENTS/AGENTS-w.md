@@ -35,9 +35,39 @@ the cause, not route around it.
   equivalent mode that reaches the **same goal** — use it, note that you did
 - a transient network/fetch error on a read, **once** — retry once, then
   it's a stop
+- during a **web research pass**, a page that's dead, blocked, or
+  script-rendered — try one alternate source, note it in one line, move on.
+  It's a stop only if the whole task is blocked.
 
 "Carry on" never covers writes, and never covers a second failure.
 Say what failed in one line so I can see it in the transcript.
+
+## Web search: which tool
+
+- **Default: Exa** (`exa_*` tools). Use it for routine technical/public lookups:
+  docs, APIs, error messages, libraries, products, news, prices.
+- **Use `tinfoil-websearch_search` / `_fetch` instead** when the query touches
+  anything personal or sensitive: health, legal, finances, named private
+  individuals, my own identifiers/accounts/locations, or anything I'd not want
+  tied to an account. Also whenever I say "private search" or "use tinfoil".
+- If unsure whether a query is sensitive, use Tinfoil.
+- Never put sensitive values in fetch URLs (neither tool filters URLs).
+
+## Web search: how much
+
+- **Scale the effort to the deliverable, not to a call count.**
+  - A quick question in chat: one or two searches.
+  - Building or updating a document (a notebook file, a report, a
+    comparison): search as much as the doc needs. A dozen calls for one
+    file is fine. A complete doc beats a cheap one.
+- Be purposeful: one question per search, stop when it's answered, don't
+  rerun a failed angle with slightly different words.
+- Tell me the call count when it's more than a couple, so I can see the cost.
+- Cost note: Tinfoil is ~$0.055 per call, Exa is cheap. That's a reason to
+  prefer Exa for anything non-sensitive, not a reason to under-search. The
+  privacy rules above still decide which tool; this section only decides
+  how many calls.
+- Tag web-sourced facts with source and date in anything you save.
 
 ## Images: only when I ask
 
