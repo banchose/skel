@@ -64,7 +64,7 @@ RUN set -eux; \
     | tar -xz --strip-components=1 -C "$HOME/.local"; \
   nvim --version
 
-RUN for t in httpie cfn-lint csvkit litecli pgcli sqlite-utils pylint flake8 mycli psutils \
+RUN for t in httpie cfn-lint csvkit litecli pytest pgcli sqlite-utils pylint flake8 mycli psutils \
              strip-tags visidata pynvim yamllint shell-functools ruff black git-filter-repo jc html2text; do \
       uv tool install "$t"; done
 
