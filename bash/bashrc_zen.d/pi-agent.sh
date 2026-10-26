@@ -25,7 +25,6 @@ moon() {
     echo "no ${PIDIR}"
     return 1
   }
-  printf '%s\n' "$(pwd)"
   pi-bed
 }
 
