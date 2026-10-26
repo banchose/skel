@@ -21,6 +21,14 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   && ln -s /usr/bin/fdfind /usr/local/bin/fd
 
+# Debian 13's IM7 policy no longer blocks Ghostscript formats; restore the block
+# (IM sniffs content, so a PostScript file named .jpg would reach gs).
+# PDFs go through pdftoppm / pymupdf / gs directly instead.
+RUN set -eux; \
+  sed -i 's|</policymap>|  <policy domain="coder" rights="none" pattern="{PS,PS2,PS3,EPS,PDF,XPS}" />\n</policymap>|' \
+    /etc/ImageMagick-7/policy.xml; \
+  grep -q 'pattern="{PS,PS2,PS3,EPS,PDF,XPS}"' /etc/ImageMagick-7/policy.xml
+
 RUN mandb -c
 
 ARG JQ_VERSION=1.8.2
