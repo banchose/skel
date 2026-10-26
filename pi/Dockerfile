@@ -8,12 +8,12 @@ RUN set -eux; \
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
-       bash ca-certificates git ripgrep \
+       bash ca-certificates git xxd zstd tree binutils dos2unix ripgrep \
        man-db manpages manpages-dev less \
        python3-pil librsvg2-bin \
   && apt-get install -y --reinstall --no-install-recommends \
-       bash coreutils procps gpg socat python3 python3-pip python3-yaml \
-       ffmpeg sox libsox-fmt-all dpkg dnsutils bc qalc ipcalc iproute2 \
+       bash coreutils procps libimage-exiftool-perl qpdf miller netcat-openbsd p7zip-full gettext-base gpg socat python3 python3-pip python3-yaml \
+       ffmpeg sox libsox-fmt-all dpkg patch python3-wand dnsutils bc qalc ipcalc iproute2 \
        fd-find findutils grep iputils-ping tmux xz-utils zip gzip unzip \
        7zip bash-completion sed tar util-linux vim curl wget \
   && rm -rf /var/lib/apt/lists/*
@@ -74,6 +74,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       poppler-utils \
       tesseract-ocr tesseract-ocr-eng \
       ocrmypdf \
+      xxd \
       pandoc \
       sqlite3 \
       sqlite3-tools \
