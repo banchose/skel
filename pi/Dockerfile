@@ -1,4 +1,6 @@
-FROM node:24-bookworm-slim
+# bump deliberately; Node 26 = LTS from 2026-10-28, Debian 13 trixie = stable
+ARG NODE_IMAGE=node:26-trixie-slim
+FROM ${NODE_IMAGE}
 ARG UID=1002
 ARG GID=1002
 ARG TARGETARCH
@@ -12,11 +14,12 @@ RUN apt-get update \
        man-db manpages manpages-dev less \
        python3-pil librsvg2-bin \
   && apt-get install -y --reinstall --no-install-recommends \
-       bash coreutils procps libimage-exiftool-perl qpdf miller netcat-openbsd p7zip-full gettext-base gpg socat python3 python3-pip python3-yaml \
+       bash coreutils procps imagemagick file libimage-exiftool-perl qpdf miller netcat-openbsd gettext-base gpg socat python3 python3-pip python3-yaml \
        ffmpeg sox libsox-fmt-all dpkg patch python3-wand dnsutils bc qalc ipcalc iproute2 \
        fd-find findutils grep iputils-ping tmux xz-utils zip gzip unzip \
        7zip bash-completion sed tar util-linux vim curl wget \
-  && rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/* \
+  && ln -s /usr/bin/fdfind /usr/local/bin/fd
 
 RUN mandb -c
 
