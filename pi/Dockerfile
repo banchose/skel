@@ -85,17 +85,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       poppler-utils \
       tesseract-ocr tesseract-ocr-eng \
       ocrmypdf \
+      python3-pypdf python3-pdfminer python3-venv \
       xxd \
       pandoc \
       sqlite3 \
       sqlite3-tools \
       sqlite3-doc \
       libxml2-utils \
-      python3-pip \
  && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir --break-system-packages \
-      pypdf pdfplumber pymupdf pdfminer.six pytesseract pdf2image
+# pip-only libs live in a venv that also sees apt's packages, so Debian's files
+# (used by ocrmypdf via /usr/bin/python3) are never overwritten.
+# pymupdf from pip (2.x, brings pymupdf4llm); pi-heif satisfies ocrmypdf's metadata.
+RUN python3 -m venv --system-site-packages /opt/pyvenv \
+ && /opt/pyvenv/bin/pip install --no-cache-dir pymupdf pdfplumber pi-heif
+ENV PATH="/opt/pyvenv/bin:${PATH}"
 
 ARG PI_VERSION=latest
 RUN HOME=/root npm install -g --ignore-scripts "@earendil-works/pi-coding-agent@${PI_VERSION}"

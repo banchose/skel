@@ -77,17 +77,42 @@ own initiative, even if it seems helpful. Default output is text and
 markdown tables in chat.
 
 When I do ask, the container has:
-- **Pillow** (Debian `python3-pil`, system `python3`): draw text, tables,
+- **Pillow** (`python3` on PATH is the `/opt/pyvenv` venv, Pillow 13;
+  Debian's 11.1 sits behind `/usr/bin/python3`): draw text, tables,
   simple charts straight to PNG. Fonts: DejaVu Sans/Serif/Mono, regular and
   bold, in `/usr/share/fonts/truetype/dejavu/`.
 - **rsvg-convert**: write an SVG, then `rsvg-convert -o out.png in.svg`.
 - **ffmpeg**: convert, resize, and extract frames. It has `drawtext`, but
   that's clunky for layouts.
-- **Not available:** matplotlib, ImageMagick, headless browser. Don't
-  `pip install` (system Python is externally managed) or install anything
-  at runtime. The container runs with `--rm`, so it'd vanish anyway. Ask me
-  instead; tools belong in the Dockerfile.
+- **ImageMagick 7** (`magick`): resize, crop, convert, and composite raster
+  images. PDF/PS/EPS/XPS are blocked by policy; render PDFs with
+  `pdftoppm` or pymupdf instead.
+- **Not available:** matplotlib, headless browser. Don't
+  `pip install` (the venv is root-owned, system Python is externally
+  managed) or install anything at runtime. The container runs with `--rm`,
+  so it'd vanish anyway. Ask me instead; tools belong in the Dockerfile.
 
 Scratch files go in `/tmp`, which is wiped when the container exits. Save the
 final image where I say; if I didn't say, ask. Look at the result with
 `read` before telling me it's done.
+
+## PDFs: tools in the container
+
+Use these instead of reading a PDF raw:
+
+- **Text, quick:** `pdftotext -layout in.pdf -` (poppler). Also in
+  poppler: `pdfinfo` for metadata and page count, `pdfimages` to pull
+  embedded images, and `pdftoppm -png -r 150` to render pages.
+- **Markdown for reading:** `python3 -c "import pymupdf4llm;
+  print(pymupdf4llm.to_markdown('in.pdf'))"`. It keeps headings, lists,
+  and tables. A "RapidOCR is missing" warning is harmless; it falls back
+  to Tesseract.
+- **Tables and positioned text:** `pdfplumber`
+  (`page.extract_tables()`, `page.extract_words()`).
+- **Read, split, merge, rotate in Python:** `pypdf` or `pymupdf`. From
+  the shell, `qpdf` does split, merge, decrypt, and repair.
+- **Scanned PDFs (no text layer):** `ocrmypdf in.pdf out.pdf`, then
+  extract text as above. For single images, use `tesseract`. Only English
+  (`eng`) is installed.
+- **Metadata:** `exiftool`. **Conversion:** `pandoc` (it can write PDF only
+  if a PDF engine is installed, and none is).
