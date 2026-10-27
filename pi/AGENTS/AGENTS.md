@@ -116,3 +116,25 @@ Use these instead of reading a PDF raw:
   (`eng`) is installed.
 - **Metadata:** `exiftool`. **Conversion:** `pandoc` (it can write PDF only
   if a PDF engine is installed, and none is).
+
+## Spreadsheets: tools in the container
+
+Use these instead of unzipping an .xlsx and reading its XML:
+
+- **Read/write .xlsx:** `openpyxl`. `load_workbook(f, data_only=True)`
+  gives the cached values; the default gives formula text. For tables,
+  use `pandas.read_excel` / `to_excel`.
+- **Other formats:** old .xls with `xlrd`; .ods with `odf` (pandas
+  `engine="odf"`). Fast writes and charts: `xlsxwriter`.
+- **Recalculate formulas, best fidelity:**
+  `soffice --headless --convert-to xlsx --outdir /tmp/out in.xlsx`, then
+  read the result with openpyxl `data_only=True`. soffice also converts
+  xls/ods/csv to and from xlsx. If it complains about its profile, add
+  `-env:UserInstallation=file:///tmp/lo`. The warning `failed to launch
+  javaldx - java may not function correctly` is harmless (no Java
+  installed; Calc doesn't need it), so ignore it.
+- **Recalculate in Python, or what-if runs with changed inputs:**
+  `formulas` (`formulas.ExcelModel().loads(f).finish().calculate()`).
+  It doesn't support every Excel function; if it fails or a result looks
+  wrong, use soffice.
+- **Quick look at a CSV:** `mlr` (miller).

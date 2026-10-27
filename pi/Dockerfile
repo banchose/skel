@@ -86,6 +86,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       tesseract-ocr tesseract-ocr-eng \
       ocrmypdf \
       python3-pypdf python3-pdfminer python3-venv \
+      python3-openpyxl python3-pandas python3-xlrd python3-odf python3-xlsxwriter \
+      python3-scipy python3-lxml python3-regex python3-click python3-tqdm python3-dateutil \
+      libreoffice-calc-nogui \
       xxd \
       pandoc \
       sqlite3 \
@@ -97,8 +100,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # pip-only libs live in a venv that also sees apt's packages, so Debian's files
 # (used by ocrmypdf via /usr/bin/python3) are never overwritten.
 # pymupdf from pip (2.x, brings pymupdf4llm); pi-heif satisfies ocrmypdf's metadata.
+# formulas[excel]: formula recalculation; its scipy/numpy/lxml/etc. come from apt above,
+# so pip only adds schedula, numpy-financial, dictdiffer, ezodf.
 RUN python3 -m venv --system-site-packages /opt/pyvenv \
- && /opt/pyvenv/bin/pip install --no-cache-dir pymupdf pdfplumber pi-heif
+ && /opt/pyvenv/bin/pip install --no-cache-dir pymupdf pdfplumber pi-heif "formulas[excel]"
 ENV PATH="/opt/pyvenv/bin:${PATH}"
 
 ARG PI_VERSION=latest
