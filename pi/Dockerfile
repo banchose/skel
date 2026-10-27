@@ -60,7 +60,7 @@ RUN set -eux; \
   chown -R "$UID:$GID" /home/node
 
 USER node
-ENV HOME=/home/node PAGER=less MANPAGER=less TZ=America/New_York
+ENV HOME=/home/node PAGER=less MANPAGER=less TZ=America/New_York LANG=C.UTF-8
 ENV PATH="/home/node/.local/bin:${PATH}"
 
 # astral publishes versioned installer URLs; pin it

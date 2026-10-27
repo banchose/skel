@@ -11,12 +11,15 @@ instructions in `~/.pi/agent/AGENTS.md` still apply here.
   (fresh base image, every layer rebuilt).
 - `COPY-MCP-TO-PI-IMAGE.sh`: seeds the `pi-agent-home` volume from this dir
   (settings, keybindings, AGENTS/AGENTS.md, mcp-adapter.json, skills,
-  extensions, pi packages via `pi install npm:...`). Skills and extensions in the volume are wiped
-  and recopied, so this dir is authoritative for them.
+  extensions, pi packages via `pi install npm:...`). Skills and extensions
+  in the volume are wiped and recopied, so this dir is authoritative for
+  them.
 - `settings.json`, `mcp-adapter.json`, `keybindings.json`, `AGENTS/AGENTS.md`:
   the files that get installed. `OTHER-SETTINGS/` holds old settings
   variants kept for reference, not installed.
-- `skills -> ../PROMPT/SKILLS/pi/`: the skills that get installed.
+- `skills -> ../PROMPT/SKILLS/pi/`: the skills that get installed. The
+  link dangles in the container (only this dir is mounted), so inspect
+  the installed copy in `~/.pi/agent/skills/` instead.
 - `pi-agent.sh`: the host shell function (`pi-bed`) that runs the container.
 - `diff-jsons.sh`: compares installed settings/keybindings against this dir.
 - `*-w.*` files are a separate variant. Ignore them unless asked.
