@@ -37,7 +37,7 @@ export PATH="$HOME/go/bin:$PATH"
 # chargo installs
 # cargo install atac --locked    # web tui
 
-command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install | sh
+command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install.sh | sh
 uv self update
 
 # Simple tool installs
