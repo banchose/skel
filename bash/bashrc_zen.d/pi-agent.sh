@@ -12,6 +12,7 @@ alias cdoil='cd ~/gitdir/configs/pi-dirs/oil'
 alias cdm='cd ~/moon'
 alias cdbills='cd ~/gitdir/configs/pi-dirs/bills'
 alias editpi='nvim ~/gitdir/skel/bash/bashrc_zen.d/pi-agent.sh'
+alias editmoon='nvim ~/moon/.pi/settings.json'
 
 # Start Pi
 pi() { pi-bed "$@"; }
@@ -71,13 +72,13 @@ pi-bed() {
 alias pi-pic='grim -t jpeg -g "$(slurp -d)" - | tee ./pi-pic-"$(date "+%s").jpg" | wl-copy'
 alias pp='pi-pic' # bash expands aliases in the first word of an alias, so this runs pi-pic
 
-pi-get-key() {
+pi-create-encryption-key() {
 
   echo "sx-$(openssl rand -hex 32)"
 }
 
 pm() {
-  local llmpic="$HOME/temp/moon/pi-pic-one-shot.jpg"
+  local llmpic="$HOME/moon/inbox/pi-pic-one-shot.jpg"
   rm -f "${llmpic}"
   # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
   grim -t jpeg -g "$(slurp -d)" - | tee "${llmpic}" | wl-copy
