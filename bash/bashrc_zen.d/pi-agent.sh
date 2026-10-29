@@ -29,6 +29,16 @@ pioil() {
   pi-bed
 }
 
+moon() {
+
+  local PIDIR=~/moon
+  cd "${PIDIR}" || {
+    echo "no ${PIDIR}"
+    return 1
+  }
+  pi-bed
+}
+
 pim() {
   moon
 }
