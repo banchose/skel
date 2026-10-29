@@ -19,9 +19,9 @@ pi() { pi-bed "$@"; }
 pish() { pi-bed -b "$@"; }
 piroot() { pi-bed -u "$@"; }
 
-moon() {
+pioil() {
 
-  local PIDIR=~/moon
+  local PIDIR=~/gitdir/configs/pi-dirs/oil
   cd "${PIDIR}" || {
     echo "no ${PIDIR}"
     return 1
