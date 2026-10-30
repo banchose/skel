@@ -36,7 +36,7 @@ moon() {
     echo "no ${PIDIR}"
     return 1
   }
-  pi-bed
+  pi-bed --name moon
 }
 
 pim() {
