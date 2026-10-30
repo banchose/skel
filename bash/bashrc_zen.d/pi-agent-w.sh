@@ -16,6 +16,7 @@ pi-w() {
     entrypoint_args=(-u 0 --entrypoint bash)
     shift
   fi
+
   docker run --rm -it "${entrypoint_args[@]}" \
     -e TINFOIL_API_KEY \
     -e ANTHROPIC_API_KEY \
@@ -26,7 +27,7 @@ pi-w() {
     -e TERM \
     -v "$PWD:/workspace" \
     -v pi-agent-home-w:/home/node/.pi/agent \
-    pi-sandbox-w "$@"
+    pi-sandbox-w --name "pi-w" "$@"
   #  -e EXA_API_KEY \
 }
 
