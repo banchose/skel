@@ -1,6 +1,27 @@
 {
+  "theme": "dark",
+  "terminal": {
+    "trueColor": true
+  },
+  "packages": [
+  ],
   "defaultProvider": "tinfoil",
   "defaultModel": "glm-5-3",
   "defaultThinkingLevel": "high",
-  "modelThinkingLevels": { "tinfoil/glm-5-3": "high" }
+  "modelThinkingLevels": {
+    "tinfoil/glm-5-3": "xhigh",
+    "tinfoil/deepseek-v4-1-flash": "xhigh",
+    "anthropic/claude-opus-5-5": "high"
+  },
+  "enabledModels": [
+    "amazon-bedrock/us.anthropic.claude-opus-5-5",
+    "anthropic/claude-opus-5-5",
+    "anthropic/claude-sonnet-5-5",
+    "anthropic/claude-fable-5-1",
+    "tinfoil/kimi-k3",
+    "tinfoil/glm-5-3",
+    "tinfoil/deepseek-v4-1-flash"
+  ],
+  "extensions": [
+  ]
 }
