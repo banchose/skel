@@ -29,6 +29,16 @@ pioil() {
   pi-bed
 }
 
+albany() {
+
+  local PIDIR=~/gitdir/configs/pi-dirs/albany
+  cd "${PIDIR}" || {
+    echo "no ${PIDIR}"
+    return 1
+  }
+  pi-bed --name Albany
+}
+
 moon() {
 
   local PIDIR=~/moon
