@@ -111,6 +111,14 @@ datasets, status pages. A good endpoint found once is worth many searches.
     ToS link>. Found: <YYYY-MM-DD>.
   ```
 
+### Known endpoints
+
+- **OpenRouter MCP** — `https://mcp.openrouter.ai/mcp` — model catalog,
+  pricing, per-provider endpoints, rankings, benchmarks, credits; billable
+  inference. Policy: Bearer API key (`OPENROUTER_API_KEY`); OAuth keys
+  expire in 7 days with a $10 cap; see skill `openrouter-mcp`.
+  Found: 2026-10-31.
+
 ## Images: only when I ask
 
 Only create, convert, or render an image when I explicitly ask for one

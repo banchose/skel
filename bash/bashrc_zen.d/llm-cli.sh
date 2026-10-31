@@ -154,10 +154,10 @@ export llmtst="this is just a test, can you search the web?"
 echo "ENV: Setting CLAUDE_CODE_USE_BEDROCK=1"
 export CLAUDE_CODE_USE_BEDROCK=1
 
-export AWS_BEDROCK_DEFAULT_SONNET_MODEL=us.anthropic.claude-sonnet-5
+export AWS_BEDROCK_DEFAULT_SONNET_MODEL=us.anthropic.claude-sonnet-5-5
 echo "EXPORTING AWS_BEDROCK_DEFAULT_SONNET_MODEL: ${AWS_BEDROCK_DEFAULT_SONNET_MODEL}"
 
-export AWS_BEDROCK_DEFAULT_OPUS_MODEL=us.anthropic.claude-opus-5
+export AWS_BEDROCK_DEFAULT_OPUS_MODEL=us.anthropic.claude-opus-5-5
 echo "EXPORTING AWS_BEDROCK_DEFAULT_OPUS_MODEL: ${AWS_BEDROCK_DEFAULT_OPUS_MODEL}"
 
 export AWS_BEDROCK_DEFAULT_MODEL="${AWS_BEDROCK_DEFAULT_OPUS_MODEL}"
@@ -166,10 +166,10 @@ echo "EXPORTING AWS_BEDROCK_DEFAULT_MODEL: ${AWS_BEDROCK_DEFAULT_MODEL}"
 export ANTHROPIC_DEFAULT_MODEL="${AWS_BEDROCK_DEFAULT_OPUS_MODEL}"
 echo "EXPORTING ANTHROPIC_DEFAULT_MODEL: ${ANTHROPIC_DEFAULT_MODEL}"
 
-export OPENROUTER_DEFAULT_SONNET_MODEL=openrouter/anthropic/claude-sonnet-5
+export OPENROUTER_DEFAULT_SONNET_MODEL=openrouter/anthropic/claude-sonnet-5-5
 echo "EXPORTING OPENROUTER_DEFAULT_SONNET_MODEL: ${OPENROUTER_DEFAULT_SONNET_MODEL}"
 
-export OPENROUTER_DEFAULT_OPUS_MODEL=openrouter/anthropic/claude-opus-5
+export OPENROUTER_DEFAULT_OPUS_MODEL=openrouter/anthropic/claude-opus-5-5
 echo "EXPORTING OPENROUTER_DEFAULT_OPUS_MODEL: ${OPENROUTER_DEFAULT_OPUS_MODEL}"
 
 export OPENROUTER_DEFAULT_MODEL="${OPENROUTER_DEFAULT_SONNET_MODEL}"
@@ -733,7 +733,7 @@ llm_test_anthropic_query() {
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
     -d '{
-    "model": "claude-opus-4-6",
+    "model": "claude-opus-5-5",
     "max_tokens": 1000,
     "messages": [
       {
@@ -746,7 +746,7 @@ llm_test_anthropic_query() {
 
 llm_test_litellm_anthropic_question() {
   curl --location 'http://0.0.0.0:4000/chat/completions' --header 'Content-Type: application/json' --data ' {
-      "model": "claude-sonnet-5",
+      "model": "claude-sonnet-5-5",
       "messages": [
         {
           "role": "user",

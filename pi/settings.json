@@ -1,5 +1,5 @@
 {
-  "theme": "dark",
+  "theme": "light",
   "terminal": {
     "trueColor": true
   },
@@ -10,7 +10,6 @@
   ],
   "defaultProvider": "amazon-bedrock",
   "defaultModel": "us.anthropic.claude-opus-5-5",
-  "workingVibe": "star trek",
   "defaultThinkingLevel": "high",
   "modelThinkingLevels": {
     "tinfoil/glm-5-3": "xhigh",
@@ -24,9 +23,15 @@
     "anthropic/claude-fable-5-1",
     "tinfoil/kimi-k3",
     "tinfoil/glm-5-3",
-    "tinfoil/deepseek-v4-1-flash"
+    "tinfoil/deepseek-v4-1-flash",
+    "openrouter/anthropic/claude-opus-5.5",
+    "openrouter/anthropic/claude-fable-5.1"
   ],
   "extensions": [
     "-builtin:mcp"
-  ]
+  ],
+  "lastChangelogVersion": "1.4.0",
+  "compaction": {
+    "enabled": true
+  }
 }
