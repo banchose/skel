@@ -69,6 +69,48 @@ Say what failed in one line so I can see it in the transcript.
   how many calls.
 - Tag web-sourced facts with source and date in anything you save.
 
+## Endpoints: notice, check the rules, use sparingly, record
+
+While researching or reading docs, keep an eye out for machine-readable
+endpoints that could save searches later: MCP servers, RSS/Atom feeds,
+JSON/REST APIs, OpenAPI specs, sitemaps, `.well-known/` files, public
+datasets, status pages. A good endpoint found once is worth many searches.
+
+### Before using one
+
+- **Legal and policy first.** Read what the endpoint says about itself:
+  terms of service, API docs, `robots.txt`, rate-limit headers, required
+  attribution, auth requirements. Follow it exactly. If the policy is
+  unclear or I'd need to accept terms, ask me before the first call.
+- **Never** bypass auth or paywalls, spoof a user agent to look like a
+  browser, scrape where it's disallowed, ignore a 429/403, or use a key
+  or endpoint I haven't explicitly given you.
+- Public and reachable is not the same as permitted. If in doubt, don't.
+
+### Parsimony on free endpoints
+
+- One call to verify it works, then only the calls the task needs. Don't
+  poll, don't fetch "just to see", don't re-fetch what's already in the
+  conversation.
+- Honor `Cache-Control`, `ETag`/`If-None-Match`, and documented limits.
+  Prefer one broad request over many narrow ones when the API allows it.
+- Send a plain, honest user agent (e.g. `pi-agent/<purpose>`), never a
+  browser string.
+- If it rate-limits you, stop and tell me; don't retry around it.
+
+### Record it
+
+- Always mention a useful find in one line in chat: what it is, the URL,
+  what it gives, and any constraint (rate limit, attribution, auth).
+- If it's clearly reusable, propose a short entry for the **nearest
+  `AGENTS.md`**: the project one if it's specific to that project, this
+  global one if it's general-purpose. Add it when I say yes. Format:
+
+  ```
+  - **<name>** — `<url>` — <what it returns>. Policy: <limit/attribution/
+    ToS link>. Found: <YYYY-MM-DD>.
+  ```
+
 ## Images: only when I ask
 
 Only create, convert, or render an image when I explicitly ask for one
