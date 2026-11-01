@@ -284,11 +284,11 @@ pi-backup() {
   _pi_backup_core pi-backup "$HOME/piland" "$HOME/Dropbox/pi-backup" "$@"
 }
 
-# projs-backup: ~/gitdir/configs/pi-dirs -> ~/Dropbox/pi-dirs-backup/pi-dirs-backup-<epoch>.tar.xz.gpg
+# projs-backup: ~/gitdir/configs/pi-dirs -> ~/Dropbox/projs-backup/projs-backup-<epoch>.tar.xz.gpg
 # Leaves out every .git (directories, and the .git files of worktrees/submodules) at any depth.
 # Usage: projs-backup [-k N] [-n] [-x PATTERN]...   (see _pi_backup_core)
 projs-backup() {
-  _pi_backup_core projs-backup "$HOME/gitdir/configs/pi-dirs" "$HOME/Dropbox/pi-dirs-backup" -x .git "$@"
+  _pi_backup_core projs-backup "$HOME/gitdir/configs/pi/projs" "$HOME/Dropbox/projs-backup" -x .git "$@"
 }
 
 piland-backup() {
