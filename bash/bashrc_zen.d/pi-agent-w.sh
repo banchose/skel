@@ -1,4 +1,3 @@
-alias cdpi='cd ~/gitdir/skel/pi'
 pi-w() {
   cd ~/piland/w || {
     echo "No ~/w"
