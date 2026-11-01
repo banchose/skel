@@ -1,5 +1,0 @@
-# build
-
-```sh
-npm ci
-```

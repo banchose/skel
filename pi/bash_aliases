@@ -1,4 +1,0 @@
-alias l='ls -alF'
-alias ltr='ls -altrF'
-alias g='grep -i'
-alias v='nvim'
