@@ -1,14 +1,10 @@
 # This file is hardlinked into configs/pi-dirs/mypi so the model can edit it from the container.
 # -ef is true when both paths are the same inode. If git ever replaces one side, this says so.
-if [[ ! ~/gitdir/skel/bash/bashrc_zen.d/pi-agent.sh -ef ~/gitdir/configs/pi-dirs/mypi/scripts/pi-agent.sh ]]; then
-  echo "pi-agent.sh: hardlink to mypi/scripts/pi-agent.sh is broken; diff both, then fix with:" >&2
-  echo "  ln -f ~/gitdir/skel/bash/bashrc_zen.d/pi-agent.sh ~/gitdir/configs/pi-dirs/mypi/scripts/pi-agent.sh" >&2
-fi
 
-alias cdpi='cd ~/gitdir/skel/pi'
-alias cdpis='cd ~/gitdir/skel/pi/skills'
-alias cdpid='cd ~/gitdir/configs/pi-dirs'
-alias cdoil='cd ~/gitdir/configs/pi-dirs/oil'
+alias cdpi='cd ~/gitdir/configs/pi/build'
+alias cdpis='cd ~/gitdir/configs/pi/skills'
+alias cdpid='cd ~/gitdir/configs/pi/projs'
+alias cdoil='cd ~/gitdir/configs/pi/projs/oil'
 alias cdm='cd ~/moon'
 alias cdbills='cd ~/gitdir/configs/pi-dirs/bills'
 alias editpi='nvim ~/gitdir/skel/bash/bashrc_zen.d/pi-agent.sh'
