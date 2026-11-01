@@ -1,0 +1,64 @@
+[core]
+    editor = vim
+    autocrlf = input
+    excludesfile = ~/.gitignore
+[user]
+    email = a_gitmail@ownmail.net
+    name = banchose
+
+[credential]
+    helper = cache --timeout=4800
+
+[pull]
+    rebase = true
+
+[column]
+    ui = auto
+
+[help]
+    autocorrect = prompt
+
+[commit]
+    verbose = true
+
+[rerere]
+    enabled = true
+    autoupdate = true
+
+[rebase]
+    autoSquash = true
+    autoStash = true
+    updateRefs = true
+
+[branch]
+    sort = -committerdate
+
+[tag]
+    sort = version:refname
+
+[init]
+    defaultBranch = main
+
+[diff]
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
+
+[push]
+    autoSetupRemote = true
+    followTags = true
+
+[fetch]
+    prune = true
+    pruneTags = true
+    all = true
+
+[merge]
+    conflictstyle = zdiff3
+    tool = vimdiff
+
+
+[alias]
+    a = add --all
+    ai = add -i

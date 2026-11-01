@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ $# -eq 0 ]; then
+  echo "Usage: magic-exec <prompt>" >&2
+  exit 1
+fi
+
+prompt="$*"
+
+cmd=$(pi -p "$prompt" --system-prompt "Output only the shell command to run. No explanation, no markdown, no code fences. Just the raw command.")
+
+echo "Command: $cmd"
+read -rp "Execute? [y/N] " confirm
+
+if [[ "$confirm" =~ ^[Yy]$ ]]; then
+  eval "$cmd"
+else
+  echo "Aborted."
+fi

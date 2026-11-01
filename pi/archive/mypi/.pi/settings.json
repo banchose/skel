@@ -1,0 +1,11 @@
+{
+  "defaultProvider": "amazon-bedrock",
+  "defaultModel": "us.anthropic.claude-opus-5-5",
+  "defaultThinkingLevel": "high",
+  "terminal": { "trueColor": true },
+  "skills": [],
+  "packages": [
+    { "source": "npm:@dietrichgebert/ponytail", "extensions": [], "skills": [], "prompts": [], "themes": [] },
+    { "source": "npm:@ff-labs/pi-fff", "extensions": [], "skills": [], "prompts": [], "themes": [] }
+  ]
+}
