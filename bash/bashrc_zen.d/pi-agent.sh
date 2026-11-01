@@ -1,4 +1,4 @@
-# This file is hardlinked into configs/pi-dirs/mypi so the model can edit it from the container.
+# This file is hardlinked into configs/pi/projs/mypi so the model can edit it from the container.
 # -ef is true when both paths are the same inode. If git ever replaces one side, this says so.
 
 alias cdpi='cd ~/gitdir/configs/pi/pi-build'
@@ -6,7 +6,7 @@ alias cdpis='cd ~/gitdir/configs/pi/skills'
 alias cdpid='cd ~/gitdir/configs/pi/projs'
 alias cdoil='cd ~/gitdir/configs/pi/projs/oil'
 alias cdm='cd ~/moon'
-alias cdbills='cd ~/gitdir/configs/pi-dirs/bills'
+alias cdbills='cd ~/gitdir/configs/pi/projs/bills'
 alias editpi='nvim ~/gitdir/skel/bash/bashrc_zen.d/pi-agent.sh'
 alias editmoon='nvim ~/moon/.pi/settings.json'
 
@@ -17,7 +17,7 @@ piroot() { pi-bed -u "$@"; }
 
 pioil() {
 
-  local PIDIR=~/gitdir/configs/pi-dirs/oil
+  local PIDIR=~/gitdir/configs/pi/projs/oil
   cd "${PIDIR}" || {
     echo "no ${PIDIR}"
     return 1
@@ -27,7 +27,7 @@ pioil() {
 
 albany() {
 
-  local PIDIR=~/gitdir/configs/pi-dirs/albany
+  local PIDIR=~/gitdir/configs/pi/projs/albany
   cd "${PIDIR}" || {
     echo "no ${PIDIR}"
     return 1
@@ -96,7 +96,7 @@ pi-create-encryption-key() {
 pm() {
   local llmpic="$HOME/moon/inbox/pi-pic-one-shot.jpg"
   rm -f "${llmpic}"
-  # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
+  # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi/projs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
   grim -t jpeg -g "$(slurp -d)" - | tee "${llmpic}" | wl-copy
 
 }
@@ -104,29 +104,29 @@ pm() {
 pt() {
   local llmpic="$HOME/temp/pi-pic-one-shot.jpg"
   rm -f "${llmpic}"
-  # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
+  # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi/projs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
   grim -t jpeg -g "$(slurp -d)" - | tee "${llmpic}" | wl-copy
 
 }
 
 pb() {
 
-  rm -f ~/gitdir/configs/pi-dirs/bills/pics/*.jpg
-  # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
-  grim -t jpeg -g "$(slurp -d)" - | tee "$HOME/gitdir/configs/pi-dirs/bills/pics/pi-pic-one-shot.jpg" | wl-copy
+  rm -f ~/gitdir/configs/pi/projs/bills/pics/*.jpg
+  # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi/projs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
+  grim -t jpeg -g "$(slurp -d)" - | tee "$HOME/gitdir/configs/pi/projs/bills/pics/pi-pic-one-shot.jpg" | wl-copy
 
 }
 
 px() {
-  local llmpic="$HOME/gitdir/configs/pi-dirs/xeyes/pics/pi-pic-one-shot.jpg"
+  local llmpic="$HOME/gitdir/configs/pi/projs/xeyes/pics/pi-pic-one-shot.jpg"
   rm -f "${llmpic}"
-  # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi-dirs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
+  # grim -t jpeg -g "$(slurp -d)" - | tee "$HOME"/gitdir/configs/pi/projs/bills/pics/pi-pic-"$(date "+%s").jpg" | wl-copy
   grim -t jpeg -g "$(slurp -d)" - | tee "${llmpic}" | wl-copy
 
 }
 
 # _pi_backup_core NAME SRC DEST [-k N] [-n] [-x PATTERN]...
-# Shared engine for pi-backup and pi-dirs-backup: tar + xz + gpg (AES-256)
+# Shared engine for pi-backup and projs-backup: tar + xz + gpg (AES-256)
 #   SRC -> DEST/NAME-<epoch>.tar.xz.gpg
 # NAME is the filename prefix and the message prefix. Old-backup deletion only matches
 # NAME-<digits>, so two sets can never delete each other's files, even in the same DEST.
@@ -284,15 +284,15 @@ pi-backup() {
   _pi_backup_core pi-backup "$HOME/piland" "$HOME/Dropbox/pi-backup" "$@"
 }
 
-# pi-dirs-backup: ~/gitdir/configs/pi-dirs -> ~/Dropbox/pi-dirs-backup/pi-dirs-backup-<epoch>.tar.xz.gpg
+# projs-backup: ~/gitdir/configs/pi-dirs -> ~/Dropbox/pi-dirs-backup/pi-dirs-backup-<epoch>.tar.xz.gpg
 # Leaves out every .git (directories, and the .git files of worktrees/submodules) at any depth.
-# Usage: pi-dirs-backup [-k N] [-n] [-x PATTERN]...   (see _pi_backup_core)
-pi-dirs-backup() {
-  _pi_backup_core pi-dirs-backup "$HOME/gitdir/configs/pi-dirs" "$HOME/Dropbox/pi-dirs-backup" -x .git "$@"
+# Usage: projs-backup [-k N] [-n] [-x PATTERN]...   (see _pi_backup_core)
+projs-backup() {
+  _pi_backup_core projs-backup "$HOME/gitdir/configs/pi-dirs" "$HOME/Dropbox/pi-dirs-backup" -x .git "$@"
 }
 
 piland-backup() {
 
-  rsync -avu --exclude='/.git/' "$HOME/piland/proj-tmpl/" ~/gitdir/configs/pi-dirs/proj-tmpl/
-  rsync -avu --exclude='/.git/' "$HOME/piland/ufo/" ~/gitdir/configs/pi-dirs/ufo/
+  rsync -avu --exclude='/.git/' "$HOME/piland/proj-tmpl/" ~/gitdir/configs/pi/projs/proj-tmpl/
+  rsync -avu --exclude='/.git/' "$HOME/piland/ufo/" ~/gitdir/configs/pi/projs/ufo/
 }
