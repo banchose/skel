@@ -1,6 +1,3 @@
-# This file is hardlinked into configs/pi/projs/mypi so the model can edit it from the container.
-# -ef is true when both paths are the same inode. If git ever replaces one side, this says so.
-
 alias cdpi='cd ~/gitdir/configs/pi/pi-build'
 alias cdpis='cd ~/gitdir/configs/pi/skills'
 alias cdpid='cd ~/gitdir/configs/pi/projs'
@@ -207,7 +204,7 @@ _pi_backup_core() (
   fi
   # Hard error: the security of a file left on a public endpoint rests entirely on this key being random
   if [[ ! $PI_W_ENC_KEY =~ ^sx-[0-9a-f]{64}$ ]]; then
-    echo "$name: PI_W_ENC_KEY must be sx-<64 hex> (make one with pi-get-key)" >&2
+    echo "$name: PI_W_ENC_KEY must be sx-<64 hex> (make one with pi-create-encryption-key)" >&2
     return 1
   fi
 
