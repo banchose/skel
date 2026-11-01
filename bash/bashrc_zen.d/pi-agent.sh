@@ -1,7 +1,7 @@
 # This file is hardlinked into configs/pi-dirs/mypi so the model can edit it from the container.
 # -ef is true when both paths are the same inode. If git ever replaces one side, this says so.
 
-alias cdpi='cd ~/gitdir/configs/pi/build'
+alias cdpi='cd ~/gitdir/configs/pi/pi-build'
 alias cdpis='cd ~/gitdir/configs/pi/skills'
 alias cdpid='cd ~/gitdir/configs/pi/projs'
 alias cdoil='cd ~/gitdir/configs/pi/projs/oil'

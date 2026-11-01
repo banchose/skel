@@ -134,7 +134,7 @@ HISTIGNORE="[ ]*:exit:ls:bg:fg:history:clear"
 HISTTIMEFORMAT='%F %T '
 PROMPT_COMMAND='__last_exit=$?; history -a; history -n'
 
-CDPATH=".:~:~/gitdir"
+CDPATH=".:~:~/gitdir:~/gitdir/configs/pi/projs"
 
 alias nsps='ps -eo pid,ppid,pgid,sess,stat,tty,pidns,utsns,ipcns,mntns,netns,cmd'
 alias pps='ps -eo pid,ppid,pgid,sess,stat,tty,tpgid,uname,%cpu,%mem,cmd'
