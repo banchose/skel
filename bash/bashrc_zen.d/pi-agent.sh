@@ -6,7 +6,7 @@ alias cdm='cd ~/moon'
 alias cdbills='cd ~/gitdir/configs/pi/projs/bills'
 alias editpi='nvim ~/gitdir/skel/bash/bashrc_zen.d/pi-agent.sh'
 alias editmoon='nvim ~/moon/.pi/settings.json'
-
+alias pib='pi-backup -k 2;projs-backup -k 2'
 # Start Pi
 pi() { pi-bed "$@"; }
 pish() { pi-bed -b "$@"; }
