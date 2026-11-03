@@ -26,7 +26,7 @@ pi-w() {
     -e TERM \
     -v "$PWD:/workspace" \
     -v pi-agent-home-w:/home/node/.pi/agent \
-    pi-sandbox-w --name "pi-w" "$@"
+    pi-sandbox --name "pi-w" "$@"
   #  -e EXA_API_KEY \
 }
 
