@@ -81,6 +81,7 @@ pi-bed() {
   fi
   printf '%s\n' "$(pwd)"
   docker run --rm -it "${entrypoint_args[@]}" \
+    -e MERAKI_API_KEY="${MERAKI_API_KEY_RO}" \
     -e WOLFRAM_APP_ID \
     -e FASTMAIL_API_TOKEN \
     -e TOMTOM_API_KEY \
