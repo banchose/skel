@@ -313,3 +313,19 @@ piland-backup() {
   rsync -avu --exclude='/.git/' "$HOME/piland/proj-tmpl/" ~/gitdir/configs/pi/projs/proj-tmpl/
   rsync -avu --exclude='/.git/' "$HOME/piland/ufo/" ~/gitdir/configs/pi/projs/ufo/
 }
+
+pif() {
+  local root="${PI_PROJS:-$HOME/gitdir/configs/pi/projs}"
+  local dir
+  command -v fzf >/dev/null || {
+    echo "pp: fzf not installed" >&2
+    return 1
+  }
+  dir=$(
+    find "$root" -mindepth 2 -maxdepth 2 -name AGENTS.md -printf '%P\n' 2>/dev/null |
+      sed 's|/AGENTS\.md$||' | sort |
+      fzf --prompt='pi project> ' --height=40% --reverse \
+        --preview "head -50 ${root@Q}/{}/AGENTS.md"
+  ) || return 0 # Esc / Ctrl-C: do nothing
+  cd -- "$root/$dir" && pi "$@"
+}
