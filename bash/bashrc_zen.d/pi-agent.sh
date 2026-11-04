@@ -6,7 +6,27 @@ alias cdm='cd ~/moon'
 alias cdbills='cd ~/gitdir/configs/pi/projs/bills'
 alias editpi='nvim ~/gitdir/skel/bash/bashrc_zen.d/pi-agent.sh'
 alias editmoon='nvim ~/moon/.pi/settings.json'
-alias pibak='pi-backup -k 2;projs-backup -k 2'
+alias pibak='pi-backup -k 3;projs-backup -k 3'
+
+pi-shotgun() {
+  local host rc=0
+  for host in star ns2; do
+    if ! ssh -o ConnectTimeout=5 -o BatchMode=yes "$host" true 2>/dev/null; then
+      printf '%s: unreachable, skipping\n' "$host" >&2
+      rc=1
+      continue
+    fi
+    # no trailing slash on sources -> lands as BACKUPS/pi-backup, BACKUPS/projs-backup
+    if rsync -a ~/Dropbox/pi-backup ~/Dropbox/projs-backup "$host":BACKUPS/; then
+      printf '%s: ok\n' "$host"
+    else
+      printf '%s: rsync failed\n' "$host" >&2
+      rc=1
+    fi
+  done
+  return "$rc"
+}
+
 # Start Pi
 pi() { pi-bed "$@"; }
 pish() { pi-bed -b "$@"; }
