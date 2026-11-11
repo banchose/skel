@@ -6,7 +6,18 @@ alias cdm='cd ~/moon'
 alias cdbills='cd ~/gitdir/configs/pi/projs/bills'
 alias editpi='nvim ~/gitdir/skel/bash/bashrc_zen.d/pi-agent.sh'
 alias editmoon='nvim ~/moon/.pi/settings.json'
-alias pibak='pi-backup -k 3;projs-backup -k 3'
+
+pibak() {
+
+  pi-backup -k 3
+  projs-backup -k 3
+  if ssh -o ConnectTimeout=5 -o BatchMode=yes base0 true 2>/dev/null; then
+    rsync -ruve 'ssh -o ConnectTimeout=5' /home/una/Dropbox/pi-backup/ base0:/home/una/BACKUPS/
+    rsync -ruve 'ssh -o ConnectTimeout=5' /home/una/Dropbox/projs-backup/ base0:/home/una/BACKUPS/
+  else
+    printf 'base0 not reachable over ssh, skipping\n' >&2
+  fi
+}
 
 pi-shotgun() {
   local host rc=0
