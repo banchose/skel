@@ -49,7 +49,7 @@ albany() {
     echo "no ${PIDIR}"
     return 1
   }
-  pi-bed --name Albany
+  pi-bed --name Albany-"$(date '+%T-%D')"
 }
 
 moon() {
@@ -59,7 +59,7 @@ moon() {
     echo "no ${PIDIR}"
     return 1
   }
-  pi-bed --name moon
+  pi-bed --name moon-"$(date '+%T-%D')"
 }
 
 pim() {
