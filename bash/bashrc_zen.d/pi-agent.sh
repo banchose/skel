@@ -103,6 +103,7 @@ pi-bed() {
     -e WOLFRAM_APP_ID \
     -e FASTMAIL_API_TOKEN \
     -e TOMTOM_API_KEY \
+    -e FR24_API_KEY \
     -e TINFOIL_API_KEY \
     -e OPENROUTER_API_KEY \
     -e EDITOR="nvim" \
