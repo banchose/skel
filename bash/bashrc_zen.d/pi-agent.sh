@@ -75,8 +75,13 @@ moon() {
   pi-bed --name moon-"$(date '+%T-%D')"
 }
 
-pim() {
-  moon
+pi-bash() {
+  local PIDIR=~/gitdir/configs/pi/projs/scripting-bash
+  cd "${PIDIR}" || {
+    echo "no ${PIDIR}"
+    return 1
+  }
+  pi-bed --name scripting-bash-"$(date '+%T-%D')"
 }
 
 pi-bed() {
