@@ -21,7 +21,7 @@ sudo pacman -S docker-buildx --needed --noconfirm
 
 # Arch Install
 #
-# sudo pacamn -S archinstall --needed --noconfirm
+# sudo pacman -S archinstall --needed --noconfirm
 
 ## The Bases
 sudo pacman -S base --needed --noconfirm
