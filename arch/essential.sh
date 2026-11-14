@@ -255,7 +255,6 @@ sudo pacman -S httrack --needed --noconfirm
 
 sudo pacman -S udiskie --needed --noconfirm
 sudo pacman -S rust --needed --noconfirm
-sudo pacman -S rust-docs --needed --noconfirm
 sudo pacman -S neovim --needed --noconfirm
 sudo pacman -S luarocks --needed --noconfirm
 sudo pacman -S tree-sitter-cli --needed --noconfirm
