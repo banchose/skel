@@ -174,7 +174,7 @@ sudo pacman -S python-beautifulsoup4 --needed --noconfirm
 sudo pacman -S python-pendulum --needed --noconfirm
 sudo pacman -S python-pandas --needed --noconfirm
 sudo pacman -S python-sympy --needed --noconfirm
-sudo pacman -S python-numby --needed --noconfirm
+sudo pacman -S python-numpy --needed --noconfirm
 sudo pacman -S python-loguru --needed --noconfirm
 sudo pacman -S python-html2text --needed --noconfirm
 sudo pacman -S python-html5-parser --needed --noconfirm
