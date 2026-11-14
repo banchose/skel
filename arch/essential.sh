@@ -1,26 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Notes
-#  $ grep -i qxl ~/.local/share/xorg/Xorg.0.log
-# or
-# $ sudo lshw -c Video
-#  $ xrandr --verbose
-#  $ xrandr --verbose | grep -i connected
-# Can copy packages from elsewhere to /var/cache/pacman/pkg
-# dmesg --color=always | less -R
-#
-# git clone https://aur.archlinux.org/yay.git && \
-# cd yay && \
-# makepkg -si && \
-# yay -S units --needed --noconfirm
-
-# In 10/2019 the base group was replaced by a base package.
-# This package is bare-bones and doesn't include a kernel
-# or linux-firmware, intel-ucode, man pages or an editor and
-# other "expected" packages
-# Min: pacstrap /mnt base linux linux-firmware vi vim
-# Better: pacstrap /mnt base linux linux-firmware intel-ucode man-db \
-# vim lvm2 cryptsetup man-db man-pages less diffutils texinfo
+set -euo pipefail
 
 sudo timedatectl set-ntp true
 
@@ -43,37 +23,6 @@ sudo pacman -S docker-buildx --needed --noconfirm
 #
 # sudo pacamn -S archinstall --needed --noconfirm
 
-# hardware
-sudo pacman -S usbutils --needed --noconfirm
-sudo pacman -S exfatprogs --needed --noconfirm
-sudo pacman -S lvm2 --needed --noconfirm
-sudo pacman -S dmidecode --needed --noconfirm
-sudo pacman -S lshw --needed --noconfirm
-sudo pacman -S inxi --needed --noconfirm
-sudo pacman -S hddtemp --needed --noconfirm
-sudo pacman -S smartmontools --needed --noconfirm
-sudo pacman -S ndisc6 --needed --noconfirm
-sudo pacman -S freeipmi --needed --noconfirm
-sudo pacman -S ipmitool --needed --noconfirm
-sudo pacman -S uv --needed --noconfirm
-sudo pacman -S iostat --needed --noconfirm
-sudo pacman -S wpa_supplicant --needed --noconfirm
-sudo pacman -S wireguard-tools --needed --noconfirm
-sudo pacman -S iw --needed --noconfirm
-sudo pacman -S iwd --needed --noconfirm
-sudo pacman -S sysstat --needed --noconfirm # iostat, mpstat,pidstat,sar,...
-sudo pacman -S iotop --needed --noconfirm
-sudo pacman -S nvme-cli --needed --noconfirm
-sudo pacman -S lsscsi --needed --noconfirm
-sudo pacman -S wol --needed --noconfirm
-sudo pacman -S hdparm --needed --noconfirm
-sudo pacman -S aichat --needed --noconfirm
-sudo pacman -S lm_sensors --needed --noconfirm
-
-# Extra
-sudo pacman -S emacs-nox --needed --noconfirm
-sudo pacman -S bun --needed --noconfirm
-
 ## The Bases
 sudo pacman -S base --needed --noconfirm
 sudo pacman -S base-devel --needed --noconfirm
@@ -81,14 +30,31 @@ sudo pacman -S base-devel --needed --noconfirm
 sudo pacman -S linux-headers --needed --noconfirm
 sudo pacman -S openssh --needed --noconfirm
 sudo pacman -S openssl --needed --noconfirm
+sudo pacman -S uv --needed --noconfirm
+sudo pacman -S jc --needed --noconfirm
+sudo pacman -S jo --needed --noconfirm
+sudo pacman -S yq --needed --noconfirm
+sudo pacman -S htmlq --needed --noconfirm
+sudo pacman -S meson --needed --noconfirm
 sudo pacman -S dmidecode --needed --noconfirm
 sudo pacman -S par2cmdline --needed --noconfirm
+sudo pacman -S hexyl --needed --noconfirm
+sudo pacman -S bat --needed --noconfirm
+sudo pacman -S ranger --needed --noconfirm
+sudo pacman -S shellcheck --needed --noconfirm
 sudo pacman -S iputils --needed --noconfirm # has ping
+sudo pacman -S luajit --needed --noconfirm  # has ping
 sudo pacman -S iproute2 --needed --noconfirm
 sudo pacman -S man --needed --noconfirm
 sudo pacman -S man-db --needed --noconfirm
 sudo pacman -S binutils --needed --noconfirm
 sudo pacman -S man-pages --needed --noconfirm
+sudo pacman -S ninja --needed --noconfirm
+sudo pacman -S jless --needed --noconfirm
+sudo pacman -S xsv --needed --noconfirm
+sudo pacman -S gron --needed --noconfirm
+sudo pacman -S ripgrep-all --needed --noconfirm
+sudo pacman -S moreutils --needed --noconfirm
 sudo pacman -S texinfo --needed --noconfirm
 sudo pacman -S less --needed --noconfirm
 sudo pacman -S vim --needed --noconfirm
@@ -109,6 +75,7 @@ sudo pacman -S htop --needed --noconfirm
 sudo pacman -S mtr --needed --noconfirm
 sudo pacman -S dosfstools --needed --noconfirm
 sudo pacman -S git --needed --noconfirm
+sudo pacman -S ruff --needed --noconfirm
 sudo pacman -S pv --needed --noconfirm
 sudo pacman -S w3m --needed --noconfirm
 sudo pacman -S unzip --needed --noconfirm
@@ -126,14 +93,56 @@ sudo pacman -S tree --needed --noconfirm
 sudo pacman -S ufw --needed --noconfirm
 sudo pacman -S ngrep --needed --noconfirm
 sudo pacman -S openvpn --needed --noconfirm
+sudo pacman -S fzf --needed --noconfirm
 sudo pacman -S bind-tools --needed --noconfirm
 sudo pacman -S ethtool --needed --noconfirm
 sudo pacman -S wireshark-cli --needed --noconfirm
+sudo pacman -S pandoc-cli --needed --noconfirm
 sudo pacman -S pwgen --needed --noconfirm
 sudo pacman -S nethogs --needed --noconfirm
 sudo pacman -S httping --needed --noconfirm
 sudo pacman -S minicom --needed --noconfirm
 sudo pacman -S pigz --needed --noconfirm
+sudo pacman -S duf --needed --noconfirm
+sudo pacman -S incus --needed --noconfirm
+sudo pacman -S incus-tools --needed --noconfirm
+sudo pacman -S nginx --needed --noconfirm
+
+# Fonts
+
+sudo pacman -S noto-fonts --needed --noconfirm
+sudo pacman -S ttf-noto-nerd --needed --noconfirm
+sudo pacman -S ttf-dejavu --needed --noconfirm
+sudo pacman -S ttf-liberation --needed --noconfirm
+sudo pacman -S noto-fonts-cjk --needed --noconfirm
+sudo pacman -S ttf-nerd-fonts-symbols --needed --noconfirm
+sudo pacman -S ttf-bitstream-vera --needed --noconfirm
+
+# hardware
+sudo pacman -S usbutils --needed --noconfirm
+sudo pacman -S exfatprogs --needed --noconfirm
+sudo pacman -S lvm2 --needed --noconfirm
+sudo pacman -S dmidecode --needed --noconfirm
+sudo pacman -S lshw --needed --noconfirm
+sudo pacman -S inxi --needed --noconfirm
+sudo pacman -S hddtemp --needed --noconfirm
+sudo pacman -S smartmontools --needed --noconfirm
+sudo pacman -S ndisc6 --needed --noconfirm
+sudo pacman -S freeipmi --needed --noconfirm
+sudo pacman -S ipmitool --needed --noconfirm
+sudo pacman -S iostat --needed --noconfirm
+sudo pacman -S wpa_supplicant --needed --noconfirm
+sudo pacman -S wireguard-tools --needed --noconfirm
+sudo pacman -S iw --needed --noconfirm
+sudo pacman -S iwd --needed --noconfirm
+sudo pacman -S sysstat --needed --noconfirm # iostat, mpstat,pidstat,sar,...
+sudo pacman -S iotop --needed --noconfirm
+sudo pacman -S nvme-cli --needed --noconfirm
+sudo pacman -S lsscsi --needed --noconfirm
+sudo pacman -S wol --needed --noconfirm
+sudo pacman -S hdparm --needed --noconfirm
+sudo pacman -S lm_sensors --needed --noconfirm
+
 # sudo pacman -S ntfs-3g --needed --noconfirm
 # sudo pacman -S mlocate --needed --noconfirm
 sudo pacman -S micro --needed --noconfirm
@@ -148,15 +157,27 @@ sudo pacman -S python-pipx --needed --noconfirm
 sudo pacman -S python-pynvim --needed --noconfirm
 sudo pacman -S python-pdftotext --needed --noconfirm
 sudo pacman -S python-pyusb --needed --noconfirm
+sudo pacman -S python-arrow --needed --noconfirm
+sudo pacman -S python-boto3 --needed --noconfirm
 sudo pacman -S python-redis --needed --noconfirm
-sudo pacman -S python-beautifultable4 --needed --noconfirm
+sudo pacman -S python-simpy --needed --noconfirm
+sudo pacman -S python-scipy --needed --noconfirm
+sudo pacman -S python-certifi --needed --noconfirm
+sudo pacman -S python-pydantic --needed --noconfirm
+sudo pacman -S python-purl --needed --noconfirm
+sudo pacman -S python-purl --needed --noconfirm
 sudo pacman -S python-httpx --needed --noconfirm
 sudo pacman -S python-feedparser --needed --noconfirm
 sudo pacman -S python-networkx --needed --noconfirm
 sudo pacman -S python-requests --needed --noconfirm
+sudo pacman -S python-twisted --needed --noconfirm
+sudo pacman -S python-cryptography --needed --noconfirm
+sudo pacman -S python-beautifulsoup4 --needed --noconfirm
 sudo pacman -S python-pendulum --needed --noconfirm
 sudo pacman -S python-pandas --needed --noconfirm
+sudo pacman -S python-sympy --needed --noconfirm
 sudo pacman -S python-numby --needed --noconfirm
+sudo pacman -S python-loguru --needed --noconfirm
 sudo pacman -S python-html2text --needed --noconfirm
 sudo pacman -S python-html5-parser --needed --noconfirm
 sudo pacman -S python-icecream --needed --noconfirm
@@ -164,7 +185,13 @@ sudo pacman -S python-kubernetes --needed --noconfirm
 sudo pacman -S python-dateutil --needed --noconfirm
 sudo pacman -S python-btrfs --needed --noconfirm
 sudo pacman -S python-jinja --needed --noconfirm
+sudo pacman -S python-flake8 --needed --noconfirm
 sudo pacman -S ipython --needed --noconfirm
+sudo pacman -S pyright --needed --noconfirm
+sudo pacman -S git-filter-repo --needed --noconfirm
+sudo pacman -S scrapy --needed --noconfirm
+sudo pacman -S psutils --needed --noconfirm
+sudo pacman -S esptool --needed --noconfirm
 #
 sudo pacman -S argparse --needed --noconfirm
 sudo pacman -S libqalculate --needed --noconfirm
@@ -207,10 +234,21 @@ sudo pacman -S arch-wiki-docs --needed --noconfirm
 
 sudo pacman -S devtools --needed --noconfirm
 
+# Extra
+sudo pacman -S emacs-nox --needed --noconfirm
+sudo pacman -S bun --needed --noconfirm
+
 # latex
-sudo pacman -S texlive-core texlive-bin --needed --noconfirm
+sudo pacman -S texlive-core --needed --noconfirm
+sudo pacman -S texlive-bin --needed --noconfirm
+sudo pacman -S texlive-basic --needed --noconfirm
+sudo pacman -S texlive-doc --needed --noconfirm
 sudo pacman -S texlive-fontsrecommended --needed --noconfirm
+sudo pacman -S texlive-fontsextra --needed --noconfirm
+sudo pacman -S texlive-formatsextra --needed --noconfirm
+sudo pacman -S texlive-latex --needed --noconfirm
 sudo pacman -S texlive-latexextra --needed --noconfirm
+sudo pacman -S texlive-latexrecommended --needed --noconfirm
 sudo pacman -S texlive-binextra --needed --noconfirm
 
 # Experimental
@@ -229,22 +267,18 @@ sudo pacman -S prettier --needed --noconfirm
 sudo pacman -S markdownlint --needed --noconfirm
 sudo pacman -S lazygit --needed --noconfirm
 sudo pacman -S lua51 --needed --noconfirm
+sudo pacman -S bcc --needed --noconfirm
 
 # sudo pacman -S i2c-tools --needed --noconfirm
 sudo pacman -S acpica --needed --noconfirm
 sudo pacman -S syncthing --needed --noconfirm
 # sudo pacman -S reflector --needed --noconfirm
-sudo pacman -S hexyl --needed --noconfirm
-sudo pacman -S bat --needed --noconfirm
-sudo pacman -S ranger --needed --noconfirm
-sudo pacman -S shellcheck --needed --noconfirm
 sudo pacman -S bash-language-server --needed --noconfirm
 sudo pacman -S dive --needed --noconfirm # docker
-# sudo pacman -S yt-dlp --needed --noconfirm
+sudo pacman -S yt-dlp --needed --noconfirm
 # sudo pacman -S neofetch  --needed --noconfirm
 # sudo pacman -S parallel parallel-docs --needed --noconfirm
 
-sudo pacman -S fzf --needed --noconfirm
 # sudo pacman -S bolt --needed --noconfirm
 # sudo pacman -S mpv --needed --noconfirm
 # sudo pacman -S imagemagik --needed --noconfirm
@@ -273,7 +307,7 @@ yay -S bcc-tools --needed --noconfirm # /usr/share/bcc/{tools,man}
 yay -S python-bcc --needed --noconfirm
 yay -S bpftrace --needed --noconfirm
 
-yay -S jc jo yq htmlq jless xsv gron ripgrep-all moreutils entr --needed --noconfirm
+yay -S --needed --noconfirm
 
 # Spelling
 
@@ -313,104 +347,6 @@ if grep 'ID=alpine' /etc/os-release; then
   apk add grep
   apk add iproute2
 fi
-
-command -v pipx || {
-  echo "no pipx"
-  exit 1
-}
-
-pipx install checkov --include-deps
-pipx install ipython --include-deps
-pipx install flask --include-deps
-pipx install django --include-deps
-pipx install pandas --include-deps
-pipx install speedtest --include-deps
-pipx install httpie --include-deps
-pipx install pgcli
-# pipx install mycli
-pipx install pycowsay
-pipx install esptool
-pipx install litecli
-pipx install ruff
-pipx install black
-pipx install flake8
-pipx install pylint
-pipx install cfn-lint
-# pipx install posting
-pipx install rust
-pipx install pipenv
-pipx install poetry
-pipx install glances
-pipx install isort
-# pipx install jupyter
-pipx install llm
-pipx install aider-chat
-# pipx install ansible
-pipx install cfn-lsp-extra
-pipx install cookiecutter
-pipx install csvkit
-pipx install elia-chat
-# pipx install openai
-pipx install ptpython
-pipx install s3cmd
-pipx install shell-functools
-pipx install speedtest-cli
-pipx install twisted
-pipx install visidata
-pipx install psutils
-pipx install uv
-pipx
-
-pipx inject llm llm-tools-exa --pip-args="--upgrade"
-pipx inject llm llm-openrouter --pip-args="--upgrade"
-pipx inject llm llm-anthropic --pip-args="--upgrade"
-pipx inject llm llm-fragments-github --pip-args="--upgrade"
-pipx inject llm llm-tools-simpleeval --pip-args="--upgrade"
-pipx inject llm llm-cmd-comp --pip-args="--upgrade"
-pipx inject llm llm-cmd --pip-args="--upgrade"
-pipx inject llm llm-python --pip-args="--upgrade" --force
-pipx inject llm llm-jq --pip-args="--upgrade" --force
-pipx inject llm llm-templates-fabric --pip-args="--upgrade"
-pipx inject llm howdoi --pip-args="--upgrade"
-pipx inject llm httpx --pip-args="--upgrade"
-pipx inject llm psutils --pip-args="--upgrade"
-pipx inject llm beautifulsoup4 --pip-args="--upgrade"
-pipx inject llm certifi --pip-args="--upgrade"
-pipx inject llm uv --pip-args="--upgrade"
-
-pipx inject \
-  ipython \
-  boto3 \
-  boltons \
-  beautifulsoup4 \
-  psutils \
-  howdoi \
-  pydantic \
-  cryptography \
-  black \
-  pendulum \
-  icecream \
-  loguru \
-  certifi \
-  pydantic \
-  httpx \
-  pandas \
-  esptool \
-  numpy \
-  ipython-extensions \
-  llm \
-  llm-tools-exa \
-  llm-openrouter \
-  llm-fragments-github \
-  llm-anthropic \
-  llm-tools-simpleeval \
-  llm-python \
-  llm-jq \
-  httpie \
-  uv \
-  --pip-args="--upgrade"
-
-pipx ensurepath
 
 #### ###LEGACY#### Wireless ####LEGACY#
 #### sudo pacman -S dialog --needed --noconfirm
@@ -457,16 +393,6 @@ fi
 # sudo pacman -S zathura --needed --noconfirm # super cust pdf,epub reader
 # sudo pacman -S zathura-pdf-mupdf --needed --noconfirm
 
-# Fonts
-
-# sudo pacman -S noto-fonts --needed --noconfirm
-# sudo pacman -S ttf-noto-nerd --needed --noconfirm
-# sudo pacman -S ttf-dejavu  --needed --noconfirm
-# sudo pacman -S ttf-liberation --needed --noconfirm
-# sudo pacman -S noto-fonts-cjk  --needed --noconfirm
-# sudo pacman -S ttf-nerd-fonts-symbols  --needed --noconfirm
-# sudo pacman -S ttf-bitstream-vera --needed --noconfirm
-
 # hyprland
 # mako
 # pipewire
@@ -476,5 +402,5 @@ fi
 # kitty
 # foot
 # waybar
-yay -S viu --needed
-yay -S chafa --needed
+# yay -S viu --needed
+# yay -S chafa --needed
