@@ -159,7 +159,6 @@ sudo pacman -S python-pyusb --needed --noconfirm
 sudo pacman -S python-arrow --needed --noconfirm
 sudo pacman -S python-boto3 --needed --noconfirm
 sudo pacman -S python-redis --needed --noconfirm
-sudo pacman -S python-simpy --needed --noconfirm
 sudo pacman -S python-scipy --needed --noconfirm
 sudo pacman -S python-certifi --needed --noconfirm
 sudo pacman -S python-pydantic --needed --noconfirm
