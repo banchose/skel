@@ -130,12 +130,11 @@ sudo pacman -S smartmontools --needed --noconfirm
 sudo pacman -S ndisc6 --needed --noconfirm
 sudo pacman -S freeipmi --needed --noconfirm
 sudo pacman -S ipmitool --needed --noconfirm
-sudo pacman -S iostat --needed --noconfirm
+sudo pacman -S sysstat --needed --noconfirm
 sudo pacman -S wpa_supplicant --needed --noconfirm
 sudo pacman -S wireguard-tools --needed --noconfirm
 sudo pacman -S iw --needed --noconfirm
 sudo pacman -S iwd --needed --noconfirm
-sudo pacman -S sysstat --needed --noconfirm # iostat, mpstat,pidstat,sar,...
 sudo pacman -S iotop --needed --noconfirm
 sudo pacman -S nvme-cli --needed --noconfirm
 sudo pacman -S lsscsi --needed --noconfirm
