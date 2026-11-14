@@ -298,12 +298,10 @@ fi
 
 # BCC - drags in LLVM
 pacman -S linux-headers --needed --noconfirm
-yay -S bcc --needed --noconfirm       # /usr/share/bcc/{examples,introspection}
-yay -S bcc-tools --needed --noconfirm # /usr/share/bcc/{tools,man}
-yay -S python-bcc --needed --noconfirm
-yay -S bpftrace --needed --noconfirm
-
-yay -S --needed --noconfirm
+pacman -S bcc --needed --noconfirm       # /usr/share/bcc/{examples,introspection}
+pacman -S bcc-tools --needed --noconfirm # /usr/share/bcc/{tools,man}
+pacman -S python-bcc --needed --noconfirm
+pacman -S bpftrace --needed --noconfirm
 
 # Spelling
 
@@ -317,32 +315,6 @@ sudo pacman -S hunspell-en_US --needed --noconfirm
 
 # export PATH="$HOME/.local/bin:$PATH"
 # export PATH="$HOME/go/bin:$PATH"
-
-# For Alpine Linux
-if grep 'ID=alpine' /etc/os-release; then
-  apk update
-  apk add python3-dev
-  apk add py3-pip
-  apk add pipx
-  apk add rust
-  apk add cargo
-  apk add git
-  apk add make gcc musl-dev
-  apk add musl-dev
-  apk add make
-  apk add cmake
-  apk add nmap
-  apk add ninja
-  apk add gcc
-  apk add gettext-dev
-  apk add curl
-  apk add tmux
-  apk add jq
-  apk add gawk
-  apk add sed
-  apk add grep
-  apk add iproute2
-fi
 
 #### ###LEGACY#### Wireless ####LEGACY#
 #### sudo pacman -S dialog --needed --noconfirm
