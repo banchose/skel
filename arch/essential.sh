@@ -6,9 +6,9 @@ sudo timedatectl set-ntp true
 
 # Qemu
 
-# sudo pacman -S qemu  # or desktop
-# sudo pacman -S qemu-docs
-# sudo pacman -S qemu-tools
+# sudo pacman -S qemu  --needed --noconfirm # or desktop
+# sudo pacman -S qemu-docs --needed --noconfirm
+# sudo pacman -S qemu-tools --needed --noconfirm
 
 # Docker
 sudo pacman -S docker --needed --noconfirm
