@@ -203,10 +203,13 @@ EOF
   esac
 }
 
+vmpaste() { wl-paste | incus file push - "$1/home/una/clip.txt" --uid 1000 --gid 1000; } # host clipboard -> VM file
+vmcopy() { incus file pull "$1/home/una/${2:-clip.txt}" - | wl-copy; }                   # VM file -> host clipboard
+
 # incus launch images:archlinux archvm --vm -c limits.memory=16GiB -c security.secureboot=false -c limits.cpu=4
 #
-#  incus profile create archvm                                                                                                         │
-#  incus profile set archvm limits.memory=4GiB security.secureboot=false                                                              │
+#  incus profile create archvm
+#  incus profile set archvm limits.memory=4GiB security.secureboot=false
 #  incus launch images:archlinux archvm2 --vm -p default -p archvm
 #  incus shell archvm2
 #
