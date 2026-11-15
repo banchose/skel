@@ -59,3 +59,61 @@ incus_launch_arch() {
     -c limits.memory=4GiB \
     -c security.secureboot=false
 }
+
+
+
+
+   cat > mirror_woodlake.yaml <<'EOF'
+   #cloud-config
+   write_files:
+     - path: /etc/pacman.d/mirrorlist
+       owner: root:root
+       permissions: '0644'
+       content: |
+         Server = http://star:9129/repo/archlinux/$repo/os/$arch
+         Server = https://mirrors.rit.edu/archlinux/$repo/os/$arch
+   EOF
+   incus profile set arch-mirror cloud-init.vendor-data="$(cat mirror_woodlake.yaml)"
+
+
+# A. cloud-init  write_files  in a profile (the "data block"; needs the
+#  /cloud  image variant):
+#
+#   cat > mirror.yaml <<EOF
+#   #cloud-config
+#   write_files:
+#     - path: /etc/pacman.d/mirrorlist
+#       encoding: b64
+#       content: $(base64 -w0 mirrorlist)
+#       owner: root:root
+#       permissions: '0644'
+#   EOF
+#
+#   incus profile create arch-mirror                                # profile
+# that holds the file
+#   incus profile set arch-mirror cloud-init.vendor-data="$(cat mirror.yaml)"
+# # vendor-data: leaves user-data free
+#   incus launch images:archlinux/cloud v1 --vm -p default -p archvm -p arch-
+# mirror   # written on first boot
+#   incus exec v1 -- cloud-init status --wait                       # wait
+# until cloud-init is done
+#   incus exec v1 -- head /etc/pacman.d/mirrorlist                  # check
+#
+#  base64 -w0  makes the file one line, so its content needs no YAML
+# indenting. To write it in plain text instead, use
+#  content: |  and indent every line of the file under it.
+#
+# B. Push it after launch (works with the plain image, no cloud-init):
+#
+#   incus launch images:archlinux v2 --vm -p default -p archvm      # plain
+# image
+#   until incus exec v2 -- true 2>/dev/null; do sleep 1; done       # wait for
+# incus-agent
+#   incus file push mirrorlist v2/etc/pacman.d/mirrorlist --uid 0 --gid 0 --
+# mode 0644   # overwrite the image's copy
+#
+# C. Bake it into an image: push the file into a build VM and  incus
+# publish  it; every VM launched from that image has it. Steps in
+# create-image-with-setup.md
+# /home/una/gitdir/configs/pi/projs/incus/howtos/create-image-with-setup.md
+# (B).
