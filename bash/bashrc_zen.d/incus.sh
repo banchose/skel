@@ -35,7 +35,7 @@ incus_launch_arch() {
   local mirrorlist
   mirrorlist=$(
     cat <<'EOF'
-Server = http://cache-host:9129/repo/archlinux/$repo/os/$arch
+Server = http://star.xaax.dev:9129/repo/archlinux/$repo/os/$arch
 Server = https://mirrors.rit.edu/archlinux/$repo/os/$arch
 EOF
   )
