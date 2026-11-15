@@ -25,6 +25,21 @@ alias editincus='nvim ~/gitdir/skel/bash/bashrc_zen.d/incus.sh'
 # incus launch images:archlinux my_v3 --vm -p default -p archvm -c limits.memory=4GiB
 #
 incus_launch_arch() {
+  local profile=arch-cloud
+  local image=images:archlinux/cloud
+  local memory=4GiB
+  local timeout=120 # seconds, for the whole cloud-init wait
+
+  # The mirrorlist written into every new VM. Quoted heredoc, so pacman's
+  # $repo and $arch stay literal. Lines must start at column 0.
+  local mirrorlist
+  mirrorlist=$(
+    cat <<'EOF'
+Server = http://cache-host:9129/repo/archlinux/$repo/os/$arch
+Server = https://mirrors.rit.edu/archlinux/$repo/os/$arch
+EOF
+  )
+
   if ! command -v incus >/dev/null 2>&1; then
     printf 'incus_launch_arch: incus command not found in PATH\n' >&2
     return 1
@@ -55,26 +70,97 @@ incus_launch_arch() {
     fi
   done <<<"$existing"
 
-  incus launch images:archlinux "$name" --vm \
-    -c limits.memory=4GiB \
-    -c security.secureboot=false
+  # cloud-config with the mirrorlist as base64, so it needs no YAML indenting.
+  local b64
+  if ! b64=$(printf '%s\n' "$mirrorlist" | base64 -w0); then
+    printf 'incus_launch_arch: base64 failed\n' >&2
+    return 1
+  fi
+  local vendor_data
+  printf -v vendor_data '%s\n' \
+    '#cloud-config' \
+    'write_files:' \
+    '  - path: /etc/pacman.d/mirrorlist' \
+    '    encoding: b64' \
+    "    content: $b64" \
+    '    owner: root:root' \
+    "    permissions: '0644'"
+
+  if ! incus profile show "$profile" >/dev/null 2>&1; then
+    if ! incus profile create "$profile"; then
+      printf 'incus_launch_arch: could not create profile %q\n' "$profile" >&2
+      return 1
+    fi
+  fi
+  if ! incus profile set "$profile" \
+    limits.memory="$memory" \
+    security.secureboot=false \
+    cloud-init.vendor-data="$vendor_data"; then
+    printf 'incus_launch_arch: could not set profile %q\n' "$profile" >&2
+    return 1
+  fi
+
+  if ! incus launch "$image" "$name" --vm -p default -p "$profile"; then
+    printf 'incus_launch_arch: launch of %q failed\n' "$name" >&2
+    return 1
+  fi
+
+  printf 'incus_launch_arch: waiting for cloud-init in %s (up to %ss)\n' \
+    "$name" "$timeout" >&2
+  local deadline=$((SECONDS + timeout))
+  local got
+  until got=$(incus file pull "$name/etc/pacman.d/mirrorlist" - 2>/dev/null) &&
+    [[ $got == "$mirrorlist" ]]; do
+    if ((SECONDS >= deadline)); then
+      printf 'incus_launch_arch: timed out; %s is still running. Check with:\n' \
+        "$name" >&2
+      printf '  incus exec %q -- cloud-init status --long\n' "$name" >&2
+      return 1
+    fi
+    sleep 3
+  done
+
+  local left=$((deadline - SECONDS))
+  if ((left < 5)); then
+    left=5
+  fi
+  local rc=0
+  timeout "$left" incus exec "$name" -- cloud-init status --wait >/dev/null ||
+    rc=$?
+  case $rc in
+  0)
+    printf 'incus_launch_arch: %s is ready\n' "$name" >&2
+    ;;
+  2)
+    printf 'incus_launch_arch: %s is up, but cloud-init reported recoverable errors:\n' \
+      "$name" >&2
+    printf '  incus exec %q -- cloud-init status --long\n' "$name" >&2
+    ;;
+  124)
+    printf 'incus_launch_arch: timed out waiting for cloud-init; %s is still running\n' \
+      "$name" >&2
+    return 1
+    ;;
+  *)
+    printf 'incus_launch_arch: cloud-init failed in %s (exit %d). Check with:\n' \
+      "$name" "$rc" >&2
+    printf '  incus exec %q -- cloud-init status --long\n' "$name" >&2
+    return 1
+    ;;
+  esac
 }
 
-
-
-
-   cat > mirror_woodlake.yaml <<'EOF'
-   #cloud-config
-   write_files:
-     - path: /etc/pacman.d/mirrorlist
-       owner: root:root
-       permissions: '0644'
-       content: |
-         Server = http://star:9129/repo/archlinux/$repo/os/$arch
-         Server = https://mirrors.rit.edu/archlinux/$repo/os/$arch
-   EOF
-   incus profile set arch-mirror cloud-init.vendor-data="$(cat mirror_woodlake.yaml)"
-
+# cat > mirror_woodlake.yaml <<'EOF'
+# #cloud-config
+# write_files:
+#   - path: /etc/pacman.d/mirrorlist
+#     owner: root:root
+#     permissions: '0644'
+#     content: |
+#       Server = http://star:9129/repo/archlinux/$repo/os/$arch
+#       Server = https://mirrors.rit.edu/archlinux/$repo/os/$arch
+# EOF
+# incus profile set arch-mirror cloud-init.vendor-data="$(cat mirror_woodlake.yaml)"
 
 # A. cloud-init  write_files  in a profile (the "data block"; needs the
 #  /cloud  image variant):
