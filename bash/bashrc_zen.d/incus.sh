@@ -25,6 +25,37 @@ alias editincus='nvim ~/gitdir/skel/bash/bashrc_zen.d/incus.sh'
 # incus launch images:archlinux my_v3 --vm -p default -p archvm -c limits.memory=4GiB
 #
 incus_launch_arch() {
+  if ! command -v incus >/dev/null 2>&1; then
+    printf 'incus_launch_arch: incus command not found in PATH\n' >&2
+    return 1
+  fi
 
-  incus launch images:archlinux archvm --vm -c limits.memory=4GiB -c security.secureboot=false
+  if (($# > 1)); then
+    printf 'usage: incus_launch_arch [vm-name]\n' >&2
+    return 2
+  fi
+
+  local name=${1:-}
+  if [[ -z $name ]]; then
+    name="vm-$(date +%Y%m%d-%H%M%S)"
+  fi
+
+  local existing
+  if ! existing=$(incus list --format csv -c n); then
+    printf 'incus_launch_arch: could not list existing instances\n' >&2
+    return 1
+  fi
+
+  local line
+  while IFS= read -r line; do
+    if [[ $line == "$name" ]]; then
+      printf 'incus_launch_arch: an instance named %q already exists\n' \
+        "$name" >&2
+      return 1
+    fi
+  done <<<"$existing"
+
+  incus launch images:archlinux "$name" --vm \
+    -c limits.memory=4GiB \
+    -c security.secureboot=false
 }
