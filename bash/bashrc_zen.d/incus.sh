@@ -413,3 +413,7 @@ EOF
 ## In VM (vm-1234)
 # pacman -S mesa-utils vulkan-tools vulkan-radeon   # use vulkan-intel on Intel
 # eglinfo -B
+
+## Copy/Paste spice/wayland/clipboard
+# wl-paste | incus file push - vm1/home/una/clip.txt --uid 1000 --gid 1000   # host clipboard into a file una owns
+# incus file pull vm1/home/una/out.txt - | wl-copy
