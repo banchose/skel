@@ -203,3 +203,19 @@ EOF
 # create-image-with-setup.md
 # /home/una/gitdir/configs/pi/projs/incus/howtos/create-image-with-setup.md
 # (B).
+#
+
+# Setting up gpu for wayland
+## On the Host
+# sudo pacman -S --needed qemu-ui-egl-headless qemu-hw-display-virtio-vga-gl qemu-hw-display-virtio-gpu-gl
+# qemu-hw-display-virtio-gpu-pci qemu-hw-display-virtio-gpu-pci-gl   # also pulls in virglrenderer
+# incus stop archvm                                               # this device can't be added to a running VM
+# incus config device add archvm gpu0 gpu gputype=native-context  # add the GPU device
+# incus start archvm --console=vga
+#
+# incus console --type vga vm-1234
+#
+
+## In VM (vm-1234)
+# pacman -S mesa-utils vulkan-tools vulkan-radeon   # use vulkan-intel on Intel
+# eglinfo -B
