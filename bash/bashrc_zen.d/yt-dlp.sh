@@ -1,4 +1,11 @@
 # sourcing
+#
+# Bail early if the command isn't available (only meaningful when sourced)
+(return 0 2>/dev/null) || {
+  printf >&2 '%s: must be sourced, not executed\n' "${BASH_SOURCE[0]}"
+  exit 1
+}
+command -v yt-dlp >/dev/null 2>&1 || return 0
 
 UserAgent='Mozilla/5.0 (iPhone; CPU iPhone OS 12_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Mobile/15E148 Safari/604.1'
 
