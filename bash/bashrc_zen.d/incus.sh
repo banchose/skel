@@ -9,6 +9,47 @@ alias lxc='echo "Use incus"'
 
 alias editincus='nvim ~/gitdir/skel/bash/bashrc_zen.d/incus.sh'
 
+incus_help() {
+  cat <<'EOF'
+# incus help
+## clone
+### clone copy
+incus stop "${VM_NAME}"
+incus copy "${VM_NAME}" "${VM_NAME}_2"  # full clone: disk, config, devices, snapshots [--instance-only]
+incus start "${VM_NAME}" "${VM_NAME}_2"
+### Initialize systemd ids on clone
+incus exec "${VM_NAME}_2" -- rm /etc/machine-id
+incus restart "${VM_NAME}_2"
+incus exec "${VM_NAME}_2" -- systemd-machine-id-setup
+## Files on the vm
+incus file push notes.txt "${VM_NAME}"/home/una/notes.txt              # one file, full target path
+incus file push notes.txt "${VM_NAME}"/home/una/                       # a trailing / means "into this directory"
+incus file push -r ./dotfiles "${VM_NAME}"/home/una/                   # a whole directory
+incus file push -p conf.toml "${VM_NAME}"/home/una/.config/app/conf.toml   # create missing directories
+echo hi | incus file push - "${VM_NAME}"/tmp/hi.txt           # read from stdin
+incus file pull "${VM_NAME}"/etc/pacman.conf .                         # the other direction
+incus file pull "${VM_NAME}"/var/log/pacman.log - | less               # to stdout
+incus file edit "${VM_NAME}"/etc/hosts: edit a file in the VM with your host $EDITOR. The file must already exist.
+incus file mount "${VM_NAME}"/home/una ./mnt: mount a folder of the VM on your host. It needs sshfs on the host.
+## clipboard
+vmpaste() { wl-paste | incus file push - "$1/home/una/clip.txt" --uid 1000 --gid 1000; }   # host clipboard -> VM file
+vmcopy()  { incus file pull "$1/home/una/${2:-clip.txt}" - | wl-copy; }                   # VM file -> host clipboard
+## GPU
+### On Arch Host
+sudo pacman -S --needed qemu-ui-egl-headless qemu-hw-display-virtio-vga-gl qemu-hw-display-virtio-gpu-gl qemu-hw-display-virtio-gpu-pci qemu-hw-display-virtio-gpu-pci-gl   # also pulls in virglrenderer
+incus stop "${VM_NAME}"
+incus config device add "${VM_NAME}" gpu0 gpu gputype=native-context  # add the GPU device
+incus start "${VM_NAME}" --console=vga                                # start it and open the screen
+### In VM
+pacman -S mesa-utils vulkan-tools vulkan-radeon   # use vulkan-intel on Intel
+eglinfo -B                                        # should name your GPU, not "llvmpipe"
+## General
+incus list
+incus exec "${VM_NAME}" -- command
+incus exec "${VM_NAME}" -- passwd <user>
+EOF
+}
+
 # shellcheck shell=bash
 # incus_launch_arch: launch an Arch Linux VM with a local pacman mirrorlist.
 #
