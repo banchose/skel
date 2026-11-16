@@ -12,6 +12,9 @@ alias editincus='nvim ~/gitdir/skel/bash/bashrc_zen.d/incus.sh'
 incus_help() {
   cat <<'EOF'
 # incus help
+## snapshot
+incus snapshot create vm1 base
+incus copy vm1/base vm2
 ## clone
 ### clone copy
 incus stop "${VM_NAME}"
@@ -112,7 +115,7 @@ incus_launch_arch() {
   local timeout=600 # seconds, for the whole cloud-init wait (upgrade + packages)
 
   # Installed on first boot, after a full upgrade (pacman -Syu).
-  local packages=(git tmux sudo jq bash-completion curl)
+  local packages=(git tmux sudo jq bash-completion curl nvim wget base jc jo uv htmlq socat vim zip unzip 7zip bind-tools pwgen nginx httpie dos2unix)
   local user=una # created in group wheel, shell bash, password locked
 
   # The mirrorlist written into every new VM. Quoted heredoc, so pacman's
