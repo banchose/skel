@@ -54,12 +54,15 @@ incus publish mytemplate
 incus exec "${VM_NAME}" -- command
 incus exec "${VM_NAME}" -- passwd <user>
 sudo pacman -S virt-viewer
-incus launch images:archlinux archvm --vm -c limits.memory=16GiB  -c security.secureboot=false
+incus launch images:archlinux archvm --vm -c limits.memory=16GiB  -c security.secureboot=false -c limits.cpu=4
 incus exec "${VM_NAME}" -- command
 usermod -a -G "${VM_USER_NAME}"
 incus console "${VM_NAME}" --type vga
 incus start "${VM_NAME}" --console vga
 incus exec --user "${VM_USER_ID:-1000}" "${VM_NAME}" bash
+incus shell "${VM_NAME}"
+incus file push ~/.inputrc --uid 0 --gid 0 vm-20261115-200643/root
+incus file push ~/gitdir/skel/.bashrc-minimal --uid 0 --gid 0 vm0/home/una/.bashrc
 ctrl-AA q  # in tmux to get out of console
 EOF
 }
@@ -256,6 +259,11 @@ EOF
     return 1
     ;;
   esac
+}
+
+incus_root_copy_init() {
+  incus file push ~/gitdir/skel/.inputrc --uid 0 --gid 0 vm0/home/una/.inputrc
+  incus file push ~/gitdir/skel/.bashrc-minimal --uid 0 --gid 0 vm0/home/una/.bashrc
 }
 
 vmpaste() { wl-paste | incus file push - "$1/home/una/clip.txt" --uid 1000 --gid 1000; } # host clipboard -> VM file
