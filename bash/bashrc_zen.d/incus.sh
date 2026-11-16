@@ -45,8 +45,18 @@ pacman -S mesa-utils vulkan-tools vulkan-radeon   # use vulkan-intel on Intel
 eglinfo -B                                        # should name your GPU, not "llvmpipe"
 ## General
 incus list
+incus image list images: archlinux # MIND space
+incus exec --user una "${VM_NAME}" bash
+incus publish mytemplate
 incus exec "${VM_NAME}" -- command
 incus exec "${VM_NAME}" -- passwd <user>
+sudo pacman -S virt-viewer
+incus console "${VM_NAME}" --type vga 
+incus start "${VM_NAME}" --console vga
+incus launch images:archlinux archvm --vm -c limits.memory=16GiB  -c security.secureboot=false
+incus exec "${VM_NAME}" -- command
+incus exec --user una "${VM_NAME}" bash
+usermod -a -G "${VM_USER_NAME}"
 EOF
 }
 
