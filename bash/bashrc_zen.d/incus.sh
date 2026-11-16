@@ -60,6 +60,7 @@ usermod -a -G "${VM_USER_NAME}"
 incus console "${VM_NAME}" --type vga
 incus start "${VM_NAME}" --console vga
 incus exec --user "${VM_USER_ID:-1000}" "${VM_NAME}" bash
+ctrl-AA q  # in tmux to get out of console
 EOF
 }
 
