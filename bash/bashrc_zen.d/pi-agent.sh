@@ -72,7 +72,7 @@ moon() {
     echo "no ${PIDIR}"
     return 1
   }
-  pi-bed --name moon-"$(date '+%T-%D')"
+  pi-bed --name moon-"$(date '+%A-%y%m%d')"
 }
 
 pi-bash() {
