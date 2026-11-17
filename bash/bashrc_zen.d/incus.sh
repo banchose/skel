@@ -9,9 +9,26 @@ alias lxc='echo "Use incus"'
 
 alias editincus='nvim ~/gitdir/skel/bash/bashrc_zen.d/incus.sh'
 
+# incus_qemu_instance() {
+#
+#   curl -LO https://geo.mirror.pkgbuild.com/images/latest/Arch-Linux-x86_64-cloudimg.qcow2
+#   qemu-img resize Arch-Linux-x86_64-cloudimg.qcow2 20G
+#   qemu-system-x86_64 \
+#     -net nic \
+#     -net user \
+#     -machine accel=kvm:tcg \
+#     -m 1024 \
+#     -nographic \
+#     -drive file=archlinux-20G.qcow2,format=qcow2,if=virtio \
+#     -smbios 'type=1,serial=ds=nocloud;s=http://localhost:8000/'
+# }
+
 incus_help() {
   cat <<'EOF'
 # incus help
+## QEMU
+python -m http.server  9090 --bind 127.0.0.1 --directory .
+qemu-system-x86_64   -net nic   -net user   -machine accel=kvm:tcg   -m 1024   -nographic   -drive file=Arch-Linux-x86_64-cloudimg.qcow2,format=qcow2,if=virtio   -smbios 'type=1,serial=ds=nocloud;s=http://localhost:8000/'
 ## snapshot
 incus snapshot create vm1 base
 incus copy vm1/base vm2
