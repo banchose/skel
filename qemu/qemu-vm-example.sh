@@ -9,20 +9,26 @@ cd ~/temp || {
 
 import_keys() {
 
-  local FPR=1B9A16984A4E8CB448712D2AE0B78BF4326C6F8F
+  import_keys() {
+    local FPR=1B9A16984A4E8CB448712D2AE0B78BF4326C6F8F
 
-  if gpg --list-keys "$FPR" >/dev/null 2>&1; then
-    echo "arch-boxes key already imported"
-  else
-    curl -sfL https://gitlab.archlinux.org/archlinux/arch-boxes/-/raw/master/README.md |
-      sed -n '/BEGIN PGP/,/END PGP/p' >arch-boxes.asc
-    got=$(gpg --show-keys --with-colons arch-boxes.asc | awk -F: '/^fpr:/ {print $10; exit}')
-    if [[ "$got" != "$FPR" ]]; then
-      echo "fingerprint mismatch: got '$got', expected $FPR; not importing" >&2
-      exit 1
+    if gpg --list-keys "$FPR" >/dev/null 2>&1; then
+      echo "arch-boxes key already imported"
+      return 0
     fi
-    gpg --import arch-boxes.asc
-  fi
+
+    gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys "$FPR" ||
+      {
+        echo "couldn't fetch key $FPR from keyserver" >&2
+        return 1
+      }
+
+    gpg --list-keys "$FPR" >/dev/null 2>&1 ||
+      {
+        echo "key $FPR still not in keyring after fetch" >&2
+        return 1
+      }
+  }
 }
 
 img=Arch-Linux-x86_64-cloudimg.qcow2
