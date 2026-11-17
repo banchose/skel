@@ -27,8 +27,25 @@ incus_help() {
   cat <<'EOF'
 # incus help
 ## QEMU
+### Import keys
+ curl -sL https://gitlab.archlinux.org/archlinux/arch-boxes/-/raw/master/README.md \
+     | sed -n '/BEGIN PGP/,/END PGP/p' > arch-boxes.asc
+   gpg --show-keys --with-fingerprint arch-boxes.asc   # expect 1B9A 1698 4A4E 8CB4 4871 2D2A E0B7 8BF4 326C 6F8F
+   gpg --import arch-boxes.asc
+### Get image and signature
+curl -LO https://geo.mirror.pkgbuild.com/images/latest/Arch-Linux-x86_64-cloudimg.qcow2
+curl -LO https://geo.mirror.pkgbuild.com/images/latest/Arch-Linux-x86_64-cloudimg.qcow2.sig
+  ### Start a IMDS server (cloud-init) with python
 python -m http.server  9090 --bind 127.0.0.1 --directory .
-qemu-system-x86_64   -net nic   -net user   -machine accel=kvm:tcg   -m 1024   -nographic   -drive file=Arch-Linux-x86_64-cloudimg.qcow2,format=qcow2,if=virtio   -smbios 'type=1,serial=ds=nocloud;s=http://localhost:8000/'
+qemu-system-x86_64                                            \
+    -net nic                                                    \
+    -net user                                                   \
+    -machine accel=kvm:tcg                                      \
+    -m 1024    \
+    -nographic                                                  \
+    -drive file=Arch-Linux-x86_64-cloudimg.qcow2,format=qcow2,if=virtio \
+    -smbios type=1,serial=ds='nocloud;s=http://localhost:9090/'
+qemu-system-x86_64   -net nic   -net user   -machine accel=kvm:tcg   -m 1024   -nographic   -drive file=Arch-Linux-x86_64-cloudimg.qcow2,format=qcow2,if=virtio   -smbios 'type=1,serial=ds=nocloud;s=http://localhost:9090/'
 ## snapshot
 incus snapshot create vm1 base
 incus copy vm1/base vm2
