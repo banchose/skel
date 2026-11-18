@@ -161,7 +161,7 @@ alias ls='ls -F -h --color=always --time-style=long-iso'
 #
 alias l='ls -l -aF'
 alias ll='ls -AFlSrh --color=auto --group-directories-first'
-alias ltr='ls -AFltrh --color=auto'
+alias ltr='ls -laFtr --color=auto'
 alias lt='ls -AFlth --color=auto'
 alias g='grep'
 alias pg="pcre2grep -i"
