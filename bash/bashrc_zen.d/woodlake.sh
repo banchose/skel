@@ -3,7 +3,8 @@
 auser=api
 # user=admin
 
-alias catchup='gitseal;gitsync;pibak;uv tool upgrade --all;flatpak update;docker images | while  read col1 rest;do echo $col1;docker pull $col1;done;yay -w'
+alias catchup='gitseal;gitsync;pibak;uv tool upgrade --all;flatpak -y update;docker images | while  read col1 rest;do echo $col1;docker pull $col1;done;yay -w'
+alias editwood='nvim ~/gitdir/skel/bash/bashrc_zen.d/woodlake.sh'
 
 function getjwt() {
   curl -X POST -s -k -u "${auser}:${heliospass}" https://helios.example.net/api/v2/auth/jwt
