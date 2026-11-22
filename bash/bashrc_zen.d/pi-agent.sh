@@ -65,14 +65,24 @@ albany() {
   pi-bed --name Albany-"$(date '+%T-%D')"
 }
 
-aachor() {
+aanchor() {
 
   local PIDIR=~/gitdir/configs/pi/projs/aanchor
   cd "${PIDIR}" || {
     echo "no ${PIDIR}"
     return 1
   }
-  pia --name aachor-"$(date '+%A-%y%m%d%S')"
+  pia --name aanchor-"$(date '+%A-%y%m%d%S')"
+}
+
+moon() {
+
+  local PIDIR=~/moon
+  cd "${PIDIR}" || {
+    echo "no ${PIDIR}"
+    return 1
+  }
+  pia --name moon-"$(date '+%A-%y%m%d%S')"
 }
 
 pi-bash() {
