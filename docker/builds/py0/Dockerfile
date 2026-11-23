@@ -292,6 +292,7 @@ RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
 
 USER ${USER_NAME}:${USER_NAME}
 ENV PATH="${USER_HOME}/.local/bin:${USER_HOME}/go/bin:${USER_HOME}/.cargo/bin:/usr/local/go/bin:/usr/local/bin:/usr/bin:/bin"
+ENV PATH="${NVM_DIR}/versions/node/v${NODE_VERSION}/bin:${PATH}"
 
 ####### Install a newer pipx supporting multiple arguments
 RUN python3 -m pip install --break-system-packages pipx
