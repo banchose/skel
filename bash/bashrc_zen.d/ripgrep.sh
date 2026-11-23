@@ -137,6 +137,13 @@ rg 'def ' -t py
 --smart-case
 --hidden
 --glob, -g
+--glob=!.git/
+--glob=!node_modules/
+--glob=!.venv/
+###
+
 rg 'import' -g '*.ts' -g '!*.d.ts'
+rg --files or -l
+###
 EOF
 }
