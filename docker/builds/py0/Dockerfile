@@ -20,6 +20,19 @@ FROM debian:trixie
 USER root
 WORKDIR /root
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+RUN apt update && apt install -y locales && \
+    sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get clean
+
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
+
 RUN apt update && apt install -y \
   bash \
   bash-completion  \
@@ -66,14 +79,6 @@ RUN apt update && apt install -y \
   vim  \
   ripgrep \
   btrfs-progs \
-  apt-utils \
-  fd-find \
-  shellcheck \
-  && rm -rf /var/lib/apt/lists/* \
-  && apt-get clean
-
-RUN apt update && apt install -y \
- # samurai  \
   libtool \
   ninja-build \
   meson \
@@ -96,32 +101,7 @@ RUN apt update && apt install -y \
   liblua5.4-dev \
   luajit \
   lua5.1-doc \
-  && rm -rf /var/lib/apt/lists/* \
-  && apt-get clean
-
-RUN curl -v -L -o /usr/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x /usr/bin/kubectl
-
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-unzip awscliv2.zip && \
-./aws/install
-
-RUN curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb" && \
-dpkg -i session-manager-plugin.deb
-
-
-RUN ARCH=amd64 && \
-    PLATFORM=$(uname -s)_$ARCH && \
-    curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz" && \
-#   curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check && \
-    curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" \
-  | grep " eksctl_${PLATFORM}.tar.gz$" | sha256sum --check && \
-    tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && \
-    rm eksctl_$PLATFORM.tar.gz && \
-    install -m 0755 /tmp/eksctl /usr/local/bin && \
-    rm /tmp/eksctl
-
-# As root
-RUN apt update && apt install -y \
+  apt-utils \
   python3.13-venv \
   pip \
   faker \
@@ -148,11 +128,8 @@ RUN apt update && apt install -y \
   python3-twisted \
   twisted-doc \
   python3-jinja2 \
-  && rm -rf /var/lib/apt/lists/* \
-  && apt-get clean 
-
-
-RUN apt update && apt install -y \
+  fd-find \
+  shellcheck \
   units \
   pandoc \
   pwgen \
@@ -187,48 +164,44 @@ RUN apt update && apt install -y \
   units \
   w3m \
   libpcsclite-dev \
+  build-essential cmake autoconf automake libtool pkg-config \
+  zlib1g-dev libbz2-dev liblzma-dev libzstd-dev \
+  libssl-dev libgcrypt20-dev \
+  libxml2-dev libexpat1-dev \
+  libfuse-dev libpcsclite-dev \
+  libcurl4-openssl-dev \
+  libsqlite3-dev \
+  libncurses-dev \
+  libopenblas-dev \
+  liblua5.1-0-dev \
+  libpcsclite-dev \
+  libopenblas-dev \
+  libfuse-dev \
   && rm -rf /var/lib/apt/lists/* \
   && apt-get clean
 
 
-RUN apt update && apt install -y \
-    build-essential cmake autoconf automake libtool pkg-config \
-    zlib1g-dev libbz2-dev liblzma-dev libzstd-dev \
-    libssl-dev libgcrypt20-dev \
-    libxml2-dev libexpat1-dev \
-    libfuse-dev libpcsclite-dev \
-    libcurl4-openssl-dev \
-    libsqlite3-dev \
-    libncurses-dev \
-    libopenblas-dev \
-    liblua5.1-0-dev \
-    libpcsclite-dev \
-    libopenblas-dev \
-    libfuse-dev \
-  && rm -rf /var/lib/apt/lists/* \
-  && apt-get clean
+RUN curl -v -L -o /usr/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && chmod +x /usr/bin/kubectl
 
-RUN apt update && apt install -y locales && \
-    sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
-    locale-gen && \
-    rm -rf /var/lib/apt/lists/* && \
-    apt-get clean
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+unzip awscliv2.zip && \
+./aws/install
 
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US:en
-ENV LC_ALL=en_US.UTF-8
+RUN curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb" && \
+dpkg -i session-manager-plugin.deb
 
 
-RUN apt update && apt install -y  \
-    lazygit && \
-    rm -rf /var/lib/apt/lists/*  \
-    apt-get clean
+RUN ARCH=amd64 && \
+    PLATFORM=$(uname -s)_$ARCH && \
+    curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz" && \
+#   curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check && \
+    curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" \
+  | grep " eksctl_${PLATFORM}.tar.gz$" | sha256sum --check && \
+    tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && \
+    rm eksctl_$PLATFORM.tar.gz && \
+    install -m 0755 /tmp/eksctl /usr/local/bin && \
+    rm /tmp/eksctl
 
-
-# Install golang - go
-# RUN wget https://go.dev/dl/go1.25.5.linux-amd64.tar.gz && \
-#     tar -C /usr/local -xzf go1.25.5.linux-amd64.tar.gz && \
-#     rm go1.25.5.linux-amd64.tar.gz
 
 RUN cd /tmp && \
 wget https://luarocks.org/releases/luarocks-3.13.0.tar.gz && \
@@ -237,29 +210,16 @@ cd luarocks-3.13.0 && \
 ./configure && make && make install && \
 luarocks install luasocket
 
-ARG USER_UID=1000
-ARG USER_GID=1000
-ARG USER_NAME=loon
-ARG USER_HOME=/home/${USER_NAME}
-
-ENV PATH=$PATH:/usr/local/go/bin:${USER_HOME}/go/bin
-
-# Add a 'normal' user
-RUN groupadd -g ${USER_UID} ${USER_NAME} && \
-  useradd -m -u ${USER_UID} -g ${USER_GID} -s /bin/bash ${USER_NAME}
 
 # Tree-sitter for lazyvim
 RUN curl -L https://github.com/tree-sitter/tree-sitter/releases/download/v0.26.3/tree-sitter-linux-x64.gz \
   | gunzip > /usr/local/bin/tree-sitter && \
   chmod +x /usr/local/bin/tree-sitter
 
-# Install Node.js from NodeSource
-# RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-#     apt-get install -y nodejs && \
-#     rm -rf /var/lib/apt/lists/* && \
-#     apt-get clean
+##########
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# ENV PATH=$PATH:/usr/local/go/bin:${USER_HOME}/go/bin
 
 ENV NVM_DIR=/root/.nvm
 ENV NODE_VERSION=26.13.1
@@ -269,19 +229,19 @@ RUN curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.41.0/install.sh |
   && nvm install "$NODE_VERSION" \
   && nvm alias default "$NODE_VERSION" \
   && node -v \
-  && npm -v
+  && npm -v \
+  && npm install -g neovim bash-language-server \
+  && npm install -g --ignore-scripts @earendil-works/pi-coding-agent \
+  && npm install -g neovim
 
-   # nvm only changes the current shell, so persist Node's location explicitly.
-ENV PATH="${NVM_DIR}/versions/node/v${NODE_VERSION}/bin:${PATH}"
 
-RUN node -v && npm -v
-# 
+# ENV PATH="${NVM_DIR}/versions/node/v${NODE_VERSION}/bin:${PATH}"
+
 # Verify installation
-RUN node --version && npm --version
 
 # Install npm packages globally
-RUN npm install -g neovim bash-language-server
-RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+# RUN npm install -g neovim bash-language-server
+# RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
 ##
 ##
 ##
@@ -289,10 +249,16 @@ RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
 ##
 ##
 ##
+ARG USER_UID=1000
+ARG USER_GID=1000
+ARG USER_NAME=loon
+ARG USER_HOME=/home/${USER_NAME}
+# Add a 'normal' user
+RUN groupadd -g ${USER_UID} ${USER_NAME} && \
+  useradd -m -u ${USER_UID} -g ${USER_GID} -s /bin/bash ${USER_NAME}
 
 USER ${USER_NAME}:${USER_NAME}
-ENV PATH="${USER_HOME}/.local/bin:${USER_HOME}/go/bin:${USER_HOME}/.cargo/bin:/usr/local/go/bin:/usr/local/bin:/usr/bin:/bin"
-ENV PATH="${NVM_DIR}/versions/node/v${NODE_VERSION}/bin:${PATH}"
+ENV PATH="${PATH}:${USER_HOME}/.local/bin:${USER_HOME}/go/bin:${USER_HOME}/.cargo/bin:/usr/local/go/bin:/usr/local/bin:/usr/bin:/bin"
 
 ####### Install a newer pipx supporting multiple arguments
 RUN python3 -m pip install --break-system-packages pipx
@@ -485,7 +451,6 @@ RUN cat ${USER_HOME}/.claude/anthropic_keys.sh
 
 
 
-RUN npm install neovim
 
 WORKDIR ${USER_HOME}/gitdir
 RUN git clone --depth 1 https://github.com/junegunn/fzf.git ${USER_HOME}/.fzf && \
