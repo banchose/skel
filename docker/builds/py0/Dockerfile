@@ -221,8 +221,8 @@ ENV LC_ALL=en_US.UTF-8
 
 RUN apt update && apt install -y  \
     lazygit && \
-    rm -rf /var/lib/apt/lists/*
-#   apt-get clean
+    rm -rf /var/lib/apt/lists/*  \
+    apt-get clean
 
 
 # Install golang - go
@@ -231,9 +231,9 @@ RUN apt update && apt install -y  \
 #     rm go1.25.5.linux-amd64.tar.gz
 
 RUN cd /tmp && \
-wget https://luarocks.org/releases/luarocks-3.12.2.tar.gz && \
-tar zxpf luarocks-3.12.2.tar.gz && \
-cd luarocks-3.12.2 && \
+wget https://luarocks.org/releases/luarocks-3.13.0.tar.gz && \
+tar zxpf luarocks-3.13.0.tar.gz && \
+cd luarocks-3.13.0 && \
 ./configure && make && make install && \
 luarocks install luasocket
 
@@ -254,17 +254,34 @@ RUN curl -L https://github.com/tree-sitter/tree-sitter/releases/download/v0.26.3
   chmod +x /usr/local/bin/tree-sitter
 
 # Install Node.js from NodeSource
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs && \
-    rm -rf /var/lib/apt/lists/* && \
-    apt-get clean
+# RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+#     apt-get install -y nodejs && \
+#     rm -rf /var/lib/apt/lists/* && \
+#     apt-get clean
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+ENV NVM_DIR=/root/.nvm
+ENV NODE_VERSION=26.13.1
+
+RUN curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.41.0/install.sh | bash \
+  && . "$NVM_DIR/nvm.sh" \
+  && nvm install "$NODE_VERSION" \
+  && nvm alias default "$NODE_VERSION" \
+  && node -v \
+  && npm -v
+
+   # nvm only changes the current shell, so persist Node's location explicitly.
+ENV PATH="${NVM_DIR}/versions/node/v${NODE_VERSION}/bin:${PATH}"
+
+RUN node -v && npm -v
+# 
 # Verify installation
 RUN node --version && npm --version
 
 # Install npm packages globally
 RUN npm install -g neovim bash-language-server
-
+RUN npm install -g --ignore-scripts @earendil-works/pi-coding-agent
 ##
 ##
 ##
@@ -282,6 +299,7 @@ RUN python3 -m pip install --break-system-packages pipx
 RUN mkdir -p ${USER_HOME}/gitdir ${USER_HOME}/temp ${USER_HOME}/work ${USER_HOME}/.bashrc_zen.d
 
 WORKDIR ${USER_HOME}
+
 
 RUN curl -fsSL https://claude.ai/install.sh | bash
 
@@ -329,80 +347,42 @@ scrapy \
 
 USER ${USER_NAME}:${USER_NAME}
 
-RUN pipx inject ipython \
-  boto3 \
-  httpx \
-  networkx \
-  twisted \
-  numpy \
-  pydantic \
-  pandas \
-  icecream \
-  scrapy \
-  requests \
-  posting \
-  boltons \
-  beautifulsoup4 \
-  psutils \
-  howdoi \
-  cryptography \
-  html2text \
-  kubernetes \
-  black \
-  pendulum \
-  loguru \
-  certifi \
-  esptool \
-  ipython-extensions \
-  llm \
-  llm-tools-exa \
-  llm-openrouter \
-  llm-fragments-github \
-  llm-anthropic \
-  llm-tools-simpleeval \
-  llm-python \
-  llm-jq \
-  httpie \
-  uv \
-  'litellm[proxy]'
+## RUN pipx inject ipython \
+##   boto3 \
+##   httpx \
+##   networkx \
+##   twisted \
+##   numpy \
+##   pydantic \
+##   pandas \
+##   icecream \
+##   scrapy \
+##   requests \
+##   posting \
+##   boltons \
+##   beautifulsoup4 \
+##   psutils \
+##   howdoi \
+##   cryptography \
+##   html2text \
+##   kubernetes \
+##   black \
+##   pendulum \
+##   loguru \
+##   certifi \
+##   esptool \
+##   ipython-extensions \
+##   httpie \
+##   uv \
+##   'litellm[proxy]'
 # --pip-args="--upgrade" \
 # --include-deps
 
-
-# llm
-RUN python3 -m pipx install llm \
---pip-args="--upgrade" \
---include-deps
-
-RUN llm install \
-llm-anthropic \
-llm-tools-exa \
-llm-openrouter \
-llm-gemini \
-llm-bedrock  \
-llm-bedrock-anthropic  \
-# llm-bedrock-meta  \
-# llm-ollama \
-llm-tools-quickjs \
-llm-tools-sqlite \
-llm-tools-rag \
-# llm-fragments-pdf \
-llm-fragments-site-text \
-llm-templates-github \
-llm-fragments-github \
-llm-tools-simpleeval \
-llm-cmd-comp \
-llm-cmd \
-llm-python \
-llm-jq \
-llm-templates-fabric
-
 ENV PATH=$PATH:/usr/local/go/bin
 RUN go install github.com/akavel/up@latest
-RUN go install github.com/charmbracelet/glow/v2@latest
+RUN go install charm.land/glow/v3@latest
 # RUN python3 -m pipx install visidata 'litellm[proxy]' --include-deps
 RUN python3 -m pipx install pudb
-RUN python3 -m pipx install bpython --include-deps
 
 
 RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz && \
@@ -448,7 +428,6 @@ RUN git clone --depth=1 https://github.com/donnemartin/interactive-coding-challe
 RUN git clone --depth=1 https://github.com/realpython/python-guide
 RUN git clone --depth=1 https://github.com/yidao620c/python3-cookbook
 RUN git clone --depth=1 https://github.com/TheAlgorithms/Python
-RUN git clone --depth=1 https://github.com/simonw/llm
 RUN git clone --depth=1 https://github.com/labbots/bash-utility
 RUN git clone --depth=1 https://github.com/tomocafe/bash-boost
 RUN git clone --depth=1 https://github.com/cyberark/bash-lib
@@ -503,12 +482,7 @@ RUN chmod 755 ${USER_HOME}/.claude/anthropic_keys.sh
 RUN ls -la ${USER_HOME}/.claude/anthropic_keys.sh
 RUN cat ${USER_HOME}/.claude/anthropic_keys.sh
 
-RUN llm models default anthropic/claude-sonnet-4-6
 
-# RUN llm install llm-docs
-# RUN llm install llm-sentence-transformers
-# RUN llm sentence-transformers register all-mpnet-base-v2 --alias mpnet
-# RUN llm install llm-tools-rag
 
 RUN npm install neovim
 
@@ -521,8 +495,7 @@ WORKDIR ${USER_HOME}/.bashrc_zen.d
 COPY --chown=${USER_NAME}:${USER_NAME} ./dummy_xxx_.sh .
 RUN ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/aws.sh && \
     ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/nvim_chooser.sh && \
-    ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/docker.sh && \
-    ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/llm-cli.sh
+    ln -s ${USER_HOME}/gitdir/skel/bash/bashrc_zen.d/docker.sh
  
 
 WORKDIR ${USER_HOME}
